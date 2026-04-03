@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>图片裁剪</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #eaeaea;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .page {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: 18px;
+    }
+
+    .back-link {
+      color: #8d8d8d;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover { color: #fff; }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .subtitle {
+      color: #8b8b8b;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel,
+    .workspace {
+      background: #171717;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+    }
+
+    .panel { padding: 18px; }
+    .workspace { padding: 16px; }
+
+    .drop-zone {
+      border: 2px dashed #333;
+      border-radius: 12px;
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-over {
+      border-color: #5a5a5a;
+      background: #1f1f1f;
+    }
+
+    .drop-zone input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-zone strong {
+      display: block;
+      font-size: 0.98rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .drop-zone span {
+      color: #8b8b8b;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .section { margin-top: 18px; }
+
+    .section h2 {
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.76rem;
+      color: #8b8b8b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="range"],
+    select {
+      width: 100%;
+      background: #111;
+      color: #eaeaea;
+      border: 1px solid #2b2b2b;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .range-row input[type="range"] {
+      padding: 0;
+      border: none;
+      accent-color: #fff;
+    }
+
+    .range-value {
+      min-width: 44px;
+      text-align: right;
+      color: #d7d7d7;
+      font-size: 0.84rem;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .zoom-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .zoom-action {
+      background: #111;
+      color: #fff;
+      border: 1px solid #2f2f2f;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+    }
+
+    button,
+    .download-btn {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .secondary,
+    .download-btn {
+      background: #111;
+      color: #fff;
+      border: 1px solid #2f2f2f;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    button:disabled,
+    .download-btn.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .workspace-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .workspace-head h2 {
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .hint,
+    .status,
+    .error-msg,
+    .meta {
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .hint,
+    .status,
+    .meta { color: #8b8b8b; }
+
+    .error-msg {
+      margin-top: 12px;
+      color: #ff7b7b;
+      display: none;
+    }
+
+    .canvas-shell {
+      background: #0f0f0f;
+      border: 1px solid #2b2b2b;
+      border-radius: 14px;
+      padding: 12px;
+      overflow: auto;
+    }
+
+    .editor-stage {
+      position: relative;
+      min-width: 100%;
+      min-height: 620px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .editor-stage.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b8b8b;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .editor-stage.empty::before {
+      content: attr(data-empty-text);
+      padding: 24px;
+    }
+
+    .preview-image {
+      position: absolute;
+      display: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .crop-mask {
+      position: absolute;
+      display: none;
+      background: rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+    }
+
+    .crop-box {
+      position: absolute;
+      border: 2px solid #2563eb;
+      display: none;
+      touch-action: none;
+    }
+
+    .crop-handle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #3b82f6;
+      margin-left: -5px;
+      margin-top: -5px;
+    }
+
+    .crop-handle[data-handle="nw"] { left: 0; top: 0; cursor: nwse-resize; }
+    .crop-handle[data-handle="n"] { left: 50%; top: 0; cursor: ns-resize; }
+    .crop-handle[data-handle="ne"] { left: 100%; top: 0; cursor: nesw-resize; }
+    .crop-handle[data-handle="e"] { left: 100%; top: 50%; cursor: ew-resize; }
+    .crop-handle[data-handle="se"] { left: 100%; top: 100%; cursor: nwse-resize; }
+    .crop-handle[data-handle="s"] { left: 50%; top: 100%; cursor: ns-resize; }
+    .crop-handle[data-handle="sw"] { left: 0; top: 100%; cursor: nesw-resize; }
+    .crop-handle[data-handle="w"] { left: 0; top: 50%; cursor: ew-resize; }
+
+    .status { margin-top: 14px; }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="back-link" href="../Index.html">← 返回工具入口</a>
+    </div>
+
+    <h1>图片裁剪</h1>
+    <p class="subtitle">上传单张图片，在画布中拖动裁剪框、边和角点完成裁剪。导出时仅保留裁剪区域。</p>
+
+    <section class="layout">
+      <aside class="panel">
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept="image/*" />
+          <strong>点击选择或拖拽图片</strong>
+          <span>仅支持单张图片 · 默认裁剪框覆盖整张图片</span>
+        </div>
+
+        <div class="section controls">
+          <div class="control-group">
+            <label for="minSizeRange">最小裁剪边长</label>
+            <div class="range-row">
+              <input type="range" id="minSizeRange" min="20" max="200" step="5" value="40" />
+              <span class="range-value" id="minSizeValue">40px</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="formatSelect">导出格式</label>
+            <select id="formatSelect">
+              <option value="image/png" selected>PNG（无损）</option>
+              <option value="image/jpeg">JPEG（更小）</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="zoomRange">预览缩放</label>
+            <div class="range-row">
+              <input type="range" id="zoomRange" min="25" max="300" step="5" value="100" />
+              <span class="range-value" id="zoomValue">100%</span>
+            </div>
+            <div class="zoom-actions">
+              <button type="button" class="zoom-action" id="fitWidthBtn">适配宽度</button>
+              <button type="button" class="zoom-action" id="actualSizeBtn">100%</button>
+              <button type="button" class="zoom-action" id="fitImageBtn">适配整体</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="secondary" id="resetBtn" disabled>重置裁剪框</button>
+          <a class="download-btn disabled" id="downloadLink" download>下载裁剪图</a>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="section">
+          <h2>操作说明</h2>
+          <p class="hint">拖动裁剪框内部可整体移动；拖动四角和四边可调整范围；双击任一方向手柄可让裁剪框向该方向直接撑满。裁剪框始终限制在图片边界内。</p>
+        </div>
+
+        <div class="section">
+          <h2>当前裁剪区域</h2>
+          <p class="meta" id="cropMeta">尚未载入图片</p>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <div class="workspace-head">
+          <h2>编辑画布</h2>
+          <span class="hint" id="canvasMeta">尚未载入图片</span>
+        </div>
+        <p class="hint">通过缩放滑块或快捷按钮调整预览尺寸；默认按宽度适配，缩放变化不会改变实际裁剪区域。</p>
+        <div class="canvas-shell" id="canvasShell">
+          <div class="editor-stage empty" id="editorStage" data-empty-text="上传图片后，在这里裁剪">
+            <img class="preview-image" id="previewImage" alt="预览" />
+            <div class="crop-mask" id="maskTop"></div>
+            <div class="crop-mask" id="maskLeft"></div>
+            <div class="crop-mask" id="maskRight"></div>
+            <div class="crop-mask" id="maskBottom"></div>
+            <div class="crop-box" id="cropBox">
+              <span class="crop-handle" data-handle="nw"></span>
+              <span class="crop-handle" data-handle="n"></span>
+              <span class="crop-handle" data-handle="ne"></span>
+              <span class="crop-handle" data-handle="e"></span>
+              <span class="crop-handle" data-handle="se"></span>
+              <span class="crop-handle" data-handle="s"></span>
+              <span class="crop-handle" data-handle="sw"></span>
+              <span class="crop-handle" data-handle="w"></span>
+            </div>
+          </div>
+        </div>
+        <p class="status" id="statusText">请先上传图片。</p>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const canvasShell = document.getElementById('canvasShell');
+    const editorStage = document.getElementById('editorStage');
+    const previewImage = document.getElementById('previewImage');
+    const cropBox = document.getElementById('cropBox');
+    const maskTop = document.getElementById('maskTop');
+    const maskLeft = document.getElementById('maskLeft');
+    const maskRight = document.getElementById('maskRight');
+    const maskBottom = document.getElementById('maskBottom');
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const minSizeRange = document.getElementById('minSizeRange');
+    const minSizeValue = document.getElementById('minSizeValue');
+    const formatSelect = document.getElementById('formatSelect');
+    const zoomRange = document.getElementById('zoomRange');
+    const zoomValue = document.getElementById('zoomValue');
+    const fitWidthBtn = document.getElementById('fitWidthBtn');
+    const actualSizeBtn = document.getElementById('actualSizeBtn');
+    const fitImageBtn = document.getElementById('fitImageBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const downloadLink = document.getElementById('downloadLink');
+    const errorMsg = document.getElementById('errorMsg');
+    const cropMeta = document.getElementById('cropMeta');
+    const canvasMeta = document.getElementById('canvasMeta');
+    const statusText = document.getElementById('statusText');
+
+    const state = {
+      image: null,
+      fileName: '',
+      objectUrl: '',
+      imageRect: null,
+      cropRect: null,
+      mode: null,
+      handle: null,
+      startPoint: null,
+      startCrop: null,
+      displayScale: 1,
+      zoomMode: 'fit-width'
+    };
+
+    const DEFAULT_CANVAS_WIDTH = 860;
+    const DEFAULT_CANVAS_HEIGHT = 620;
+    const CANVAS_PADDING = 24;
+    const MIN_ZOOM = 0.25;
+    const MAX_ZOOM = 3;
+    const MIN_FIT_IMAGE_HEIGHT = 260;
+
+    minSizeRange.addEventListener('input', () => {
+      minSizeValue.textContent = `${minSizeRange.value}px`;
+      if (state.cropRect && state.imageRect) {
+        state.cropRect = clampResizeRect(state.cropRect, state.imageRect, getEffectiveMinSize());
+        updateMeta();
+        updateStage();
+      }
+    });
+
+    zoomRange.addEventListener('input', () => {
+      if (!state.image) return;
+      state.zoomMode = 'manual';
+      const zoom = Number(zoomRange.value) / 100;
+      applyDisplayScale(zoom);
+      statusText.textContent = `预览缩放已调整到 ${Math.round(zoom * 100)}%。`;
+    });
+
+    fitWidthBtn.addEventListener('click', () => {
+      if (!state.image) return;
+      state.zoomMode = 'fit-width';
+      const scale = getFitWidthScale(state.image.width);
+      applyDisplayScale(scale);
+      statusText.textContent = '已按宽度适配预览。';
+    });
+
+    actualSizeBtn.addEventListener('click', () => {
+      if (!state.image) return;
+      state.zoomMode = 'manual';
+      applyDisplayScale(1);
+      statusText.textContent = '已切换到 100% 预览。';
+    });
+
+    fitImageBtn.addEventListener('click', () => {
+      if (!state.image) return;
+      state.zoomMode = 'fit-image';
+      applyDisplayScale(getFitImageScale(state.image.width, state.image.height));
+      statusText.textContent = '已按整体适配预览。';
+    });
+
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    cropBox.addEventListener('pointerdown', onPointerDown);
+    cropBox.addEventListener('dblclick', onBoxDoubleClick);
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) loadFromFile(file);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) loadFromFile(fileInput.files[0]);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      if (!state.imageRect) return;
+      state.cropRect = createDefaultCropRect(state.imageRect, getEffectiveMinSize());
+      updateMeta();
+      updateStage();
+      statusText.textContent = '裁剪框已重置为整张图片。';
+    });
+
+    downloadLink.addEventListener('click', async event => {
+      event.preventDefault();
+
+      if (!state.image || !state.cropRect || !state.imageRect) {
+        showError('请先上传图片');
+        return;
+      }
+
+      try {
+        hideError();
+        await downloadCurrentCrop();
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+    document.addEventListener('pointercancel', onPointerUp);
+
+    updateStage();
+
+    function resizeEditorCanvas(width, height) {
+      editorStage.style.width = `${width}px`;
+      editorStage.style.height = `${height}px`;
+      editorStage.classList.remove('empty');
+    }
+
+    function updateStage() {
+      if (!state.image || !state.imageRect || !state.cropRect || !state.objectUrl) {
+        editorStage.classList.add('empty');
+        editorStage.style.width = `${DEFAULT_CANVAS_WIDTH}px`;
+        editorStage.style.height = `${DEFAULT_CANVAS_HEIGHT}px`;
+        previewImage.style.display = 'none';
+        previewImage.removeAttribute('src');
+        cropBox.style.display = 'none';
+        [maskTop, maskLeft, maskRight, maskBottom].forEach(mask => {
+          mask.style.display = 'none';
+        });
+        return;
+      }
+
+      editorStage.classList.remove('empty');
+      previewImage.src = state.objectUrl;
+      previewImage.style.display = 'block';
+      previewImage.style.left = `${state.imageRect.x}px`;
+      previewImage.style.top = `${state.imageRect.y}px`;
+      previewImage.style.width = `${state.imageRect.width}px`;
+      previewImage.style.height = `${state.imageRect.height}px`;
+
+      cropBox.style.display = 'block';
+      cropBox.style.left = `${state.cropRect.x}px`;
+      cropBox.style.top = `${state.cropRect.y}px`;
+      cropBox.style.width = `${state.cropRect.width}px`;
+      cropBox.style.height = `${state.cropRect.height}px`;
+
+      const stageWidth = parseFloat(editorStage.style.width) || DEFAULT_CANVAS_WIDTH;
+      const stageHeight = parseFloat(editorStage.style.height) || DEFAULT_CANVAS_HEIGHT;
+      const cropRight = state.cropRect.x + state.cropRect.width;
+      const cropBottom = state.cropRect.y + state.cropRect.height;
+
+      maskTop.style.display = 'block';
+      maskTop.style.left = '0px';
+      maskTop.style.top = '0px';
+      maskTop.style.width = `${stageWidth}px`;
+      maskTop.style.height = `${state.cropRect.y}px`;
+
+      maskLeft.style.display = 'block';
+      maskLeft.style.left = '0px';
+      maskLeft.style.top = `${state.cropRect.y}px`;
+      maskLeft.style.width = `${state.cropRect.x}px`;
+      maskLeft.style.height = `${state.cropRect.height}px`;
+
+      maskRight.style.display = 'block';
+      maskRight.style.left = `${cropRight}px`;
+      maskRight.style.top = `${state.cropRect.y}px`;
+      maskRight.style.width = `${Math.max(0, stageWidth - cropRight)}px`;
+      maskRight.style.height = `${state.cropRect.height}px`;
+
+      maskBottom.style.display = 'block';
+      maskBottom.style.left = '0px';
+      maskBottom.style.top = `${cropBottom}px`;
+      maskBottom.style.width = `${stageWidth}px`;
+      maskBottom.style.height = `${Math.max(0, stageHeight - cropBottom)}px`;
+    }
+
+    function syncZoomControls(scale) {
+      const clamped = clamp(scale, MIN_ZOOM, MAX_ZOOM);
+      zoomRange.value = String(Math.round(clamped * 100));
+      zoomValue.textContent = `${Math.round(clamped * 100)}%`;
+    }
+
+    function getFitScaleForCanvas(width, height, maxWidth, maxHeight, padding) {
+      const availableWidth = Math.max(1, maxWidth - padding * 2);
+      const availableHeight = Math.max(1, maxHeight - padding * 2);
+      return Math.min(availableWidth / width, availableHeight / height, 1);
+    }
+
+    function getFitWidthScale(width) {
+      const workspaceWidth = canvasShell?.clientWidth || DEFAULT_CANVAS_WIDTH;
+      const availableWidth = Math.max(1, workspaceWidth - CANVAS_PADDING * 2);
+      return clamp(availableWidth / width, MIN_ZOOM, MAX_ZOOM);
+    }
+
+    function getFitImageScale(width, height) {
+      const workspaceWidth = canvasShell?.clientWidth || DEFAULT_CANVAS_WIDTH;
+      const workspaceHeight = canvasShell?.clientHeight || DEFAULT_CANVAS_HEIGHT;
+      return clamp(
+        getFitScaleForCanvas(width, height, workspaceWidth, Math.max(workspaceHeight, MIN_FIT_IMAGE_HEIGHT), CANVAS_PADDING),
+        MIN_ZOOM,
+        MAX_ZOOM
+      );
+    }
+
+    function applyDisplayScale(scale) {
+      if (!state.image || !state.cropRect || !state.imageRect) return;
+      const nextScale = clamp(scale, MIN_ZOOM, MAX_ZOOM);
+      const sourceRect = toSourceRect(state.cropRect);
+      state.displayScale = nextScale;
+      layoutImage(nextScale);
+      state.cropRect = fromSourceRect(sourceRect);
+      updateMeta();
+      updateStage();
+      syncZoomControls(nextScale);
+    }
+
+    function layoutImage(scale) {
+      const drawWidth = Math.round(state.image.width * scale);
+      const drawHeight = Math.round(state.image.height * scale);
+      resizeEditorCanvas(drawWidth + CANVAS_PADDING * 2, drawHeight + CANVAS_PADDING * 2);
+      state.imageRect = {
+        x: CANVAS_PADDING,
+        y: CANVAS_PADDING,
+        width: drawWidth,
+        height: drawHeight,
+        scale
+      };
+    }
+
+    function toSourceRect(rect) {
+      const scale = 1 / state.imageRect.scale;
+      return {
+        x: Math.round((rect.x - state.imageRect.x) * scale),
+        y: Math.round((rect.y - state.imageRect.y) * scale),
+        width: Math.round(rect.width * scale),
+        height: Math.round(rect.height * scale)
+      };
+    }
+
+    function fromSourceRect(rect) {
+      const scale = state.imageRect.scale;
+      return clampResizeRect({
+        x: state.imageRect.x + rect.x * scale,
+        y: state.imageRect.y + rect.y * scale,
+        width: rect.width * scale,
+        height: rect.height * scale
+      }, state.imageRect, getEffectiveMinSize());
+    }
+
+    function getEffectiveMinSize() {
+      if (!state.imageRect) {
+        return Number(minSizeRange.value);
+      }
+      return Math.min(Number(minSizeRange.value) * state.imageRect.scale, state.imageRect.width, state.imageRect.height);
+    }
+
+    async function loadFromFile(file) {
+      hideError();
+      if (!file.type.startsWith('image/')) {
+        showError('请上传图片文件');
+        return;
+      }
+
+      try {
+        const image = await loadImageFile(file);
+        if (state.objectUrl) {
+          URL.revokeObjectURL(state.objectUrl);
+        }
+        state.objectUrl = URL.createObjectURL(file);
+        state.image = image;
+        state.fileName = file.name;
+        previewImage.src = state.objectUrl;
+        state.zoomMode = 'fit-width';
+        state.displayScale = getFitWidthScale(image.width);
+        layoutImage(state.displayScale);
+        state.cropRect = createDefaultCropRect(state.imageRect, getEffectiveMinSize());
+        syncZoomControls(state.displayScale);
+        setDownloadEnabled(true);
+        resetBtn.disabled = false;
+        updateMeta();
+        updateStage();
+        statusText.textContent = '拖动裁剪框、边或角点即可调整裁剪区域。';
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    function createDefaultCropRect(imageRect, minSize) {
+      return clampResizeRect({
+        x: imageRect.x,
+        y: imageRect.y,
+        width: imageRect.width,
+        height: imageRect.height
+      }, imageRect, minSize);
+    }
+
+    function onPointerDown(event) {
+      if (!state.cropRect) return;
+      const handle = event.target.dataset.handle || (event.target === cropBox ? 'move' : null);
+      if (!handle) return;
+
+      state.startPoint = getCanvasPoint(event);
+      state.startCrop = { ...state.cropRect };
+      state.handle = handle;
+      state.mode = handle === 'move' ? 'move' : 'resize';
+      cropBox.setPointerCapture?.(event.pointerId);
+      event.preventDefault();
+    }
+
+    function onPointerMove(event) {
+      if (!state.mode || !state.cropRect || !state.startPoint || !state.startCrop) return;
+      const point = getCanvasPoint(event);
+      const dx = point.x - state.startPoint.x;
+      const dy = point.y - state.startPoint.y;
+      const minSize = getEffectiveMinSize();
+
+      if (state.mode === 'move') {
+        state.cropRect = clampMoveRect({
+          x: state.startCrop.x + dx,
+          y: state.startCrop.y + dy,
+          width: state.startCrop.width,
+          height: state.startCrop.height
+        }, state.imageRect);
+      } else {
+        state.cropRect = resizeCropRect(state.startCrop, state.handle, dx, dy, state.imageRect, minSize);
+      }
+
+      updateMeta();
+      updateStage();
+    }
+
+    function onPointerUp(event) {
+      if (state.mode && cropBox.hasPointerCapture?.(event.pointerId)) {
+        cropBox.releasePointerCapture(event.pointerId);
+      }
+      state.mode = null;
+      state.handle = null;
+      state.startPoint = null;
+      state.startCrop = null;
+    }
+
+    function onBoxDoubleClick(event) {
+      if (!state.cropRect || !state.imageRect) return;
+      const handle = event.target.dataset.handle;
+      if (!handle) return;
+
+      state.cropRect = expandCropRectToEdge(state.cropRect, handle, state.imageRect, getEffectiveMinSize());
+      updateMeta();
+      updateStage();
+      statusText.textContent = '裁剪框已按方向撑满。';
+    }
+
+    function expandCropRectToEdge(rect, handle, bounds, minSize) {
+      const next = { ...rect };
+      const right = rect.x + rect.width;
+      const bottom = rect.y + rect.height;
+
+      if (handle.includes('n')) {
+        next.y = bounds.y;
+        next.height = bottom - bounds.y;
+      }
+      if (handle.includes('s')) {
+        next.height = bounds.y + bounds.height - rect.y;
+      }
+      if (handle.includes('w')) {
+        next.x = bounds.x;
+        next.width = right - bounds.x;
+      }
+      if (handle.includes('e')) {
+        next.width = bounds.x + bounds.width - rect.x;
+      }
+
+      return clampResizeRect(next, bounds, minSize);
+    }
+
+    function resizeCropRect(start, handle, dx, dy, bounds, minSize) {
+      let { x, y, width, height } = start;
+      const right = x + width;
+      const bottom = y + height;
+
+      if (handle.includes('n')) {
+        y = clamp(start.y + dy, bounds.y, bottom - minSize);
+        height = bottom - y;
+      }
+      if (handle.includes('s')) {
+        const nextBottom = clamp(bottom + dy, y + minSize, bounds.y + bounds.height);
+        height = nextBottom - y;
+      }
+      if (handle.includes('w')) {
+        x = clamp(start.x + dx, bounds.x, right - minSize);
+        width = right - x;
+      }
+      if (handle.includes('e')) {
+        const nextRight = clamp(right + dx, x + minSize, bounds.x + bounds.width);
+        width = nextRight - x;
+      }
+
+      return clampResizeRect({ x, y, width, height }, bounds, minSize);
+    }
+
+    function clampMoveRect(rect, bounds) {
+      return {
+        x: clamp(rect.x, bounds.x, bounds.x + bounds.width - rect.width),
+        y: clamp(rect.y, bounds.y, bounds.y + bounds.height - rect.height),
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+    function clampResizeRect(rect, bounds, minSize) {
+      let next = { ...rect };
+
+      if (next.width < minSize) next.width = minSize;
+      if (next.height < minSize) next.height = minSize;
+      if (next.x < bounds.x) next.x = bounds.x;
+      if (next.y < bounds.y) next.y = bounds.y;
+      if (next.x + next.width > bounds.x + bounds.width) {
+        next.width = bounds.x + bounds.width - next.x;
+      }
+      if (next.y + next.height > bounds.y + bounds.height) {
+        next.height = bounds.y + bounds.height - next.y;
+      }
+
+      if (next.width < minSize) next.width = minSize;
+      if (next.height < minSize) next.height = minSize;
+      return next;
+    }
+
+    async function downloadCurrentCrop() {
+      const { blob, width, height, name } = await buildCroppedBlob();
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = name;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      statusText.textContent = `下载完成：${width} × ${height} px`;
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 0);
+    }
+
+    async function buildCroppedBlob() {
+      hideError();
+      const source = toSourceRect(state.cropRect);
+      const sourceX = source.x;
+      const sourceY = source.y;
+      const sourceWidth = source.width;
+      const sourceHeight = source.height;
+
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = sourceWidth;
+      exportCanvas.height = sourceHeight;
+      const exportCtx = exportCanvas.getContext('2d');
+      exportCtx.drawImage(
+        state.image,
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+        0,
+        0,
+        sourceWidth,
+        sourceHeight
+      );
+
+      const format = formatSelect.value;
+      const quality = format === 'image/png' ? 1 : 0.92;
+      const blob = await new Promise(resolve => exportCanvas.toBlob(resolve, format, quality));
+      if (!blob) {
+        throw new Error('下载失败，浏览器未生成图片');
+      }
+
+      const ext = format.split('/')[1].replace('jpeg', 'jpg');
+      const baseName = state.fileName.replace(/\.[^.]+$/, '') || 'cropped';
+
+      return { blob, width: sourceWidth, height: sourceHeight, name: `${baseName}_cropped.${ext}` };
+    }
+
+    function updateMeta() {
+      if (!state.imageRect || !state.cropRect) {
+        cropMeta.textContent = '尚未载入图片';
+        canvasMeta.textContent = '尚未载入图片';
+        editorStage.classList.add('empty');
+        editorStage.style.width = `${DEFAULT_CANVAS_WIDTH}px`;
+        editorStage.style.height = `${DEFAULT_CANVAS_HEIGHT}px`;
+        syncZoomControls(1);
+        updateStage();
+        return;
+      }
+      const source = toSourceRect(state.cropRect);
+      cropMeta.textContent = `${source.width} × ${source.height} px`;
+      canvasMeta.textContent = `${state.fileName} · 预览 ${state.imageRect.width} × ${state.imageRect.height} · 缩放 ${Math.round(state.imageRect.scale * 100)}%`;
+    }
+
+    function getCanvasPoint(event) {
+      const rect = editorStage.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top
+      };
+    }
+
+    function loadImageFile(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+        image.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(image);
+        };
+        image.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error(`无法读取图片：${file.name}`));
+        };
+        image.src = url;
+      });
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (state.objectUrl) {
+        URL.revokeObjectURL(state.objectUrl);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (!state.image) return;
+      if (state.zoomMode === 'fit-image') {
+        applyDisplayScale(getFitImageScale(state.image.width, state.image.height));
+        statusText.textContent = '已根据当前工作区重新适配整图预览。';
+        return;
+      }
+      if (state.zoomMode === 'fit-width') {
+        const nextScale = getFitWidthScale(state.image.width);
+        applyDisplayScale(nextScale);
+        statusText.textContent = '已根据当前工作区宽度更新预览。';
+      }
+    });
+
+    function setDownloadEnabled(enabled) {
+      if (enabled) {
+        downloadLink.classList.remove('disabled');
+        return;
+      }
+      downloadLink.classList.add('disabled');
+      downloadLink.removeAttribute('href');
+      downloadLink.removeAttribute('download');
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function hideError() {
+      errorMsg.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
