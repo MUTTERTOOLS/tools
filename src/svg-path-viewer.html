@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVG Path 展示</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #eaeaea;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .page {
+      width: min(1380px, 100%);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      margin-bottom: 18px;
+    }
+
+    .back-link {
+      color: #8d8d8d;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover { color: #fff; }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .subtitle {
+      color: #8b8b8b;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel,
+    .workspace {
+      background: #171717;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .workspace {
+      padding: 16px;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section h2 {
+      font-size: 0.92rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label,
+    .label {
+      font-size: 0.76rem;
+      color: #8b8b8b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    textarea,
+    input[type="range"] {
+      width: 100%;
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+      border-radius: 12px;
+      border: 1px solid #2b2b2b;
+      background: #111;
+      color: #efefef;
+      padding: 12px 13px;
+      line-height: 1.65;
+      font-size: 0.92rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    textarea:focus,
+    input[type="range"]:focus,
+    button:focus-visible,
+    input[type="checkbox"]:focus-visible {
+      outline: 2px solid #4f86ff;
+      outline-offset: 2px;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .range-row input[type="range"] {
+      padding: 0;
+      border: none;
+      accent-color: #fff;
+    }
+
+    .range-value {
+      min-width: 44px;
+      text-align: right;
+      color: #d7d7d7;
+      font-size: 0.84rem;
+    }
+
+    .zoom-actions,
+    .button-row,
+    .toggle-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .zoom-actions {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 8px;
+    }
+
+    .button-row {
+      grid-template-columns: 1fr 1fr;
+      margin-top: 14px;
+    }
+
+    .toggle-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #2d2d2d;
+      background: #111;
+      font-size: 0.84rem;
+      color: #dbdbdb;
+      cursor: pointer;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .toggle-item input {
+      accent-color: #fff;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .secondary,
+    .zoom-action {
+      background: #111;
+      color: #fff;
+      border: 1px solid #2f2f2f;
+      text-align: center;
+    }
+
+    .hint,
+    .status,
+    .error-msg,
+    .meta,
+    .legend {
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .hint,
+    .status,
+    .meta,
+    .legend {
+      color: #8b8b8b;
+    }
+
+    .error-msg {
+      margin-top: 12px;
+      color: #ff7b7b;
+      display: none;
+    }
+
+    .legend {
+      display: grid;
+      gap: 6px;
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+
+    .dot.move { background: #f97316; }
+    .dot.vertex { background: #2563eb; }
+    .line-sample {
+      width: 20px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(37,99,235,0.25), rgba(37,99,235,0.9));
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .line-sample::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -3px;
+      width: 0;
+      height: 0;
+      border-left: 6px solid rgba(37,99,235,0.9);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+
+    .workspace-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .workspace-head h2 {
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .canvas-shell {
+      background: #0f0f0f;
+      border: 1px solid #2b2b2b;
+      border-radius: 14px;
+      overflow: hidden;
+      height: clamp(420px, calc(100vh - 220px), 760px);
+      position: relative;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    .canvas-shell.panning {
+      cursor: grabbing;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      border-radius: 14px;
+    }
+
+    @media (max-width: 1040px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .zoom-actions,
+      .button-row,
+      .toggle-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="back-link" href="../index.html">← 返回工具入口</a>
+    </div>
+
+    <h1>SVG Path 展示</h1>
+    <p class="subtitle">输入或粘贴 SVG path 数据，在 canvas 中查看路径形状、节点位置和走向。支持缩放、拖拽平移，橙色圆点表示每个子路径的 `M` 起点。</p>
+
+    <section class="layout">
+      <aside class="panel">
+        <div class="section controls" style="margin-top: 0;">
+          <div class="control-group">
+            <label for="pathInput">Path 数据</label>
+            <textarea id="pathInput" spellcheck="false"></textarea>
+            <p class="hint">支持 `M/L/H/V/C/S/Q/T/A/Z` 及对应小写相对命令。输入错误时会保留上一次成功渲染结果。</p>
+          </div>
+
+          <div class="button-row">
+            <button class="primary" id="parseBtn">解析并展示</button>
+            <button class="secondary" id="resetViewBtn">重置视图</button>
+          </div>
+
+          <div class="control-group">
+            <label for="zoomRange">画布缩放</label>
+            <div class="range-row">
+              <input type="range" id="zoomRange" min="25" max="400" step="5" value="100" />
+              <span class="range-value" id="zoomValue">100%</span>
+            </div>
+            <div class="zoom-actions">
+              <button type="button" class="zoom-action" id="fitWidthBtn">适配宽度</button>
+              <button type="button" class="zoom-action" id="actualSizeBtn">100%</button>
+              <button type="button" class="zoom-action" id="fitAllBtn">适配全部</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="label">可视化开关</span>
+            <div class="toggle-grid">
+              <label class="toggle-item" for="showPointsInput"><input id="showPointsInput" type="checkbox" checked />显示节点</label>
+              <label class="toggle-item" for="showDirectionInput"><input id="showDirectionInput" type="checkbox" checked />显示方向</label>
+              <label class="toggle-item" for="showGridInput"><input id="showGridInput" type="checkbox" checked />显示网格</label>
+              <label class="toggle-item" for="showLabelsInput"><input id="showLabelsInput" type="checkbox" />显示标签</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="section">
+          <h2>图例</h2>
+          <div class="legend">
+            <div class="legend-row"><span class="dot move"></span><span>橙色圆点：`M` 起点</span></div>
+            <div class="legend-row"><span class="dot vertex"></span><span>蓝色圆点：路径节点</span></div>
+            <div class="legend-row"><span class="line-sample"></span><span>蓝色箭头：路径走向</span></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>操作说明</h2>
+          <p class="hint">修改文本后会自动尝试解析。拖动画布可平移视图，双击画布会重新适配整体。缩放仅影响查看，不改变路径本身。</p>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <div class="workspace-head">
+          <h2>路径画布</h2>
+          <span class="hint" id="canvasMeta">尚未解析路径</span>
+        </div>
+        <div class="canvas-shell" id="canvasShell">
+          <canvas id="viewerCanvas" width="960" height="620"></canvas>
+        </div>
+        <p class="status" id="statusText">请输入 SVG path 数据。</p>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const DEFAULT_CANVAS_WIDTH = 960;
+    const DEFAULT_CANVAS_HEIGHT = 620;
+    const CANVAS_PADDING = 32;
+    const MIN_ZOOM = 0.25;
+    const MAX_ZOOM = 4;
+    const GRID_TARGET_PX = 64;
+    const DEFAULT_DIRECTION_STEP = 84;
+    const MAX_PATH_CHARS = 12000;
+    const MAX_TOKENS = 4000;
+    const MAX_COMMANDS = 400;
+    const MAX_TOTAL_SAMPLE_POINTS = 40000;
+    const MAX_ABS_NUMERIC_VALUE = 1000000;
+    const MAX_DIRECTION_ARROWS = 600;
+    const DEFAULT_PATH = `M 20 20 L 160 20 C 220 20 240 120 170 150 A 42 42 0 0 1 80 155 Q 20 140 20 80 Z\nM 220 48 L 320 48 L 320 118 L 220 118 Z`;
+    const COMMAND_PARAM_COUNTS = {
+      M: 2,
+      L: 2,
+      H: 1,
+      V: 1,
+      C: 6,
+      S: 4,
+      Q: 4,
+      T: 2,
+      A: 7,
+      Z: 0
+    };
+
+    const pathInput = document.getElementById('pathInput');
+    const parseBtn = document.getElementById('parseBtn');
+    const resetViewBtn = document.getElementById('resetViewBtn');
+    const zoomRange = document.getElementById('zoomRange');
+    const zoomValue = document.getElementById('zoomValue');
+    const fitWidthBtn = document.getElementById('fitWidthBtn');
+    const actualSizeBtn = document.getElementById('actualSizeBtn');
+    const fitAllBtn = document.getElementById('fitAllBtn');
+    const showPointsInput = document.getElementById('showPointsInput');
+    const showDirectionInput = document.getElementById('showDirectionInput');
+    const showGridInput = document.getElementById('showGridInput');
+    const showLabelsInput = document.getElementById('showLabelsInput');
+    const errorMsg = document.getElementById('errorMsg');
+    const canvasMeta = document.getElementById('canvasMeta');
+    const statusText = document.getElementById('statusText');
+    const canvasShell = document.getElementById('canvasShell');
+    const canvas = document.getElementById('viewerCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const state = {
+      rawPathText: '',
+      commands: [],
+      segments: [],
+      markers: [],
+      sceneBounds: null,
+      viewScale: 1,
+      viewMode: 'fit-all',
+      viewOffsetX: CANVAS_PADDING,
+      viewOffsetY: CANVAS_PADDING,
+      isPanning: false,
+      dragViewState: null,
+      showPoints: true,
+      showDirection: true,
+      showGrid: true,
+      showLabels: false,
+      errorMessage: '',
+      metrics: createEmptyMetrics(),
+      dpr: 1,
+      cssWidth: DEFAULT_CANVAS_WIDTH,
+      cssHeight: DEFAULT_CANVAS_HEIGHT,
+      lastGoodRender: null,
+      parseTimer: null
+    };
+
+    pathInput.value = DEFAULT_PATH;
+    showPointsInput.checked = state.showPoints;
+    showDirectionInput.checked = state.showDirection;
+    showGridInput.checked = state.showGrid;
+    showLabelsInput.checked = state.showLabels;
+
+    parseBtn.addEventListener('click', () => parseAndApply(true));
+    resetViewBtn.addEventListener('click', () => {
+      if (!hasRenderablePath()) return;
+      applyFitMode('fit-all');
+      render();
+      statusText.textContent = '已按整体重新适配视图。';
+    });
+
+    zoomRange.addEventListener('input', () => {
+      if (!hasRenderablePath()) return;
+      const scale = Number(zoomRange.value) / 100;
+      zoomAroundCanvasPoint(scale, state.cssWidth / 2, state.cssHeight / 2);
+      statusText.textContent = `画布缩放已调整到 ${Math.round(state.viewScale * 100)}%。`;
+    });
+
+    fitWidthBtn.addEventListener('click', () => {
+      if (!hasRenderablePath()) return;
+      applyFitMode('fit-width');
+      render();
+      statusText.textContent = '已按宽度适配画布。';
+    });
+
+    actualSizeBtn.addEventListener('click', () => {
+      if (!hasRenderablePath()) return;
+      zoomAroundCanvasPoint(1, state.cssWidth / 2, state.cssHeight / 2, 'manual');
+      statusText.textContent = '已切换到 100% 视图。';
+    });
+
+    fitAllBtn.addEventListener('click', () => {
+      if (!hasRenderablePath()) return;
+      applyFitMode('fit-all');
+      render();
+      statusText.textContent = '已按整体适配画布。';
+    });
+
+    pathInput.addEventListener('input', () => {
+      clearTimeout(state.parseTimer);
+      state.parseTimer = setTimeout(() => parseAndApply(true), 280);
+    });
+
+    showPointsInput.addEventListener('change', () => {
+      state.showPoints = showPointsInput.checked;
+      render();
+    });
+
+    showDirectionInput.addEventListener('change', () => {
+      state.showDirection = showDirectionInput.checked;
+      render();
+    });
+
+    showGridInput.addEventListener('change', () => {
+      state.showGrid = showGridInput.checked;
+      render();
+    });
+
+    showLabelsInput.addEventListener('change', () => {
+      state.showLabels = showLabelsInput.checked;
+      render();
+    });
+
+    canvas.addEventListener('pointerdown', onPointerDown);
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerup', onPointerUp);
+    canvas.addEventListener('pointercancel', onPointerUp);
+    canvas.addEventListener('wheel', onCanvasWheel, { passive: false });
+    canvas.addEventListener('dblclick', () => {
+      if (!hasRenderablePath()) return;
+      applyFitMode('fit-all');
+      render();
+      statusText.textContent = '已按整体重新适配视图。';
+    });
+
+    window.addEventListener('resize', () => {
+      if (!hasRenderablePath()) {
+        resizeCanvasToShell();
+        render();
+        return;
+      }
+      if (state.viewMode === 'fit-all' || state.viewMode === 'fit-width') {
+        applyFitMode(state.viewMode);
+      }
+      render();
+    });
+
+    parseAndApply(true);
+
+    function createEmptyMetrics() {
+      return {
+        commandCount: 0,
+        subpathCount: 0,
+        pointCount: 0,
+        width: 0,
+        height: 0,
+        pathLength: 0,
+        commandTypes: []
+      };
+    }
+
+    function createUserErrorMessage(error) {
+      const message = typeof error?.message === 'string' ? error.message.trim() : '';
+      if (!message) {
+        return '解析失败，请检查 path 数据格式。';
+      }
+      if (message.startsWith('存在无法识别的数字') || message.startsWith('存在无法识别的字符')) {
+        return '存在无法识别的 path 内容，请检查命令和数字格式。';
+      }
+      if (message.startsWith('数值过大')) {
+        return `存在超出范围的数值，请控制在 ±${MAX_ABS_NUMERIC_VALUE} 以内。`;
+      }
+      if (message.length > 120) {
+        return '解析失败，请检查 path 数据格式。';
+      }
+      return message;
+    }
+
+    function hasRenderablePath() {
+      return Boolean(state.lastGoodRender?.sceneBounds && state.lastGoodRender.segments.length);
+    }
+
+    function parseAndApply(resetView) {
+      const rawPathText = pathInput.value.trim();
+      state.rawPathText = rawPathText;
+      if (!rawPathText) {
+        state.errorMessage = '请输入 SVG path 数据';
+        showError(state.errorMessage);
+        statusText.textContent = '当前输入为空。';
+        render();
+        return false;
+      }
+
+      if (rawPathText.length > MAX_PATH_CHARS) {
+        const message = `path 文本过长，请控制在 ${MAX_PATH_CHARS} 个字符以内。`;
+        state.errorMessage = message;
+        showError(message);
+        statusText.textContent = '输入过长，已保留上一次成功渲染结果。';
+        render();
+        return false;
+      }
+
+      try {
+        const tokens = tokenizePathData(rawPathText);
+        const commands = parsePathTokens(tokens);
+        const markers = buildMarkers(commands);
+        const segments = buildRenderableSegments(commands);
+        const sceneBounds = computePathBounds(segments, markers);
+        const metrics = buildMetrics(commands, markers, sceneBounds, segments);
+        const payload = { rawPathText, commands, markers, segments, sceneBounds, metrics };
+
+        state.commands = commands;
+        state.markers = markers;
+        state.segments = segments;
+        state.sceneBounds = sceneBounds;
+        state.metrics = metrics;
+        state.lastGoodRender = payload;
+        hideError();
+
+        if (resetView || state.viewMode === 'fit-all' || state.viewMode === 'fit-width') {
+          applyFitMode('fit-all');
+        } else {
+          syncZoomControls(state.viewScale);
+        }
+
+        render();
+        statusText.textContent = `已解析 ${metrics.commandCount} 条命令，包含 ${metrics.subpathCount} 个子路径。`;
+        return true;
+      } catch (error) {
+        const safeMessage = createUserErrorMessage(error);
+        state.errorMessage = safeMessage;
+        showError(safeMessage);
+        statusText.textContent = '解析失败，已保留上一次成功渲染结果。';
+        render();
+        return false;
+      }
+    }
+
+    function tokenizePathData(text) {
+      const pattern = /([AaCcHhLlMmQqSsTtVvZz])|([-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?)/g;
+      const tokens = [];
+      let match;
+      while ((match = pattern.exec(text)) !== null) {
+        if (tokens.length >= MAX_TOKENS) {
+          throw new Error(`path 复杂度过高，请控制在 ${MAX_TOKENS} 个 token 以内。`);
+        }
+        if (match[1]) {
+          tokens.push({ type: 'command', value: match[1] });
+        } else if (match[2]) {
+          const value = Number(match[2]);
+          if (!Number.isFinite(value)) {
+            throw new Error(`存在无法识别的数字：${match[2]}`);
+          }
+          ensureNumericRange(value);
+          tokens.push({ type: 'number', value });
+        }
+      }
+
+      const leftover = text.replace(pattern, '').replace(/[\s,]+/g, '');
+      if (leftover) {
+        throw new Error(`存在无法识别的字符：${leftover.slice(0, 12)}`);
+      }
+      if (!tokens.length) {
+        throw new Error('未识别到任何 path 命令');
+      }
+      return tokens;
+    }
+
+    function ensureNumericRange(value) {
+      if (Math.abs(value) > MAX_ABS_NUMERIC_VALUE) {
+        throw new Error(`数值过大，请控制在 ±${MAX_ABS_NUMERIC_VALUE} 以内。`);
+      }
+    }
+
+    function parsePathTokens(tokens) {
+      const commands = [];
+      let index = 0;
+      let currentCommand = null;
+      let currentPoint = { x: 0, y: 0 };
+      let subpathStart = null;
+      let lastCubicControl = null;
+      let lastQuadraticControl = null;
+      let lastCommandType = '';
+      let commandIndex = 0;
+
+      const peek = () => tokens[index];
+      const ensureCommandLimit = () => {
+        if (commands.length >= MAX_COMMANDS) {
+          throw new Error(`path 命令过多，请控制在 ${MAX_COMMANDS} 条以内。`);
+        }
+      };
+      const pushCommand = command => {
+        ensureCommandLimit();
+        commands.push(command);
+      };
+      const consumeNumber = () => {
+        const token = tokens[index];
+        if (!token || token.type !== 'number') {
+          throw new Error('命令参数数量不足');
+        }
+        index += 1;
+        return token.value;
+      };
+
+      while (index < tokens.length) {
+        if (peek()?.type === 'command') {
+          currentCommand = peek().value;
+          index += 1;
+        } else if (!currentCommand) {
+          throw new Error('path 必须以命令字母开始');
+        }
+
+        const commandChar = currentCommand;
+        const upper = commandChar.toUpperCase();
+        const relative = commandChar !== upper;
+
+        if (!(upper in COMMAND_PARAM_COUNTS)) {
+          throw new Error(`不支持的命令：${commandChar}`);
+        }
+
+        if (upper === 'Z') {
+          if (!subpathStart) {
+            throw new Error('Z 命令前缺少 M 起点');
+          }
+          pushCommand({
+            index: commandIndex += 1,
+            type: 'Z',
+            start: { ...currentPoint },
+            end: { ...subpathStart },
+            subpathStart: { ...subpathStart }
+          });
+          currentPoint = { ...subpathStart };
+          lastCubicControl = null;
+          lastQuadraticControl = null;
+          lastCommandType = 'Z';
+          currentCommand = null;
+          continue;
+        }
+
+        if (upper === 'M') {
+          let firstPair = true;
+          while (peek() && peek().type === 'number') {
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const nextPoint = relative
+              ? { x: currentPoint.x + x, y: currentPoint.y + y }
+              : { x, y };
+
+            if (firstPair) {
+              pushCommand({
+                index: commandIndex += 1,
+                type: 'M',
+                start: { ...currentPoint },
+                end: { ...nextPoint }
+              });
+              subpathStart = { ...nextPoint };
+              firstPair = false;
+              lastCommandType = 'M';
+            } else {
+              pushCommand({
+                index: commandIndex += 1,
+                type: 'L',
+                start: { ...currentPoint },
+                end: { ...nextPoint }
+              });
+              lastCommandType = 'L';
+            }
+
+            currentPoint = { ...nextPoint };
+            lastCubicControl = null;
+            lastQuadraticControl = null;
+          }
+
+          if (firstPair) {
+            throw new Error('M 命令至少需要一组坐标');
+          }
+
+          currentCommand = relative ? 'l' : 'L';
+          continue;
+        }
+
+        const requiredCount = COMMAND_PARAM_COUNTS[upper];
+        let consumedAny = false;
+        while (peek() && peek().type === 'number') {
+          consumedAny = true;
+          if (upper === 'L') {
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const end = relative ? { x: currentPoint.x + x, y: currentPoint.y + y } : { x, y };
+            pushCommand({ index: commandIndex += 1, type: 'L', start: { ...currentPoint }, end });
+            currentPoint = { ...end };
+            lastCubicControl = null;
+            lastQuadraticControl = null;
+            lastCommandType = 'L';
+            continue;
+          }
+
+          if (upper === 'H') {
+            const value = consumeNumber();
+            const end = relative ? { x: currentPoint.x + value, y: currentPoint.y } : { x: value, y: currentPoint.y };
+            pushCommand({ index: commandIndex += 1, type: 'H', start: { ...currentPoint }, end });
+            currentPoint = { ...end };
+            lastCubicControl = null;
+            lastQuadraticControl = null;
+            lastCommandType = 'H';
+            continue;
+          }
+
+          if (upper === 'V') {
+            const value = consumeNumber();
+            const end = relative ? { x: currentPoint.x, y: currentPoint.y + value } : { x: currentPoint.x, y: value };
+            pushCommand({ index: commandIndex += 1, type: 'V', start: { ...currentPoint }, end });
+            currentPoint = { ...end };
+            lastCubicControl = null;
+            lastQuadraticControl = null;
+            lastCommandType = 'V';
+            continue;
+          }
+
+          if (upper === 'C') {
+            const x1 = consumeNumber();
+            const y1 = consumeNumber();
+            const x2 = consumeNumber();
+            const y2 = consumeNumber();
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const c1 = relative ? { x: currentPoint.x + x1, y: currentPoint.y + y1 } : { x: x1, y: y1 };
+            const c2 = relative ? { x: currentPoint.x + x2, y: currentPoint.y + y2 } : { x: x2, y: y2 };
+            const end = relative ? { x: currentPoint.x + x, y: currentPoint.y + y } : { x, y };
+            pushCommand({ index: commandIndex += 1, type: 'C', start: { ...currentPoint }, c1, c2, end });
+            currentPoint = { ...end };
+            lastCubicControl = { ...c2 };
+            lastQuadraticControl = null;
+            lastCommandType = 'C';
+            continue;
+          }
+
+          if (upper === 'S') {
+            const x2 = consumeNumber();
+            const y2 = consumeNumber();
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const c1 = lastCommandType === 'C' || lastCommandType === 'S'
+              ? reflectPoint(lastCubicControl || currentPoint, currentPoint)
+              : { ...currentPoint };
+            const c2 = relative ? { x: currentPoint.x + x2, y: currentPoint.y + y2 } : { x: x2, y: y2 };
+            const end = relative ? { x: currentPoint.x + x, y: currentPoint.y + y } : { x, y };
+            pushCommand({ index: commandIndex += 1, type: 'S', start: { ...currentPoint }, c1, c2, end });
+            currentPoint = { ...end };
+            lastCubicControl = { ...c2 };
+            lastQuadraticControl = null;
+            lastCommandType = 'S';
+            continue;
+          }
+
+          if (upper === 'Q') {
+            const x1 = consumeNumber();
+            const y1 = consumeNumber();
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const c1 = relative ? { x: currentPoint.x + x1, y: currentPoint.y + y1 } : { x: x1, y: y1 };
+            const end = relative ? { x: currentPoint.x + x, y: currentPoint.y + y } : { x, y };
+            pushCommand({ index: commandIndex += 1, type: 'Q', start: { ...currentPoint }, c1, end });
+            currentPoint = { ...end };
+            lastQuadraticControl = { ...c1 };
+            lastCubicControl = null;
+            lastCommandType = 'Q';
+            continue;
+          }
+
+          if (upper === 'T') {
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const c1 = lastCommandType === 'Q' || lastCommandType === 'T'
+              ? reflectPoint(lastQuadraticControl || currentPoint, currentPoint)
+              : { ...currentPoint };
+            const end = relative ? { x: currentPoint.x + x, y: currentPoint.y + y } : { x, y };
+            pushCommand({ index: commandIndex += 1, type: 'T', start: { ...currentPoint }, c1, end });
+            currentPoint = { ...end };
+            lastQuadraticControl = { ...c1 };
+            lastCubicControl = null;
+            lastCommandType = 'T';
+            continue;
+          }
+
+          if (upper === 'A') {
+            const rx = consumeNumber();
+            const ry = consumeNumber();
+            const rotation = consumeNumber();
+            const largeArcFlag = consumeNumber();
+            const sweepFlag = consumeNumber();
+            const x = consumeNumber();
+            const y = consumeNumber();
+            const end = relative ? { x: currentPoint.x + x, y: currentPoint.y + y } : { x, y };
+            pushCommand({
+              index: commandIndex += 1,
+              type: 'A',
+              start: { ...currentPoint },
+              end,
+              rx,
+              ry,
+              rotation,
+              largeArcFlag: largeArcFlag ? 1 : 0,
+              sweepFlag: sweepFlag ? 1 : 0
+            });
+            currentPoint = { ...end };
+            lastQuadraticControl = null;
+            lastCubicControl = null;
+            lastCommandType = 'A';
+            continue;
+          }
+
+          if (requiredCount !== 0) {
+            throw new Error(`命令 ${upper} 解析失败`);
+          }
+        }
+
+        if (!consumedAny) {
+          throw new Error(`命令 ${upper} 缺少 ${requiredCount} 个参数`);
+        }
+      }
+
+      return commands;
+    }
+
+    function buildMarkers(commands) {
+      const markers = [];
+      for (const command of commands) {
+        if (command.type === 'M') {
+          markers.push({ point: { ...command.end }, kind: 'move', label: `M${markers.length}` });
+          continue;
+        }
+        if (command.type === 'Z') continue;
+        markers.push({ point: { ...command.end }, kind: 'vertex', label: `${command.type}${markers.length}` });
+      }
+      return markers;
+    }
+
+    function buildRenderableSegments(commands) {
+      const segments = [];
+      let samplePointCount = 0;
+      for (const command of commands) {
+        if (command.type === 'M') continue;
+        const remainingSampleBudget = MAX_TOTAL_SAMPLE_POINTS - samplePointCount;
+        if (remainingSampleBudget < 2) {
+          throw new Error(`path 采样点过多，请控制在 ${MAX_TOTAL_SAMPLE_POINTS} 个以内。`);
+        }
+        let segment;
+        if (command.type === 'L' || command.type === 'H' || command.type === 'V' || command.type === 'Z') {
+          segment = finalizeSegment({
+            kind: 'line',
+            command: command.type,
+            start: { ...command.start },
+            end: { ...command.end },
+            commandIndex: command.index
+          }, remainingSampleBudget);
+        } else if (command.type === 'Q' || command.type === 'T') {
+          segment = finalizeSegment({
+            kind: 'quadratic',
+            command: command.type,
+            start: { ...command.start },
+            c1: { ...command.c1 },
+            end: { ...command.end },
+            commandIndex: command.index
+          }, remainingSampleBudget);
+        } else if (command.type === 'C' || command.type === 'S') {
+          segment = finalizeSegment({
+            kind: 'cubic',
+            command: command.type,
+            start: { ...command.start },
+            c1: { ...command.c1 },
+            c2: { ...command.c2 },
+            end: { ...command.end },
+            commandIndex: command.index
+          }, remainingSampleBudget);
+        } else if (command.type === 'A') {
+          const arc = arcToCenterParams(command.start, command.rx, command.ry, command.rotation, command.largeArcFlag, command.sweepFlag, command.end);
+          segment = finalizeSegment({
+            kind: arc ? 'arc' : 'line',
+            command: command.type,
+            start: { ...command.start },
+            end: { ...command.end },
+            arc,
+            commandIndex: command.index
+          }, remainingSampleBudget);
+        } else {
+          segment = finalizeSegment({
+            kind: 'line',
+            command: command.type,
+            start: { ...command.start },
+            end: { ...command.end },
+            commandIndex: command.index
+          }, remainingSampleBudget);
+        }
+        samplePointCount += segment.points.length;
+        segments.push(segment);
+      }
+      return segments;
+    }
+
+    function finalizeSegment(segment, maxPoints) {
+      const points = sampleSegment(segment, maxPoints);
+      const length = getPolylineLength(points);
+      return { ...segment, points, length };
+    }
+
+    function computePathBounds(segments, markers) {
+      const bounds = {
+        minX: Number.POSITIVE_INFINITY,
+        minY: Number.POSITIVE_INFINITY,
+        maxX: Number.NEGATIVE_INFINITY,
+        maxY: Number.NEGATIVE_INFINITY
+      };
+
+      const includePoint = point => {
+        if (!point || !Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
+        bounds.minX = Math.min(bounds.minX, point.x);
+        bounds.minY = Math.min(bounds.minY, point.y);
+        bounds.maxX = Math.max(bounds.maxX, point.x);
+        bounds.maxY = Math.max(bounds.maxY, point.y);
+      };
+
+      for (const segment of segments) {
+        for (const point of segment.points) {
+          includePoint(point);
+        }
+      }
+
+      for (const marker of markers) {
+        includePoint(marker.point);
+      }
+
+      if (!Number.isFinite(bounds.minX)) {
+        throw new Error('路径没有可显示的几何信息');
+      }
+
+      const rawWidth = bounds.maxX - bounds.minX;
+      const rawHeight = bounds.maxY - bounds.minY;
+      if (!Number.isFinite(rawWidth) || !Number.isFinite(rawHeight)) {
+        throw new Error('路径数值范围过大，无法显示。');
+      }
+
+      const width = Math.max(1, rawWidth);
+      const height = Math.max(1, rawHeight);
+      return {
+        minX: bounds.minX,
+        minY: bounds.minY,
+        maxX: bounds.maxX,
+        maxY: bounds.maxY,
+        width,
+        height
+      };
+    }
+
+    function buildMetrics(commands, markers, sceneBounds, segments) {
+      const commandTypes = [...new Set(commands.map(command => command.type))];
+      return {
+        commandCount: commands.length,
+        subpathCount: commands.filter(command => command.type === 'M').length,
+        pointCount: markers.length,
+        width: Math.round(sceneBounds.width * 100) / 100,
+        height: Math.round(sceneBounds.height * 100) / 100,
+        pathLength: Math.round(segments.reduce((sum, segment) => sum + segment.length, 0) * 100) / 100,
+        commandTypes
+      };
+    }
+
+    function applyFitMode(mode) {
+      const renderState = state.lastGoodRender;
+      if (!renderState?.sceneBounds) return;
+      resizeCanvasToShell();
+      const bounds = renderState.sceneBounds;
+      const availableWidth = Math.max(1, state.cssWidth - CANVAS_PADDING * 2);
+      const availableHeight = Math.max(1, state.cssHeight - CANVAS_PADDING * 2);
+      let nextScale = 1;
+
+      if (mode === 'fit-width') {
+        nextScale = clamp(availableWidth / bounds.width, MIN_ZOOM, MAX_ZOOM);
+      } else {
+        nextScale = clamp(Math.min(availableWidth / bounds.width, availableHeight / bounds.height), MIN_ZOOM, MAX_ZOOM);
+      }
+
+      state.viewMode = mode;
+      state.viewScale = nextScale;
+      state.viewOffsetX = Math.max(CANVAS_PADDING, Math.floor((state.cssWidth - bounds.width * nextScale) / 2));
+      state.viewOffsetY = Math.max(CANVAS_PADDING, Math.floor((state.cssHeight - bounds.height * nextScale) / 2));
+      syncZoomControls(nextScale);
+      updateMeta();
+    }
+
+    function zoomAroundCanvasPoint(nextScale, anchorX, anchorY, mode = 'manual') {
+      const renderState = state.lastGoodRender;
+      if (!renderState?.sceneBounds) return;
+      const bounds = renderState.sceneBounds;
+      const scale = clamp(nextScale, MIN_ZOOM, MAX_ZOOM);
+      const oldScale = state.viewScale || 1;
+      const sceneX = (anchorX - state.viewOffsetX) / oldScale + bounds.minX;
+      const sceneY = (anchorY - state.viewOffsetY) / oldScale + bounds.minY;
+      state.viewScale = scale;
+      state.viewOffsetX = anchorX - (sceneX - bounds.minX) * scale;
+      state.viewOffsetY = anchorY - (sceneY - bounds.minY) * scale;
+      state.viewMode = mode;
+      syncZoomControls(scale);
+      updateMeta();
+      render();
+    }
+
+    function resizeCanvasToShell() {
+      const rect = canvasShell.getBoundingClientRect();
+      const cssWidth = Math.max(DEFAULT_CANVAS_WIDTH, Math.round(rect.width || DEFAULT_CANVAS_WIDTH));
+      const cssHeight = Math.max(DEFAULT_CANVAS_HEIGHT, Math.round(rect.height || DEFAULT_CANVAS_HEIGHT));
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      state.cssWidth = cssWidth;
+      state.cssHeight = cssHeight;
+      state.dpr = dpr;
+      canvas.style.width = `${cssWidth}px`;
+      canvas.style.height = `${cssHeight}px`;
+      canvas.width = Math.round(cssWidth * dpr);
+      canvas.height = Math.round(cssHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function syncZoomControls(scale) {
+      const clamped = clamp(scale, MIN_ZOOM, MAX_ZOOM);
+      zoomRange.value = String(Math.round(clamped * 100));
+      zoomValue.textContent = `${Math.round(clamped * 100)}%`;
+    }
+
+    function onPointerDown(event) {
+      if (!hasRenderablePath()) return;
+      state.isPanning = true;
+      state.dragViewState = {
+        x: event.clientX,
+        y: event.clientY,
+        offsetX: state.viewOffsetX,
+        offsetY: state.viewOffsetY
+      };
+      state.viewMode = 'manual';
+      canvasShell.classList.add('panning');
+      canvas.setPointerCapture?.(event.pointerId);
+    }
+
+    function onPointerMove(event) {
+      if (!state.isPanning || !state.dragViewState) return;
+      const dx = event.clientX - state.dragViewState.x;
+      const dy = event.clientY - state.dragViewState.y;
+      state.viewOffsetX = state.dragViewState.offsetX + dx;
+      state.viewOffsetY = state.dragViewState.offsetY + dy;
+      syncZoomControls(state.viewScale);
+      updateMeta();
+      render();
+      statusText.textContent = `正在平移视图：${Math.round(state.viewOffsetX)}, ${Math.round(state.viewOffsetY)}`;
+    }
+
+    function onPointerUp(event) {
+      if (!state.isPanning) return;
+      if (event?.pointerId != null && canvas.hasPointerCapture?.(event.pointerId)) {
+        canvas.releasePointerCapture(event.pointerId);
+      }
+      state.isPanning = false;
+      state.dragViewState = null;
+      canvasShell.classList.remove('panning');
+      statusText.textContent = '已结束平移。';
+    }
+
+    function onCanvasWheel(event) {
+      if (!hasRenderablePath()) return;
+      if (event.deltaY === 0) return;
+      event.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const anchorX = event.clientX - rect.left;
+      const anchorY = event.clientY - rect.top;
+      const zoomFactor = event.deltaY < 0 ? 1.1 : 1 / 1.1;
+      const nextScale = state.viewScale * zoomFactor;
+      zoomAroundCanvasPoint(nextScale, anchorX, anchorY, 'manual');
+      statusText.textContent = `画布缩放已调整到 ${Math.round(state.viewScale * 100)}%。`;
+    }
+
+    function getScenePoint(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const bounds = state.lastGoodRender?.sceneBounds;
+      if (!bounds) return { x, y };
+      return {
+        x: (x - state.viewOffsetX) / state.viewScale + bounds.minX,
+        y: (y - state.viewOffsetY) / state.viewScale + bounds.minY
+      };
+    }
+
+    function sceneToCanvasPoint(point) {
+      const bounds = state.lastGoodRender?.sceneBounds;
+      if (!bounds) return { x: point.x, y: point.y };
+      return {
+        x: (point.x - bounds.minX) * state.viewScale + state.viewOffsetX,
+        y: (point.y - bounds.minY) * state.viewScale + state.viewOffsetY
+      };
+    }
+
+    function render() {
+      resizeCanvasToShell();
+      ctx.clearRect(0, 0, state.cssWidth, state.cssHeight);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, state.cssWidth, state.cssHeight);
+
+      const renderState = state.lastGoodRender;
+      if (!renderState?.sceneBounds) {
+        drawEmptyState();
+        updateMeta();
+        return;
+      }
+
+      if (state.showGrid) {
+        drawGrid(renderState.sceneBounds);
+      }
+      drawPath(renderState.segments);
+      if (state.showDirection) {
+        drawDirectionHints(renderState.segments);
+      }
+      if (state.showPoints) {
+        drawMarkers(renderState.markers);
+      }
+      if (state.showLabels) {
+        drawLabels(renderState.markers);
+      }
+      updateMeta();
+    }
+
+    function drawEmptyState() {
+      ctx.save();
+      ctx.fillStyle = '#f8f8f8';
+      ctx.fillRect(0, 0, state.cssWidth, state.cssHeight);
+      ctx.fillStyle = '#8b8b8b';
+      ctx.font = '16px -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('在左侧输入 SVG path 数据后，这里会显示路径。', state.cssWidth / 2, state.cssHeight / 2);
+      ctx.restore();
+    }
+
+    function drawGrid(bounds) {
+      const visibleMinX = bounds.minX + (-state.viewOffsetX / state.viewScale);
+      const visibleMinY = bounds.minY + (-state.viewOffsetY / state.viewScale);
+      const visibleMaxX = bounds.minX + (state.cssWidth - state.viewOffsetX) / state.viewScale;
+      const visibleMaxY = bounds.minY + (state.cssHeight - state.viewOffsetY) / state.viewScale;
+      const step = getNiceStep(GRID_TARGET_PX / Math.max(state.viewScale, 0.0001));
+      const startX = Math.floor(visibleMinX / step) * step;
+      const startY = Math.floor(visibleMinY / step) * step;
+
+      ctx.save();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#eef2f7';
+      for (let x = startX; x <= visibleMaxX; x += step) {
+        const point = sceneToCanvasPoint({ x, y: 0 });
+        ctx.beginPath();
+        ctx.moveTo(point.x, 0);
+        ctx.lineTo(point.x, state.cssHeight);
+        ctx.stroke();
+      }
+      for (let y = startY; y <= visibleMaxY; y += step) {
+        const point = sceneToCanvasPoint({ x: 0, y });
+        ctx.beginPath();
+        ctx.moveTo(0, point.y);
+        ctx.lineTo(state.cssWidth, point.y);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = '#d5dbe5';
+      const yAxis = sceneToCanvasPoint({ x: 0, y: 0 }).x;
+      const xAxis = sceneToCanvasPoint({ x: 0, y: 0 }).y;
+      if (yAxis >= 0 && yAxis <= state.cssWidth) {
+        ctx.beginPath();
+        ctx.moveTo(yAxis, 0);
+        ctx.lineTo(yAxis, state.cssHeight);
+        ctx.stroke();
+      }
+      if (xAxis >= 0 && xAxis <= state.cssHeight) {
+        ctx.beginPath();
+        ctx.moveTo(0, xAxis);
+        ctx.lineTo(state.cssWidth, xAxis);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawPath(segments) {
+      ctx.save();
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 2;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+
+      for (const segment of segments) {
+        const start = sceneToCanvasPoint(segment.start);
+        if (segment.command === 'Z' || segment.kind === 'line') {
+          ctx.moveTo(start.x, start.y);
+          const end = sceneToCanvasPoint(segment.end);
+          ctx.lineTo(end.x, end.y);
+          continue;
+        }
+
+        if (segment.kind === 'quadratic') {
+          const c1 = sceneToCanvasPoint(segment.c1);
+          const end = sceneToCanvasPoint(segment.end);
+          ctx.moveTo(start.x, start.y);
+          ctx.quadraticCurveTo(c1.x, c1.y, end.x, end.y);
+          continue;
+        }
+
+        if (segment.kind === 'cubic') {
+          const c1 = sceneToCanvasPoint(segment.c1);
+          const c2 = sceneToCanvasPoint(segment.c2);
+          const end = sceneToCanvasPoint(segment.end);
+          ctx.moveTo(start.x, start.y);
+          ctx.bezierCurveTo(c1.x, c1.y, c2.x, c2.y, end.x, end.y);
+          continue;
+        }
+
+        if (segment.kind === 'arc' && segment.arc) {
+          const arc = segment.arc;
+          const center = sceneToCanvasPoint({ x: arc.cx, y: arc.cy });
+          ctx.moveTo(start.x, start.y);
+          ctx.ellipse(
+            center.x,
+            center.y,
+            arc.rx * state.viewScale,
+            arc.ry * state.viewScale,
+            arc.phi,
+            arc.theta1,
+            arc.theta1 + arc.deltaTheta,
+            arc.deltaTheta < 0
+          );
+          continue;
+        }
+      }
+
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function drawMarkers(markers) {
+      ctx.save();
+      for (const marker of markers) {
+        const point = sceneToCanvasPoint(marker.point);
+        const radius = marker.kind === 'move' ? 5.5 : 4.5;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = marker.kind === 'move' ? '#f97316' : '#2563eb';
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawLabels(markers) {
+      ctx.save();
+      ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
+      ctx.fillStyle = '#374151';
+      for (const marker of markers) {
+        const point = sceneToCanvasPoint(marker.point);
+        ctx.fillText(marker.label, point.x + 8, point.y - 8);
+        if (marker.kind === 'move') {
+          ctx.fillStyle = '#9a3412';
+          ctx.fillText('Start', point.x + 8, point.y + 14);
+          ctx.fillStyle = '#374151';
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawDirectionHints(segments) {
+      const spacing = DEFAULT_DIRECTION_STEP / Math.max(state.viewScale, 0.0001);
+      let remainingArrowBudget = MAX_DIRECTION_ARROWS;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(37, 99, 235, 0.85)';
+      ctx.fillStyle = 'rgba(37, 99, 235, 0.85)';
+      ctx.lineWidth = 1.5;
+
+      for (const segment of segments) {
+        if (!segment.points.length || segment.length < 1 || remainingArrowBudget <= 0) continue;
+        const arrows = getArrowTargets(segment.points, spacing, remainingArrowBudget);
+        remainingArrowBudget -= arrows.length;
+        for (const arrow of arrows) {
+          const anchor = sceneToCanvasPoint(arrow.point);
+          drawArrow(anchor, arrow.direction);
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawArrow(anchor, direction) {
+      const magnitude = Math.hypot(direction.x, direction.y) || 1;
+      const ux = direction.x / magnitude;
+      const uy = direction.y / magnitude;
+      const length = 12;
+      const wing = 4.5;
+      const tailX = anchor.x - ux * length * 0.5;
+      const tailY = anchor.y - uy * length * 0.5;
+      const headX = anchor.x + ux * length * 0.5;
+      const headY = anchor.y + uy * length * 0.5;
+      const leftX = headX - ux * 5 - uy * wing;
+      const leftY = headY - uy * 5 + ux * wing;
+      const rightX = headX - ux * 5 + uy * wing;
+      const rightY = headY - uy * 5 - ux * wing;
+
+      ctx.beginPath();
+      ctx.moveTo(tailX, tailY);
+      ctx.lineTo(headX, headY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(headX, headY);
+      ctx.lineTo(leftX, leftY);
+      ctx.lineTo(rightX, rightY);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function getArrowTargets(points, spacing, maxTargets = MAX_DIRECTION_ARROWS) {
+      const targets = [];
+      if (points.length < 2 || maxTargets <= 0) return targets;
+      const length = getPolylineLength(points);
+      if (length <= 0) return targets;
+      if (length <= spacing) {
+        const sample = getPointAndDirectionAtLength(points, length / 2);
+        return sample ? [sample] : [];
+      }
+
+      for (let distance = spacing / 2; distance < length && targets.length < maxTargets; distance += spacing) {
+        const sample = getPointAndDirectionAtLength(points, distance);
+        if (sample) targets.push(sample);
+      }
+      return targets;
+    }
+
+    function getPointAndDirectionAtLength(points, targetLength) {
+      let traversed = 0;
+      for (let i = 1; i < points.length; i += 1) {
+        const prev = points[i - 1];
+        const next = points[i];
+        const segmentLength = distanceBetween(prev, next);
+        if (segmentLength === 0) continue;
+        if (traversed + segmentLength >= targetLength) {
+          const ratio = (targetLength - traversed) / segmentLength;
+          return {
+            point: {
+              x: lerp(prev.x, next.x, ratio),
+              y: lerp(prev.y, next.y, ratio)
+            },
+            direction: {
+              x: next.x - prev.x,
+              y: next.y - prev.y
+            }
+          };
+        }
+        traversed += segmentLength;
+      }
+
+      const last = points[points.length - 1];
+      const prev = points[points.length - 2] || last;
+      return {
+        point: { ...last },
+        direction: {
+          x: last.x - prev.x,
+          y: last.y - prev.y
+        }
+      };
+    }
+
+    function sampleSegment(segment, maxPoints = MAX_TOTAL_SAMPLE_POINTS) {
+      if (segment.kind === 'line') {
+        return [segment.start, segment.end].map(point => ({ ...point }));
+      }
+
+      if (segment.kind === 'quadratic') {
+        const steps = 72;
+        return sampleCurvePoints(steps, maxPoints, t => getQuadraticPoint(segment.start, segment.c1, segment.end, t));
+      }
+
+      if (segment.kind === 'cubic') {
+        const steps = 88;
+        return sampleCurvePoints(steps, maxPoints, t => getCubicPoint(segment.start, segment.c1, segment.c2, segment.end, t));
+      }
+
+      if (segment.kind === 'arc' && segment.arc) {
+        const steps = Math.max(36, Math.ceil(Math.abs(segment.arc.deltaTheta) / (Math.PI / 24)));
+        return sampleCurvePoints(steps, maxPoints, t => {
+          const angle = segment.arc.theta1 + segment.arc.deltaTheta * t;
+          return getArcPoint(segment.arc, angle);
+        });
+      }
+
+      return [segment.start, segment.end].map(point => ({ ...point }));
+    }
+
+    function sampleCurvePoints(steps, maxPoints, pointAt) {
+      const limit = Math.max(2, Math.floor(maxPoints));
+      const requiredPoints = steps + 1;
+      if (requiredPoints > limit) {
+        throw new Error(`path 采样点过多，请控制在 ${MAX_TOTAL_SAMPLE_POINTS} 个以内。`);
+      }
+      const points = [];
+      for (let i = 0; i <= steps; i += 1) {
+        points.push(pointAt(i / steps));
+      }
+      return points;
+    }
+
+    function getQuadraticPoint(start, c1, end, t) {
+      const mt = 1 - t;
+      return {
+        x: mt * mt * start.x + 2 * mt * t * c1.x + t * t * end.x,
+        y: mt * mt * start.y + 2 * mt * t * c1.y + t * t * end.y
+      };
+    }
+
+    function getCubicPoint(start, c1, c2, end, t) {
+      const mt = 1 - t;
+      return {
+        x: mt * mt * mt * start.x + 3 * mt * mt * t * c1.x + 3 * mt * t * t * c2.x + t * t * t * end.x,
+        y: mt * mt * mt * start.y + 3 * mt * mt * t * c1.y + 3 * mt * t * t * c2.y + t * t * t * end.y
+      };
+    }
+
+    function arcToCenterParams(start, rx, ry, rotation, largeArcFlag, sweepFlag, end) {
+      let absRx = Math.abs(rx);
+      let absRy = Math.abs(ry);
+      if (absRx === 0 || absRy === 0) return null;
+      if (approximatelyEqual(start.x, end.x) && approximatelyEqual(start.y, end.y)) return null;
+
+      const phi = degreesToRadians(rotation % 360);
+      const cosPhi = Math.cos(phi);
+      const sinPhi = Math.sin(phi);
+      const dx = (start.x - end.x) / 2;
+      const dy = (start.y - end.y) / 2;
+      const x1p = cosPhi * dx + sinPhi * dy;
+      const y1p = -sinPhi * dx + cosPhi * dy;
+      const lambda = (x1p * x1p) / (absRx * absRx) + (y1p * y1p) / (absRy * absRy);
+
+      if (lambda > 1) {
+        const scale = Math.sqrt(lambda);
+        absRx *= scale;
+        absRy *= scale;
+      }
+
+      const rxSq = absRx * absRx;
+      const rySq = absRy * absRy;
+      const x1pSq = x1p * x1p;
+      const y1pSq = y1p * y1p;
+      const numerator = Math.max(0, rxSq * rySq - rxSq * y1pSq - rySq * x1pSq);
+      const denominator = rxSq * y1pSq + rySq * x1pSq;
+      const factorBase = denominator === 0 ? 0 : Math.sqrt(numerator / denominator);
+      const factor = largeArcFlag === sweepFlag ? -factorBase : factorBase;
+      const cxp = factor * (absRx * y1p) / absRy;
+      const cyp = factor * (-absRy * x1p) / absRx;
+      const cx = cosPhi * cxp - sinPhi * cyp + (start.x + end.x) / 2;
+      const cy = sinPhi * cxp + cosPhi * cyp + (start.y + end.y) / 2;
+
+      const ux = (x1p - cxp) / absRx;
+      const uy = (y1p - cyp) / absRy;
+      const vx = (-x1p - cxp) / absRx;
+      const vy = (-y1p - cyp) / absRy;
+      const theta1 = vectorAngle(1, 0, ux, uy);
+      let deltaTheta = vectorAngle(ux, uy, vx, vy);
+
+      if (!sweepFlag && deltaTheta > 0) deltaTheta -= Math.PI * 2;
+      if (sweepFlag && deltaTheta < 0) deltaTheta += Math.PI * 2;
+
+      return {
+        cx,
+        cy,
+        rx: absRx,
+        ry: absRy,
+        phi,
+        theta1,
+        deltaTheta
+      };
+    }
+
+    function getArcPoint(arc, angle) {
+      const cosPhi = Math.cos(arc.phi);
+      const sinPhi = Math.sin(arc.phi);
+      const cosAngle = Math.cos(angle);
+      const sinAngle = Math.sin(angle);
+      return {
+        x: arc.cx + arc.rx * cosPhi * cosAngle - arc.ry * sinPhi * sinAngle,
+        y: arc.cy + arc.rx * sinPhi * cosAngle + arc.ry * cosPhi * sinAngle
+      };
+    }
+
+    function reflectPoint(point, origin) {
+      return {
+        x: origin.x * 2 - point.x,
+        y: origin.y * 2 - point.y
+      };
+    }
+
+    function vectorAngle(ux, uy, vx, vy) {
+      const dot = ux * vx + uy * vy;
+      const len = Math.hypot(ux, uy) * Math.hypot(vx, vy) || 1;
+      const sign = ux * vy - uy * vx < 0 ? -1 : 1;
+      return sign * Math.acos(clamp(dot / len, -1, 1));
+    }
+
+    function updateMeta() {
+      const renderState = state.lastGoodRender;
+      if (!renderState?.sceneBounds) {
+        canvasMeta.textContent = '尚未解析路径';
+        return;
+      }
+      const metrics = renderState.metrics;
+      canvasMeta.textContent = `${metrics.commandCount} 条命令 · ${metrics.subpathCount} 个子路径 · 场景 ${Math.round(metrics.width)} × ${Math.round(metrics.height)} · 缩放 ${Math.round(state.viewScale * 100)}%`;
+    }
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function hideError() {
+      errorMsg.style.display = 'none';
+    }
+
+    function distanceBetween(a, b) {
+      return Math.hypot(b.x - a.x, b.y - a.y);
+    }
+
+    function getPolylineLength(points) {
+      let total = 0;
+      for (let i = 1; i < points.length; i += 1) {
+        total += distanceBetween(points[i - 1], points[i]);
+      }
+      return total;
+    }
+
+    function getNiceStep(target) {
+      if (!Number.isFinite(target) || target <= 0) return 10;
+      const exponent = Math.floor(Math.log10(target));
+      const magnitude = 10 ** exponent;
+      const normalized = target / magnitude;
+      if (normalized <= 1) return magnitude;
+      if (normalized <= 2) return 2 * magnitude;
+      if (normalized <= 5) return 5 * magnitude;
+      return 10 * magnitude;
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function lerp(start, end, t) {
+      return start + (end - start) * t;
+    }
+
+    function degreesToRadians(value) {
+      return (value * Math.PI) / 180;
+    }
+
+    function approximatelyEqual(a, b) {
+      return Math.abs(a - b) < 1e-8;
+    }
+  </script>
+</body>
+</html>
