@@ -349,7 +349,7 @@
           <div class="control-group">
             <label for="zoomRange">画布缩放</label>
             <div class="range-row">
-              <input type="range" id="zoomRange" min="25" max="400" step="5" value="100" />
+              <input type="range" id="zoomRange" min="25" max="1000" step="5" value="100" />
               <span class="range-value" id="zoomValue">100%</span>
             </div>
             <div class="zoom-actions">
@@ -405,14 +405,14 @@
     const DEFAULT_CANVAS_HEIGHT = 620;
     const CANVAS_PADDING = 32;
     const MIN_ZOOM = 0.25;
-    const MAX_ZOOM = 4;
+    const MAX_ZOOM = 10;
     const GRID_TARGET_PX = 64;
     const DEFAULT_DIRECTION_STEP = 84;
-    const MAX_PATH_CHARS = 12000;
-    const MAX_TOKENS = 4000;
-    const MAX_COMMANDS = 400;
-    const MAX_TOTAL_SAMPLE_POINTS = 40000;
-    const MAX_ABS_NUMERIC_VALUE = 1000000;
+    const MAX_PATH_CHARS = 120000000;
+    const MAX_TOKENS = 40000000;
+    const MAX_COMMANDS = 40000000;
+    const MAX_TOTAL_SAMPLE_POINTS = 400000000;
+    const MAX_ABS_NUMERIC_VALUE = 100000000;
     const MAX_DIRECTION_ARROWS = 600;
     const DEFAULT_PATH = `M 20 20 L 160 20 C 220 20 240 120 170 150 A 42 42 0 0 1 80 155 Q 20 140 20 80 Z\nM 220 48 L 320 48 L 320 118 L 220 118 Z`;
     const COMMAND_PARAM_COUNTS = {
