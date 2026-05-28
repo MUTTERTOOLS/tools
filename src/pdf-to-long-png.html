@@ -116,6 +116,26 @@
       gap: 6px;
     }
 
+    .option-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .option-subgrid {
+      display: contents;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+
+    .checkbox-row input {
+      accent-color: #fff;
+    }
+
     label {
       font-size: 0.78rem;
       color: #888;
@@ -346,22 +366,60 @@
         </select>
       </div>
 
-      <div class="option-group">
-        <label>页面间距（px）</label>
-        <div class="range-row">
-          <input type="range" id="gapRange" min="0" max="80" step="4" value="0" />
-          <span class="range-val" id="gapVal">0px</span>
+      <div class="option-group full">
+        <label>处理模式</label>
+        <select id="modeSelect">
+          <option value="gap" selected>页面间距</option>
+          <option value="crop">裁剪页边</option>
+        </select>
+      </div>
+
+      <div class="option-subgrid" id="gapOptions">
+        <div class="option-group">
+          <label>页面间距（px）</label>
+          <div class="range-row">
+            <input type="range" id="gapRange" min="0" max="80" step="4" value="0" />
+            <span class="range-val" id="gapVal">0px</span>
+          </div>
         </div>
       </div>
 
-      <div class="option-group">
-        <label>间距背景色</label>
+      <div class="option-group full">
+        <label>背景色</label>
         <select id="bgSelect">
           <option value="#ffffff" selected>白色</option>
           <option value="#000000">黑色</option>
           <option value="#f5f5f5">浅灰</option>
           <option value="#1a1a1a">深灰</option>
         </select>
+      </div>
+
+      <div class="option-subgrid" id="cropOptions" style="display: none;">
+        <div class="option-group">
+          <label>裁顶部（px）</label>
+          <div class="range-row">
+            <input type="range" id="cropTopRange" min="0" max="200" step="4" value="0" />
+            <span class="range-val" id="cropTopVal">0px</span>
+          </div>
+        </div>
+
+        <div class="option-group">
+          <label>裁底部（px）</label>
+          <div class="range-row">
+            <input type="range" id="cropBottomRange" min="0" max="200" step="4" value="0" />
+            <span class="range-val" id="cropBottomVal">0px</span>
+          </div>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="cropFirstTop" />
+          裁首页顶部
+        </label>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="cropLastBottom" />
+          裁尾页底部
+        </label>
       </div>
     </div>
 
@@ -399,8 +457,17 @@
     const fileInput = document.getElementById('fileInput');
     const scaleRange = document.getElementById('scaleRange');
     const scaleVal = document.getElementById('scaleVal');
+    const modeSelect = document.getElementById('modeSelect');
+    const gapOptions = document.getElementById('gapOptions');
+    const cropOptions = document.getElementById('cropOptions');
     const gapRange = document.getElementById('gapRange');
     const gapVal = document.getElementById('gapVal');
+    const cropTopRange = document.getElementById('cropTopRange');
+    const cropTopVal = document.getElementById('cropTopVal');
+    const cropBottomRange = document.getElementById('cropBottomRange');
+    const cropBottomVal = document.getElementById('cropBottomVal');
+    const cropFirstTop = document.getElementById('cropFirstTop');
+    const cropLastBottom = document.getElementById('cropLastBottom');
     const formatSel = document.getElementById('formatSelect');
     const bgSel = document.getElementById('bgSelect');
     const convertBtn = document.getElementById('convertBtn');
@@ -425,8 +492,18 @@
       scaleVal.textContent = `×${scaleRange.value}`;
     });
 
+    modeSelect.addEventListener('change', updateModeControls);
+
     gapRange.addEventListener('input', () => {
       gapVal.textContent = `${gapRange.value}px`;
+    });
+
+    cropTopRange.addEventListener('input', () => {
+      cropTopVal.textContent = `${cropTopRange.value}px`;
+    });
+
+    cropBottomRange.addEventListener('input', () => {
+      cropBottomVal.textContent = `${cropBottomRange.value}px`;
     });
 
     dropZone.addEventListener('dragover', e => {
@@ -461,6 +538,25 @@
       previewToggle.textContent = visible ? '▼ 展开预览' : '▲ 收起预览';
     });
 
+    updateModeControls();
+
+    function updateModeControls() {
+      const isCropMode = modeSelect.value === 'crop';
+      gapOptions.style.display = isCropMode ? 'none' : 'contents';
+      cropOptions.style.display = isCropMode ? 'contents' : 'none';
+    }
+
+    function getStitchOptions() {
+      return {
+        mode: modeSelect.value,
+        gap: parseInt(gapRange.value, 10),
+        cropTop: parseInt(cropTopRange.value, 10),
+        cropBottom: parseInt(cropBottomRange.value, 10),
+        cropFirstTop: cropFirstTop.checked,
+        cropLastBottom: cropLastBottom.checked
+      };
+    }
+
     function isPdfFile(file) {
       return file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
     }
@@ -482,7 +578,7 @@
 
     async function convertPdf(file) {
       const scale = parseFloat(scaleRange.value);
-      const gap = parseInt(gapRange.value, 10);
+      const stitchOptions = getStitchOptions();
       const format = formatSel.value;
       const bg = bgSel.value;
       const quality = format === 'image/png' ? 1 : 0.92;
@@ -494,7 +590,7 @@
 
       try {
         const canvases = await collectPdfCanvases(file, scale, bg);
-        const result = await buildLongImage(canvases, gap, bg, format, quality);
+        const result = await buildLongImage(canvases, stitchOptions, bg, format, quality);
         const ext = format.split('/')[1].replace('jpeg', 'jpg');
         const fileName = file.name.replace(/\.pdf$/i, '') + `_long.${ext}`;
 
@@ -555,15 +651,28 @@
       return canvases;
     }
 
-    async function buildLongImage(canvases, gap, bg, format, quality) {
+    async function buildLongImage(canvases, options, bg, format, quality) {
       if (!canvases.length) {
         throw new Error('没有可拼接的页面');
       }
 
       const maxWidth = canvases.reduce((max, canvas) => Math.max(max, canvas.width), 0);
-      const totalHeight = canvases.reduce((sum, canvas, index) => {
-        return sum + canvas.height + (index < canvases.length - 1 ? gap : 0);
-      }, 0);
+      const pageLayouts = [];
+      let offsetY = 0;
+
+      for (const [index, canvas] of canvases.entries()) {
+        const isCropMode = options.mode === 'crop';
+        const wantsCropTop = isCropMode && (index > 0 || options.cropFirstTop);
+        const wantsCropBottom = isCropMode && (index < canvases.length - 1 || options.cropLastBottom);
+        const sourceY = wantsCropTop ? clampCrop(options.cropTop, canvas.height, wantsCropBottom ? options.cropBottom : 0) : 0;
+        const sourceBottomCrop = wantsCropBottom ? clampCrop(options.cropBottom, canvas.height - sourceY, 0) : 0;
+        const sourceHeight = canvas.height - sourceY - sourceBottomCrop;
+
+        pageLayouts.push({ canvas, sourceY, sourceHeight, y: offsetY });
+        offsetY += sourceHeight + (options.mode === 'gap' && index < canvases.length - 1 ? options.gap : 0);
+      }
+
+      const totalHeight = offsetY;
 
       const finalCanvas = document.createElement('canvas');
       finalCanvas.width = maxWidth;
@@ -573,11 +682,9 @@
       finalCtx.fillStyle = bg;
       finalCtx.fillRect(0, 0, maxWidth, totalHeight);
 
-      let offsetY = 0;
-      for (const canvas of canvases) {
+      for (const { canvas, sourceY, sourceHeight, y } of pageLayouts) {
         const x = Math.floor((maxWidth - canvas.width) / 2);
-        finalCtx.drawImage(canvas, x, offsetY);
-        offsetY += canvas.height + gap;
+        finalCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, x, y, canvas.width, sourceHeight);
       }
 
       showProgress(96, '生成文件…');
@@ -596,6 +703,10 @@
         height: totalHeight,
         count: canvases.length
       };
+    }
+
+    function clampCrop(value, height, otherCrop) {
+      return Math.min(value, Math.max(0, height - otherCrop - 1));
     }
 
     function escapeHtml(text) {

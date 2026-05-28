@@ -34,6 +34,26 @@
       margin-bottom: 28px;
     }
 
+    .section {
+      margin-top: 34px;
+    }
+
+    .section:first-of-type {
+      margin-top: 0;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-desc {
+      color: #8b8b8b;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -91,30 +111,52 @@
     <h1>图片工具箱</h1>
     <p class="subtitle">将 PDF 转成长图，或在独立页面里完成图片拼接、图片裁剪与 SVG path 可视化调试。每个工具页单独处理一种任务，交互更清晰。</p>
 
-    <section class="grid">
-      <a class="card" href="./src/pdf-to-long-png.html">
-        <h2>PDF 转长图</h2>
-        <p>上传单个 PDF，按页顺序渲染并纵向拼接成长图，支持设置页面间距、背景色和导出格式。</p>
-        <span class="tag">单个 PDF</span>
-      </a>
+    <section class="section">
+      <h2 class="section-title">站内图片工具</h2>
+      <p class="section-desc">当前项目内置的图片处理与调试工具，适合直接在本地浏览器中使用。</p>
+      <div class="grid">
+        <a class="card" href="./src/pdf-to-long-png.html">
+          <h2>PDF 转长图</h2>
+          <p>上传单个 PDF，按页顺序渲染并纵向拼接成长图，支持设置页面间距、背景色和导出格式。</p>
+          <span class="tag">单个 PDF</span>
+        </a>
 
-      <a class="card" href="./src/image-stitch.html">
-        <h2>图片拼接</h2>
-        <p>上传多张图片，在 canvas 中拖拽排版，边缘自动吸附，按当前布局导出，空白区域自动填充白色。</p>
-        <span class="tag">交互拼接</span>
-      </a>
+        <a class="card" href="./src/image-stitch.html">
+          <h2>图片拼接</h2>
+          <p>上传多张图片，在 canvas 中拖拽排版，边缘自动吸附，按当前布局导出，空白区域自动填充白色。</p>
+          <span class="tag">交互拼接</span>
+        </a>
 
-      <a class="card" href="./src/image-crop.html">
-        <h2>图片裁剪</h2>
-        <p>上传单张图片，在 canvas 中拖动裁剪框和边角完成裁剪，再导出指定区域。</p>
-        <span class="tag">交互裁剪</span>
-      </a>
+        <a class="card" href="./src/image-crop.html">
+          <h2>图片裁剪</h2>
+          <p>上传单张图片，在 canvas 中拖动裁剪框和边角完成裁剪，再导出指定区域。</p>
+          <span class="tag">交互裁剪</span>
+        </a>
 
-      <a class="card" href="./src/svg-path-viewer.html">
-        <h2>SVG Path 展示</h2>
-        <p>粘贴 SVG path 指令，在 canvas 中查看路径形状、节点位置和走向，支持缩放、拖拽和平移。</p>
-        <span class="tag">路径调试</span>
-      </a>
+        <a class="card" href="./src/svg-path-viewer.html">
+          <h2>SVG Path 展示</h2>
+          <p>粘贴 SVG path 指令，在 canvas 中查看路径形状、节点位置和走向，支持缩放、拖拽和平移。</p>
+          <span class="tag">路径调试</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">第三方在线工具</h2>
+      <p class="section-desc">常用的外部工具站点，适合处理下载与格式转换这类非项目内置能力。</p>
+      <div class="grid">
+        <a class="card" href="https://cobalt.tools/" target="_blank" rel="noreferrer">
+          <h2>cobalt.tools</h2>
+          <p>第三方工具，可用于从社媒平台下载音频和视频文件，适合临时获取公开内容素材。</p>
+          <span class="tag">音视频下载</span>
+        </a>
+
+        <a class="card" href="https://convertio.co/zh/" target="_blank" rel="noreferrer">
+          <h2>Convertio</h2>
+          <p>第三方文件格式转换工具，支持多种文档、图片、音视频格式之间的在线转换。</p>
+          <span class="tag">格式转换</span>
+        </a>
+      </div>
     </section>
   </main>
 </body>
