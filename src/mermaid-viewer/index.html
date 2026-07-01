@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none';" />
+  <title>Mermaid 在线查看器</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #eaeaea;
+    }
+
+    .app {
+      display: flex;
+      height: 100%;
+    }
+
+    /* ── 左侧面板 ── */
+    .sidebar {
+      width: var(--sidebar-width, 360px);
+      min-width: 240px;
+      max-width: 70vw;
+      background: #151515;
+      border-right: 1px solid #222;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px 10px;
+      border-bottom: 1px solid #1e1e1e;
+      flex-shrink: 0;
+    }
+
+    .back-link {
+      color: #666;
+      text-decoration: none;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+    .back-link:hover { color: #fff; }
+
+    .sidebar-header h1 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    /* 编辑区占满剩余空间 */
+    .editor-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 18px 0;
+    }
+
+    .editor-label {
+      font-size: 0.72rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .editor-wrap textarea {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      resize: none;
+      border-radius: 10px;
+      border: 1px solid #252525;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      padding: 12px;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .editor-wrap textarea:focus {
+      outline: 2px solid #4f86ff;
+      outline-offset: 1px;
+    }
+
+    /* 美化 textarea 滚动条 */
+    .editor-wrap textarea::-webkit-scrollbar {
+      width: 6px;
+    }
+    .editor-wrap textarea::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .editor-wrap textarea::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 3px;
+    }
+    .editor-wrap textarea::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    /* 底部控制区 */
+    .controls {
+      flex-shrink: 0;
+      padding: 10px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid #1e1e1e;
+    }
+
+    .row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .row-2 { grid-template-columns: 1fr 1fr; }
+    .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .row-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+    .control-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .control-line label {
+      font-size: 0.72rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .control-line select {
+      flex: 1;
+      min-width: 0;
+    }
+
+    select {
+      border-radius: 8px;
+      border: 1px solid #252525;
+      background: #111;
+      color: #ddd;
+      font-size: 0.82rem;
+      padding: 6px 8px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .primary {
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .secondary {
+      background: #1a1a1a;
+      color: #ccc;
+      border: 1px solid #2a2a2a;
+    }
+
+    .danger {
+      border-color: #3a1a1a;
+      color: #e88;
+    }
+
+    button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .error-bar {
+      flex-shrink: 0;
+      padding: 6px 18px;
+      font-size: 0.78rem;
+      color: #f77;
+      background: #1a0a0a;
+      display: none;
+    }
+
+    .status-bar {
+      flex-shrink: 0;
+      padding: 4px 18px 6px;
+      font-size: 0.72rem;
+      color: #555;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ── 右侧画布区 ── */
+    .canvas-area {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      background: #111;
+      overflow: hidden;
+      cursor: grab;
+    }
+    .canvas-area.dragging { cursor: grabbing; }
+
+    .canvas-viewport {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .canvas-viewport.bg-dots {
+      background-color: #fff;
+      background-image: radial-gradient(circle, #d0d0d0 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .canvas-viewport.bg-grid {
+      background-color: #fff;
+      background-image:
+        linear-gradient(transparent 19px, #e8e8e8 20px),
+        linear-gradient(90deg, transparent 19px, #e8e8e8 20px);
+      background-size: 20px 20px;
+    }
+
+    .canvas-viewport svg {
+      display: block;
+    }
+
+    .canvas-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    /* 右下角 HUD */
+    .hud {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 4px 6px;
+      z-index: 10;
+    }
+
+    .hud button {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      background: transparent;
+      color: #aaa;
+      border: none;
+    }
+    .hud button:hover { color: #fff; }
+
+    .hud .zoom-label {
+      font-size: 0.72rem;
+      color: #777;
+      min-width: 38px;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* ── 拖拽分隔条 ── */
+    .resizer {
+      width: 4px;
+      flex-shrink: 0;
+      cursor: col-resize;
+      background: #1a1a1a;
+      transition: background 0.15s;
+      position: relative;
+    }
+    .resizer:hover,
+    .resizer.active {
+      background: #4f86ff;
+    }
+    .resizer::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -3px; right: -3px;
+    }
+
+    /* ── 响应式 ── */
+    @media (max-width: 680px) {
+      .app { flex-direction: column; }
+      .sidebar {
+        width: 100% !important;
+        min-width: 0;
+        max-width: none;
+        height: 45%;
+        border-right: none;
+        border-bottom: 1px solid #222;
+      }
+      .resizer { display: none; }
+      .canvas-area { height: 55%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- 左侧面板 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a class="back-link" href="../../index.html">← 返回</a>
+        <h1>Mermaid 查看器</h1>
+      </div>
+
+      <div class="editor-wrap">
+        <span class="editor-label">Mermaid 源码</span>
+        <textarea id="sourceInput" spellcheck="false" maxlength="50000"></textarea>
+      </div>
+
+      <div id="errorBar" class="error-bar"></div>
+
+      <div class="controls">
+        <div class="control-line">
+          <label for="themeSelect">主题</label>
+          <select id="themeSelect">
+            <option value="default" selected>default</option>
+            <option value="dark">dark</option>
+            <option value="forest">forest</option>
+            <option value="neutral">neutral</option>
+            <option value="base">base</option>
+          </select>
+        </div>
+
+        <div class="control-line">
+          <label for="bgSelect">画布背景</label>
+          <select id="bgSelect">
+            <option value="plain" selected>白底</option>
+            <option value="dots">点阵</option>
+            <option value="grid">网格</option>
+          </select>
+        </div>
+
+        <div class="row row-4">
+          <button type="button" class="secondary" data-template="flowchart">流程图</button>
+          <button type="button" class="secondary" data-template="sequence">时序图</button>
+          <button type="button" class="secondary" data-template="er">ER 图</button>
+          <button type="button" class="secondary" data-template="gantt">甘特图</button>
+        </div>
+
+        <div class="row row-2">
+          <button type="button" class="primary" id="renderBtn">渲染</button>
+          <button type="button" class="secondary" id="resetBtn">恢复示例</button>
+        </div>
+
+        <div class="row row-3">
+          <button type="button" class="secondary" id="copySourceBtn">复制源码</button>
+          <button type="button" class="secondary" id="copySvgBtn" disabled>复制 SVG</button>
+          <button type="button" class="secondary" id="downloadSvgBtn" disabled>下载 SVG</button>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <span id="statusText">加载中…</span>
+        <span id="previewMeta"></span>
+      </div>
+    </aside>
+
+    <div class="resizer" id="resizer"></div>
+
+    <!-- 右侧画布 -->
+    <main class="canvas-area" id="canvasArea">
+      <div class="canvas-empty" id="canvasEmpty">正在加载 Mermaid…</div>
+      <div class="canvas-viewport" id="canvasViewport"></div>
+
+      <div class="hud">
+        <button type="button" id="zoomOutBtn" title="缩小 (-)">−</button>
+        <span class="zoom-label" id="zoomLabel">100%</span>
+        <button type="button" id="zoomInBtn" title="放大 (+)">+</button>
+        <button type="button" id="fitBtn" title="适配画布">⊞</button>
+        <button type="button" id="resetViewBtn" title="重置视图">⊡</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../cdn/mermaid/11.15.0/mermaid.min.js"></script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
