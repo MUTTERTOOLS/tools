@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股票进阶实战手册</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0F1A;--bg2:#0F1628;--bg3:#141E35;--bg4:#1A2742;
+  --text:#E2E8F0;--text2:#94A3B8;--text3:#64748B;
+  --accent:#10B981;--accent2:#34D399;--accent3:#059669;
+  --red:#EF4444;--green:#22C55E;--blue:#3B82F6;--purple:#A78BFA;--cyan:#22D3EE;--amber:#F59E0B;
+  --card:rgba(20,30,53,0.85);--border:rgba(148,163,184,0.1);
+  --radius:12px;--shadow:0 8px 32px rgba(0,0,0,0.3);
+  --font-display:'DM Serif Display','Noto Serif SC',serif;
+  --font-body:'Noto Sans SC','Source Han Sans SC',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',monospace;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+::selection{background:var(--accent);color:var(--bg)}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+
+.sidebar{position:fixed;left:0;top:0;width:270px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:20px 0;transition:transform .3s}
+.sidebar.hidden{transform:translateX(-100%)}
+.sidebar .logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar .logo h2{font-family:var(--font-display);font-size:1rem;color:var(--accent);letter-spacing:1px}
+.sidebar .logo p{font-size:.7rem;color:var(--text3);margin-top:3px}
+.nav-section{padding:6px 0}
+.nav-section-title{padding:6px 20px;font-size:.65rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
+.nav-item{display:block;padding:5px 20px 5px 28px;font-size:.78rem;color:var(--text2);text-decoration:none;transition:all .2s;border-left:2px solid transparent;cursor:pointer}
+.nav-item:hover,.nav-item.active{color:var(--accent2);background:rgba(16,185,129,.05);border-left-color:var(--accent)}
+
+.main{margin-left:270px;min-height:100vh}
+.toggle-btn{position:fixed;left:270px;top:12px;z-index:101;width:32px;height:32px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--accent);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.toggle-btn.shifted{left:12px}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.hero-content{position:relative;z-index:2;text-align:center;padding:40px}
+.hero-content h1{font-family:var(--font-display);font-size:3.2rem;color:var(--accent);margin-bottom:10px;animation:fadeUp .8s ease-out}
+.hero-content .subtitle{font-size:1.1rem;color:var(--text2);margin-bottom:28px;animation:fadeUp .8s ease-out .2s both}
+.hero-content .desc{max-width:580px;margin:0 auto 36px;font-size:.9rem;color:var(--text3);animation:fadeUp .8s ease-out .4s both}
+.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease-out .6s both}
+.hero-stat{text-align:center}
+.hero-stat .num{font-family:var(--font-display);font-size:1.8rem;color:var(--accent2);font-weight:700}
+.hero-stat .label{font-size:.7rem;color:var(--text3)}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:var(--text3);font-size:.75rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+.reading-guide{background:linear-gradient(135deg,var(--bg2),var(--bg3));padding:50px 36px;border-bottom:1px solid var(--border)}
+.reading-guide h2{font-family:var(--font-display);font-size:1.6rem;color:var(--accent);margin-bottom:20px;text-align:center}
+.path-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.path-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.path-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.path-card .step{position:absolute;top:8px;right:12px;font-family:var(--font-display);font-size:2.2rem;color:rgba(16,185,129,.08);font-weight:700}
+.path-card h3{font-size:.92rem;color:var(--accent2);margin-bottom:6px}
+.path-card p{font-size:.78rem;color:var(--text2);line-height:1.5}
+.path-card .chapters{margin-top:8px;font-size:.7rem;color:var(--text3)}
+
+.part-header{position:relative;padding:60px 36px 36px;overflow:hidden}
+.part-header::before{content:'';position:absolute;top:0;left:0;right:0;height:100%;background:linear-gradient(135deg,rgba(16,185,129,.06),transparent);pointer-events:none}
+.part-header .part-num{font-family:var(--font-display);font-size:3.5rem;color:rgba(16,185,129,.1);font-weight:700;position:absolute;top:16px;right:36px}
+.part-header h2{font-family:var(--font-display);font-size:1.8rem;color:var(--accent);margin-bottom:6px}
+.part-header .part-desc{font-size:.88rem;color:var(--text2);max-width:560px}
+
+.chapter{padding:16px 36px 32px}
+.chapter-header{display:flex;align-items:baseline;gap:10px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.chapter-header .ch-num{font-family:var(--font-display);font-size:.85rem;color:var(--accent3);font-weight:700;white-space:nowrap}
+.chapter-header h3{font-size:1.3rem;color:var(--text);font-weight:600}
+
+.section{margin-bottom:24px}
+.section h4{font-size:1rem;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.section h4::before{content:'';display:inline-block;width:3px;height:16px;background:var(--accent);border-radius:2px}
+.section p{font-size:.88rem;color:var(--text2);margin-bottom:8px;line-height:1.85}
+.section ul,.section ol{padding-left:18px;margin-bottom:10px}
+.section li{font-size:.86rem;color:var(--text2);margin-bottom:5px;line-height:1.7}
+
+.tip-box{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.15);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:18px 0}
+.tip-box .tip-label{font-size:.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.tip-box p{font-size:.84rem;color:var(--text2);margin:0}
+.key-box{background:rgba(34,211,238,.04);border:1px solid rgba(34,211,238,.12);border-left:3px solid var(--cyan);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:18px 0}
+.key-box .key-label{font-size:.7rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.key-box p{font-size:.84rem;color:var(--text2);margin:0}
+.warn-box{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-left:3px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:18px 0}
+.warn-box .warn-label{font-size:.7rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.warn-box p{font-size:.84rem;color:var(--text2);margin:0}
+
+.table-wrapper{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead th{background:var(--bg3);color:var(--accent2);padding:9px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent3);white-space:nowrap}
+tbody td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text2)}
+tbody tr:hover{background:rgba(16,185,129,.03)}
+tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
+
+.chart-container{width:100%;height:400px;margin:18px 0;border-radius:var(--radius);overflow:hidden}
+.chart-container.sm{height:300px}
+.chart-container.xs{height:250px}
+
+.callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.callout{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:border-color .3s}
+.callout:hover{border-color:var(--accent)}
+.callout h5{font-size:.86rem;color:var(--accent2);margin-bottom:6px}
+.callout p{font-size:.8rem;color:var(--text2);line-height:1.55}
+
+.interactive-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin:20px 0}
+.interactive-panel h5{font-size:.95rem;color:var(--accent2);margin-bottom:14px}
+.calc-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.calc-row label{font-size:.82rem;color:var(--text2);min-width:90px}
+.calc-row input,.calc-row select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.82rem;font-family:var(--font-mono);flex:1;min-width:100px}
+.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--accent)}
+.calc-result{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:8px;padding:14px;margin-top:10px}
+.calc-result .result-num{font-family:var(--font-display);font-size:1.6rem;color:var(--accent2);font-weight:700}
+.calc-result .result-label{font-size:.76rem;color:var(--text3)}
+
+.flow-steps{display:flex;align-items:center;gap:6px;margin:18px 0;flex-wrap:wrap;justify-content:center}
+.flow-step{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;text-align:center;min-width:90px;transition:all .3s}
+.flow-step:hover{border-color:var(--accent);transform:scale(1.03)}
+.flow-step .step-num{font-size:.65rem;color:var(--accent);font-weight:700}
+.flow-step .step-text{font-size:.78rem;color:var(--text2);margin-top:3px}
+.flow-arrow{color:var(--accent);font-size:1rem}
+
+.checklist{margin:14px 0}
+.checklist label{display:flex;align-items:center;gap:8px;padding:8px 14px;margin:3px 0;border-radius:6px;background:var(--bg3);cursor:pointer;transition:all .2s;font-size:.84rem;color:var(--text2)}
+.checklist label:hover{background:var(--bg4)}
+.checklist input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+
+.appendix{padding:16px 36px 32px}
+.appendix h3{font-size:1.2rem;color:var(--accent);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--accent3)}
+.appendix h4{font-size:.95rem;color:var(--accent2);margin:16px 0 10px}
+
+.footer{background:var(--bg2);border-top:1px solid var(--border);padding:32px;text-align:center}
+.footer p{font-size:.76rem;color:var(--text3)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:all .6s ease-out}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+.back-top{position:fixed;right:20px;bottom:20px;width:40px;height:40px;background:var(--accent3);color:var(--bg);border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;z-index:99;opacity:0;transition:all .3s;box-shadow:0 4px 12px rgba(16,185,129,.25)}
+.back-top.show{opacity:1}
+.back-top:hover{transform:scale(1.1)}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.show{transform:translateX(0)}
+  .main{margin-left:0}
+  .toggle-btn{left:12px}
+  .toggle-btn.shifted{left:12px}
+  .hero-content h1{font-size:2rem}
+  .chapter,.part-header,.appendix{padding-left:16px;padding-right:16px}
+}
+@media(max-width:600px){
+  .hero-content h1{font-size:1.6rem}
+  .callout-grid{grid-template-columns:1fr}
+  .path-cards{grid-template-columns:1fr}
+  .flow-steps{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h2>Stock 201</h2>
+    <p>股票进阶实战手册</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">导航</div>
+    <a class="nav-item" onclick="scrollToId('cover')">封面</a>
+    <a class="nav-item" onclick="scrollToId('reading-guide')">阅读路径</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第一篇 基本面分析</div>
+    <a class="nav-item" onclick="scrollToId('ch1')">第1章 商业模式</a>
+    <a class="nav-item" onclick="scrollToId('ch2')">第2章 护城河</a>
+    <a class="nav-item" onclick="scrollToId('ch3')">第3章 财务排雷</a>
+    <a class="nav-item" onclick="scrollToId('ch4')">第4章 行业分析</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第二篇 估值与定价</div>
+    <a class="nav-item" onclick="scrollToId('ch5')">第5章 估值方法进阶</a>
+    <a class="nav-item" onclick="scrollToId('ch6')">第6章 行业估值差异</a>
+    <a class="nav-item" onclick="scrollToId('ch7')">第7章 估值实战</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第三篇 技术分析进阶</div>
+    <a class="nav-item" onclick="scrollToId('ch8')">第8章 核心技术指标</a>
+    <a class="nav-item" onclick="scrollToId('ch9')">第9章 关键形态</a>
+    <a class="nav-item" onclick="scrollToId('ch10')">第10章 陷阱与正确用法</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第四篇 风控与仓位</div>
+    <a class="nav-item" onclick="scrollToId('ch11')">第11章 仓位管理</a>
+    <a class="nav-item" onclick="scrollToId('ch12')">第12章 止损与止盈</a>
+    <a class="nav-item" onclick="scrollToId('ch13')">第13章 回撤控制</a>
+    <a class="nav-item" onclick="scrollToId('ch14')">第14章 交易心理</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第五篇 构建投资体系</div>
+    <a class="nav-item" onclick="scrollToId('ch15')">第15章 投资流派</a>
+    <a class="nav-item" onclick="scrollToId('ch16')">第16章 投资组合</a>
+    <a class="nav-item" onclick="scrollToId('ch17')">第17章 交易系统</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第六篇 实战与精进</div>
+    <a class="nav-item" onclick="scrollToId('ch18')">第18章 模拟到实战</a>
+    <a class="nav-item" onclick="scrollToId('ch19')">第19章 复盘方法</a>
+    <a class="nav-item" onclick="scrollToId('ch20')">第20章 持续精进</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">附录</div>
+    <a class="nav-item" onclick="scrollToId('appA')">A 行业估值速查</a>
+    <a class="nav-item" onclick="scrollToId('appB')">B 财务排雷清单</a>
+    <a class="nav-item" onclick="scrollToId('appC')">C 交易系统模板</a>
+    <a class="nav-item" onclick="scrollToId('appD')">D 流派对比表</a>
+    <a class="nav-item" onclick="scrollToId('appE')">E 推荐书单</a>
+  </div>
+</nav>
+
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<div class="main" id="mainContent">
+
+<!-- COVER -->
+<section class="hero" id="cover">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <h1>股票进阶实战手册</h1>
+    <p class="subtitle">从分析到实战，构建你的投资体系</p>
+    <p class="desc">这不是一本"快速致富"的秘籍，而是一份帮你从"知道"到"做到"的进阶指南。6篇20章，带你完成从选股分析到风控实战的完整闭环。</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">6</div><div class="label">核心篇章</div></div>
+      <div class="hero-stat"><div class="num">20</div><div class="label">专题章节</div></div>
+      <div class="hero-stat"><div class="num">60+</div><div class="label">实操要点</div></div>
+      <div class="hero-stat"><div class="num">1</div><div class="label">完整闭环</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ 向下滚动开始阅读</div>
+</section>
+
+<!-- READING GUIDE -->
+<section class="reading-guide" id="reading-guide">
+  <h2>🗺️ 阅读路径</h2>
+  <div class="path-cards">
+    <div class="path-card reveal"><div class="step">1</div><h3>基本面分析</h3><p>商业模式→护城河→财务排雷→行业分析，看透一家公司</p><div class="chapters">第1-4章</div></div>
+    <div class="path-card reveal"><div class="step">2</div><h3>估值与定价</h3><p>估值方法进阶→行业差异→历史分位，判断贵不贵</p><div class="chapters">第5-7章</div></div>
+    <div class="path-card reveal"><div class="step">3</div><h3>技术分析进阶</h3><p>MACD/RSI/BOLL→形态→陷阱识别，读懂市场情绪</p><div class="chapters">第8-10章</div></div>
+    <div class="path-card reveal"><div class="step">4</div><h3>风控与仓位</h3><p>仓位管理→止盈止损→回撤控制→交易心理，保命技能</p><div class="chapters">第11-14章</div></div>
+    <div class="path-card reveal"><div class="step">5</div><h3>构建投资体系</h3><p>投资流派→组合构建→交易系统闭环，从散乱到体系</p><div class="chapters">第15-17章</div></div>
+    <div class="path-card reveal"><div class="step">6</div><h3>实战与精进</h3><p>模拟→实战→复盘→持续学习，从学到做的关键一步</p><div class="chapters">第18-20章</div></div>
+  </div>
+</section>
+
+
+<!-- ========== PART 1: 基本面分析 ========== -->
+<section class="part-header" id="part1">
+  <div class="part-num">01</div>
+  <h2>基本面分析——看懂一家公司</h2>
+  <p class="part-desc">不是背指标，而是理解"这家公司靠什么赚钱、凭什么持续赚钱"。从商业模式到护城河，从财务排雷到行业定位，建立完整的公司分析框架。</p>
+</section>
+
+<!-- 第1章 商业模式 -->
+<div class="chapter reveal" id="ch1">
+  <div class="chapter-header"><span class="ch-num">第1章</span><h3>商业模式：这家公司靠什么赚钱？</h3></div>
+
+  <div class="section">
+    <h4>1.1 用"三个问题"看透一家公司</h4>
+    <p>分析一家公司，不要急着看财报数字，先回答这三个问题：</p>
+    <div class="callout-grid">
+      <div class="callout"><h5>❓ 赚谁的钱？</h5><p>客户是谁？他们有什么需求？需求是刚性的还是可选的？</p></div>
+      <div class="callout"><h5>💪 凭什么赚？</h5><p>你的竞争优势是什么？别人能做同样的生意吗？你有定价权吗？</p></div>
+      <div class="callout"><h5>⏳ 能赚多久？</h5><p>这个生意的可持续性如何？有没有被替代的风险？技术会颠覆吗？</p></div>
+    </div>
+    <p>这三个问题的答案，构成了公司的<strong>商业模式</strong>——它比任何单一财务指标都更能决定公司的长期价值。</p>
+  </div>
+
+  <div class="section">
+    <h4>1.2 常见商业模式分类</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>类型</th><th>核心特征</th><th>赚钱方式</th><th>代表公司</th><th>关键指标</th></tr></thead>
+        <tbody>
+          <tr><td>产品型</td><td>卖实物或虚拟产品</td><td>单件利润×销量</td><td>茅台、海康威视</td><td>毛利率、库存周转</td></tr>
+          <tr><td>服务型</td><td>提供专业服务收费</td><td>服务费/订阅费</td><td>券商、SaaS公司</td><td>客户留存率、ARPU</td></tr>
+          <tr><td>平台型</td><td>连接供需双方</td><td>抽佣/广告/增值</td><td>美团、拼多多</td><td>GMV、抽佣率</td></tr>
+          <tr><td>资源型</td><td>垄断稀缺资源</td><td>资源价格×产量</td><td>煤炭、稀土公司</td><td>资源储量、开采成本</td></tr>
+          <tr><td>特许经营型</td><td>牌照壁垒限制竞争</td><td>息差/手续费/特许费</td><td>银行、免税店</td><td>净息差、牌照价值</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>1.3 好商业模式的三个特征</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>🏗️ 轻资产</h5><p>不需要大量资本投入就能扩张。同样的利润，轻资产公司需要的投资更少，ROE更高。</p></div>
+      <div class="callout"><h5>🔄 高复购</h5><p>客户反复购买，不需要每次重新获客。复购率高的生意更稳定、更可预测。</p></div>
+      <div class="callout"><h5>💰 强定价权</h5><p>涨价不影响销量。能跟通胀一起涨价的生意，才是真正的好生意。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>1.4 商业模式分析实战</h4>
+    <p>以两家消费公司为例做对比——<strong>伊利股份</strong>（乳制品龙头）vs <strong>海天味业</strong>（调味品龙头）：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>对比维度</th><th>伊利股份</th><th>海天味业</th></tr></thead>
+        <tbody>
+          <tr><td>赚谁的钱</td><td>大众消费者，需求刚性</td><td>家庭+餐饮，需求刚性</td></tr>
+          <tr><td>凭什么赚</td><td>品牌+渠道+奶源壁垒</td><td>品牌+渠道+规模效应</td></tr>
+          <tr><td>定价权</td><td>中等——竞品多，涨价空间有限</td><td>较强——调味品单价低，消费者对涨价不敏感</td></tr>
+          <tr><td>复购率</td><td>极高（日常消费品）</td><td>极高（调味品消耗快）</td></tr>
+          <tr><td>资产轻重</td><td>偏重（牧场+工厂）</td><td>偏轻（制造工艺成熟）</td></tr>
+          <tr><td>ROE水平</td><td>20-25%</td><td>25-35%</td></tr>
+          <tr><td>结论</td><td>好商业模式，但竞争激烈</td><td>更好商业模式，定价权更强</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>看公司先看招股书"业务与技术"章节，比看研报更接近真相。招股书是公司自己写的"说明书"，信息密度最高。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>商业模式决定了公司的"天花板"和"护城河宽度"——好商业模式能让普通管理层也做出好业绩，差商业模式再优秀的管理层也难力挽狂澜。</p></div>
+</div>
+
+<!-- 第2章 护城河 -->
+<div class="chapter reveal" id="ch2">
+  <div class="chapter-header"><span class="ch-num">第2章</span><h3>护城河：凭什么赚得比别人久？</h3></div>
+
+  <div class="section">
+    <h4>2.1 什么是护城河？</h4>
+    <p>巴菲特说："我想要的是拥有持久护城河的生意。"护城河就是<strong>让竞争对手难以抢走你生意的结构性优势</strong>。没有护城河的公司，利润最终会被竞争蚕食；有护城河的公司，能长期维持高回报。</p>
+  </div>
+
+  <div class="section">
+    <h4>2.2 五大护城河类型详解</h4>
+    <div class="chart-container" id="chart-moat"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>护城河类型</th><th>核心逻辑</th><th>代表公司</th><th>如何验证</th></tr></thead>
+        <tbody>
+          <tr><td>🛡️ 品牌护城河</td><td>消费者愿意多付钱</td><td>茅台、可口可乐</td><td>同类产品售价更高且销量不减</td></tr>
+          <tr><td>📦 成本护城河</td><td>同样东西卖更便宜还赚钱</td><td>沃尔玛、比亚迪</td><td>毛利率/费用率持续低于同行</td></tr>
+          <tr><td>🌐 网络效应</td><td>用的人越多越值钱</td><td>微信、美团</td><td>市占率与用户价值正循环</td></tr>
+          <tr><td>🔒 转换成本</td><td>换掉我很麻烦</td><td>SAP、恒生电子</td><td>客户留存率极高、替换成本大</td></tr>
+          <tr><td>📜 牌照/特许</td><td>不是谁都能干</td><td>银行、免税店</td><td>行业准入门槛高、竞争者少</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>2.3 护城河识别三步法</h4>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">Step 1</div><div class="step-text">ROE持续高于同行<br>（5年以上）</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 2</div><div class="step-text">杜邦分析拆解<br>净利率/周转率/杠杆率</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 3</div><div class="step-text">匹配护城河类型<br>验证是哪一种</div></div>
+    </div>
+    <p><strong>杜邦分析</strong>是理解高ROE来源的核心工具——同样是30%的ROE，来源不同含义完全不同：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>高ROE来源</th><th>含义</th><th>代表</th><th>质量</th></tr></thead>
+        <tbody>
+          <tr><td>高净利率驱动</td><td>产品赚钱能力强，有定价权</td><td>茅台</td><td>⭐⭐⭐ 最优</td></tr>
+          <tr><td>高周转率驱动</td><td>资产使用效率高，薄利多销</td><td>沃尔玛</td><td>⭐⭐ 良好</td></tr>
+          <tr><td>高杠杆率驱动</td><td>靠借钱撑高ROE，风险大</td><td>部分房企</td><td>⭐ 需警惕</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="chart-container sm" id="chart-dupont"></div>
+  </div>
+
+  <div class="section">
+    <h4>2.4 护城河会消失吗？</h4>
+    <p>答案是：会。护城河不是永久的，需要持续维护。以下是三种常见的"护城河侵蚀"信号：</p>
+    <div class="warn-box"><div class="warn-label">⚠️ 护城河侵蚀信号</div><p><strong>技术颠覆</strong>：诺基亚的功能机护城河被智能手机颠覆；柯达的胶片护城河被数码相机颠覆。<br><strong>政策变化</strong>：教培行业的牌照护城河被"双减"政策直接摧毁；互联网反垄断限制了平台护城河的扩张。<br><strong>消费习惯变迁</strong>：百货商场的渠道护城河被电商瓦解；纸质媒体被短视频替代。</p></div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>护城河越窄，越要盯紧——没有永恒的护城河，只有持续加深护城河的公司。每季度检查一次：公司的竞争优势是在增强还是在削弱？</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>护城河是选股的第一道筛子——没有护城河的公司，再便宜也不买。好价格买差公司，不如合理价格买好公司。</p></div>
+</div>
+
+<!-- 第3章 财务排雷 -->
+<div class="chapter reveal" id="ch3">
+  <div class="chapter-header"><span class="ch-num">第3章</span><h3>财务排雷：避开"账面富贵"的陷阱</h3></div>
+
+  <div class="section">
+    <h4>3.1 为什么要排雷？</h4>
+    <p>A股历史上，财务造假给投资者造成的损失远超一次判断失误。从康美药业300亿造假到康得新122亿虚增利润，这些案例告诉我们：<strong>买入前不排雷，等于蒙着眼过雷区</strong>。</p>
+  </div>
+
+  <div class="section">
+    <h4>3.2 四大雷区识别</h4>
+    <div class="chart-container" id="chart-minefield"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>雷区</th><th>异常信号</th><th>可能含义</th><th>如何确认</th></tr></thead>
+        <tbody>
+          <tr><td>现金流与利润背离</td><td>经营现金流持续低于净利润</td><td>利润没变成真金白银，可能虚增</td><td>经营现金流/净利润 < 0.7 持续2年以上</td></tr>
+          <tr><td>应收暴增</td><td>应收增速远超营收增速</td><td>可能通过放宽信用条件虚增收入</td><td>应收增速 > 营收增速的1.5倍</td></tr>
+          <tr><td>存货异常</td><td>存货增长快且周转率下降</td><td>可能滞销或虚增存货</td><td>存货周转天数持续拉长</td></tr>
+          <tr><td>在建工程不转固</td><td>在建工程长期居高不下</td><td>可能是资金挪用的藏身之处</td><td>在建工程/总资产 > 15%且持续增长</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>3.3 三个辅助排雷信号</h4>
+    <ul>
+      <li><strong>其他应收款突然暴增</strong>——关联方占款的嫌疑。正常公司的其他应收款应该很小，突然增大要高度警惕。</li>
+      <li><strong>商誉占净资产比例过高</strong>——并购后遗症。商誉/净资产 > 30%，一旦减值可能造成巨额亏损。</li>
+      <li><strong>频繁更换审计机构或收到非标意见</strong>——如果一家公司频繁换审计师，或者审计师出具了"保留意见""无法表示意见"，基本可以排除。</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>3.4 财务排雷检查清单（10项快速筛查）</h4>
+    <div class="checklist">
+      <label><input type="checkbox"> 经营现金流/净利润 > 0.7（近3年）</label>
+      <label><input type="checkbox"> 应收账款增速 ≤ 营收增速×1.2</label>
+      <label><input type="checkbox"> 存货周转天数未持续拉长</label>
+      <label><input type="checkbox"> 在建工程/总资产 < 15%</label>
+      <label><input type="checkbox"> 其他应收款/总资产 < 3%</label>
+      <label><input type="checkbox"> 商誉/净资产 < 30%</label>
+      <label><input type="checkbox"> 审计意见为"标准无保留意见"</label>
+      <label><input type="checkbox"> 近3年未更换审计机构</label>
+      <label><input type="checkbox"> 关联交易占比 < 20%</label>
+      <label><input type="checkbox"> 前五大客户集中度 < 50%（非垄断行业）</label>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>排雷不是找"有没有问题"，而是找"问题是否可解释"——所有异常都要有合理解释。如果公司对异常没有合理解释，宁可错过也不踩雷。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>排雷是买入前的必做动作——宁可错过一个好公司，不可踩中一个烂公司。排雷只需10分钟，踩雷可能套3年。</p></div>
+</div>
+
+<!-- 第4章 行业分析 -->
+<div class="chapter reveal" id="ch4">
+  <div class="chapter-header"><span class="ch-num">第4章</span><h3>行业分析：选对赛道比选对公司更重要</h3></div>
+
+  <div class="section">
+    <h4>4.1 行业分析的四个维度</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>📈 景气度</h5><p>行业在变好还是变差？跟踪PMI、行业增速、产能利用率等指标。景气上行的行业，鸡犬升天；景气下行的行业，龙头也难独善。</p></div>
+      <div class="callout"><h5>📊 渗透率</h5><p>行业天花板还有多远？低渗透率（<20%）= 成长空间大；高渗透率（>60%）= 增速放缓，开始拼存量。</p></div>
+      <div class="callout"><h5>🏢 集中度</h5><p>CR3/CR5是升还是降？集中度提升=龙头受益（赢者通吃）；分散=竞争激烈，利润薄。</p></div>
+      <div class="callout"><h5>🇨🇳 国产替代</h5><p>进口依赖度高的环节是机会。半导体设备、高端材料、医药创新等领域国产替代空间巨大。</p></div>
+    </div>
+    <div class="chart-container" id="chart-penetration"></div>
+  </div>
+
+  <div class="section">
+    <h4>4.2 产业链分析：谁在赚走利润？</h4>
+    <p>产业链上的利润不是均匀分配的，理解"谁赚走了钱"比理解"行业赚了多少钱"更重要。</p>
+    <div class="chart-container" id="chart-chain"></div>
+    <p>以<strong>锂电产业链</strong>为例，利润在产业链各环节的分配会随供需格局变化而转移：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>阶段</th><th>上游（锂矿）</th><th>中游（电池）</th><th>下游（整车）</th></tr></thead>
+        <tbody>
+          <tr><td>供给紧张期</td><td>🔥 利润集中，锂价暴涨</td><td>成本承压，利润被挤压</td><td>提价困难，利润最薄</td></tr>
+          <tr><td>供给过剩期</td><td>锂价暴跌，利润缩水</td><td>成本下降，利润修复</td><td>降价竞争，利润仍薄</td></tr>
+          <tr><td>议价权判断</td><td>看资源稀缺性</td><td>看技术壁垒和客户粘性</td><td>看品牌和渠道</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>4.3 行业比较：不同行业的核心驱动因子</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>行业</th><th>核心驱动因子</th><th>关键跟踪指标</th><th>投资节奏</th></tr></thead>
+        <tbody>
+          <tr><td>消费</td><td>品牌和渠道</td><td>营收增速、同店增速、渠道库存</td><td>长期持有，享受复利</td></tr>
+          <tr><td>科技</td><td>研发和技术迭代</td><td>研发费率、专利数、产品周期</td><td>把握产品周期，注意技术替代</td></tr>
+          <tr><td>周期</td><td>供需和价格</td><td>产品价格、产能利用率、库存</td><td>底部布局，顶部离场</td></tr>
+          <tr><td>金融</td><td>息差和资产质量</td><td>净息差、不良率、拨备覆盖</td><td>关注经济周期和政策</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>4.4 自上而下选股法</h4>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">Step 1</div><div class="step-text">选行业<br>景气度+渗透率</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 2</div><div class="step-text">选环节<br>产业链利润分配</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">Step 3</div><div class="step-text">选龙头<br>护城河+市占率</div></div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>行业数据去哪查？——国家统计局（宏观数据）、行业协会（行业数据）、券商行业深度报告（分析框架）。上市公司年报的"行业分析"章节也是很好的信息来源。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>好行业里的普通公司 > 差行业里的好公司。行业是土壤，公司是种子——再好的种子，种在盐碱地上也长不出庄稼。</p></div>
+</div>
+
+
+<!-- ========== PART 2: 估值与定价 ========== -->
+<section class="part-header" id="part2">
+  <div class="part-num">02</div>
+  <h2>估值与定价——判断贵不贵</h2>
+  <p class="part-desc">估值不是精确计算，而是判断"大致贵不贵"。掌握不同行业的估值方法，理解市场如何定价，学会用历史分位和同业对比做判断。</p>
+</section>
+
+<!-- 第5章 估值方法进阶 -->
+<div class="chapter reveal" id="ch5">
+  <div class="chapter-header"><span class="ch-num">第5章</span><h3>估值方法进阶：PE/PB/PS的进阶用法</h3></div>
+
+  <div class="section">
+    <h4>5.1 PE（市盈率）进阶</h4>
+    <p>PE是入门手册中讲过的指标，但很多新手不知道PE其实有多种口径，选错口径会导致判断完全相反：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>PE类型</th><th>计算方式</th><th>优点</th><th>缺点</th><th>适用场景</th></tr></thead>
+        <tbody>
+          <tr><td>静态PE</td><td>股价/上一年EPS</td><td>数据确定</td><td>滞后，不代表当前</td><td>盈利稳定的公司</td></tr>
+          <tr><td>动态PE</td><td>股价/预测当年EPS</td><td>前瞻性</td><td>依赖预测，可能偏差大</td><td>成长性公司</td></tr>
+          <tr><td>滚动PE(TTM)</td><td>股价/近4个季度EPS</td><td>兼顾时效和确定性</td><td>季节性公司可能失真</td><td>最常用的口径</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>PE的失效场景</strong>：亏损公司（PE为负无意义）、周期公司（利润波动大，PE失真）、高波动公司（一次性的利润/亏损扭曲PE）。</p>
+    <p><strong>PEG</strong>：用增长修正PE。PEG = PE / 盈利增速(%)。PEG < 1 通常被认为低估，PEG > 2 偏贵。例如PE=30倍但增速40%，PEG=0.75，并不贵。</p>
+  </div>
+
+  <div class="section">
+    <h4>5.2 PB（市净率）进阶</h4>
+    <p>PB适合资产密集型公司（银行、保险、重工业），但单独看PB不够——<strong>PB+ROE联动</strong>才有意义：</p>
+    <div class="chart-container sm" id="chart-pb-roe"></div>
+    <ul>
+      <li>低PB + 高ROE → 被低估（市场对高ROE定价不足）→ <strong style="color:var(--green)">买入机会</strong></li>
+      <li>高PB + 低ROE → 被高估（市场给低ROE过高定价）→ <strong style="color:var(--red)">谨慎</strong></li>
+      <li>低PB + 低ROE → 可能是价值陷阱（便宜有便宜的道理）→ <strong style="color:var(--amber)">需深入分析</strong></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>5.3 PS（市销率）</h4>
+    <p>PS适用于<strong>尚未盈利的成长公司</strong>（互联网、SaaS、创新药等）。使用前提是营收增长趋势明确——如果营收也在萎缩，PS也无效。</p>
+    <p>PS核心逻辑：如果公司未来能实现盈利，PS可以转化为PE。例如PS=5倍，未来净利率20%，则等价PE=25倍。</p>
+  </div>
+
+  <div class="section">
+    <h4>5.4 EV/EBITDA：更"公平"的估值指标</h4>
+    <p>EV（企业价值）= 市值 + 净债务。EBITDA = 息税折旧摊销前利润。EV/EBITDA排除了资本结构和税率的差异，比PE更适合：</p>
+    <ul>
+      <li>跨国公司对比（不同国家税率不同）</li>
+      <li>重资产/高负债公司（折旧摊销影响大）</li>
+      <li>并购估值（收购方关心的是整个企业的价值）</li>
+    </ul>
+  </div>
+
+  <div class="interactive-panel">
+    <h5>📊 估值计算器：同一公司不同方法的结果</h5>
+    <div class="calc-row">
+      <label>股价（元）</label><input type="number" id="valPrice" value="50" oninput="updateValuation()">
+      <label>EPS（元）</label><input type="number" id="valEPS" value="2.5" oninput="updateValuation()">
+      <label>BPS（元）</label><input type="number" id="valBPS" value="20" oninput="updateValuation()">
+    </div>
+    <div class="calc-row">
+      <label>营收/股（元）</label><input type="number" id="valSPS" value="10" oninput="updateValuation()">
+      <label>增速(%)</label><input type="number" id="valGrowth" value="20" oninput="updateValuation()">
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:10px">
+      <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="resPE">20.0</div><div class="result-label">PE(TTM)</div></div>
+      <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="resPB">2.5</div><div class="result-label">PB</div></div>
+      <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="resPS">5.0</div><div class="result-label">PS</div></div>
+      <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="resPEG">1.0</div><div class="result-label">PEG</div></div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>同一家公司，不同估值方法可能给出完全不同的"贵贱"结论——关键是选对方法。不能因为PE看着贵就否定，也许PS和PEG都显示合理。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>估值方法是工具箱，不同行业用不同工具——别拿锤子当扳手用。选错估值方法比不算估值更危险。</p></div>
+</div>
+
+<!-- 第6章 行业估值差异 -->
+<div class="chapter reveal" id="ch6">
+  <div class="chapter-header"><span class="ch-num">第6章</span><h3>不同行业，不同估值方法</h3></div>
+
+  <div class="section">
+    <h4>6.1-6.6 各行业估值要点</h4>
+    <div class="chart-container" id="chart-industry-val"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>行业</th><th>推荐估值方法</th><th>PE参考范围</th><th>PB参考范围</th><th>⚠️ 特别注意</th></tr></thead>
+        <tbody>
+          <tr><td>🏦 银行</td><td>PB + 股息率</td><td>5-8倍</td><td>0.5-0.8倍</td><td>PE基本无效，ROE下滑时PB中枢下移</td></tr>
+          <tr><td>🍺 消费</td><td>PE + 历史分位</td><td>20-40倍</td><td>5-15倍</td><td>品牌溢价可给更高PE；关注渠道库存</td></tr>
+          <tr><td>💻 科技/互联网</td><td>PS 或 PEG</td><td>30-80倍</td><td>3-10倍</td><td>PE经常失灵——利润不稳定，看营收增长</td></tr>
+          <tr><td>⛏️ 周期股</td><td>PB底部安全边际</td><td>周期波动大</td><td>0.8-2.0倍</td><td>PE最低=周期顶部陷阱！PE最高=周期底部机会</td></tr>
+          <tr><td>💊 医药</td><td>管线估值/PE</td><td>20-60倍</td><td>3-8倍</td><td>创新药看管线估值，成熟药企看PE</td></tr>
+          <tr><td>⚡ 新能源</td><td>PE/G + 产能价格模型</td><td>20-50倍</td><td>2-6倍</td><td>产能过剩期估值体系下移</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>6.7 周期股估值反直觉——最重要的知识点</h4>
+    <div class="warn-box"><div class="warn-label">⚠️ 周期股PE陷阱</div><p>周期股的PE最低时（如5倍），往往是周期顶部——此时利润最高，但即将回落。PE最高时（如50倍甚至亏损），反而是周期底部——利润最差，但即将回升。<br><br><strong>正确做法</strong>：周期股看PB底部的安全边际，不看PE。当PB接近历史最低区间时布局，PE看似很高但正是买入时机。</p></div>
+    <div class="chart-container sm" id="chart-cycle-pe"></div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>周期股估值反直觉——PE最低的时候往往是周期顶部（利润最高点），PE最高反而是底部（利润最差时）。新手最容易在周期顶部因"PE低"而追入。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>估值方法必须匹配行业特征——"一套方法打天下"是亏钱捷径。先判断行业类型，再选择估值方法。</p></div>
+</div>
+
+<!-- 第7章 估值实战 -->
+<div class="chapter reveal" id="ch7">
+  <div class="chapter-header"><span class="ch-num">第7章</span><h3>估值实战：历史分位法与同业对比法</h3></div>
+
+  <div class="section">
+    <h4>7.1 历史分位法</h4>
+    <p>核心思路：<strong>当前估值在过去N年中排第几？</strong>如果排在前20%，说明很贵；排在后20%，说明便宜。</p>
+    <div class="chart-container" id="chart-percentile"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>分位区间</th><th>含义</th><th>操作建议</th></tr></thead>
+        <tbody>
+          <tr><td>&lt; 20%</td><td>极度低估</td><td>🟢 可以积极布局</td></tr>
+          <tr><td>20% - 40%</td><td>偏低估</td><td>🟢 逐步买入</td></tr>
+          <tr><td>40% - 60%</td><td>适中</td><td>🟡 持有为主</td></tr>
+          <tr><td>60% - 80%</td><td>偏高</td><td>🟠 开始减仓</td></tr>
+          <tr><td>&gt; 80%</td><td>极度高估</td><td>🔴 大幅减仓或清仓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>注意事项</strong>：至少看5年、最好10年；公司业务结构发生重大变化时分位失效（如借壳上市、转型新业务）。</p>
+  </div>
+
+  <div class="section">
+    <h4>7.2 同业对比法</h4>
+    <p>与同行业相似公司比估值，选对<strong>可比公司</strong>是关键：</p>
+    <ul>
+      <li>市值和业务相近（不能拿小公司跟龙头比PE）</li>
+      <li>增速相近（高增速公司PE理应更高）</li>
+      <li>估值差异的合理原因：龙头溢价（行业第一通常贵10-30%）、成长性差异</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>7.3 DCF思路：不需要精确计算，但要理解逻辑</h4>
+    <p>DCF（现金流折现）的核心思想：一家公司的价值 = 未来能产生的现金折现到现在。虽然新手不需要做精确DCF模型，但必须理解影响估值的三个关键因素：</p>
+    <div class="callout-grid">
+      <div class="callout"><h5>📈 增长率</h5><p>未来现金流增长越快，估值越高。增长率每提高1%，估值可能提升10-20%。</p></div>
+      <div class="callout"><h5>⏱️ 折现率</h5><p>折现率（WACC）反映风险。风险越高，折现率越高，估值越低。折现率小幅变化→估值大幅变化。</p></div>
+      <div class="callout"><h5>♾️ 永续增长率</h5><p>假设公司永远以某个低增速增长。这是DCF中最敏感的参数——永续增长率从2%调到3%，估值可能差30-50%。</p></div>
+    </div>
+    <div class="warn-box"><div class="warn-label">⚠️ DCF的使用警告</div><p>DCF对假设极度敏感，折现率和永续增长率的小幅调整就能让估值翻倍或腰斩。不建议新手做精确DCF，但理解DCF的逻辑有助于理解"什么因素影响估值"。</p></div>
+  </div>
+
+  <div class="section">
+    <h4>7.4 估值锚定：设定你的"买卖估值区间"</h4>
+    <p>以沪深300为例，建立自己的估值锚：</p>
+    <div class="chart-container sm" id="chart-anchor"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>沪深300 PE区间</th><th>估值状态</th><th>建议操作</th></tr></thead>
+        <tbody>
+          <tr><td>&lt; 11倍</td><td>🟢 低估区</td><td>积极买入，逐步加仓</td></tr>
+          <tr><td>11 - 14倍</td><td>🟡 合理区</td><td>持有为主，小额定投</td></tr>
+          <tr><td>&gt; 14倍</td><td>🔴 高估区</td><td>减仓为主，谨慎追加</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>估值是区间不是精确值——"这个值大致在8-12元之间"比"精确值10.37元"更有用。精确是估值的大敌，模糊的正确远胜精确的错误。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>估值是艺术不是科学——不要追求精确，追求"大致正确"。能判断出"大致贵不贵"就够了，不需要算出精确的内在价值。</p></div>
+</div>
+
+
+<!-- ========== PART 3: 技术分析进阶 ========== -->
+<section class="part-header" id="part3">
+  <div class="part-num">03</div>
+  <h2>技术分析进阶——读懂市场情绪</h2>
+  <p class="part-desc">技术分析不是预测未来的水晶球，而是读懂市场情绪的温度计。掌握几个核心工具，识别趋势方向和转折信号，同时认识局限和陷阱。</p>
+</section>
+
+<!-- 第8章 核心技术指标 -->
+<div class="chapter reveal" id="ch8">
+  <div class="chapter-header"><span class="ch-num">第8章</span><h3>核心技术指标详解</h3></div>
+
+  <div class="section">
+    <h4>8.1 MACD：趋势方向与动量变化</h4>
+    <p>MACD（移动平均收敛/发散指标）是最常用的趋势类指标，由三部分组成：</p>
+    <div class="chart-container" id="chart-macd"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>信号</th><th>含义</th><th>可靠性</th></tr></thead>
+        <tbody>
+          <tr><td>金叉（DIF上穿DEA）</td><td>短期动能转强，可能上涨</td><td>⭐⭐ 弱信号，单独使用胜率不高</td></tr>
+          <tr><td>死叉（DIF下穿DEA）</td><td>短期动能转弱，可能下跌</td><td>⭐⭐ 弱信号</td></tr>
+          <tr><td>柱状体缩放</td><td>红柱缩短=上涨动能衰减，绿柱缩短=下跌动能衰减</td><td>⭐⭐⭐ 中等信号，是趋势转折的早期预警</td></tr>
+          <tr><td>顶背离（价格新高+MACD未新高）</td><td>上涨动能衰竭，可能反转下跌</td><td>⭐⭐⭐⭐ 强信号，最值得关注的MACD信号</td></tr>
+          <tr><td>底背离（价格新低+MACD未新低）</td><td>下跌动能衰竭，可能反转上涨</td><td>⭐⭐⭐⭐ 强信号</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>8.2 RSI（相对强弱指标）</h4>
+    <p>RSI衡量一段时间内上涨力度与下跌力度的对比，范围0-100：</p>
+    <div class="chart-container sm" id="chart-rsi"></div>
+    <ul>
+      <li><strong>RSI > 70</strong>：超买区域——短期涨得太多，可能回调。<strong>但超买≠马上跌</strong>，强势市场RSI可以长期在70以上。</li>
+      <li><strong>RSI < 30</strong>：超卖区域——短期跌得太多，可能反弹。<strong>但超卖≠马上涨</strong>，弱势市场RSI可以长期在30以下。</li>
+      <li><strong>RSI背离</strong>：价格创新高但RSI没有→顶背离（看跌）；价格创新低但RSI没有→底背离（看涨）。背离信号比超买超卖更可靠。</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>8.3 布林带（BOLL）：波动率的可视化</h4>
+    <p>布林带由三条线组成：上轨（MA20+2σ）、中轨（MA20）、下轨（MA20-2σ）。它不是买卖信号，而是波动率参考：</p>
+    <div class="chart-container sm" id="chart-boll"></div>
+    <ul>
+      <li><strong>缩口</strong>：上下轨间距收窄→波动率降低→<strong>预示即将变盘</strong>（方向不确定，但波动要放大）</li>
+      <li><strong>开口</strong>：上下轨间距扩大→波动率放大→<strong>确认方向</strong>（配合成交量判断方向）</li>
+      <li><strong>沿上轨运行</strong>：强势上涨趋势；<strong>沿下轨运行</strong>：弱势下跌趋势</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>8.4 量价关系：最重要的"指标"不在指标栏里</h4>
+    <p>所有技术指标都是价格的数学加工，但<strong>成交量</strong>是独立于价格的"真相指标"：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>量价组合</th><th>含义</th><th>后续判断</th></tr></thead>
+        <tbody>
+          <tr><td>放量上涨</td><td>大量资金追入，买方力量强</td><td>🟢 健康上涨，可持续</td></tr>
+          <tr><td>缩量上涨</td><td>买方意愿减弱，跟风资金少</td><td>🟡 动力不足，可能回调</td></tr>
+          <tr><td>放量下跌</td><td>大量抛售，卖方力量强</td><td>🔴 恐慌抛售，短期不抄底</td></tr>
+          <tr><td>缩量下跌</td><td>卖方惜售，但买方也不入场</td><td>🟡 情绪低迷，需等放量信号</td></tr>
+          <tr><td>天量天价</td><td>成交量创历史新高+价格新高</td><td>🔴 短期见顶信号，谨慎</td></tr>
+          <tr><td>地量地价</td><td>成交量极度萎缩+价格低位</td><td>🟢 可能见底，需放量确认</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>所有技术指标都是"过去价格的数学加工"——它们滞后于价格，不能预测未来。技术指标的最大价值是确认趋势和设纪律，不是预测涨跌。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>技术指标是辅助确认工具，不是决策依据——基本面决定方向，技术面择时。不要把技术分析当作"预测水晶球"。</p></div>
+</div>
+
+<!-- 第9章 关键技术形态 -->
+<div class="chapter reveal" id="ch9">
+  <div class="chapter-header"><span class="ch-num">第9章</span><h3>关键技术形态与信号</h3></div>
+
+  <div class="section">
+    <h4>9.1 趋势的判断与确认</h4>
+    <p>趋势是技术分析的基石。判断趋势不需要复杂指标，只需要观察价格的高低点关系：</p>
+    <div class="callout-grid">
+      <div class="callout"><h5>📈 上升趋势</h5><p>更高的高点 + 更高的低点。每一次回调的低点都高于上一次，每一次上涨都创新高。</p></div>
+      <div class="callout"><h5>📉 下降趋势</h5><p>更低的高点 + 更低的低点。每一次反弹的高点都低于上一次，每一次下跌都创新低。</p></div>
+      <div class="callout"><h5>➡️ 横盘震荡</h5><p>在区间内反复波动。高点和低点基本持平，没有明确方向。突破区间后方向确立。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>9.2 支撑与压力的进阶理解</h4>
+    <ul>
+      <li><strong>多次测试的支撑/压力更有效</strong>——一个价位被测试3次以上，说明市场确实认可这个位置</li>
+      <li><strong>成交量配合突破才可信</strong>——放量突破比缩量突破更有说服力</li>
+      <li><strong>角色互换</strong>——压力被突破后变成支撑，支撑被跌破后变成压力。这是最重要的支撑/压力概念之一</li>
+    </ul>
+    <div class="chart-container xs" id="chart-support"></div>
+  </div>
+
+  <div class="section">
+    <h4>9.3 常见反转形态（了解即可）</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>形态</th><th>特征</th><th>信号强度</th><th>注意</th></tr></thead>
+        <tbody>
+          <tr><td>头肩顶/底</td><td>三个峰，中间最高/最低</td><td>⭐⭐⭐⭐ 最可靠的反转形态</td><td>需要颈线确认</td></tr>
+          <tr><td>双顶（M头）</td><td>两次触及同一价位后回落</td><td>⭐⭐⭐</td><td>两次触顶的间距不能太短</td></tr>
+          <tr><td>双底（W底）</td><td>两次触及同一价位后反弹</td><td>⭐⭐⭐</td><td>突破中间高点后确认</td></tr>
+          <tr><td>圆弧顶/底</td><td>缓慢的弧形转向</td><td>⭐⭐</td><td>形成时间越长越可靠</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>9.4 常见持续形态</h4>
+    <p>持续形态意味着当前趋势只是暂停，之后大概率继续。常见类型：</p>
+    <ul>
+      <li><strong>三角形整理</strong>：收敛三角形（波动越来越小）→即将选择方向突破</li>
+      <li><strong>旗形整理</strong>：急涨/跌后的短暂平行回调→通常延续原趋势</li>
+      <li><strong>矩形整理</strong>：在平行区间内来回波动→突破方向决定后续趋势</li>
+    </ul>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>形态分析的主观性很强——同一张图，10个人可能画出10种形态。不要过度依赖形态做决策，形态只提供可能性，不提供确定性。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>形态只提供"可能性"，不提供"确定性"——永远用止损保护自己。再完美的形态也可能失败，关键是失败了怎么办。</p></div>
+</div>
+
+<!-- 第10章 技术分析陷阱 -->
+<div class="chapter reveal" id="ch10">
+  <div class="chapter-header"><span class="ch-num">第10章</span><h3>技术分析的陷阱与正确用法</h3></div>
+
+  <div class="section">
+    <h4>10.1 假突破：最常见的陷阱</h4>
+    <p>假突破是指价格突破关键位后迅速回落，专门"骗"追突破的投资者入场。这是新手最常踩的坑：</p>
+    <div class="chart-container sm" id="chart-fake-break"></div>
+    <p><strong>识别假突破的方法</strong>：</p>
+    <ul>
+      <li>看成交量——真突破必须放量，缩量突破大概率是假的</li>
+      <li>等待回踩确认——突破后等价格回踩关键位再企稳，比追突破安全得多</li>
+      <li>看突破幅度——突破幅度过小（不到2%）可能是假突破</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>10.2 诱多与诱空</h4>
+    <div class="warn-box"><div class="warn-label">⚠️ 诱多与诱空</div><p><strong>诱多</strong>：大资金拉高股价吸引散户追入，然后趁机出货→散户接盘后暴跌。<br><strong>诱空</strong>：大资金打压股价逼散户割肉，然后趁机吸筹→散户出局后拉升。<br><br>识别方法：看量价是否匹配+大资金动向。诱多时往往放量但后续上涨无力；诱空时放量下跌但很快企稳回升。</p></div>
+  </div>
+
+  <div class="section">
+    <h4>10.3 技术分析的正确使用方式</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>原则一：只确认不预测</h5><p>用技术分析确认趋势方向，而不是预测明天涨跌。确认"趋势向上"比预测"明天涨3%"靠谱。</p></div>
+      <div class="callout"><h5>原则二：多重验证</h5><p>不依赖单一指标。均线+MACD+成交量三个信号同时确认，比任一单独信号可靠得多。</p></div>
+      <div class="callout"><h5>原则三：配合基本面</h5><p>技术分析只能择时，不能选股。基本面好的公司+技术面择时，才是正确的组合。</p></div>
+      <div class="callout"><h5>原则四：用来设纪律</h5><p>"跌破20日均线就减仓"比"我觉得要跌"靠谱得多。技术分析的最大价值是帮你建立纪律。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>10.4 新手技术分析工具箱：只学这三个就够</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>工具</th><th>用途</th><th>怎么用</th></tr></thead>
+        <tbody>
+          <tr><td>均线（MA20/MA60）</td><td>判断趋势方向</td><td>价格在均线上方=上升趋势；均线上翘=趋势加强</td></tr>
+          <tr><td>成交量</td><td>确认趋势真实性</td><td>放量=真趋势，缩量=假突破/动力不足</td></tr>
+          <tr><td>MACD背离</td><td>识别可能的转折点</td><td>顶背离=上涨衰竭，底背离=下跌衰竭</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>如果你发现自己在频繁看盘、根据5分钟K线做决策——你已经不是在投资，而是在赌博。日线级别的技术分析才是散户应该关注的，更短周期只会增加噪音和手续费。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>技术分析的最大价值不是预测，而是帮你建立纪律——"跌破20日均线就减仓"比"我觉得要跌"靠谱得多。纪律 > 预测。</p></div>
+</div>
+
+
+<!-- ========== PART 4: 风控与仓位 ========== -->
+<section class="part-header" id="part4">
+  <div class="part-num">04</div>
+  <h2>风险控制与仓位管理——保命技能</h2>
+  <p class="part-desc">投资的本质是管理风险，不是追求收益。学会仓位管理、止盈止损、回撤控制和交易心理，是在市场长期生存的核心技能。</p>
+</section>
+
+<!-- 第11章 仓位管理 -->
+<div class="chapter reveal" id="ch11">
+  <div class="chapter-header"><span class="ch-num">第11章</span><h3>仓位管理：别把鸡蛋放在一个篮子里</h3></div>
+
+  <div class="section">
+    <h4>11.1 为什么仓位管理比选股更重要？</h4>
+    <p>一个残酷的真相：<strong>选股决定赚多少，仓位决定亏多少</strong>。</p>
+    <div class="chart-container sm" id="chart-position-impact"></div>
+    <ul>
+      <li>好股 + 坏仓位（满仓追高）= 大亏</li>
+      <li>普通股 + 好仓位（合理分配+止损）= 稳健</li>
+      <li>选错了，仓位帮你控制亏损；选对了，仓位决定你能拿住多久</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>11.2 常见仓位管理方法</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>方法</th><th>逻辑</th><th>操作方式</th><th>适合人群</th></tr></thead>
+        <tbody>
+          <tr><td>等权分配法</td><td>每只股票相同比例</td><td>5只股票各20%</td><td>⭐ 新手首选，最简单</td></tr>
+          <tr><td>金字塔加仓</td><td>越跌越买、越买越少</td><td>第一笔50%→跌5%加30%→再跌5%加20%</td><td>左侧布局，有信心的标的</td></tr>
+          <tr><td>倒金字塔加仓</td><td>越涨越买</td><td>小仓试水→涨了加仓→再涨再加</td><td>⚠️ 趋势交易法，新手慎用</td></tr>
+          <tr><td>凯利公式简化版</td><td>根据胜率赔率算最优比例</td><td>f = (bp - q) / b<br>b=赔率 p=胜率 q=1-p</td><td>数据驱动的投资者</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="interactive-panel">
+      <h5>📊 凯利公式仓位计算器</h5>
+      <div class="calc-row">
+        <label>胜率(%)</label><input type="number" id="kellyWin" value="55" oninput="updateKelly()">
+        <label>赔率(盈亏比)</label><input type="number" id="kellyOdds" value="1.5" step="0.1" oninput="updateKelly()">
+      </div>
+      <div class="calc-result">
+        <div class="result-num" id="kellyResult">8.3%</div>
+        <div class="result-label">建议仓位占比（半凯利=更保守）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>11.3 核心+卫星策略</h4>
+    <div class="chart-container sm" id="chart-core-satellite"></div>
+    <ul>
+      <li><strong>核心仓（60-70%）</strong>：指数基金/高股息蓝筹/长期持有的好公司——稳健底仓，控制风险</li>
+      <li><strong>卫星仓（30-40%）</strong>：成长股/行业主题/短期机会——弹性空间，追求超额收益</li>
+      <li><strong>股债搭配</strong>：根据风险承受力调整股债比例（如80/20或60/40）</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>11.4 仓位管理的实操规则</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>📏 单只上限</h5><p>单只股票不超过总仓位的20-30%。即使再看好也要控制，因为你的判断可能错。</p></div>
+      <div class="callout"><h5>💰 永远不满仓</h5><p>留10-20%现金应对意外。满仓=失去了所有灵活性，遇到好机会也无法出手。</p></div>
+      <div class="callout"><h5>🎓 新手更保守</h5><p>新手建议总仓位不超过可用资金的50%。先学会走路，再学跑步。</p></div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>满仓被套是最痛苦的体验——既无法加仓摊低成本，又无法应对新的机会。永远保留一点"弹药"，是给自己留退路。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>仓位管理是"安全带"——你不能因为开了安全带就不系，意外来临时它保命。控制仓位就是控制风险。</p></div>
+</div>
+
+<!-- 第12章 止损与止盈 -->
+<div class="chapter reveal" id="ch12">
+  <div class="chapter-header"><span class="ch-num">第12章</span><h3>止损与止盈：会买是徒弟，会卖是师傅</h3></div>
+
+  <div class="section">
+    <h4>12.1 止损进阶：不止是"亏8%就卖"</h4>
+    <p>入门手册讲了最基础的止损方法，但止损远不止固定比例——不同情况适用不同止损方式：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>止损类型</th><th>方法</th><th>适用场景</th><th>优点/缺点</th></tr></thead>
+        <tbody>
+          <tr><td>固定比例止损</td><td>亏损8%或10%就卖</td><td>所有场景</td><td>✅ 简单易执行 ❌ 可能被震出去</td></tr>
+          <tr><td>技术位止损</td><td>跌破关键支撑/均线</td><td>有明确技术形态时</td><td>✅ 更灵活 ❌ 支撑可能失效</td></tr>
+          <tr><td>逻辑止损</td><td>买入理由被推翻</td><td>基本面投资者</td><td>✅ 最本质 ❌ 需要判断力</td></tr>
+          <tr><td>时间止损</td><td>买入后N天不涨不跌</td><td>短线交易</td><td>✅ 避免资金占用 ❌ 可能错过慢涨</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>12.2 止盈策略</h4>
+    <p>很多人只会止损不会止盈——涨了舍不得卖，跌回来又后悔。四种止盈策略：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>止盈策略</th><th>方法</th><th>适用场景</th></tr></thead>
+        <tbody>
+          <tr><td>目标价止盈</td><td>提前设定目标（如+30%），到了就卖</td><td>有明确估值判断时</td></tr>
+          <tr><td>估值止盈</td><td>PE达到历史分位70%+，开始减仓</td><td>价值投资</td></tr>
+          <tr><td>趋势止盈</td><td>跌破20日/60日均线，减仓或清仓</td><td>趋势投资</td></tr>
+          <tr><td>分批止盈</td><td>涨到目标1卖1/3，目标2卖1/3，剩余让利润奔跑</td><td>不确定高点时，兼顾锁定和弹性</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>12.3 最常见的错误：赚一点就跑，亏了死扛</h4>
+    <p>这是亏损的头号原因，根源是<strong>损失厌恶</strong>心理：</p>
+    <div class="chart-container sm" id="chart-loss-aversion"></div>
+    <ul>
+      <li>亏100元的痛苦 ≈ 赚200元的快乐→导致"亏了不舍得卖"</li>
+      <li>赚了一点就想跑→因为"落袋为安"的感觉太好了</li>
+      <li>结果：<strong>赚的总是小钱，亏的总是大钱</strong>→长期必亏</li>
+    </ul>
+    <p><strong>解决方法</strong>：提前设好止盈止损，到点机械执行。不要在盘中做决定，交易计划要在盘前写好。</p>
+  </div>
+
+  <div class="section">
+    <h4>12.4 卖出的五种理由</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>1️⃣ 达到止盈/止损目标</h5><p>纪律性卖出，不需要理由。到了就卖，不犹豫。</p></div>
+      <div class="callout"><h5>2️⃣ 买入逻辑被推翻</h5><p>当初因为"业绩拐点"买的，结果业绩没拐→逻辑不成立，卖出。</p></div>
+      <div class="callout"><h5>3️⃣ 发现更好机会</h5><p>找到了性价比更高的标的。机会成本也是成本。</p></div>
+      <div class="callout"><h5>4️⃣ 估值严重偏离</h5><p>PE到了历史95%分位，市场极度亢奋。泡沫不一定要破，但风险极大。</p></div>
+      <div class="callout"><h5>5️⃣ 基本面恶化</h5><p>公司出了你没想到的问题：业绩暴雷、管理层出事、行业政策逆转。</p></div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>止盈止损不是"割肉"或"下车"——它是你的纪律系统。没有纪律的交易就是赌博。设置了止损就不要在盘中"再等等"。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>止盈止损的本质不是预测，而是承认"我可能错了"——这是最反人性但最重要的能力。能做到这一点，你已经赢了80%的投资者。</p></div>
+</div>
+
+<!-- 第13章 回撤控制 -->
+<div class="chapter reveal" id="ch13">
+  <div class="chapter-header"><span class="ch-num">第13章</span><h3>回撤控制与资金曲线管理</h3></div>
+
+  <div class="section">
+    <h4>13.1 什么是回撤？</h4>
+    <p>回撤（Drawdown）= 从资金曲线最高点到最低点的跌幅。<strong>最大回撤</strong>（Max Drawdown）衡量你曾经"最惨跌了多少"。</p>
+    <div class="chart-container" id="chart-drawdown"></div>
+    <p>一个关键数字让你理解回撤的残酷性：</p>
+    <div class="interactive-panel">
+      <h5>📊 亏损回本对照表</h5>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>亏损幅度</th><th>需要涨幅回本</th><th>难度</th></tr></thead>
+          <tbody>
+            <tr><td>-10%</td><td>+11.1%</td><td>🟢 容易</td></tr>
+            <tr><td>-20%</td><td>+25.0%</td><td>🟡 可接受</td></tr>
+            <tr><td>-30%</td><td>+42.9%</td><td>🟠 困难</td></tr>
+            <tr><td>-50%</td><td>+100%</td><td>🔴 需要翻倍</td></tr>
+            <tr><td>-70%</td><td>+233%</td><td>⚫ 几乎不可能</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>13.2 回撤的来源与分类</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>回撤类型</th><th>原因</th><th>能否避免</th><th>应对方法</th></tr></thead>
+        <tbody>
+          <tr><td>市场系统性回撤</td><td>大盘暴跌，几乎所有股票都跌</td><td>❌ 无法避免</td><td>✅ 控制仓位（不满仓=有缓冲）</td></tr>
+          <tr><td>个股回撤</td><td>公司基本面恶化或短期波动</td><td>🟡 部分可避免</td><td>✅ 分散持仓 + 止损</td></tr>
+          <tr><td>操作性回撤</td><td>追涨杀跌/情绪化交易</td><td>✅ 完全可避免</td><td>✅ 交易纪律 + 情绪管理</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>13.3 控制回撤的实用方法</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>1. 总仓位控制</h5><p>不满仓=有缓冲。即使市场暴跌，你有现金可以在低位补仓。</p></div>
+      <div class="callout"><h5>2. 止损纪律</h5><p>单笔亏损不超过总仓位的2%。例如10万总仓，单只股票最大亏损2000元。</p></div>
+      <div class="callout"><h5>3. 相关性分散</h5><p>不要买5只银行股以为在分散——它们同涨同跌。选不同行业的股票。</p></div>
+      <div class="callout"><h5>4. 账户级回撤警戒线</h5><p>设定最大回撤警戒线（如-15%），触及后强制减仓至半仓以下，暂停操作。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>13.4 资金曲线：画出你的"净值走势"</h4>
+    <p>每周/月记录总资产，画出你的资金曲线。它是你投资体系的"体检报告"：</p>
+    <ul>
+      <li>曲线平稳上升 = 好策略，继续执行</li>
+      <li>曲线大起大落 = 需要优化仓位或止损</li>
+      <li>曲线持续下行 = 策略有问题，暂停交易复盘</li>
+    </ul>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>如果你的账户最大回撤超过30%，说明你的仓位或选股出了系统性问题——先停下来复盘，不要"越亏越加仓"试图回本。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>控制回撤比追求收益更重要——你的收益率上限由市场决定，但回撤下限由你自己决定。能控制回撤的人，长期一定能赚钱。</p></div>
+</div>
+
+<!-- 第14章 交易心理 -->
+<div class="chapter reveal" id="ch14">
+  <div class="chapter-header"><span class="ch-num">第14章</span><h3>交易心理：你的最大对手是自己</h3></div>
+
+  <div class="section">
+    <h4>14.1 五大常见心理陷阱</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>心理陷阱</th><th>表现</th><th>导致的错误</th><th>克服方法</th></tr></thead>
+        <tbody>
+          <tr><td>😭 损失厌恶</td><td>亏100元痛苦≈赚200元快乐</td><td>亏了死扛，小赚就跑</td><td>提前设止损，机械执行</td></tr>
+          <tr><td>🔍 确认偏误</td><td>只看支持自己的信息</td><td>忽视风险信号，加仓被套</td><td>主动找反面证据</td></tr>
+          <tr><td>⚓ 锚定效应</td><td>买入价成为"锚"</td><td>"我30买的，现在25好便宜"——和你的买入价无关！</td><td>问自己："如果我没持仓，现在会买吗？"</td></tr>
+          <tr><td>🐑 羊群效应</td><td>看别人赚钱就追</td><td>追涨杀跌，高位接盘</td><td>写交易计划，按计划执行</td></tr>
+          <tr><td>😎 过度自信</td><td>赚了几笔觉得自己是股神</td><td>加大仓位→巨亏</td><td>记住：短期盈利可能是运气</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>14.2 情绪周期：从兴奋到绝望的循环</h4>
+    <div class="chart-container" id="chart-emotion-cycle"></div>
+    <p>市场情绪有明确的周期，理解这个周期可以帮助你做出更好的决策：</p>
+    <ul>
+      <li><strong>市场底部</strong>：绝望→怀疑→犹豫 → 这恰恰是<strong>最好的买入时机</strong></li>
+      <li><strong>市场上升</strong>：希望→兴奋→狂热 → 最危险的时候，大众开始涌入</li>
+      <li><strong>市场下跌</strong>：焦虑→恐惧→恐慌 → 如果没设止损就晚了</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>14.3 克服心理陷阱的方法</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>📝 写交易计划</h5><p>盘前写好"买什么、为什么买、什么情况卖"，盘中只执行不思考。</p></div>
+      <div class="callout"><h5>🤖 条件单/止损单</h5><p>让系统代替你执行。人脑在亏损时不可靠，但系统不会恐惧。</p></div>
+      <div class="callout"><h5>📊 定期复盘</h5><p>记录每次情绪化决策的后果。数据比感觉更有说服力。</p></div>
+      <div class="callout"><h5>⏰ 控制看盘时间</h5><p>每天看盘不超过30分钟。越看越焦虑，越焦虑越容易做错。</p></div>
+      <div class="callout"><h5>👥 交流但不跟风</h5><p>与志同道合的人交流思路，但不要互相影响操作。你的钱你做主。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>14.4 交易情绪日记模板</h4>
+    <div class="interactive-panel">
+      <h5>📝 每笔交易的情绪记录</h5>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>项目</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>操作</td><td>买入/卖出 + 标的 + 价格</td></tr>
+            <tr><td>理由</td><td>为什么做这笔交易？（逻辑/信号）</td></tr>
+            <tr><td>情绪评分（1-5）</td><td>1=极度恐惧 3=平静 5=极度兴奋</td></tr>
+            <tr><td>是否按计划执行</td><td>✅ 是 / ❌ 否（偏离原因____）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.82rem;color:var(--text2);margin-top:8px"><strong>每周统计</strong>：情绪化操作占比（>30%需要警惕）、按计划执行的胜率、情绪评分与盈亏的相关性</p>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>如果你发现自己频繁看手机看行情、晚上失眠想股票、和家人吵架因为亏损——你已经过度投入了。请减仓或休息，投资不应该影响正常生活。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>投资长期比的不是智商，而是情绪管理能力——最可怕的对手不是市场，是镜子里的自己。管理好情绪，你就赢了大部分人。</p></div>
+</div>
+
+
+<!-- ========== PART 5: 构建投资体系 ========== -->
+<section class="part-header" id="part5">
+  <div class="part-num">05</div>
+  <h2>构建你的投资体系</h2>
+  <p class="part-desc">从"东一枪西一炮"的散乱操作，进化为有方法、有纪律、可复制的投资体系。了解主流流派，找到适合自己的方式，建立完整的交易闭环。</p>
+</section>
+
+<!-- 第15章 投资流派 -->
+<div class="chapter reveal" id="ch15">
+  <div class="chapter-header"><span class="ch-num">第15章</span><h3>投资流派详解：找到适合你的方式</h3></div>
+
+  <div class="section">
+    <h4>15.1 四大投资流派对比</h4>
+    <div class="chart-container" id="chart-schools"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>维度</th><th>价值投资</th><th>成长投资</th><th>趋势投资</th><th>指数定投</th></tr></thead>
+        <tbody>
+          <tr><td>核心逻辑</td><td>价格低于价值时买入</td><td>用合理价格买高增长</td><td>顺势而为，右侧交易</td><td>不选股，定投摊平成本</td></tr>
+          <tr><td>选股标准</td><td>护城河+低估值+稳定盈利</td><td>高增速+大空间+壁垒</td><td>趋势向上+量价配合</td><td>不需要选股</td></tr>
+          <tr><td>代表人物</td><td>巴菲特、芒格</td><td>彼得·林奇、费雪</td><td>利弗莫尔、欧奈尔</td><td>约翰·博格</td></tr>
+          <tr><td>适合人群</td><td>有耐心、能忍波动</td><td>行业敏感、前瞻性强</td><td>纪律极强、盘感好</td><td>上班族/没时间研究</td></tr>
+          <tr><td>A股实践</td><td>消费龙头/银行/公用事业</td><td>新能源/半导体/AI</td><td>⚠️ 新手慎用</td><td>沪深300/中证500ETF</td></tr>
+          <tr><td>持有周期</td><td>1-3年</td><td>6个月-2年</td><td>数天-数月</td><td>3-10年</td></tr>
+          <tr><td>风险特征</td><td>低波动、需要耐心</td><td>高波动、高弹性</td><td>高波动、需严止损</td><td>低波动、长期向上</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>15.2 价值投资详解</h4>
+    <p>价值投资的核心是"在价格低于内在价值时买入，等待价值回归"。但这不等于"买便宜的烂公司"——巴菲特的进化是从"用便宜价格买普通公司"到"用合理价格买好公司"。</p>
+    <div class="callout-grid">
+      <div class="callout"><h5>选股三要素</h5><p>1. 有护城河的好公司<br>2. 估值合理或偏低<br>3. 盈利稳定可预测</p></div>
+      <div class="callout"><h5>买入条件</h5><p>PE在历史分位40%以下+基本面无恶化信号</p></div>
+      <div class="callout"><h5>卖出条件</h5><p>PE到历史分位80%以上/基本面恶化/发现更好标的</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>15.3 成长投资详解</h4>
+    <p>成长投资的核心是"戴维斯双击"——盈利增长推动EPS上升，市场给更高PE，股价=EPS×PE双重提升。最经典的投资回报模式。</p>
+    <div class="warn-box"><div class="warn-label">⚠️ 成长投资的风险</div><p>成长股的下跌也可以是"戴维斯双杀"——盈利不达预期，EPS下降+PE下降，双重打击。成长股的波动远大于价值股，需要更强的心理承受力。</p></div>
+  </div>
+
+  <div class="section">
+    <h4>15.4 指数基金定投详解</h4>
+    <p>定投是最适合新手的"懒人投资法"：每月固定日期/固定金额买入指数基金，不择时、不选股，通过长期纪律化操作摊平成本。</p>
+    <div class="interactive-panel">
+      <h5>📊 定投收益模拟器</h5>
+      <div class="calc-row">
+        <label>每月定投金额(元)</label><input type="number" id="dipAmount" value="2000" oninput="updateDip()">
+        <label>年化收益率(%)</label><input type="number" id="dipRate" value="8" oninput="updateDip()">
+      </div>
+      <div class="calc-row">
+        <label>投资年限(年)</label><input type="range" id="dipYears" min="1" max="30" value="10" oninput="updateDip()"><span id="dipYearsShow" style="color:var(--accent2);min-width:40px">10年</span>
+      </div>
+      <div class="chart-container xs" id="chart-dip"></div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="dipTotal">0</div><div class="result-label">累计投入(元)</div></div>
+        <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="dipValue">0</div><div class="result-label">终值(元)</div></div>
+        <div class="calc-result" style="flex:1;min-width:120px"><div class="result-num" id="dipProfit">0</div><div class="result-label">累计收益(元)</div></div>
+      </div>
+    </div>
+    <p><strong>进阶玩法：估值定投法</strong>——PE低于历史中位时多买（如1.5倍金额），PE高于中位时少买（如0.5倍金额），PE极度高估时暂停。长期回测表明，估值定投比简单定投多赚20-40%。</p>
+  </div>
+
+  <div class="section">
+    <h4>15.5 如何选择适合自己的流派？</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>问题</th><th>倾向价值投资</th><th>倾向成长投资</th><th>倾向定投</th></tr></thead>
+        <tbody>
+          <tr><td>你的性格？</td><td>有耐心、不急</td><td>灵活、前瞻</td><td>求稳、不想操心</td></tr>
+          <tr><td>你能承受多大波动？</td><td>±20%可以</td><td>±40%也能忍</td><td>±15%是极限</td></tr>
+          <tr><td>你有时间研究吗？</td><td>有，每天1-2小时</td><td>有，需持续跟踪</td><td>没有，每月看一次</td></tr>
+          <tr><td>新手建议</td><td>⭐⭐⭐ 适合</td><td>⭐⭐ 需要经验</td><td>⭐⭐⭐⭐ 最推荐</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>没有"最好"的流派，只有"最适合你"的流派——关键是找到与自己性格、时间、资金匹配的方式。新手从"指数定投+少量价值投资"起步最稳妥。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>投资体系不必复杂，但必须适合你——一个你能坚持执行的简单体系，远胜过你执行不了的完美体系。</p></div>
+</div>
+
+<!-- 第16章 投资组合 -->
+<div class="chapter reveal" id="ch16">
+  <div class="chapter-header"><span class="ch-num">第16章</span><h3>构建投资组合：从选股到组合</h3></div>
+
+  <div class="section">
+    <h4>16.1 为什么需要投资组合？</h4>
+    <p>单只股票的风险分为两类：</p>
+    <ul>
+      <li><strong>个股风险（非系统性风险）</strong>：公司特有的风险，如业绩暴雷、管理层出事→<strong>可以通过分散投资消除</strong></li>
+      <li><strong>系统性风险</strong>：整个市场的风险，如金融危机、经济衰退→<strong>无法通过分散投资消除</strong>，但可以控制仓位</li>
+    </ul>
+    <p>投资组合的目标就是<strong>消除个股风险，只承担系统性风险</strong>——因为系统性风险是投资的"门票"，个股风险则是"不必要的赌注"。</p>
+  </div>
+
+  <div class="section">
+    <h4>16.2 核心+卫星策略详解</h4>
+    <div class="chart-container sm" id="chart-portfolio-alloc"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>仓位</th><th>占比</th><th>标的类型</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td>核心仓</td><td>60-70%</td><td>指数基金/高股息蓝筹/长期好公司</td><td>稳健底仓，控制回撤</td></tr>
+          <tr><td>卫星仓</td><td>30-40%</td><td>成长股/行业主题/短期机会</td><td>弹性空间，追求超额收益</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>16.3 行业配置比例</h4>
+    <ul>
+      <li>单一行业不超过总仓位的30%</li>
+      <li>建议新手：3-5个行业，每个行业1-2只股票</li>
+      <li>不要过度分散：持有10只以上反而精力分散、收益平庸</li>
+      <li>分散的关键是<strong>相关性</strong>——3只不同行业的股票比5只同行业的股票更能分散风险</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>16.4 动态再平衡</h4>
+    <p>每季度检查一次，将各资产比例调回目标值。本质是<strong>低买高卖的纪律化执行</strong>：</p>
+    <ul>
+      <li>某只股票涨多了→占比超过目标→减仓（高卖）</li>
+      <li>某只股票跌多了→占比低于目标→加仓（低买）</li>
+      <li>不需要判断方向，只需要按比例操作</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>16.5 示例：5万资金的配置方案</h4>
+    <div class="interactive-panel">
+      <div class="chart-container xs" id="chart-sample-portfolio"></div>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>类别</th><th>金额</th><th>占比</th><th>具体标的</th></tr></thead>
+          <tbody>
+            <tr><td>核心-宽基指数</td><td>2万</td><td>40%</td><td>沪深300ETF</td></tr>
+            <tr><td>核心-消费龙头</td><td>1.5万</td><td>30%</td><td>食品饮料龙头</td></tr>
+            <tr><td>卫星-科技</td><td>0.5万</td><td>10%</td><td>半导体ETF</td></tr>
+            <tr><td>卫星-医药</td><td>0.5万</td><td>10%</td><td>医药ETF</td></tr>
+            <tr><td>现金</td><td>0.5万</td><td>10%</td><td>国债逆回购/货币基金</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>投资组合不是"买了不管"——每季度至少做一次检查：基本面是否变化？比例是否偏离超过5%？是否需要再平衡？</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>组合的目的是"在控制风险的前提下追求合理回报"——先活下来，再谈赚多少。稳健的收益远好于大起大落。</p></div>
+</div>
+
+<!-- 第17章 交易系统 -->
+<div class="chapter reveal" id="ch17">
+  <div class="chapter-header"><span class="ch-num">第17章</span><h3>交易系统：选股→买入→持有→卖出→复盘</h3></div>
+
+  <div class="section">
+    <h4>17.1 什么是交易系统？</h4>
+    <p><strong>没有系统的交易 = 赌博</strong>。有系统的交易 = 可复制、可复盘、可迭代。</p>
+    <p>交易系统就是一套<strong>事前定义好的规则</strong>——告诉你买什么、什么时候买、买多少、什么时候卖、卖多少。所有决策在盘前完成，盘中只执行。</p>
+  </div>
+
+  <div class="section">
+    <h4>17.2 交易系统的五个环节</h4>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-text">选股<br>护城河+估值+趋势</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-text">买入<br>估值到位+技术确认</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-text">持有<br>基本面未变+趋势未破</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-text">卖出<br>止盈/止损/逻辑推翻</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-text">复盘<br>对错归因+系统迭代</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>17.3 标准交易计划模板</h4>
+    <div class="interactive-panel">
+      <h5>📋 交易计划卡</h5>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>项目</th><th>盘前填写</th><th>盘后记录</th></tr></thead>
+          <tbody>
+            <tr><td>标的</td><td>______</td><td>同</td></tr>
+            <tr><td>买入理由</td><td>______</td><td>是否成立？</td></tr>
+            <tr><td>目标价</td><td>______</td><td>实际卖出价</td></tr>
+            <tr><td>止损价</td><td>______</td><td>是否触发？</td></tr>
+            <tr><td>仓位</td><td>______%</td><td>实际仓位</td></tr>
+            <tr><td>预计持有期</td><td>______天</td><td>实际持有期</td></tr>
+            <tr><td>实际盈亏</td><td>—</td><td>+____%/-____%</td></tr>
+            <tr><td>心得</td><td>—</td><td>做对了______<br>做错了______<br>下次改进______</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>17.4 从"想到"到"做到"：执行力的修炼</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>📝 盘前写计划</h5><p>所有决策在盘前完成，盘中只执行。不在盘中做任何重大决策。</p></div>
+      <div class="callout"><h5>🤖 用条件单</h5><p>止损单、止盈单提前设好，让系统代替你执行。人脑在亏损时不靠谱。</p></div>
+      <div class="callout"><h5>📊 每周复盘</h5><p>不要每天计算盈亏——每天看只会增加焦虑。每周固定时间复盘一次。</p></div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>好的交易系统不需要每次都对——只需要"对的时候赚得多、错的时候亏得少"，长期就能盈利。胜率40%但赔率3:1的系统，比胜率70%但赔率0.5:1的系统更赚钱。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>交易系统是你的"投资宪法"——一旦制定，就必须遵守。可以迭代修改，但不能随意违反。纪律是区分投资者和赌徒的分界线。</p></div>
+</div>
+
+
+<!-- ========== PART 6: 实战与精进 ========== -->
+<section class="part-header" id="part6">
+  <div class="part-num">06</div>
+  <h2>实战演练与持续精进</h2>
+  <p class="part-desc">用小资金实战验证体系，学会复盘迭代，建立持续学习的习惯。从"学到了"到"做到了"的关键一步。</p>
+</section>
+
+<!-- 第18章 模拟到实战 -->
+<div class="chapter reveal" id="ch18">
+  <div class="chapter-header"><span class="ch-num">第18章</span><h3>从模拟到实战：你的第一笔进阶投资</h3></div>
+
+  <div class="section">
+    <h4>18.1 模拟盘练习</h4>
+    <p>在用真金白银之前，至少用模拟盘练习1个月。模拟盘的价值：</p>
+    <ul>
+      <li>验证你的交易系统是否能盈利</li>
+      <li>熟悉交易流程和操作</li>
+      <li>测试选股逻辑和止损纪律</li>
+    </ul>
+    <div class="warn-box"><div class="warn-label">⚠️ 模拟盘的局限</div><p>模拟盘无法模拟<strong>真实的亏损恐惧</strong>——当模拟账户亏了20%，你不会心痛；但真实账户亏20%，你会焦虑到失眠。心态是模拟盘无法训练的，只有实战才能体会。</p></div>
+  </div>
+
+  <div class="section">
+    <h4>18.2 实战启动：用小资金试水</h4>
+    <p>实战启动的原则：<strong>1-3万，选1-2只股票+1只指数基金，严格按交易系统执行</strong>。</p>
+    <div class="callout-grid">
+      <div class="callout"><h5>💡 资金规模</h5><p>1-3万——亏得起、有感觉。太少没实感，太多风险大。</p></div>
+      <div class="callout"><h5>🎯 标的选择</h5><p>1只指数基金（如沪深300ETF）+ 1-2只你研究过的股票</p></div>
+      <div class="callout"><h5>📏 执行纪律</h5><p>严格按照交易系统：写交易计划、设止损、每周复盘</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>18.3 实战前三个月的关键任务</h4>
+    <div class="chart-container sm" id="chart-first3m"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>月份</th><th>核心任务</th><th>关键问题</th></tr></thead>
+        <tbody>
+          <tr><td>第1个月</td><td>熟悉交易系统的执行</td><td>你能否按计划买卖？止损能否严格执行？</td></tr>
+          <tr><td>第2个月</td><td>观察情绪变化</td><td>亏损时你能坚持纪律吗？会不会恐慌操作？</td></tr>
+          <tr><td>第3个月</td><td>第一次复盘迭代</td><td>交易系统哪些规则有效？哪些需要调整？</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>18.4 常见的"实战冲击"及应对</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>冲击场景</th><th>你的反应</th><th>正确应对</th></tr></thead>
+        <tbody>
+          <tr><td>买入后立刻下跌</td><td>恐慌，怀疑自己的判断</td><td>按止损纪律执行——如果没到止损位，不需要操作</td></tr>
+          <tr><td>卖出后继续上涨</td><td>后悔，觉得卖早了</td><td>不要回头看——执行了就是对的，你赚到了属于你的部分</td></tr>
+          <tr><td>连续止损3次</td><td>怀疑系统，想放弃</td><td>暂停交易，检查系统——是选股问题还是市场系统性下跌？</td></tr>
+          <tr><td>身边人都在赚钱</td><td>焦虑，想加大仓位</td><td>守住纪律——别人的收益与你无关，你的体系才是你的护城河</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>实战初期的目标不是赚钱，而是验证你的系统能否正常运行——如果系统在亏钱，先改系统再继续。不要用"加大仓位"来回本。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>实战是检验一切的唯一标准——纸上得来终觉浅，但要用亏得起的钱去验证。实战前三个月的目标是"验证体系"，不是"赚钱"。</p></div>
+</div>
+
+<!-- 第19章 复盘方法 -->
+<div class="chapter reveal" id="ch19">
+  <div class="chapter-header"><span class="ch-num">第19章</span><h3>复盘方法：进步的引擎</h3></div>
+
+  <div class="section">
+    <h4>19.1 为什么复盘比学习更重要？</h4>
+    <p>不复盘的交易者会<strong>重复同样的错误</strong>。复盘是"从自己的错误中学习"——比任何课程都有效。你看100本书，不如自己做10笔交易然后认真复盘。</p>
+  </div>
+
+  <div class="section">
+    <h4>19.2 三种复盘方式</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>📝 交易复盘</h5><p>逐笔回顾交易记录。每笔交易做对了什么？做错了什么？属于哪类问题？</p></div>
+      <div class="callout"><h5>📅 周复盘</h5><p>每周回顾整体表现。盈亏、执行率、情绪化操作次数、下周改进点。</p></div>
+      <div class="callout"><h5>📊 季度体系复盘</h5><p>每季度评估交易系统的有效性。总收益vs基准、最大回撤、胜率赔率、系统是否需要修改。</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>19.3 交易复盘模板</h4>
+    <div class="interactive-panel">
+      <h5>📋 单笔交易复盘四问</h5>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>问题</th><th>你的回答</th></tr></thead>
+          <tbody>
+            <tr><td>1. 这笔交易做对了什么？</td><td>________________________________</td></tr>
+            <tr><td>2. 这笔交易做错了什么？</td><td>________________________________</td></tr>
+            <tr><td>3. 如果重来，我会怎么做？</td><td>________________________________</td></tr>
+            <tr><td>4. 这个错误属于哪类？</td><td>☐ 选股问题 ☐ 买入时机 ☐ 仓位问题 ☐ 心态问题 ☐ 止损问题</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>19.4 周复盘清单</h4>
+    <div class="checklist">
+      <label><input type="checkbox"> 本周总盈亏及收益率已记录</label>
+      <label><input type="checkbox"> 每笔交易是否严格执行了交易计划？</label>
+      <label><input type="checkbox"> 本周情绪化操作的次数及后果</label>
+      <label><input type="checkbox"> 本周犯的错误类型统计</label>
+      <label><input type="checkbox"> 下周需要改进的1-2个重点</label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>19.5 季度体系复盘</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>评估维度</th><th>指标</th><th>合格标准</th></tr></thead>
+        <tbody>
+          <tr><td>总收益率</td><td>近3个月总收益 vs 沪深300</td><td>跑赢或持平沪深300</td></tr>
+          <tr><td>最大回撤</td><td>期间最大回撤幅度</td><td>&lt; 15%（新手）</td></tr>
+          <tr><td>胜率</td><td>盈利交易/总交易</td><td>> 40%</td></tr>
+          <tr><td>赔率</td><td>平均盈利/平均亏损</td><td>> 1.5:1</td></tr>
+          <tr><td>执行率</td><td>按计划执行的交易占比</td><td>> 80%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>复盘最忌讳"只看赚钱的交易"——亏损的交易才是最好的教材。每次亏损都是学费，不复盘就是白交了学费。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>没有复盘就没有进步——每一笔亏损都是学费，不复盘就是白交了学费。复盘是最好的投资，回报率无限高。</p></div>
+</div>
+
+<!-- 第20章 持续精进 -->
+<div class="chapter reveal" id="ch20">
+  <div class="chapter-header"><span class="ch-num">第20章</span><h3>持续精进：从进阶到专业</h3></div>
+
+  <div class="section">
+    <h4>20.1 经典书籍推荐与阅读路径</h4>
+    <div class="chart-container" id="chart-book-path"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>阶段</th><th>书目</th><th>核心价值</th></tr></thead>
+        <tbody>
+          <tr><td>1. 巩固基础</td><td>《聪明的投资者》《巴菲特致股东的信》</td><td>建立价值投资框架</td></tr>
+          <tr><td>2. 深入估值</td><td>《财务报表分析与证券估值》《估值》</td><td>系统化估值方法</td></tr>
+          <tr><td>3. 理解市场</td><td>《投资最重要的事》《周期》《漫步华尔街》</td><td>风险思维与市场规律</td></tr>
+          <tr><td>4. 修炼心性</td><td>《穷查理宝典》《思考快与慢》</td><td>跨学科思维与认知偏误</td></tr>
+          <tr><td>5. 理解人性</td><td>《股票作手回忆录》《金融炼金术》</td><td>人性与市场的博弈</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>20.2 持续学习的信息源</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>信息源</th><th>看什么</th><th>不看什么</th></tr></thead>
+        <tbody>
+          <tr><td>券商研报</td><td>行业深度报告、公司首次覆盖报告</td><td>每日点评、目标价预测</td></tr>
+          <tr><td>公司年报/季报</td><td>"管理层讨论与分析"、财务报表、风险提示</td><td>仅看营收净利润数字</td></tr>
+          <tr><td>财经媒体</td><td>重大政策、行业变化、公司公告</td><td>短期涨跌评论、标题党</td></tr>
+          <tr><td>投资者社区</td><td>不同视角的分析思路</td><td>荐股、情绪化帖子</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>20.3 常见进阶路径</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>路径A：深度价值</h5><p>价值投资深入→行业研究员→基金经理<br>核心能力：行业洞察、估值判断、耐心</p></div>
+      <div class="callout"><h5>路径B：量化系统</h5><p>技术分析深入→量化交易→系统化投资<br>核心能力：编程、统计、纪律</p></div>
+      <div class="callout"><h5>路径C：资产配置</h5><p>指数投资深入→资产配置→财富管理<br>核心能力：大类资产理解、风控、沟通</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>20.4 投资的终极智慧</h4>
+    <div class="callout-grid">
+      <div class="callout"><h5>🙏 承认不知道</h5><p>市场永远比你聪明。你不知道明天涨跌，不知道公司会怎样，这很正常。承认无知是智慧的开始。</p></div>
+      <div class="callout"><h5>😶 保持谦逊</h5><p>短期盈利可能是运气，长期盈利才是能力。不要因为赚了几笔就觉得自己悟了。</p></div>
+      <div class="callout"><h5>🏃 长期主义</h5><p>投资是马拉松，不是百米冲刺。年化15%已经非常优秀，巴菲特长期也就20%左右。</p></div>
+      <div class="callout"><h5>🎯 知行合一</h5><p>知道和做到之间的距离，是投资最难的部分。从"知道要止损"到"真的止损"，可能需要经历几次巨亏。</p></div>
+    </div>
+  </div>
+
+  <div class="tip-box"><div class="tip-label">💡 投研 Tips</div><p>每读完一本书，写一段200字总结 + 1个"我要改变的操作"——知识不用等于没学。把学到的知识变成具体的行为改变，才是真正的学习。</p></div>
+  <div class="key-box"><div class="key-label">🔑 核心要点</div><p>投资学习没有终点——市场在变，你的体系也要持续迭代。唯一不变的是：永远敬畏市场，永远保持学习。最优秀的投资者，永远是最好的学生。</p></div>
+</div>
+
+
+<!-- ========== APPENDICES ========== -->
+<section class="part-header" id="appendices">
+  <div class="part-num">A-E</div>
+  <h2>附录</h2>
+  <p class="part-desc">速查工具与模板，日常投资中的案头参考。</p>
+</section>
+
+<div class="appendix reveal" id="appA">
+  <h3>附录A 行业估值方法速查表</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>行业</th><th>首选估值</th><th>次选估值</th><th>合理PE区间</th><th>合理PB区间</th><th>⚠️ 关键注意</th></tr></thead>
+      <tbody>
+        <tr><td>银行</td><td>PB</td><td>股息率</td><td>5-8x</td><td>0.5-0.8x</td><td>PE基本无效；关注不良率</td></tr>
+        <tr><td>保险</td><td>P EV</td><td>PB</td><td>10-18x</td><td>1.0-2.5x</td><td>新业务价值是核心</td></tr>
+        <tr><td>券商</td><td>PB</td><td>PE</td><td>15-25x</td><td>1.0-2.0x</td><td>业绩随市场波动大</td></tr>
+        <tr><td>白酒</td><td>PE+历史分位</td><td>PS</td><td>20-40x</td><td>5-15x</td><td>品牌溢价可给更高PE</td></tr>
+        <tr><td>食品饮料</td><td>PE</td><td>PS</td><td>20-35x</td><td>3-8x</td><td>关注渠道库存</td></tr>
+        <tr><td>家电</td><td>PE</td><td>PB</td><td>12-20x</td><td>2-5x</td><td>成熟行业看分红</td></tr>
+        <tr><td>互联网</td><td>PS/PEG</td><td>PE</td><td>30-80x</td><td>3-10x</td><td>PE经常失灵，看用户和GMV</td></tr>
+        <tr><td>半导体</td><td>PE/G</td><td>PS</td><td>30-80x</td><td>3-8x</td><td>周期性强，注意库存</td></tr>
+        <tr><td>煤炭</td><td>PB底部</td><td>股息率</td><td>周期波动</td><td>0.8-2.0x</td><td>PE最低=周期顶部！</td></tr>
+        <tr><td>钢铁</td><td>PB底部</td><td>PE</td><td>周期波动</td><td>0.6-1.5x</td><td>同煤炭，看PB不看PE</td></tr>
+        <tr><td>创新药</td><td>管线估值</td><td>PS</td><td>不适用</td><td>不适用</td><td>按研发管线阶段估值</td></tr>
+        <tr><td>成熟药企</td><td>PE</td><td>PEG</td><td>15-30x</td><td>2-6x</td><td>关注集采影响</td></tr>
+        <tr><td>新能源</td><td>PE/G</td><td>PS</td><td>20-50x</td><td>2-6x</td><td>产能过剩期估值下移</td></tr>
+        <tr><td>房地产</td><td>PB</td><td>NAV</td><td>不适用</td><td>0.3-1.0x</td><td>NAV（净资产价值）更准确</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="appendix reveal" id="appB">
+  <h3>附录B 财务排雷检查清单</h3>
+  <div class="checklist">
+    <label><input type="checkbox"> <strong>1. 经营现金流</strong>：经营现金流/净利润 ≥ 0.7（近3年平均）</label>
+    <label><input type="checkbox"> <strong>2. 应收账款</strong>：应收增速 ≤ 营收增速 × 1.2</label>
+    <label><input type="checkbox"> <strong>3. 存货</strong>：存货周转天数未持续拉长</label>
+    <label><input type="checkbox"> <strong>4. 在建工程</strong>：在建工程/总资产 < 15%</label>
+    <label><input type="checkbox"> <strong>5. 其他应收款</strong>：其他应收款/总资产 < 3%</label>
+    <label><input type="checkbox"> <strong>6. 商誉</strong>：商誉/净资产 < 30%</label>
+    <label><input type="checkbox"> <strong>7. 审计意见</strong>：标准无保留意见</label>
+    <label><input type="checkbox"> <strong>8. 审计机构</strong>：近3年未更换</label>
+    <label><input type="checkbox"> <strong>9. 关联交易</strong>：关联交易占比 < 20%</label>
+    <label><input type="checkbox"> <strong>10. 客户集中度</strong>：前五大客户 < 50%（非垄断行业）</label>
+  </div>
+  <p style="font-size:.82rem;color:var(--text3);margin-top:10px">✅ 全部通过=基本安全；❌ 1-2项不通过=需深入分析该指标；❌ 3项以上不通过=建议放弃</p>
+</div>
+
+<div class="appendix reveal" id="appC">
+  <h3>附录C 交易系统模板</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>环节</th><th>规则</th><th>我的具体标准</th></tr></thead>
+      <tbody>
+        <tr><td>选股</td><td>用什么标准筛选？</td><td>ROE>15%+PE历史分位<40%+有护城河</td></tr>
+        <tr><td>买入</td><td>什么条件触发？</td><td>估值到位+站上20日均线+放量</td></tr>
+        <tr><td>仓位</td><td>买多少？</td><td>单只≤20%总仓位，5只股票等权</td></tr>
+        <tr><td>止损</td><td>什么情况止损？</td><td>亏损8%或跌破60日均线</td></tr>
+        <tr><td>止盈</td><td>什么情况止盈？</td><td>PE到历史分位70%+或涨30%减仓1/3</td></tr>
+        <tr><td>持有</td><td>什么情况继续持有？</td><td>基本面未变+均线趋势未破</td></tr>
+        <tr><td>复盘</td><td>多久复盘一次？</td><td>每笔交易复盘+每周总复盘+每季度体系复盘</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="appendix reveal" id="appD">
+  <h3>附录D 投资流派对比表</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>维度</th><th>价值投资</th><th>成长投资</th><th>趋势投资</th><th>指数定投</th></tr></thead>
+      <tbody>
+        <tr><td>核心逻辑</td><td>价格低于价值时买入</td><td>合理价格买高增长</td><td>顺势而为，右侧交易</td><td>不选股，定投摊平</td></tr>
+        <tr><td>选股方式</td><td>护城河+低估值</td><td>高增速+大空间</td><td>趋势+量价</td><td>无需选股</td></tr>
+        <tr><td>择时方式</td><td>低估时买入</td><td>拐点确认买入</td><td>突破确认买入</td><td>不择时</td></tr>
+        <tr><td>风控方式</td><td>安全边际</td><td>仓位控制</td><td>严格止损</td><td>定投摊平</td></tr>
+        <tr><td>持有周期</td><td>1-3年</td><td>6月-2年</td><td>数天-数月</td><td>3-10年</td></tr>
+        <tr><td>适合人群</td><td>耐心+研究型</td><td>前瞻+灵活型</td><td>纪律+盘感型</td><td>上班族/稳健型</td></tr>
+        <tr><td>新手推荐度</td><td>⭐⭐⭐</td><td>⭐⭐</td><td>⭐</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>最大风险</td><td>价值陷阱</td><td>戴维斯双杀</td><td>频繁止损</td><td>长期低迷</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="appendix reveal" id="appE">
+  <h3>附录E 推荐书单与学习资源</h3>
+  <h4>按阶段分类的书单</h4>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>阶段</th><th>书目</th><th>作者</th><th>读后收获</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="2">巩固基础</td><td>《聪明的投资者》</td><td>格雷厄姆</td><td>价值投资的圣经，理解"安全边际"</td></tr>
+        <tr><td>《巴菲特致股东的信》</td><td>巴菲特</td><td>投资思想的精华，比任何传记都实用</td></tr>
+        <tr><td rowspan="2">深入估值</td><td>《财务报表分析与证券估值》</td><td>斯蒂芬·佩因曼</td><td>系统化财务分析和估值框架</td></tr>
+        <tr><td>《估值》</td><td>麦肯锡</td><td>DCF和各种估值方法的权威指南</td></tr>
+        <tr><td rowspan="3">理解市场</td><td>《投资最重要的事》</td><td>霍华德·马克斯</td><td>风险思维和"第二层思考"</td></tr>
+        <tr><td>《周期》</td><td>霍华德·马克斯</td><td>理解周期轮回，把握周期位置</td></tr>
+        <tr><td>《漫步华尔街》</td><td>麦基尔</td><td>有效市场假说与指数投资逻辑</td></tr>
+        <tr><td rowspan="2">修炼心性</td><td>《穷查理宝典》</td><td>查理·芒格</td><td>跨学科思维框架和反向思考</td></tr>
+        <tr><td>《思考快与慢》</td><td>丹尼尔·卡尼曼</td><td>理解认知偏误，避免决策陷阱</td></tr>
+        <tr><td rowspan="2">理解人性</td><td>《股票作手回忆录》</td><td>埃德温·勒菲弗</td><td>人性与市场博弈的经典故事</td></tr>
+        <tr><td>《金融炼金术》</td><td>乔治·索罗斯</td><td>反身性理论——市场如何自我强化</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>在线学习资源</h4>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>资源类型</th><th>推荐</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>数据平台</td><td>理杏仁、乌龟量化</td><td>PE/PB历史分位查询</td></tr>
+        <tr><td>公告查询</td><td>巨潮资讯网</td><td>上市公司法定披露</td></tr>
+        <tr><td>研报平台</td><td>慧博智能投研</td><td>券商研报搜索阅读</td></tr>
+        <tr><td>财经数据</td><td>东方财富、同花顺</td><td>行情、财务数据</td></tr>
+        <tr><td>学习社区</td><td>雪球</td><td>投资讨论（选择性吸收）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>股票进阶实战手册 · 从分析到实战，构建你的投资体系</p>
+  <p style="margin-top:6px">⚠️ 本手册仅供学习参考，不构成任何投资建议。投资有风险，入市需谨慎。</p>
+</footer>
+
+</div><!-- end mainContent -->
+
+<script>
+// ===== Navigation & UI =====
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar'),btn=document.getElementById('toggleBtn');
+  sb.classList.toggle('hidden');btn.classList.toggle('shifted');
+}
+function scrollToId(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+  if(window.innerWidth<900){document.getElementById('sidebar').classList.add('hidden');document.getElementById('toggleBtn').classList.add('shifted');}
+}
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('backTop');
+  btn.classList.toggle('show',window.scrollY>600);
+  // Active nav
+  const items=document.querySelectorAll('.nav-item');
+  let current='';
+  document.querySelectorAll('[id]').forEach(el=>{
+    if(el.getBoundingClientRect().top<200) current=el.id;
+  });
+  items.forEach(it=>{it.classList.remove('active');if(it.getAttribute('onclick')?.includes(current))it.classList.add('active');});
+});
+// Reveal on scroll
+const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ===== Hero Canvas =====
+(function(){
+  const c=document.getElementById('heroCanvas'),ctx=c.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight;initParticles();}
+  function initParticles(){
+    particles=[];
+    for(let i=0;i<80;i++) particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.5,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,a:Math.random()*0.4+0.1});
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(16,185,129,${p.a})`;ctx.fill();
+    });
+    // Lines
+    for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(16,185,129,${0.06*(1-d/120)})`;ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  resize();draw();window.addEventListener('resize',resize);
+})();
+
+// ===== ECharts lazy init =====
+const chartInstances={};
+function initChart(id,option){
+  const el=document.getElementById(id);if(!el)return;
+  const ob=new IntersectionObserver((entries)=>{
+    if(entries[0].isIntersecting){
+      if(!chartInstances[id]){chartInstances[id]=echarts.init(el,'dark');chartInstances[id].setOption(option);}
+      ob.disconnect();
+    }
+  },{threshold:0.1});
+  ob.observe(el);
+}
+window.addEventListener('resize',()=>{Object.values(chartInstances).forEach(c=>c.resize());});
+
+// ===== CHART: Moat (Ch2) =====
+initChart('chart-moat',{
+  tooltip:{trigger:'item'},
+  series:[{type:'radar',data:[
+    {value:[95,70,60,80,90],name:'茅台',areaStyle:{color:'rgba(16,185,129,0.15)'}},
+    {value:[60,80,50,40,30],name:'普通消费品公司',areaStyle:{color:'rgba(239,68,68,0.1)'}}
+  ],symbol:'circle',symbolSize:6,lineStyle:{width:2}}],
+  radar:{indicator:[{name:'品牌',max:100},{name:'成本',max:100},{name:'网络效应',max:100},{name:'转换成本',max:100},{name:'特许经营',max:100}],shape:'polygon',splitNumber:4,axisName:{color:'#94A3B8',fontSize:11},splitArea:{areaStyle:{color:['rgba(16,185,129,0.02)','rgba(16,185,129,0.04)']}},splitLine:{lineStyle:{color:'rgba(148,163,184,0.08)'}},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  legend:{data:['茅台','普通消费品公司'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}}
+});
+
+// ===== CHART: DuPont (Ch2) =====
+initChart('chart-dupont',{
+  tooltip:{trigger:'axis'},legend:{data:['净利率','总资产周转率','权益乘数','ROE'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['茅台','海天味业','沃尔玛(参考)','高杠杆房企'],axisLabel:{color:'#94A3B8',fontSize:10},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',axisLabel:{color:'#94A3B8',fontSize:10},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'净利率',type:'bar',data:[52,28,3,12],itemStyle:{color:'#10B981'}},
+    {name:'总资产周转率',type:'bar',data:[0.5,0.8,2.5,0.3],itemStyle:{color:'#3B82F6'}},
+    {name:'权益乘数',type:'bar',data:[1.4,1.8,2.5,5.0],itemStyle:{color:'#F59E0B'}},
+    {name:'ROE',type:'line',data:[33,35,18,18],lineStyle:{color:'#EF4444',width:2},symbol:'circle',symbolSize:8,itemStyle:{color:'#EF4444'}}
+  ]
+});
+
+// ===== CHART: Minefield (Ch3) =====
+initChart('chart-minefield',{
+  tooltip:{trigger:'axis'},legend:{data:['净利润增速','经营现金流增速','应收增速','存货增速'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:['2021','2022','2023','2024E'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',axisLabel:{color:'#94A3B8',formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'净利润增速',type:'line',data:[15,12,8,5],lineStyle:{color:'#10B981',width:2},symbol:'circle',symbolSize:6},
+    {name:'经营现金流增速',type:'line',data:[10,-5,-15,-20],lineStyle:{color:'#3B82F6',width:2},symbol:'circle',symbolSize:6},
+    {name:'应收增速',type:'line',data:[20,35,50,65],lineStyle:{color:'#EF4444',width:2,type:'dashed'},symbol:'triangle',symbolSize:8},
+    {name:'存货增速',type:'line',data:[18,30,45,55],lineStyle:{color:'#F59E0B',width:2,type:'dashed'},symbol:'triangle',symbolSize:8}
+  ],
+  markArea:{data:[[{yAxis:0,itemStyle:{color:'rgba(239,68,68,0.05)'}}]]}
+});
+
+// ===== CHART: Penetration (Ch4) =====
+initChart('chart-penetration',{
+  tooltip:{trigger:'axis'},legend:{data:['渗透率','增速'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['0-5%','5-15%','15-30%','30-50%','50-70%','70-90%','>90%'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:[{type:'value',name:'渗透率(%)',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},{type:'value',name:'增速(%)',axisLabel:{color:'#94A3B8'},splitLine:{show:false}}],
+  series:[
+    {name:'渗透率',type:'bar',data:[5,15,30,50,70,90,95],itemStyle:{color:function(p){const c=['#10B981','#10B981','#34D399','#F59E0B','#F59E0B','#EF4444','#EF4444'];return c[p.dataIndex];}}},
+    {name:'增速',type:'line',yAxisIndex:1,data:[80,60,40,25,15,8,3],lineStyle:{color:'#3B82F6',width:2},symbol:'circle',symbolSize:6,itemStyle:{color:'#3B82F6'}}
+  ]
+});
+
+// ===== CHART: Supply Chain (Ch4) =====
+initChart('chart-chain',{
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},legend:{data:['2021(供给紧张)','2024(供给过剩)'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['上游\n（锂矿）','中游\n（电池）','下游\n（整车）'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',name:'利润占比(%)',max:80,axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'2021(供给紧张)',type:'bar',data:[65,25,10],itemStyle:{color:'#F59E0B'},barWidth:'30%'},
+    {name:'2024(供给过剩)',type:'bar',data:[15,45,40],itemStyle:{color:'#3B82F6'},barWidth:'30%'}
+  ]
+});
+
+// ===== CHART: PB-ROE (Ch5) =====
+initChart('chart-pb-roe',{
+  tooltip:{trigger:'axis'},legend:{data:['ROE','PB'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['银行A','银行B','消费龙头','消费普通','科技龙头','科技普通'],axisLabel:{color:'#94A3B8',fontSize:10},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:[{type:'value',name:'ROE(%)',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},{type:'value',name:'PB(倍)',axisLabel:{color:'#94A3B8'},splitLine:{show:false}}],
+  series:[
+    {name:'ROE',type:'bar',data:[12,8,30,15,25,10],itemStyle:{color:'#10B981'}},
+    {name:'PB',type:'line',yAxisIndex:1,data:[0.6,0.4,8,2,6,1.5],lineStyle:{color:'#F59E0B',width:2},symbol:'circle',symbolSize:8,itemStyle:{color:'#F59E0B'}}
+  ]
+});
+
+// ===== CHART: Cycle PE (Ch6) =====
+initChart('chart-cycle-pe',{
+  tooltip:{trigger:'axis'},legend:{data:['产品价格','PE','利润'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['底部','复苏','上升','繁荣','顶部','回落','衰退','谷底'],axisLabel:{color:'#94A3B8',fontSize:10},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'产品价格',type:'line',data:[30,45,65,85,95,75,50,35],lineStyle:{color:'#10B981',width:2},symbol:'circle',symbolSize:6},
+    {name:'PE',type:'line',data:[80,40,20,10,5,8,25,60],lineStyle:{color:'#EF4444',width:2,type:'dashed'},symbol:'diamond',symbolSize:8},
+    {name:'利润',type:'bar',data:[5,15,35,55,65,30,8,2],itemStyle:{color:'rgba(59,130,246,0.4)'}}
+  ],
+  graphic:[{type:'text',left:'12%',top:'8%',style:{text:'⚠️ PE最高=底部机会',fill:'#10B981',fontSize:12}},{type:'text',right:'12%',top:'8%',style:{text:'⚠️ PE最低=顶部陷阱',fill:'#EF4444',fontSize:12}}]
+});
+
+// ===== CHART: Industry Valuation (Ch6) =====
+initChart('chart-industry-val',{
+  tooltip:{trigger:'axis'},legend:{data:['PE中位数','PB中位数'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['银行','煤炭','家电','白酒','医药','新能源','互联网','半导体'],axisLabel:{color:'#94A3B8',fontSize:10},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:[{type:'value',name:'PE(倍)',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},{type:'value',name:'PB(倍)',axisLabel:{color:'#94A3B8'},splitLine:{show:false}}],
+  series:[
+    {name:'PE中位数',type:'bar',data:[6,12,16,30,25,35,45,55],itemStyle:{color:'#10B981'}},
+    {name:'PB中位数',type:'line',yAxisIndex:1,data:[0.6,1.2,3,8,4,3.5,5,5],lineStyle:{color:'#F59E0B',width:2},symbol:'circle',symbolSize:8,itemStyle:{color:'#F59E0B'}}
+  ]
+});
+
+// ===== CHART: Percentile (Ch7) =====
+initChart('chart-percentile',{
+  tooltip:{trigger:'axis',formatter:function(p){return p[0].name+'<br/>PE分位: '+p[0].value+'%';}},
+  xAxis:{type:'category',data:['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',name:'PE历史分位(%)',max:100,axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  visualMap:{show:false,dimension:0,pieces:[{lt:3,color:'#10B981'},{gte:3,lt:5,color:'#F59E0B'},{gte:5,lt:8,color:'#EF4444'},{gte:8,color:'#10B981'}]},
+  series:[{type:'line',data:[85,65,55,15,35,75,90,40,20,30],areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(16,185,129,0.2)'},{offset:1,color:'rgba(16,185,129,0)'}]}},lineStyle:{width:2},symbol:'circle',symbolSize:8,markLine:{data:[{yAxis:20,lineStyle:{color:'#10B981',type:'dashed'},label:{formatter:'极度低估 20%',color:'#10B981'}},{yAxis:80,lineStyle:{color:'#EF4444',type:'dashed'},label:{formatter:'极度高估 80%',color:'#EF4444'}}]}}]
+});
+
+// ===== CHART: Anchor (Ch7) =====
+initChart('chart-anchor',{
+  tooltip:{trigger:'item'},
+  series:[{type:'gauge',startAngle:180,endAngle:0,min:8,max:18,splitNumber:5,axisLine:{lineStyle:{width:20,color:[[0.3,'#10B981'],[0.6,'#F59E0B'],[1,'#EF4444']]}},pointer:{itemStyle:{color:'#E2E8F0'},width:4},axisTick:{show:false},splitLine:{length:12,lineStyle:{color:'#94A3B8',width:2}},axisLabel:{distance:18,color:'#94A3B8',fontSize:11,formatter:function(v){return v+'x';}},detail:{valueAnimation:true,formatter:'{value}x',color:'#E2E8F0',fontSize:20,offsetCenter:[0,'40%']},data:[{value:12.5,name:'沪深300 当前PE'}],title:{show:true,offsetCenter:[0,'65%'],color:'#94A3B8',fontSize:13}}}]
+});
+
+// ===== CHART: MACD (Ch8) =====
+initChart('chart-macd',{
+  tooltip:{trigger:'axis'},legend:{data:['价格','DIF','DEA','MACD柱'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:Array.from({length:30},(_,i)=>'D'+(i+1)),axisLabel:{color:'#94A3B8',fontSize:9,interval:4},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:[{type:'value',name:'价格',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},{type:'value',name:'MACD',axisLabel:{color:'#94A3B8'},splitLine:{show:false}}],
+  series:[
+    {name:'价格',type:'line',data:[20,21,22,24,26,28,30,32,31,29,27,25,24,26,28,30,33,35,37,36,34,32,30,28,27,29,31,33,35,38],lineStyle:{color:'#E2E8F0',width:2},symbol:'none'},
+    {name:'DIF',type:'line',yAxisIndex:1,data:[0.5,0.8,1.2,1.8,2.2,2.5,2.3,1.8,1.2,0.5,-0.2,-0.8,-1.0,-0.6,0.1,0.8,1.5,2.0,2.3,2.0,1.5,0.8,0.1,-0.5,-0.8,-0.3,0.5,1.2,1.8,2.5],lineStyle:{color:'#3B82F6',width:1.5},symbol:'none'},
+    {name:'DEA',type:'line',yAxisIndex:1,data:[0.3,0.5,0.8,1.2,1.6,2.0,2.2,2.1,1.8,1.3,0.7,0.1,-0.4,-0.6,-0.4,0,0.6,1.2,1.7,1.9,1.8,1.4,0.9,0.3,-0.2,-0.2,0.1,0.5,1.0,1.6],lineStyle:{color:'#F59E0B',width:1.5},symbol:'none'},
+    {name:'MACD柱',type:'bar',yAxisIndex:1,data:[0.2,0.3,0.4,0.6,0.6,0.5,0.1,-0.3,-0.6,-0.8,-0.9,-0.9,-0.6,0,0.5,0.8,0.9,0.8,0.6,0.1,-0.3,-0.6,-0.8,-0.8,-0.6,-0.1,0.4,0.7,0.8,0.9],itemStyle:{color:function(p){return p.value>=0?'#EF4444':'#10B981';}}}
+  ]
+});
+
+// ===== CHART: RSI (Ch8) =====
+initChart('chart-rsi',{
+  tooltip:{trigger:'axis'},legend:{data:['RSI'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:Array.from({length:40},(_,i)=>'D'+(i+1)),axisLabel:{color:'#94A3B8',fontSize:9,interval:7},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',min:0,max:100,axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  visualMap:{show:false,dimension:1,pieces:[{lt:30,color:'#10B981'},{gte:30,lt:70,color:'#3B82F6'},{gte:70,color:'#EF4444'}]},
+  series:[{type:'line',data:[45,50,55,60,65,72,78,82,75,68,62,55,48,42,38,35,32,35,40,48,55,62,68,72,75,78,80,76,70,62,55,48,42,38,35,40,50,60,68,72],lineStyle:{width:2},symbol:'none',markLine:{data:[{yAxis:30,lineStyle:{color:'#10B981',type:'dashed'},label:{formatter:'超卖 30',color:'#10B981',fontSize:10}},{yAxis:70,lineStyle:{color:'#EF4444',type:'dashed'},label:{formatter:'超买 70',color:'#EF4444',fontSize:10}}]}}]
+});
+
+// ===== CHART: Bollinger (Ch8) =====
+initChart('chart-boll',{
+  tooltip:{trigger:'axis'},legend:{data:['价格','上轨','中轨','下轨'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:Array.from({length:30},(_,i)=>'D'+(i+1)),axisLabel:{color:'#94A3B8',fontSize:9,interval:4},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'上轨',type:'line',data:[22,23,24,25.5,27,28.5,30,31,31.5,31,30,29,28.5,29,30,31.5,33,34.5,36,37,37.5,37,36,35,34.5,35,36,37.5,39,40],lineStyle:{color:'rgba(239,68,68,0.5)',width:1},symbol:'none',areaStyle:null},
+    {name:'中轨',type:'line',data:[20,21,22,23.5,25,26.5,28,29,29.5,29,28,27,26.5,27,28,29.5,31,32.5,34,35,35.5,35,34,33,32.5,33,34,35.5,37,38],lineStyle:{color:'#F59E0B',width:1.5},symbol:'none'},
+    {name:'下轨',type:'line',data:[18,19,20,21.5,23,24.5,26,27,27.5,27,26,25,24.5,25,26,27.5,29,30.5,32,33,33.5,33,32,31,30.5,31,32,33.5,35,36],lineStyle:{color:'rgba(16,185,129,0.5)',width:1},symbol:'none',areaStyle:null},
+    {name:'价格',type:'line',data:[21,22,23.5,25,27,28,29.5,30,30.5,29.5,28,27,26,27.5,29,31,32.5,34,35,36,36.5,35.5,34,33,33,34,35,37,38.5,39.5],lineStyle:{color:'#E2E8F0',width:2},symbol:'circle',symbolSize:4}
+  ]
+});
+
+// ===== CHART: Support/Pressure (Ch9) =====
+initChart('chart-support',{
+  tooltip:{trigger:'axis'},legend:{data:['价格','压力线','支撑线'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:Array.from({length:20},(_,i)=>'D'+(i+1)),axisLabel:{color:'#94A3B8',fontSize:9,interval:3},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'价格',type:'line',data:[25,27,29,30,28,26,25,27,29,30,31,28,26,25,27,30,33,35,34,32],lineStyle:{color:'#E2E8F0',width:2},symbol:'circle',symbolSize:5},
+    {name:'压力线',type:'line',data:[30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30],lineStyle:{color:'#EF4444',width:1.5,type:'dashed'},symbol:'none'},
+    {name:'支撑线',type:'line',data:[25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25],lineStyle:{color:'#10B981',width:1.5,type:'dashed'},symbol:'none'}
+  ]
+});
+
+// ===== CHART: Fake Break (Ch10) =====
+initChart('chart-fake-break',{
+  tooltip:{trigger:'axis'},legend:{data:['价格','关键位','成交量'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:Array.from({length:20},(_,i)=>'D'+(i+1)),axisLabel:{color:'#94A3B8',fontSize:9,interval:3},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:[{type:'value',name:'价格',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},{type:'value',name:'成交量',axisLabel:{color:'#94A3B8'},splitLine:{show:false}}],
+  series:[
+    {name:'价格',type:'line',data:[28,29,30,30.5,31,31.5,32,31.5,30.5,29,28,27,28,29,30,31,32,31,29.5,28],lineStyle:{color:'#E2E8F0',width:2},symbol:'circle',symbolSize:5},
+    {name:'关键位',type:'line',data:[31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31],lineStyle:{color:'#F59E0B',width:1.5,type:'dashed'},symbol:'none'},
+    {name:'成交量',type:'bar',yAxisIndex:1,data:[50,60,70,55,40,35,30,25,55,80,70,45,40,50,55,60,40,65,90,75],itemStyle:{color:'rgba(59,130,246,0.3)'}}
+  ],
+  graphic:[{type:'text',right:'20%',top:'15%',style:{text:'缩量突破\n→假突破!',fill:'#EF4444',fontSize:12}},{type:'text',right:'8%',top:'50%',style:{text:'放量下跌\n→确认失败',fill:'#EF4444',fontSize:12}}]
+});
+
+// ===== CHART: Position Impact (Ch11) =====
+initChart('chart-position-impact',{
+  tooltip:{trigger:'axis'},legend:{data:['满仓追高','合理仓位+止损','等权分散+止损'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',name:'账户净值(万)',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'满仓追高',type:'line',data:[10,11,9.5,8,7.5,7,6.5,7,7.5,7,6.5,6],lineStyle:{color:'#EF4444',width:2},symbol:'circle',symbolSize:5},
+    {name:'合理仓位+止损',type:'line',data:[10,10.5,10.2,10,10.3,10.6,10.4,10.7,11,10.8,11.2,11.5],lineStyle:{color:'#10B981',width:2},symbol:'circle',symbolSize:5},
+    {name:'等权分散+止损',type:'line',data:[10,10.3,10.1,10.2,10.5,10.8,10.6,10.9,11.2,11,11.3,11.6],lineStyle:{color:'#3B82F6',width:2},symbol:'circle',symbolSize:5}
+  ]
+});
+
+// ===== CHART: Core-Satellite (Ch11) =====
+initChart('chart-core-satellite',{
+  tooltip:{trigger:'item'},
+  series:[{type:'pie',radius:['40%','70%'],label:{color:'#94A3B8',fontSize:11},data:[
+    {value:40,name:'核心-指数基金',itemStyle:{color:'#10B981'}},
+    {value:30,name:'核心-蓝筹股',itemStyle:{color:'#34D399'}},
+    {value:15,name:'卫星-成长股',itemStyle:{color:'#3B82F6'}},
+    {value:10,name:'卫星-行业主题',itemStyle:{color:'#A78BFA'}},
+    {value:5,name:'现金',itemStyle:{color:'#64748B'}}
+  ]}]
+});
+
+// ===== CHART: Loss Aversion (Ch12) =====
+initChart('chart-loss-aversion',{
+  tooltip:{trigger:'axis'},
+  xAxis:{type:'category',data:['-50%','-30%','-10%','0%','+10%','+30%','+50%'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',name:'心理感受',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[{type:'line',data:[-2.5,-1.5,-0.8,0,0.4,0.7,0.9],lineStyle:{color:'#EF4444',width:3},symbol:'circle',symbolSize:8,itemStyle:{color:'#EF4444'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(239,68,68,0.15)'},{offset:0.5,color:'rgba(239,68,68,0)'},{offset:0.5,color:'rgba(16,185,129,0)'},{offset:1,color:'rgba(16,185,129,0.1)'}]}}}],
+  graphic:[{type:'text',left:'15%',top:'15%',style:{text:'亏损的痛苦远大于盈利的快乐',fill:'#EF4444',fontSize:13}}]
+});
+
+// ===== CHART: Drawdown (Ch13) =====
+initChart('chart-drawdown',{
+  tooltip:{trigger:'axis'},legend:{data:['账户净值','回撤'],bottom:0,textStyle:{color:'#94A3B8',fontSize:11}},
+  xAxis:{type:'category',data:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:[{type:'value',name:'净值(万)',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},{type:'value',name:'回撤(%)',axisLabel:{color:'#94A3B8'},splitLine:{show:false}}],
+  series:[
+    {name:'账户净值',type:'line',data:[10,10.5,11,10.8,10.2,9.5,9,9.3,10,10.5,11,11.5],lineStyle:{color:'#10B981',width:2},symbol:'circle',symbolSize:6,areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(16,185,129,0.15)'},{offset:1,color:'rgba(16,185,129,0)'}]}}},
+    {name:'回撤',type:'line',yAxisIndex:1,data:[0,-2,-5,-8,-15,-22,-27,-22,-10,-5,0,0],lineStyle:{color:'#EF4444',width:1.5,type:'dashed'},symbol:'none',areaStyle:{color:'rgba(239,68,68,0.08)'}}
+  ],
+  markLine:{data:[{yAxis:-15,lineStyle:{color:'#F59E0B',type:'dashed'},label:{formatter:'警戒线 -15%',color:'#F59E0B'}}]}
+});
+
+// ===== CHART: Emotion Cycle (Ch14) =====
+initChart('chart-emotion-cycle',{
+  tooltip:{trigger:'item'},
+  series:[{type:'pie',radius:['30%','65%'],startAngle:90,label:{color:'#94A3B8',fontSize:11,formatter:'{b}'},data:[
+    {value:1,name:'绝望(买入时机)',itemStyle:{color:'#10B981'}},
+    {value:1,name:'怀疑',itemStyle:{color:'#34D399'}},
+    {value:1,name:'希望',itemStyle:{color:'#F59E0B'}},
+    {value:1,name:'兴奋',itemStyle:{color:'#F97316'}},
+    {value:1,name:'狂热(危险!)',itemStyle:{color:'#EF4444'}},
+    {value:1,name:'焦虑',itemStyle:{color:'#F97316'}},
+    {value:1,name:'恐惧',itemStyle:{color:'#EF4444'}},
+    {value:1,name:'恐慌(设止损!)',itemStyle:{color:'#DC2626'}}
+  ]}]
+});
+
+// ===== CHART: Investment Schools (Ch15) =====
+initChart('chart-schools',{
+  tooltip:{trigger:'axis'},legend:{data:['收益潜力','风险水平','纪律要求','研究深度','适合新手'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  radar:{indicator:[{name:'收益潜力',max:5},{name:'风险水平',max:5},{name:'纪律要求',max:5},{name:'研究深度',max:5},{name:'适合新手',max:5}],shape:'polygon',splitNumber:5,axisName:{color:'#94A3B8',fontSize:11},splitArea:{areaStyle:{color:['rgba(16,185,129,0.01)','rgba(16,185,129,0.03)']}},splitLine:{lineStyle:{color:'rgba(148,163,184,0.08)'}},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  series:[{type:'radar',data:[
+    {value:[3,2,3,5,4],name:'价值投资',areaStyle:{color:'rgba(16,185,129,0.15)'}},
+    {value:[5,4,4,4,2],name:'成长投资',areaStyle:{color:'rgba(59,130,246,0.1)'}},
+    {value:[4,5,5,2,1],name:'趋势投资',areaStyle:{color:'rgba(239,68,68,0.1)'}},
+    {value:[2,1,2,1,5],name:'指数定投',areaStyle:{color:'rgba(245,158,11,0.1)'}}
+  ],symbol:'circle',symbolSize:5,lineStyle:{width:2}}]
+});
+
+// ===== CHART: Portfolio Allocation (Ch16) =====
+initChart('chart-portfolio-alloc',{
+  tooltip:{trigger:'item'},
+  series:[{type:'pie',radius:['35%','65%'],label:{color:'#94A3B8',fontSize:11,formatter:'{b}\n{d}%'},data:[
+    {value:40,name:'核心-指数基金',itemStyle:{color:'#10B981'}},
+    {value:30,name:'核心-消费龙头',itemStyle:{color:'#34D399'}},
+    {value:10,name:'卫星-科技ETF',itemStyle:{color:'#3B82F6'}},
+    {value:10,name:'卫星-医药ETF',itemStyle:{color:'#A78BFA'}},
+    {value:10,name:'现金',itemStyle:{color:'#64748B'}}
+  ]}]
+});
+
+// ===== CHART: Sample Portfolio (Ch16) =====
+initChart('chart-sample-portfolio',{
+  tooltip:{trigger:'item'},
+  series:[{type:'pie',radius:'65%',label:{color:'#94A3B8',fontSize:10,formatter:'{b}\n¥{c}'},data:[
+    {value:20000,name:'沪深300ETF',itemStyle:{color:'#10B981'}},
+    {value:15000,name:'消费龙头',itemStyle:{color:'#34D399'}},
+    {value:5000,name:'半导体ETF',itemStyle:{color:'#3B82F6'}},
+    {value:5000,name:'医药ETF',itemStyle:{color:'#A78BFA'}},
+    {value:5000,name:'货币基金',itemStyle:{color:'#64748B'}}
+  ]}]
+});
+
+// ===== CHART: First 3 Months (Ch18) =====
+initChart('chart-first3m',{
+  tooltip:{trigger:'axis'},legend:{data:['账户净值','学习进度','情绪波动'],bottom:0,textStyle:{color:'#94A3B8',fontSize:10}},
+  xAxis:{type:'category',data:['第1周','第2周','第3周','第4周','第5周','第6周','第7周','第8周','第9周','第10周','第11周','第12周'],axisLabel:{color:'#94A3B8',fontSize:9},axisLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}}},
+  yAxis:{type:'value',axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+  series:[
+    {name:'账户净值',type:'line',data:[10,10.2,9.8,9.9,10.1,9.7,9.8,10.2,10.5,10.3,10.6,10.8],lineStyle:{color:'#10B981',width:2},symbol:'circle',symbolSize:5},
+    {name:'学习进度',type:'line',data:[1,2,3,4,5,6,7,8,9,10,11,12],lineStyle:{color:'#3B82F6',width:2},symbol:'none'},
+    {name:'情绪波动',type:'bar',data:[3,5,8,4,6,9,7,3,2,5,3,2],itemStyle:{color:'rgba(245,158,11,0.4)'}}
+  ]
+});
+
+// ===== CHART: Book Path (Ch20) =====
+initChart('chart-book-path',{
+  tooltip:{trigger:'item'},
+  series:[{type:'funnel',left:'10%',width:'80%',label:{show:true,position:'inside',color:'#E2E8F0',fontSize:11},itemStyle:{borderColor:'rgba(0,0,0,0.1)',borderWidth:1},data:[
+    {value:100,name:'1. 巩固基础\n《聪明的投资者》《巴菲特致股东的信》',itemStyle:{color:'#10B981'}},
+    {value:80,name:'2. 深入估值\n《财务报表分析与证券估值》《估值》',itemStyle:{color:'#34D399'}},
+    {value:60,name:'3. 理解市场\n《投资最重要的事》《周期》',itemStyle:{color:'#3B82F6'}},
+    {value:40,name:'4. 修炼心性\n《穷查理宝典》《思考快与慢》',itemStyle:{color:'#A78BFA'}},
+    {value:20,name:'5. 理解人性\n《股票作手回忆录》《金融炼金术》',itemStyle:{color:'#EF4444'}}
+  ]}]
+});
+
+// ===== CALCULATOR: Valuation (Ch5) =====
+function updateValuation(){
+  const p=parseFloat(document.getElementById('valPrice').value)||0;
+  const eps=parseFloat(document.getElementById('valEPS').value)||0.01;
+  const bps=parseFloat(document.getElementById('valBPS').value)||0.01;
+  const sps=parseFloat(document.getElementById('valSPS').value)||0.01;
+  const g=parseFloat(document.getElementById('valGrowth').value)||1;
+  document.getElementById('resPE').textContent=(p/eps).toFixed(1);
+  document.getElementById('resPB').textContent=(p/bps).toFixed(1);
+  document.getElementById('resPS').textContent=(p/sps).toFixed(1);
+  document.getElementById('resPEG').textContent=g>0?(p/eps/g).toFixed(1):'N/A';
+}
+
+// ===== CALCULATOR: Kelly (Ch11) =====
+function updateKelly(){
+  const p=parseFloat(document.getElementById('kellyWin').value)/100;
+  const b=parseFloat(document.getElementById('kellyOdds').value);
+  const q=1-p;
+  const f=b*p-q>0?(b*p-q)/b:0;
+  document.getElementById('kellyResult').textContent=(f*50).toFixed(1)+'% (半凯利)';
+}
+
+// ===== CALCULATOR: DIP (Ch15) =====
+function updateDip(){
+  const m=parseFloat(document.getElementById('dipAmount').value)||0;
+  const r=parseFloat(document.getElementById('dipRate').value)/100/12;
+  const y=parseInt(document.getElementById('dipYears').value)||1;
+  document.getElementById('dipYearsShow').textContent=y+'年';
+  const total=m*12*y;
+  const value=r>0?m*((Math.pow(1+r,12*y)-1)/r*(1+r)):total;
+  document.getElementById('dipTotal').textContent=total.toLocaleString();
+  document.getElementById('dipValue').textContent=Math.round(value).toLocaleString();
+  document.getElementById('dipProfit').textContent=Math.round(value-total).toLocaleString();
+}
+updateDip();
+</script>
+</body>
+</html>
