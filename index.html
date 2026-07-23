@@ -99,9 +99,48 @@
       font-size: 0.78rem;
     }
 
+    .quiet-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid #1d1d1d;
+      color: #7f7f7f;
+      font-size: 0.78rem;
+    }
+
+    .quiet-links a {
+      color: #898989;
+      text-decoration: none;
+      text-underline-offset: 3px;
+      transition: color 0.15s ease;
+    }
+
+    .quiet-links a:hover {
+      color: #b8b8b8;
+      text-decoration: underline;
+    }
+
+    .quiet-links a:focus-visible {
+      color: #d0d0d0;
+      outline: 1px solid #6a6a6a;
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    .quiet-links-separator {
+      color: #555;
+    }
+
     @media (max-width: 820px) {
       .grid {
         grid-template-columns: 1fr;
+      }
+
+      .quiet-links {
+        justify-content: center;
       }
     }
   </style>
@@ -158,6 +197,13 @@
         </a>
       </div>
     </section>
+
+    <nav class="quiet-links" aria-label="投资阅读">
+      <span>投资阅读</span>
+      <a href="./src/invest/stock-handbook.html">新手入门</a>
+      <span class="quiet-links-separator" aria-hidden="true">·</span>
+      <a href="./src/invest/stock-advanced-handbook.html">进阶实战</a>
+    </nav>
   </main>
 </body>
 </html>
