@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>机构投资者知识手册</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#0B1423;--bg2:#111D33;--bg3:#162240;--bg4:#1B2A4A;
+  --text:#E8ECF1;--text2:#9CA8B8;--text3:#6B7A8D;
+  --accent:#3B82F6;--accent2:#60A5FA;--accent3:#93C5FD;
+  --green:#22C55E;--red:#EF4444;--orange:#F59E0B;--purple:#A78BFA;
+  --border:#1E3050;
+  --font-display:"Noto Serif SC",Georgia,serif;
+  --font-body:"Noto Sans SC",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.8;font-size:16px}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* NAV */
+.nav{position:fixed;left:0;top:0;width:260px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:20px 0}
+.nav-logo{padding:0 24px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.nav-logo h2{font-family:var(--font-display);font-size:18px;color:var(--accent2)}
+.nav-logo p{font-size:12px;color:var(--text3);margin-top:4px}
+.nav a{display:block;padding:6px 24px;color:var(--text2);text-decoration:none;font-size:13px;transition:all .2s;border-left:3px solid transparent}
+.nav a:hover,.nav a.active{color:var(--accent2);background:rgba(59,130,246,.08);border-left-color:var(--accent)}
+.nav .nav-part{padding:10px 24px 4px;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:8px}
+.main{margin-left:260px;padding:0 0 80px}
+
+/* COVER */
+.cover{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cover-canvas{position:absolute;inset:0;z-index:0}
+.cover-content{position:relative;z-index:1;text-align:center;padding:40px}
+.cover-badge{display:inline-block;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:var(--accent2);padding:6px 20px;border-radius:20px;font-size:13px;margin-bottom:24px}
+.cover h1{font-family:var(--font-display);font-size:clamp(36px,6vw,64px);line-height:1.2;margin-bottom:16px;background:linear-gradient(135deg,var(--accent2),var(--accent3),#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cover p{font-size:18px;color:var(--text2);max-width:600px;margin:0 auto 32px}
+.cover-btn{display:inline-block;background:var(--accent);color:#fff;padding:14px 36px;border-radius:8px;text-decoration:none;font-size:16px;font-weight:600;transition:all .3s;border:none;cursor:pointer}
+.cover-btn:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 30px rgba(59,130,246,.3)}
+
+/* SECTIONS */
+.section{max-width:900px;margin:0 auto;padding:60px 40px}
+.section-reveal{opacity:0;transform:translateY(30px);transition:all .6s ease}
+.section-reveal.visible{opacity:1;transform:translateY(0)}
+.part-title{text-align:center;margin-bottom:50px;padding-top:20px}
+.part-title .tag{display:inline-block;background:rgba(59,130,246,.12);color:var(--accent2);padding:4px 16px;border-radius:12px;font-size:12px;font-weight:600;margin-bottom:12px}
+.part-title h2{font-family:var(--font-display);font-size:32px;color:var(--text);margin-bottom:8px}
+.part-title p{color:var(--text2);font-size:15px}
+.chapter{margin-bottom:50px}
+.chapter-title{font-family:var(--font-display);font-size:26px;color:var(--text);margin-bottom:6px;padding-left:16px;border-left:4px solid var(--accent)}
+.chapter-sub{color:var(--text2);font-size:14px;margin-bottom:24px;padding-left:20px}
+h3{font-size:19px;color:var(--accent2);margin:28px 0 12px;font-weight:600}
+h4{font-size:16px;color:var(--accent3);margin:20px 0 8px;font-weight:600}
+p{margin-bottom:12px;color:var(--text)}
+ul,ol{margin:8px 0 16px 20px;color:var(--text)}
+li{margin-bottom:6px}
+strong{color:var(--accent2)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;margin:16px 0 24px;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg3);color:var(--accent2);padding:12px 14px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:10px 14px;border-top:1px solid var(--border);color:var(--text)}
+tr:hover td{background:rgba(59,130,246,.04)}
+
+/* CALLOUTS */
+.tip-box,.key-box,.warn-box,.case-box{border-radius:10px;padding:18px 22px;margin:20px 0;font-size:14.5px;line-height:1.75}
+.tip-box{background:rgba(34,197,94,.08);border-left:4px solid var(--green);color:#a7f3d0}
+.tip-box::before{content:"💡 投研Tips ";font-weight:700;color:var(--green);margin-right:4px}
+.key-box{background:rgba(59,130,246,.08);border-left:4px solid var(--accent);color:var(--accent3)}
+.key-box::before{content:"🔑 核心要点 ";font-weight:700;color:var(--accent);margin-right:4px}
+.warn-box{background:rgba(239,68,68,.08);border-left:4px solid var(--red);color:#fca5a5}
+.warn-box::before{content:"⚠️ 注意 ";font-weight:700;color:var(--red);margin-right:4px}
+.case-box{background:rgba(167,139,250,.08);border-left:4px solid var(--purple);color:#ddd6fe}
+.case-box::before{content:"🔍 历史案例 ";font-weight:700;color:var(--purple);margin-right:4px}
+
+/* CHART */
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin:24px 0}
+.chart-box h4{color:var(--accent2);margin:0 0 12px;font-size:15px}
+.chart-container{width:100%;height:380px}
+
+/* FLOW */
+.flow-steps{display:flex;flex-direction:column;gap:0;margin:20px 0}
+.flow-step{display:flex;align-items:flex-start;gap:16px;padding:16px 20px;background:var(--bg2);border:1px solid var(--border);position:relative}
+.flow-step:first-child{border-radius:10px 10px 0 0}
+.flow-step:last-child{border-radius:0 0 10px 10px}
+.flow-step:not(:last-child){border-bottom:none}
+.flow-step::after{content:"";position:absolute;left:34px;bottom:-8px;width:2px;height:16px;background:var(--accent)}
+.flow-step:last-child::after{display:none}
+.flow-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+.flow-text h4{margin:0 0 4px;font-size:15px;color:var(--text)}
+.flow-text p{margin:0;font-size:13.5px;color:var(--text2)}
+
+/* FOOD CHAIN */
+.food-chain{display:flex;flex-direction:column;align-items:center;gap:0;margin:24px 0}
+.fc-level{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 28px;text-align:center;min-width:320px;position:relative}
+.fc-level.upstream{border-color:var(--green);background:rgba(34,197,94,.06)}
+.fc-level.midstream{border-color:var(--accent);background:rgba(59,130,246,.06)}
+.fc-level.downstream{border-color:var(--orange);background:rgba(245,158,11,.06)}
+.fc-level.retail{border-color:var(--red);background:rgba(239,68,68,.06)}
+.fc-level h4{margin:0 0 4px;font-size:16px}
+.fc-level p{margin:0;font-size:13px;color:var(--text2)}
+.fc-arrow{font-size:20px;color:var(--text3);line-height:1}
+
+/* SIGNAL CARD */
+.signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:20px 0}
+.signal-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13.5px}
+.signal-card .sig-icon{font-size:24px;margin-bottom:6px}
+.signal-card h4{margin:0 0 4px;font-size:14px;color:var(--text)}
+.signal-card p{margin:0;color:var(--text2);font-size:12.5px}
+.signal-card.green{border-color:var(--green)}
+.signal-card.yellow{border-color:var(--orange)}
+.signal-card.red{border-color:var(--red)}
+
+/* APPENDIX */
+.app-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;margin:24px 0}
+.app-section h3{margin-top:0}
+
+/* READING GUIDE */
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin:20px 0}
+.guide-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;transition:all .3s}
+.guide-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.guide-card .gc-icon{font-size:32px;margin-bottom:10px}
+.guide-card h4{margin:0 0 6px;font-size:15px;color:var(--text)}
+.guide-card p{margin:0;font-size:12.5px;color:var(--text2)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:32px;margin:20px 0}
+.timeline::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item::before{content:"";position:absolute;left:-24px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl-item .tl-year{font-size:13px;color:var(--accent2);font-weight:700;margin-bottom:2px}
+.tl-item .tl-text{font-size:14px;color:var(--text2)}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px;color:var(--text3);font-size:13px;border-top:1px solid var(--border)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav{display:none}
+  .main{margin-left:0}
+  .section{padding:40px 20px}
+  .signal-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-logo"><h2>📊 机构投资者手册</h2><p>新手读懂市场权力结构</p></div>
+  <a href="#cover">封面</a>
+  <a href="#guide">阅读导航</a>
+  <div class="nav-part">第一篇 认识对手</div>
+  <a href="#ch1">第1章 股市不是一个人的游戏</a>
+  <a href="#ch2">第2章 六大机构人设图鉴</a>
+  <div class="nav-part">第二篇 逐一拆解</div>
+  <a href="#ch3">第3章 公募基金</a>
+  <a href="#ch4">第4章 私募基金</a>
+  <a href="#ch5">第5章 保险资金</a>
+  <a href="#ch6">第6章 社保基金</a>
+  <a href="#ch7">第7章 外资/北向资金</a>
+  <a href="#ch8">第8章 游资</a>
+  <div class="nav-part">第三篇 生态全景</div>
+  <a href="#ch9">第9章 机构生态全景图</a>
+  <div class="nav-part">第四篇 实战指南</div>
+  <a href="#ch10">第10章 跟踪机构实操方法</a>
+  <div class="nav-part">附录</div>
+  <a href="#appA">附录A-E</a>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <canvas class="cover-canvas" id="heroCanvas"></canvas>
+  <div class="cover-content">
+    <div class="cover-badge">股市新手必读</div>
+    <h1>机构投资者<br>知识手册</h1>
+    <p>看懂市场权力结构，不再做"不知道谁在对面"的人。<br>从六大机构的人设还原到实战跟踪方法，由浅入深。</p>
+    <a href="#guide" class="cover-btn">开始阅读 →</a>
+  </div>
+</section>
+
+<!-- READING GUIDE -->
+<section class="section" id="guide">
+<div class="part-title section-reveal">
+  <div class="tag">阅读导航</div>
+  <h2>这份手册怎么读？</h2>
+  <p>根据你的情况选择最适合的阅读路径</p>
+</div>
+<div class="guide-grid section-reveal">
+  <div class="guide-card">
+    <div class="gc-icon">🏃</div>
+    <h4>速览路径</h4>
+    <p>时间有限？→ 第2章人设图鉴 → 第9章生态全景 → 第10章实操方法</p>
+  </div>
+  <div class="guide-card">
+    <div class="gc-icon">📖</div>
+    <h4>完整路径</h4>
+    <p>从头到尾按顺序读，4篇10章，约需3-4小时</p>
+  </div>
+  <div class="guide-card">
+    <div class="gc-icon">🔍</div>
+    <h4>按需查阅</h4>
+    <p>只想了解某种机构？直接翻到对应章节（第3-8章）</p>
+  </div>
+  <div class="guide-card">
+    <div class="gc-icon">⚡</div>
+    <h4>实战优先</h4>
+    <p>已有基础？→ 第9章生态图 → 第10章跟踪方法 → 附录C信号速查卡</p>
+  </div>
+</div>
+</section>
+
+<!-- PART 1: CH1-2 -->
+<section class="section" id="ch1">
+<div class="part-title section-reveal">
+  <div class="tag">第一篇</div>
+  <h2>认识你的"对手"</h2>
+  <p>为什么要懂机构？——因为你每天的交易对手，大概率就是它们</p>
+</div>
+
+<div class="chapter section-reveal">
+  <h2 class="chapter-title">第1章 股市不是你一个人的游戏</h2>
+  <p class="chapter-sub">在了解机构之前，先理解为什么你必须了解机构</p>
+
+  <h3>1.1 一个菜市场比喻：散户、机构和监管分别是谁？</h3>
+  <p>把股市想象成一个巨大的菜市场：</p>
+  <div class="table-wrap"><table>
+    <tr><th>角色</th><th>对应</th><th>特点</th></tr>
+    <tr><td>你提着菜篮子去挑挑拣拣</td><td><strong>散户</strong></td><td>凭感觉挑选、资金有限、信息滞后</td></tr>
+    <tr><td>连锁超市的采购团队</td><td><strong>机构投资者</strong></td><td>有专业研究员、资金量大、有采购纪律</td></tr>
+    <tr><td>菜市场管理方</td><td><strong>监管层（证监会）</strong></td><td>定规则、查缺斤少两、防止欺行霸市</td></tr>
+  </table></div>
+  <p>你在菜市场里挑菜，旁边站着的是带着专业采购清单、拿着批发价折扣、提前知道哪个摊位今天有新鲜货的超市团队。这就是散户面对机构的真实处境。</p>
+
+  <h3>1.2 一个打破幻想的事实：机构占A股成交量的70%以上</h3>
+  <p>这意味着你每天的交易对手，大概率是机构。如果你不知道对面坐着谁，你就不知道自己在跟谁博弈。</p>
+  <div class="chart-box">
+    <h4>📈 A股市场参与者结构（按成交量占比估算）</h4>
+    <div class="chart-container" id="chart-market-structure"></div>
+  </div>
+
+  <h3>1.3 机构的决策流程：不是一个人拍脑袋</h3>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><h4>研究员调研</h4><p>去工厂实地考察、访谈客户供应商、建立财务模型、撰写研究报告</p></div></div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><h4>投资委员会决策</h4><p>多人投票，权衡风险收益比，确定买入/卖出/持有</p></div></div>
+    <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><h4>风控审核</h4><p>检查合规性（双十限制、禁投清单等），确保不踩监管红线</p></div></div>
+    <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><h4>交易员执行</h4><p>拆单分批交易，避免一笔大单冲击股价（所谓"冲击成本"）</p></div></div>
+  </div>
+  <p>对比散户的决策流程：<strong>看了一眼K线 / 听了一个消息 → 点击买入</strong>。差距不在智商，在流程——机构用制度消除情绪干扰。</p>
+
+  <h3>1.4 散户的真正优势：你可以"等"</h3>
+  <p>机构有仓位下限、排名压力、赎回压力——它们<strong>"不能等"</strong>。散户没有这些约束——你可以空仓、可以持币一年、可以在最好的时机才出手。</p>
+  <p>但这个优势的前提是：<strong>你看懂了机构在做什么</strong>。否则，"等"就变成了"无脑持有"或"恐慌割肉"。</p>
+
+  <div class="tip-box">散户在信息、资金、工具上全面处于劣势，但有一个机构永远无法拥有的优势——你没有仓位下限，没有季度排名，没有赎回压力，你可以等。</div>
+  <div class="key-box">理解机构不是让你跟着机构做，而是让你不再做那个"不知道谁在对面"的人。</div>
+  <div class="warn-box">机构的专业性不等于正确性——公募有抱团惯性，私募有清盘线压力，社保也会判断失误。永远不要把机构行为等同于"正确答案"。</div>
+</div>
+
+<div class="chapter section-reveal" id="ch2">
+  <h2 class="chapter-title">第2章 六大机构"人设图鉴"——先混个脸熟</h2>
+  <p class="chapter-sub">先记住六个人设，不要急着背术语。有了人设感，后面的细节才有附着点</p>
+
+  <h3>2.1 一张"人设卡片"总览表</h3>
+  <div class="table-wrap"><table>
+    <tr><th>机构</th><th>一句话人设</th><th>生活类比</th><th>核心约束</th><th>行为关键词</th><th>规模量级</th></tr>
+    <tr><td>公募基金</td><td>替大众管钱的"排名选手"</td><td>大型超市——品种多、随时进出、有排名榜</td><td>仓位下限+排名考核</td><td>抱团、被动追涨杀跌</td><td>持股约6万亿</td></tr>
+    <tr><td>私募基金</td><td>替富人管钱的"精品猎人"</td><td>私房菜馆——门槛高、菜单灵活、按效果收费</td><td>清盘线+绝对收益</td><td>灵活择时、策略多元</td><td>证券类约7万亿</td></tr>
+    <tr><td>保险资金</td><td>替未来赔付管钱的"守财奴"</td><td>养老院会计——每月固定支出、首要目标是不亏</td><td>久期匹配+安全性</td><td>高股息、超长期持有</td><td>投资资产约38万亿</td></tr>
+    <tr><td>社保基金</td><td>替全国人民管养老钱的"金库守门人"</td><td>国家宝藏保管员——宁可少赚不能亏</td><td>政治属性+极长期</td><td>精准抄底、逆向操作</td><td>资产约3万亿</td></tr>
+    <tr><td>外资/北向资金</td><td>海外资金买A股的"跨国商队"</td><td>远洋贸易船——受汇率/政策影响大</td><td>全球配置视角</td><td>趋势跟踪、蓝筹偏好</td><td>日均成交约1000亿</td></tr>
+    <tr><td>游资</td><td>短线资金快进快出的"游击队"</td><td>街头快闪族——来去如风、散户的对手盘</td><td>无约束（只有速度）</td><td>打板、制造热点</td><td>龙虎榜可见</td></tr>
+  </table></div>
+
+  <div class="chart-box">
+    <h4>📊 六大机构资金规模对比（万亿元）</h4>
+    <div class="chart-container" id="chart-scale-compare"></div>
+  </div>
+
+  <h3>2.2 新手最容易混淆的三组概念</h3>
+  <div class="table-wrap"><table>
+    <tr><th>容易混淆</th><th>关键区别</th></tr>
+    <tr><td>"公募" vs "私募"</td><td>不是好与坏的区别，而是<strong>受众和约束</strong>不同——公募面向大众有仓位下限，私募面向富人有清盘线</td></tr>
+    <tr><td>"保险资金" vs "社保基金"</td><td>都偏长期，但<strong>社保的政治属性更强</strong>——亏了不只是钱的问题，是全民信心的问题</td></tr>
+    <tr><td>"外资" vs "游资"</td><td>都是"外来资金"，但<strong>行为模式天差地别</strong>——外资偏长期配置，游资偏短线收割</td></tr>
+  </table></div>
+
+  <h3>2.3 一个关键认知：每种机构都是"戴着镣铐跳舞的人"</h3>
+  <p>机构的行为不是"自由选择"，而是<strong>"约束下的最优解"</strong>。理解了约束，就能预判行为——这是读懂机构的万能钥匙。</p>
+  <p>后面六章，每章都用同一把钥匙打开一种机构：</p>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="flow-num">💰</div><div class="flow-text"><h4>资金来源</h4><p>钱从哪来？决定了机构的"出身"和"使命"</p></div></div>
+    <div class="flow-step"><div class="flow-num">⛓️</div><div class="flow-text"><h4>约束条件</h4><p>哪些规则是它无法违抗的？这是理解行为的关键</p></div></div>
+    <div class="flow-step"><div class="flow-num">🎭</div><div class="flow-text"><h4>行为特征</h4><p>在约束之下，它"不得不"怎样操作？</p></div></div>
+    <div class="flow-step"><div class="flow-num">📜</div><div class="flow-text"><h4>历史案例</h4><p>用真实故事验证逻辑——它确实这么做了</p></div></div>
+    <div class="flow-step"><div class="flow-num">🎯</div><div class="flow-text"><h4>新手启示</h4><p>这跟我有什么关系？我怎么利用这个信息？</p></div></div>
+  </div>
+
+  <div class="tip-box">先记住六个人设，不要急着背术语。有了人设感，后面的细节才有附着点。</div>
+  <div class="key-box">理解机构行为的万能钥匙是"约束推导"——资金来源决定了约束条件，约束条件决定了行为特征。</div>
+  <div class="warn-box">人设是简化的模型，不是完整的真相。真实机构的行为比模型复杂得多，模型只是帮你建立直觉的起点。</div>
+</div>
+
+<!-- PART 2: CH3-4 -->
+<section class="section">
+
+<div class="chapter section-reveal" id="ch3">
+  <h2 class="chapter-title">第3章 公募基金：排名的囚徒</h2>
+  <p class="chapter-sub">理解公募的关键不是看它"想买什么"，而是看它"不得不买什么"</p>
+
+  <h3>3.1 它是谁？——你在支付宝买的那些基金</h3>
+  <p><strong>钱从哪来</strong>：千千万万普通人的申购款，10元起投。你在支付宝、天天基金上买的"某某混合基金""某某成长基金"，背后就是公募基金公司（如易方达、华夏、广发、中欧等）。</p>
+  <p><strong>规模</strong>：截至2025年底，中国公募基金总规模超过37万亿元。<strong>核心人物</strong>：基金经理（如曾经的张坤、葛兰、朱少醒等）。</p>
+
+  <h3>3.2 它的"镣铐"——理解公募的关键</h3>
+  <div class="table-wrap"><table>
+    <tr><th>规则</th><th>含义</th><th>对行为的影响</th></tr>
+    <tr><td><strong>仓位下限</strong></td><td>股票型基金股票仓位≥80%</td><td>即使觉得要跌也不能空仓，只能"少跌当赢"</td></tr>
+    <tr><td><strong>双十限制</strong></td><td>单只股票≤基金净值10%；同一公司所有基金≤该股流通股10%</td><td>不能all in一只票</td></tr>
+    <tr><td><strong>排名考核</strong></td><td>每年/季度业绩排名，排名靠后→赎回→规模缩水</td><td>导致抱团——买一样的至少不会"输得太难看"</td></tr>
+    <tr><td><strong>季度披露</strong></td><td>每季度后15个工作日内公布前十大持仓</td><td>你看到的是滞后数据</td></tr>
+  </table></div>
+
+  <h3>3.3 它的行为特征——排名压力下变形的决策</h3>
+  <ul>
+    <li><strong>抱团取暖</strong>：不敢偏离同行太多，错了大家一起错</li>
+    <li><strong>被动追涨杀跌</strong>：基民申购→被迫高位买入；基民赎回→被迫低位卖出</li>
+    <li><strong>季末窗口粉饰</strong>：季度末拉抬重仓股"做净值"</li>
+    <li><strong>规模诅咒</strong>：管理500亿的基金无法买入50亿市值的小股票（买不进去也卖不出来）</li>
+  </ul>
+
+  <div class="chart-box">
+    <h4>📈 公募抱团正反馈循环与负反馈螺旋</h4>
+    <div class="chart-container" id="chart-feedback-loop"></div>
+  </div>
+
+  <div class="case-box">
+    <h4>2020-2021年"核心资产抱团"与崩塌</h4>
+    <p><strong>背景</strong>：2020年疫情后全球放水，A股走出结构性牛市。</p>
+    <p><strong>抱团怎么形成的</strong>：买龙头→排名靠前→基民申购→拿到新钱继续买龙头→股价继续涨→排名更好→正反馈循环。2020年底，<strong>茅台被超过1000只公募基金持有</strong>，PE被推到60倍以上。</p>
+    <p><strong>崩塌怎么发生的</strong>：2021年2月茅台见顶→净值下跌→基民赎回→被迫卖出→股价进一步下跌→更多赎回→负反馈螺旋。</p>
+    <p><strong>结果</strong>：到2022年底，茅台从2600跌到1300，宁德时代从692跌到350。</p>
+    <p><strong>新手启示</strong>：当所有机构都在买同一类资产时，恰恰是风险最大的时候——这不是"大家看好"，而是<strong>"制度性共振"</strong>。</p>
+  </div>
+
+  <h3>3.4 你该怎么看公募的数据？</h3>
+  <ul>
+    <li><strong>季报（最重要）</strong>：每季度结束后15天内发布，看前十大重仓股变化</li>
+    <li><strong>关注"新进"和"退出"</strong>：某只股票突然出现在多只基金前十大→机构在集中建仓</li>
+    <li><strong>看基金经理换手率</strong>：换手率>300%=频繁交易偏激进；<100%=长期持有偏价值</li>
+    <li><strong>看持仓集中度</strong>：前十大重仓股占比>60%=集中度高，风格激进</li>
+  </ul>
+
+  <div class="tip-box">公募持仓数据是滞后的——你看到的一季度持仓到4月底才公布，基金经理可能已经调仓了。永远不要把季报持仓当作"当前持仓"。</div>
+  <div class="key-box">公募的"相对排名"机制天然导致羊群效应——抱团极致=风险信号，抱团瓦解=机会信号。</div>
+  <div class="warn-box">当所有公募都在买同一类资产时，不是"大家看好"，而是"制度性共振"——恰恰是最危险的时刻。不要在抱团最热的时候追入。</div>
+</div>
+
+<div class="chapter section-reveal" id="ch4">
+  <h2 class="chapter-title">第4章 私募基金：绝对收益的猎人</h2>
+  <p class="chapter-sub">灵活是私募最大的武器，也是它最危险的陷阱</p>
+
+  <h3>4.1 它是谁？——只面向富人的"精品投资店"</h3>
+  <p><strong>钱从哪来</strong>：合格投资者（个人金融资产≥300万或近三年年均收入≥50万），起投100万+。知名代表：高毅资产、景林资产、淡水泉、幻方量化、九坤投资。</p>
+
+  <h3>4.2 它和公募最大的区别——一张对比表看懂</h3>
+  <div class="table-wrap"><table>
+    <tr><th>维度</th><th>公募</th><th>私募</th></tr>
+    <tr><td>仓位</td><td>有下限（不能空仓）</td><td><strong>可以0仓位</strong>，觉得要跌就全卖掉</td></tr>
+    <tr><td>策略</td><td>以做多股票为主</td><td>可以做空、加杠杆、做期货、做衍生品</td></tr>
+    <tr><td>披露</td><td>必须季度公开</td><td><strong>不需要公开</strong>，只向投资人报告</td></tr>
+    <tr><td>考核</td><td>相对排名（跑赢沪深300就行）</td><td><strong>绝对收益</strong>（不管市场涨跌，要赚钱）</td></tr>
+    <tr><td>收费</td><td>管理费约1.5%</td><td>管理费1-2%+<strong>业绩提成20%</strong></td></tr>
+    <tr><td>清盘线</td><td>无</td><td>净值跌到0.7-0.8<strong>必须清盘</strong></td></tr>
+  </table></div>
+
+  <h3>4.3 它的行为特征——灵活是双刃剑</h3>
+  <ul>
+    <li><strong>择时能力强</strong>：可以空仓等待机会，不像公募必须持仓</li>
+    <li><strong>策略多元</strong>：量化对冲、CTA（商品交易顾问策略）、宏观策略、事件驱动……公募做不了的私募都可以做</li>
+    <li><strong>止损坚决</strong>：因为有清盘线，私募的止损纪律远强于公募</li>
+    <li><strong>规模悖论</strong>：策略有效→规模增长→策略失效→收益下降（量化私募最典型）</li>
+  </ul>
+
+  <div class="chart-box">
+    <h4>📈 私募规模悖论：策略容量vs管理规模</h4>
+    <div class="chart-container" id="chart-scale-paradox"></div>
+  </div>
+
+  <div class="case-box">
+    <h4>案例一：2015年股灾中的私募众生相</h4>
+    <p><strong>灵活的优势</strong>：很多私募在5000点以上就把仓位降到3成甚至清仓，躲过了暴跌。而公募因为80%仓位下限，只能硬扛。</p>
+    <p><strong>也有翻车的</strong>：部分私募加了2-3倍杠杆（通过结构化产品、场外配资），暴跌时触发平仓线被强制清仓，血本无归。</p>
+    <p><strong>新手启示</strong>：私募的"灵活"是双刃剑——灵活意味着可以躲风险，也意味着可以加杠杆赌方向。</p>
+  </div>
+
+  <div class="case-box">
+    <h4>案例二：2021年量化私募的"封神"与"翻车"</h4>
+    <p><strong>封神</strong>：2021年，以幻方、九坤、明汯为代表的量化私募，利用计算机模型在中小盘股中高频交易，年化收益普遍超过30%，规模迅速膨胀到千亿级别。</p>
+    <p><strong>翻车</strong>：2022年初和2024年2月，市场出现极端行情（小盘股流动性枯竭），量化模型集体失效，部分产品单月亏损超过20%。2024年2月，多家量化私募发布道歉信。</p>
+    <p><strong>新手启示</strong>：任何策略都有"失效"的环境——私募的历史业绩≠未来表现。</p>
+  </div>
+
+  <h3>4.4 你该怎么看私募的信息？</h3>
+  <ul>
+    <li><strong>上市公司十大流通股东名单</strong>（季报/年报）：某私募产品出现在前十大=重仓了这只股票</li>
+    <li><strong>中国证券投资基金业协会</strong>：可查备案信息、规模区间</li>
+    <li><strong>私募排排网、朝阳永续</strong>等第三方平台：部分业绩数据</li>
+  </ul>
+
+  <div class="tip-box">买私募不是"越大越好"——一个能管10亿的策略，管100亿可能就不赚钱了。策略容量比管理规模更重要。</div>
+  <div class="key-box">私募的灵活是双刃剑——灵活择时是优势，但加杠杆赌方向的风险也更大。看私募先看策略类型和风控，再看历史业绩。</div>
+  <div class="warn-box">任何策略都有"失效"的环境——私募的历史业绩≠未来表现。2022年量化私募集体回撤证明：策略同质化+极端行情=集体翻车。</div>
+</div>
+
+<!-- PART 2: CH5-6 -->
+<div class="chapter section-reveal" id="ch5">
+  <h2 class="chapter-title">第5章 保险资金：久期匹配的守财奴</h2>
+  <p class="chapter-sub">险资不爱追热点，只爱高股息——它用真金白银帮你做了一次"价值筛选"</p>
+
+  <h3>5.1 它是谁？——拿着保费的"长钱保守派"</h3>
+  <p><strong>钱从哪来</strong>：保费收入（中国人寿、中国平安、中国太保、新华保险等）。</p>
+  <p><strong>规模</strong>：保险资金运用余额超过38万亿元。<strong>投资偏好</strong>：债券（>60%）> 股票和基金（10-15%）> 不动产 > 其他。</p>
+
+  <h3>5.2 它的核心特征：三个字——"长、稳、息"</h3>
+  <div class="table-wrap"><table>
+    <tr><th>特征</th><th>含义</th><th>对行为的影响</th></tr>
+    <tr><td><strong>长</strong></td><td>保单期限10-30年，险资是市场最典型的长期资金</td><td>不需要明天就变现，可以穿越牛熊</td></tr>
+    <tr><td><strong>稳</strong></td><td>保险有刚性兑付义务（买了年金险到期必须给钱）</td><td>绝不能亏大钱，安全性永远排第一</td></tr>
+    <tr><td><strong>息</strong></td><td>最爱高股息股票——每年分红5-7%的银行、公用事业</td><td>对险资来说就像"高息债券"</td></tr>
+  </table></div>
+
+  <div class="chart-box">
+    <h4>📈 保险资金资产配置结构（估算）</h4>
+    <div class="chart-container" id="chart-insurance-alloc"></div>
+  </div>
+
+  <h3>5.3 它为什么偏爱高股息？——一个会计视角的解释</h3>
+  <ul>
+    <li><strong>险资的负债端</strong>：保单承诺4-5%的收益，投资端必须覆盖这个成本</li>
+    <li><strong>高股息策略的本质</strong>：用股息覆盖负债成本，股价波动只是"副产品"</li>
+    <li><strong>会计技巧</strong>：持股达到一定比例后可计入"长期股权投资"→股价波动不影响利润表</li>
+    <li>这就是为什么险资喜欢<strong>"举牌"</strong>（持股超5%必须公告）——不只是为了影响力，更是为了会计处理</li>
+  </ul>
+
+  <div class="case-box">
+    <h4>2015-2016年"险资举牌潮"</h4>
+    <p><strong>背景</strong>：2015年下半年股市暴跌后优质公司被严重低估，同时险资大量新收保费需要配置。</p>
+    <p><strong>发生了什么</strong>：以宝能系（前海人寿）为代表，大量买入万科A，持股从不到5%买到超25%，触发多次举牌。同期，安邦保险举牌民生银行、招商银行；恒大举牌嘉凯城、廊坊发展。2015年下半年到2016年，A股共出现<strong>上百次举牌</strong>。</p>
+    <p><strong>为什么举牌</strong>：持股超5%→可派驻董事→影响公司决策→推动提高分红<strong>+</strong>会计上计入长期股权投资（股价波动不影响利润表）。</p>
+    <p><strong>后续</strong>：2017年监管层严厉批评"野蛮人"→出台限制政策→宝能系被处罚→万科股权之争以深圳地铁入主告终。</p>
+    <p><strong>新手启示</strong>：当十大股东中出现"中国人寿""平安人寿"且持股长期不变→这只股票大概率是<strong>高分红、低波动、现金流稳定</strong>的类型。险资用真金白银帮你做了一次"价值筛选"。</p>
+  </div>
+
+  <div class="case-box">
+    <h4>2015年股灾险资逆势加仓</h4>
+    <p>2015年6-7月股市暴跌，公募遭遇赎回潮被迫卖出，散户恐慌出逃。但保险资金<strong>逆势加仓</strong>——不是因为"抄底"的勇气，而是因为<strong>每月都有保费持续流入，必须在任何时点进行配置</strong>。暴跌时反而买入更多→2017年获得丰厚回报。</p>
+    <p><strong>新手启示</strong>：险资的"逆向"不是主动择时，而是资金性质决定了"越跌越买"的行为模式。</p>
+  </div>
+
+  <h3>5.4 你该怎么看险资的动向？</h3>
+  <ul>
+    <li><strong>季报/年报十大流通股东</strong>：搜索"中国人寿""平安人寿""泰康人寿"等关键词</li>
+    <li><strong>国家金融监管总局数据</strong>：每季度公布险资配置比例，股票占比上升=险资在加仓</li>
+    <li><strong>关注"高股息策略"</strong>：险资重仓股集中在银行（工行、建行）、水电（长江电力）、高速公路（宁沪高速）</li>
+  </ul>
+
+  <div class="tip-box">险资开始加仓某个行业，通常意味着这个行业的估值已经到了长期资金认可的水平——跟踪险资比跟踪公募更有中期方向意义。</div>
+  <div class="key-box">险资是市场上最"稳"的钱——它不爱追热点，只爱高股息、低波动。险资重仓股是天然的"价值筛选器"。</div>
+  <div class="warn-box">险资的"逆向加仓"不是主动择时，而是资金性质决定的"越跌越买"——它每月都有保费持续流入，必须在任何时点配置。不要误以为险资加仓=马上要涨。</div>
+</div>
+
+<div class="chapter section-reveal" id="ch6">
+  <h2 class="chapter-title">第6章 社保基金：国家队的定海神针</h2>
+  <p class="chapter-sub">社保基金的择时准确率极高——几乎每次市场底部都有它加仓的身影</p>
+
+  <h3>6.1 它是谁？——全国人民的养老钱</h3>
+  <p><strong>注意</strong>：不是你的"五险一金"，而是2000年成立的<strong>全国社会保障基金</strong>——国家战略储备基金，用于应对未来人口老龄化高峰时的社保支出。</p>
+  <p><strong>资金来源</strong>：中央财政拨入、国有股减持划转、彩票公益金、投资收益。<strong>规模</strong>：资产总额约3万亿元。<strong>管理方式</strong>：社保基金理事会直接管理+委托外部基金公司管理（如华夏、南方、博时等）。</p>
+
+  <h3>6.2 它的核心特征：两个字——"极稳"</h3>
+  <ul>
+    <li><strong>极长期</strong>：这笔钱是留给2035年、2050年用的，投资周期以10-20年计</li>
+    <li><strong>极稳健</strong>：年化收益目标约7-8%，绝不能出现大幅亏损</li>
+    <li><strong>逆向操作</strong>：有明确的"逆周期"投资纪律——市场恐慌时买入，市场狂热时卖出</li>
+  </ul>
+
+  <h3>6.3 社保基金的"抄底"艺术</h3>
+  <div class="chart-box">
+    <h4>📈 社保基金历次精准抄底 vs 上证指数走势</h4>
+    <div class="chart-container" id="chart-social-fund-timing"></div>
+  </div>
+  <div class="table-wrap"><table>
+    <tr><th>时间</th><th>市场状态</th><th>社保操作</th><th>后续走势</th></tr>
+    <tr><td>2005年</td><td>998点，市场绝望</td><td>大幅加仓</td><td>2006-2007年大牛市</td></tr>
+    <tr><td>2008年</td><td>1664点，全球金融危机</td><td>加仓银行、基建</td><td>2009年反弹翻倍</td></tr>
+    <tr><td>2018年</td><td>2449点，贸易摩擦+股权质押</td><td>新增账户+加仓医药/消费/科技</td><td>2019年初大涨</td></tr>
+    <tr><td>2022年</td><td>2863点，疫情+俄乌冲突</td><td>加仓信号</td><td>2022年5-6月反弹</td></tr>
+  </table></div>
+  <p>社保基金成立以来年化收益率约7.5%，看似不高，但考虑体量和安全要求，这是极其优秀的成绩。关键是：<strong>它的择时准确率极高</strong>。</p>
+
+  <div class="case-box">
+    <h4>社保基金长期持有格力电器</h4>
+    <p>从2006年前后开始持有，期间经历多次市场暴跌，始终未清仓。格力从约10元（复权价）涨到2020年高点的约60元，社保享受了完整的长期增长。</p>
+    <p><strong>新手启示</strong>：社保的"买入"信号=政策底已近，但它是<strong>左侧布局</strong>——买入后可能还会跌一阵，长期看胜率极高。</p>
+  </div>
+
+  <h3>6.4 你该怎么看社保的动向？</h3>
+  <ul>
+    <li><strong>上市公司季报/年报</strong>：十大流通股东中搜索"全国社保基金XXX组合"</li>
+    <li><strong>注意"组合编号"</strong>：不同组合由不同基金公司管理，风格略有差异</li>
+    <li>三个关键信号：
+      <ul>
+        <li>🟢 社保<strong>新进</strong>某只股票 → 强烈关注信号</li>
+        <li>🟢🟢 社保<strong>连续加仓</strong>（连续2-3个季度增持）→ 非常强的看好信号</li>
+        <li>🔴 社保<strong>减仓或退出</strong> → 需要警惕</li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="warn-box">社保加仓不代表马上涨——社保是左侧布局，可能买入后还会跌一阵。新手不要看到社保买了就满仓跟入，而是把社保加仓视为"市场进入可投资区间"的信号。</div>
+  <div class="tip-box">社保基金的持仓变动是"政策底"的信号。当社保开始加仓，不一定马上涨，但说明大资金认为估值已经合理。</div>
+  <div class="key-box">社保基金是A股最"聪明"的长期资金——它的择时准确率极高，它的加仓信号是"市场进入可投资区间"的风向标。</div>
+</div>
+
+<!-- PART 2: CH7-8 -->
+<div class="chapter section-reveal" id="ch7">
+  <h2 class="chapter-title">第7章 外资（北向资金）：聪明的趋势跟踪者</h2>
+  <p class="chapter-sub">外资是A股"核心资产"的定价锚——它的长期流向反映了国际资本对中国资产的信心变化</p>
+
+  <h3>7.1 它是谁？——海外资金买A股的通道</h3>
+  <p><strong>QFII</strong>（合格境外机构投资者）：2002年开放，高盛、摩根、瑞银等外资机构通过额度审批进入A股。</p>
+  <p><strong>北向资金</strong>（陆股通）：2014年沪港通、2016年深港通开通后，境外资金通过港股通道买A股，<strong>每个交易日实时公布净流入/流出数据</strong>。</p>
+
+  <h3>7.2 它的行为特征</h3>
+  <ul>
+    <li><strong>偏爱大盘蓝筹</strong>：消费（茅台、美的）、金融（招商银行）、医药（恒瑞医药）等"核心资产"</li>
+    <li><strong>汇率敏感</strong>：人民币升值→外资流入，贬值→流出</li>
+    <li><strong>全球配置视角</strong>：不是看单一市场，而是全球比较——A股便宜了就买，贵了就卖</li>
+    <li><strong>信号意义强</strong>：北向资金大幅流入/流出往往对应市场拐点</li>
+  </ul>
+
+  <div class="chart-box">
+    <h4>📈 北向资金净流入与沪深300走势（年度示意）</h4>
+    <div class="chart-container" id="chart-northbound"></div>
+  </div>
+
+  <div class="case-box">
+    <h4>案例一：2017年外资推动"白马股行情"</h4>
+    <p>2017年北向资金全年净流入近2000亿元，推动"白马股"行情。茅台从300元涨到700元，美的、格力等消费龙头涨幅巨大。外资发现了A股"核心资产"的定价权——这些股票的估值从此被<strong>"锚定"在国际水平</strong>。</p>
+  </div>
+
+  <div class="case-box">
+    <h4>案例二：2021年后外资持续流出</h4>
+    <p>美联储加息预期+中美利差收窄→外资持续流出→核心资产估值承压。这说明外资不是"只买不卖"——进出受<strong>全球宏观驱动</strong>，不是单纯"看好A股"。</p>
+    <p><strong>新手启示</strong>：北向资金的日度流向是短期情绪指标，<strong>月度趋势是中期方向指标</strong>——关注月度级别，不要每天盯着净买入净卖出。</p>
+  </div>
+
+  <h3>7.3 你该怎么看北向资金？</h3>
+  <ul>
+    <li><strong>东方财富/同花顺</strong>：每日实时公布北向资金净流入/流出</li>
+    <li><strong>关注月度趋势而非日度波动</strong></li>
+    <li><strong>北向资金不是"一个整体"</strong>：里面有长线配置型外资，也有短线交易型外资，净流入不代表"外资一致看好"</li>
+  </ul>
+
+  <div class="tip-box">北向资金大幅连续流出（连续5天净流出累计超300亿）往往是短期底部的反向信号——恐慌性流出往往对应阶段性低点。</div>
+  <div class="key-box">外资是A股"核心资产"的定价锚——它的长期流向反映了国际资本对中国资产的信心变化。</div>
+  <div class="warn-box">北向资金不是"一个整体"——里面有长线配置型外资，也有短线交易型外资。净流入不代表"外资一致看好"，日度波动更多是交易型资金在搅动。</div>
+</div>
+
+<div class="chapter section-reveal" id="ch8">
+  <h2 class="chapter-title">第8章 游资：散户的对手盘</h2>
+  <p class="chapter-sub">游资赚的就是散户追涨的钱——当你看到涨停板想冲进去的时候，你就是游资的"利润来源"</p>
+
+  <h3>8.1 它是谁？——短线资金的"游击队"</h3>
+  <p><strong>钱从哪来</strong>：大户/职业炒家的短线资金，无固定来源。<strong>特征</strong>：快进快出，持仓以天计，最长不超过几周。<strong>识别渠道</strong>：龙虎榜（交易所每日公布买卖金额最大的5个席位）。</p>
+
+  <h3>8.2 它的行为特征——"打板"生态链</h3>
+  <ul>
+    <li><strong>打板策略</strong>：封涨停→吸引散户跟风→次日高开出货</li>
+    <li><strong>制造热点</strong>：用资金优势拉动小盘股，制造赚钱效应</li>
+    <li><strong>互为对手</strong>：散户看到涨停板追入时，往往就是游资出货时</li>
+    <li><strong>龙虎榜密码</strong>：游资席位+"东方财富拉萨天团"（散户集中营）同时出现=游资在出货、散户在接盘</li>
+  </ul>
+
+  <div class="case-box">
+    <h4>2021年"妖股"联动</h4>
+    <p>某游资拉抬低价小盘股连拉多个涨停→散户跟风涌入→龙虎榜显示游资席位大量买入→次日散户继续追→游资通过多个账户分批出货→股价从涨停到跌停→散户深度套牢。</p>
+    <p><strong>新手启示</strong>：看到连续涨停、龙虎榜全是游资席位——<strong>这不是你要的机会，这是你要避开的陷阱</strong>。</p>
+  </div>
+
+  <h3>8.3 游资的"暗语"——新手必知的龙虎榜信号</h3>
+  <div class="table-wrap"><table>
+    <tr><th>信号</th><th>含义</th><th>新手应该</th></tr>
+    <tr><td>买方全是游资营业部</td><td>游资在主导</td><td>⚠️ 谨慎追涨</td></tr>
+    <tr><td>买方有"机构专用"席位</td><td>可能真有机构买入</td><td>🟡 需甄别（可能是假机构）</td></tr>
+    <tr><td>卖方全是游资营业部</td><td>游资在出货</td><td>🔴 不要追涨</td></tr>
+    <tr><td>拉萨天团（散户席位）在买方</td><td>散户在接盘</td><td>🔴 高度警惕</td></tr>
+    <tr><td>游资+拉萨天团同时出现</td><td>游资出、散户进</td><td>🔴 <strong>最危险的组合</strong></td></tr>
+  </table></div>
+
+  <div class="chart-box">
+    <h4>📈 游资"打板"操作流程示意图</h4>
+    <div class="chart-container" id="chart-hot-money"></div>
+  </div>
+
+  <h3>8.4 你该怎么看龙虎榜？</h3>
+  <ul>
+    <li>每日收盘后交易所公布，可在东方财富/同花顺查看</li>
+    <li>关注席位类型（机构专用 vs 营业部）和买卖方向</li>
+    <li>不要跟着游资做——你是散户，速度和资金都不占优势，追涨的尽头就是被收割</li>
+  </ul>
+
+  <div class="tip-box">如果你发现自己被一只连续涨停的股票吸引——先打开龙虎榜看看买方是谁。如果是游资在主导，这恰恰是你应该避开而非追入的信号。</div>
+  <div class="key-box">游资赚的就是散户追涨的钱——当你看到涨停板想冲进去的时候，你就是游资的"利润来源"。散户对游资的唯一正确策略是：避开。</div>
+  <div class="warn-box">龙虎榜上的"机构专用"席位不一定是真机构——部分私募借道机构专用席位，需要结合买卖金额和操作风格甄别。不要看到"机构"二字就放心追入。</div>
+</div>
+</section>
+
+<!-- PART 3: CH9 -->
+<section class="section" id="ch9">
+<div class="part-title section-reveal">
+  <div class="tag">第三篇</div>
+  <h2>机构行为的底层逻辑</h2>
+  <p>从"认识每种机构"升级为"看懂整个机构生态"</p>
+</div>
+
+<div class="chapter section-reveal">
+  <h2 class="chapter-title">第9章 机构生态全景图——谁在什么阶段主导市场</h2>
+  <p class="chapter-sub">理解了每种机构，再把它们放进同一个生态里看，你会发现一幅完整的"权力地图"</p>
+
+  <h3>9.1 机构生态食物链</h3>
+  <p>这不是说散户一定亏——而是说散户如果不理解这个食物链，<strong>大概率会成为"最后一棒"</strong>。理解了，就可以选择站在正确的位置。</p>
+  <div class="food-chain">
+    <div class="fc-level upstream"><h4>🏛️ 上游：社保/险资</h4><p>长期配置，提供市场"锚"——在别人恐惧时买入</p></div>
+    <div class="fc-arrow">⬇</div>
+    <div class="fc-level midstream"><h4>🏦 中游：公募/外资</h4><p>跟随趋势，提供市场"流动性"——在趋势确认后加仓</p></div>
+    <div class="fc-arrow">⬇</div>
+    <div class="fc-level downstream"><h4>⚡ 下游：游资</h4><p>制造波动，收割散户"情绪"——在狂热时出货</p></div>
+    <div class="fc-arrow">⬇</div>
+    <div class="fc-level retail"><h4>👤 散户</h4><p>信息劣势，往往是"最后一棒"——但理解食物链后可以改变位置</p></div>
+  </div>
+
+  <h3>9.2 为什么机构也会"犯错"？——机构的结构性缺陷</h3>
+  <div class="table-wrap"><table>
+    <tr><th>缺陷</th><th>解释</th><th>对散户的启示</th></tr>
+    <tr><td><strong>规模诅咒</strong></td><td>资金体量过大，只能投资大市值股票，小盘股"买不进也卖不出"</td><td>小盘股是散户可以涉足而机构无法进入的领域</td></tr>
+    <tr><td><strong>考核短视</strong></td><td>基金经理每年考核，导致不敢做"短期可能亏但长期正确"的决策</td><td>你可以做长期正确的事——你没有年度排名</td></tr>
+    <tr><td><strong>抱团惯性</strong></td><td>排名机制导致羊群效应——错了大家一起错</td><td>抱团极致=风险最大，不要在所有人都买的时候追入</td></tr>
+    <tr><td><strong>信息≠判断</strong></td><td>研究员调研100次，但基金经理可能因为"风格不匹配"而不买</td><td>机构不一定"全知"——它也有自己的能力圈限制</td></tr>
+    <tr><td><strong>合规限制</strong></td><td>不能买ST股、不能买上市不满一年的新股等</td><td>某些领域机构无法参与，但也不代表散户应该去</td></tr>
+  </table></div>
+
+  <h3>9.3 机构的"时间框架"与散户完全不同</h3>
+  <div class="chart-box">
+    <h4>📈 不同机构的时间框架对比</h4>
+    <div class="chart-container" id="chart-timeframe"></div>
+  </div>
+  <p><strong>核心启示</strong>：当你看到社保基金买了一只股票，它可能打算持有10年。而你如果打算持有10天，那它的"买入"对你毫无参考价值。<strong>你必须找到与自己时间框架匹配的机构信号。</strong></p>
+
+  <h3>9.4 一轮牛熊周期中各类机构的行为图谱</h3>
+  <div class="chart-box">
+    <h4>📈 牛熊周期中的机构行为图谱</h4>
+    <div class="chart-container" id="chart-cycle-map"></div>
+  </div>
+
+  <h3>9.5 不同市场阶段，新手应该关注谁的信号？</h3>
+  <div class="table-wrap"><table>
+    <tr><th>市场阶段</th><th>最值得关注的机构</th><th>信号含义</th><th>新手应该</th></tr>
+    <tr><td>底部恐慌</td><td>🟢 社保/险资加仓</td><td>政策底已近</td><td>关注信号，不要恐慌割肉</td></tr>
+    <tr><td>反弹初期</td><td>🟡 外资+公募加仓</td><td>趋势确认</td><td>确认趋势后参与，不急不抢</td></tr>
+    <tr><td>上涨中期</td><td>🟠 公募抱团+散户涌入</td><td>主题扩散</td><td>享受趋势但设好止盈</td></tr>
+    <tr><td>顶部狂热</td><td>🔴 游资主导+散户接盘</td><td>泡沫信号</td><td>减仓为主，不追涨停板</td></tr>
+    <tr><td>下跌初期</td><td>🔴 公募被动减仓</td><td>抱团瓦解</td><td>及时减仓，不要死扛</td></tr>
+  </table></div>
+
+  <div class="tip-box">如果你发现自己在频繁追涨游资主导的涨停板——你已经从"投资者"变成了"游资的利润来源"。停下来，重新审视自己的交易体系。</div>
+  <div class="key-box">理解机构不是让你跟着机构做，而是让你在正确的时机参考正确的信号——底部看社保/险资，趋势看公募/外资，狂热时看游资（作为反向指标）。</div>
+  <div class="warn-box">社保加仓不代表马上涨——社保是左侧布局，买入后可能还会跌一阵。如果你打算持有10天，社保的"买入"对你毫无参考价值。必须找到与自己时间框架匹配的机构信号。</div>
+</div>
+</section>
+
+<!-- PART 4: CH10 -->
+<section class="section" id="ch10">
+<div class="part-title section-reveal">
+  <div class="tag">第四篇</div>
+  <h2>实战指南</h2>
+  <p>从"理解机构"到"利用机构信息辅助决策"</p>
+</div>
+
+<div class="chapter section-reveal">
+  <h2 class="chapter-title">第10章 跟踪机构的实操方法</h2>
+  <p class="chapter-sub">不需要每天盯着数据做决策，而是定期检查、交叉验证、结合估值判断</p>
+
+  <h3>10.1 免费工具推荐</h3>
+  <div class="table-wrap"><table>
+    <tr><th>工具</th><th>用途</th><th>获取方式</th></tr>
+    <tr><td><strong>巨潮资讯网</strong>（cninfo.com.cn）</td><td>查上市公司季报/年报，看十大股东</td><td>免费</td></tr>
+    <tr><td><strong>东方财富/同花顺</strong></td><td>查基金持仓、北向资金流向、龙虎榜</td><td>免费</td></tr>
+    <tr><td><strong>理杏仁/乌龟量化</strong></td><td>查PE/PB历史分位（辅助判断估值水平）</td><td>部分免费</td></tr>
+    <tr><td><strong>中国证券投资基金业协会</strong></td><td>查私募备案信息</td><td>免费</td></tr>
+    <tr><td><strong>国家金融监管总局官网</strong></td><td>查险资配置数据</td><td>免费</td></tr>
+    <tr><td><strong>社保基金理事会官网</strong></td><td>查年报（披露重仓股）</td><td>免费</td></tr>
+  </table></div>
+
+  <h3>10.2 新手跟踪机构的"五步法"</h3>
+  <div class="flow-steps">
+    <div class="flow-step"><div class="flow-num">1</div><div class="flow-text"><h4>选一个你关注的行业</h4><p>比如消费、医药、新能源——先聚焦一个领域</p></div></div>
+    <div class="flow-step"><div class="flow-num">2</div><div class="flow-text"><h4>找到该行业的龙头公司</h4><p>白酒→茅台、五粮液；医药→恒瑞、药明</p></div></div>
+    <div class="flow-step"><div class="flow-num">3</div><div class="flow-text"><h4>打开最新季报，看十大流通股东</h4><p>有没有社保？有没有知名公募？有没有险资？</p></div></div>
+    <div class="flow-step"><div class="flow-num">4</div><div class="flow-text"><h4>对比上一季度</h4><p>机构是加仓了还是减仓了？有没有新进的？</p></div></div>
+    <div class="flow-step"><div class="flow-num">5</div><div class="flow-text"><h4>结合估值判断</h4><p>机构加仓时股价是在高位还是低位？低位加仓更有参考价值</p></div></div>
+  </div>
+
+  <h3>10.3 不同机构的跟踪重点与使用方法</h3>
+  <div class="table-wrap"><table>
+    <tr><th>机构</th><th>信息来源</th><th>你应该关注什么</th><th>怎么用</th></tr>
+    <tr><td>公募</td><td>季报持仓（滞后1个月）</td><td>抱团方向、持仓集中度</td><td>抱团极致=风险，抱团瓦解=机会</td></tr>
+    <tr><td>私募</td><td>上市公司十大股东</td><td>百亿私募整体仓位（间接）</td><td>可作为市场情绪参考</td></tr>
+    <tr><td>保险</td><td>季报/年报、举牌公告</td><td>加仓的行业和个股</td><td>中期配置方向参考</td></tr>
+    <tr><td>社保</td><td>持股变动公告</td><td>加仓时点</td><td>政策底信号</td></tr>
+    <tr><td>外资</td><td>每日北向资金</td><td>月度趋势</td><td>中期方向确认</td></tr>
+    <tr><td>游资</td><td>每日龙虎榜</td><td>哪些股票在被炒作</td><td>⚠️ 避开而非跟风</td></tr>
+  </table></div>
+
+  <h3>10.4 机构行为的三大陷阱</h3>
+  <div class="warn-box">
+    <strong>陷阱一：持仓数据是滞后的</strong>——你看到的一季度持仓到4月底才公布，机构可能已经卖了。<br>
+    <strong>陷阱二：北向资金不是"一个整体"</strong>——里面有长线配置型外资，也有短线交易型外资，净流入不代表"外资一致看好"。<br>
+    <strong>陷阱三：龙虎榜上的"机构专用"可能是假机构</strong>——部分私募借道机构专用席位，需要甄别。
+  </div>
+
+  <h3>10.5 新手跟踪机构的"三个不要"</h3>
+  <ul>
+    <li>❌ <strong>不要看到机构买了就无脑跟</strong>——你看到的是滞后数据，机构可能已经卖了</li>
+    <li>❌ <strong>不要只看一家机构</strong>——一只股票被社保+险资+3家公募同时持有，比只被一家私募持有更可靠</li>
+    <li>❌ <strong>不要忽视"机构在卖"的信号</strong>——如果连续两个季度多家机构同时减仓，这比任何技术分析都更值得警惕</li>
+  </ul>
+
+  <h3>10.6 一张"机构信号速查卡"——日常投资中的快速判断</h3>
+  <div class="signal-grid">
+    <div class="signal-card green">
+      <div class="sig-icon">🟢</div>
+      <h4>社保新进+险资加仓+公募增持</h4>
+      <p>多类机构一致看好 → 强烈关注</p>
+    </div>
+    <div class="signal-card yellow">
+      <div class="sig-icon">🟡</div>
+      <h4>社保加仓+公募减仓</h4>
+      <p>长期资金看好但短期资金在走 → 中性偏多，长期可关注</p>
+    </div>
+    <div class="signal-card yellow">
+      <div class="sig-icon">🟠</div>
+      <h4>公募抱团极致+新基金天量发行</h4>
+      <p>抱团可能接近顶部 → 谨慎，开始减仓</p>
+    </div>
+    <div class="signal-card red">
+      <div class="sig-icon">🔴</div>
+      <h4>游资主导+散户席位大量出现</h4>
+      <p>游资在出货、散户在接盘 → 高度警惕，不要追涨</p>
+    </div>
+    <div class="signal-card red">
+      <div class="sig-icon">🔴</div>
+      <h4>多类机构连续减仓</h4>
+      <p>机构集体看淡 → 警惕，考虑减仓</p>
+    </div>
+  </div>
+
+  <div class="tip-box">跟踪机构不需要每天做——每季度季报发布后花30分钟看一次就够了。频繁跟踪反而容易"过度解读"短期波动。</div>
+  <div class="key-box">跟踪机构的正确姿势是"季度看季报、月度看北向、日常避游资"——不要每天盯着数据做决策，而是定期检查、交叉验证、结合估值判断。</div>
+</div>
+</section>
+
+<!-- APPENDIX -->
+<section class="section" id="appA">
+<div class="part-title section-reveal">
+  <div class="tag">附录</div>
+  <h2>参考资料</h2>
+  <p>速查工具，日常投资中随时翻阅</p>
+</div>
+
+<div class="app-section section-reveal">
+  <h3>附录A 术语速查表</h3>
+  <div class="table-wrap"><table>
+    <tr><th>术语</th><th>简释</th></tr>
+    <tr><td>举牌</td><td>投资者持有一家上市公司股份达到5%时必须公告，称为"举牌"</td></tr>
+    <tr><td>双十限制</td><td>公募基金单只股票≤基金净值10%，同一公司所有基金≤该股流通股10%</td></tr>
+    <tr><td>仓位下限</td><td>股票型基金股票仓位不得低于80%，即使看空也不能空仓</td></tr>
+    <tr><td>清盘线</td><td>私募基金净值跌破约定值（通常0.7-0.8）时必须终止产品</td></tr>
+    <tr><td>龙虎榜</td><td>交易所每日公布买卖金额最大的5个席位，用于识别游资和机构</td></tr>
+    <tr><td>QFII</td><td>合格境外机构投资者，通过额度审批进入A股的海外机构</td></tr>
+    <tr><td>北向资金</td><td>通过港股通从香港买入A股的资金，每日公布净流入/流出</td></tr>
+    <tr><td>换手率</td><td>基金在一定期间内买卖证券的频率，>300%=高频交易</td></tr>
+    <tr><td>持仓集中度</td><td>前十大重仓股占基金净值的比例，>60%=风格激进</td></tr>
+    <tr><td>窗口粉饰</td><td>季度末基金经理拉抬重仓股净值，让报表好看</td></tr>
+    <tr><td>打板</td><td>游资在涨停价位买入封住涨停板，吸引散户跟风的策略</td></tr>
+    <tr><td>久期匹配</td><td>险资将资产端的投资期限与负债端的保单期限对齐</td></tr>
+    <tr><td>左侧布局</td><td>在下跌趋势中逐步买入，不等趋势确认就入场</td></tr>
+    <tr><td>冲击成本</td><td>大额交易对股价造成的不利影响（买入推高价格，卖出压低价格）</td></tr>
+  </table></div>
+</div>
+
+<div class="app-section section-reveal">
+  <h3>附录B 六大机构对比总表</h3>
+  <div class="table-wrap"><table>
+    <tr><th>维度</th><th>公募基金</th><th>私募基金</th><th>保险资金</th><th>社保基金</th><th>外资/北向资金</th><th>游资</th></tr>
+    <tr><td>资金来源</td><td>大众申购</td><td>高净值客户</td><td>保费收入</td><td>财政+投资收益</td><td>海外资本</td><td>大户/炒家</td></tr>
+    <tr><td>核心约束</td><td>仓位下限+排名</td><td>清盘线+绝对收益</td><td>久期匹配+安全</td><td>政治属性+极长期</td><td>全球配置视角</td><td>无约束</td></tr>
+    <tr><td>行为特征</td><td>抱团、被动追涨杀跌</td><td>灵活择时、策略多元</td><td>高股息、超长期</td><td>精准抄底、逆向</td><td>趋势跟踪、蓝筹偏好</td><td>打板、制造热点</td></tr>
+    <tr><td>跟踪方法</td><td>季报前十大持仓</td><td>十大股东（间接）</td><td>季报+举牌公告</td><td>季报持股变动</td><td>每日北向数据</td><td>每日龙虎榜</td></tr>
+    <tr><td>新手启示</td><td>抱团极致=风险</td><td>灵活是双刃剑</td><td>价值筛选器</td><td>政策底信号</td><td>关注月度趋势</td><td>避开而非跟风</td></tr>
+  </table></div>
+</div>
+
+<div class="app-section section-reveal">
+  <h3>附录C 机构信号速查卡（便携版）</h3>
+  <div class="table-wrap"><table>
+    <tr><th>你看到的信号</th><th>可能含义</th><th>新手应该</th></tr>
+    <tr><td>🟢 社保新进+险资加仓+公募增持</td><td>多类机构一致看好</td><td>强烈关注</td></tr>
+    <tr><td>🟡 社保加仓+公募减仓</td><td>长期看好但短期在走</td><td>中性偏多</td></tr>
+    <tr><td>🟠 公募抱团极致+天量新基金</td><td>抱团可能见顶</td><td>谨慎减仓</td></tr>
+    <tr><td>🔴 游资主导+散户席位</td><td>游资出货散户接盘</td><td>不要追涨</td></tr>
+    <tr><td>🔴 多类机构连续减仓</td><td>机构集体看淡</td><td>考虑减仓</td></tr>
+  </table></div>
+</div>
+
+<div class="app-section section-reveal">
+  <h3>附录D 历史重大事件时间线</h3>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">2005年</div><div class="tl-text">上证998点，社保大幅加仓→2006-2007年大牛市</div></div>
+    <div class="tl-item"><div class="tl-year">2008年</div><div class="tl-text">全球金融危机，1664点社保加仓→2009年反弹翻倍</div></div>
+    <div class="tl-item"><div class="tl-year">2015年</div><div class="tl-text">5178点暴跌，私募灵活减仓vs公募硬扛，险资逆势加仓，宝能举牌万科</div></div>
+    <div class="tl-item"><div class="tl-year">2017年</div><div class="tl-text">北向资金净流入近2000亿，推动白马股行情，监管批评"野蛮人"</div></div>
+    <div class="tl-item"><div class="tl-year">2018年</div><div class="tl-text">2449点贸易摩擦，社保新增账户加仓→2019年初大涨</div></div>
+    <div class="tl-item"><div class="tl-year">2020年</div><div class="tl-text">疫情后全球放水，公募核心资产抱团极致，茅台PE超60倍</div></div>
+    <div class="tl-item"><div class="tl-year">2021年</div><div class="tl-text">抱团崩塌+量化私募封神，茅台从2600跌至1300</div></div>
+    <div class="tl-item"><div class="tl-year">2022年</div><div class="tl-text">2863点疫情+俄乌，社保加仓；量化私募集体回撤超20%</div></div>
+    <div class="tl-item"><div class="tl-year">2024年</div><div class="tl-text">2月小盘股流动性危机，多家量化私募道歉</div></div>
+  </div>
+</div>
+
+<div class="app-section section-reveal">
+  <h3>附录E 推荐书单与学习资源</h3>
+  <div class="table-wrap"><table>
+    <tr><th>阶段</th><th>书目</th><th>价值</th></tr>
+    <tr><td>入门</td><td>《漫步华尔街》</td><td>理解市场有效性与机构行为</td></tr>
+    <tr><td>进阶</td><td>《机构投资的创新之路》（大卫·史文森）</td><td>耶鲁捐赠基金掌门人的机构投资圣经</td></tr>
+    <tr><td>进阶</td><td>《对冲基金风云录》</td><td>理解私募基金的策略与人性</td></tr>
+    <tr><td>精进</td><td>《投资最重要的事》（霍华德·马克斯）</td><td>理解周期与逆向投资思维</td></tr>
+  </table></div>
+  <p><strong>免费数据网站</strong>：巨潮资讯网（cninfo.com.cn）| 东方财富（eastmoney.com）| 中国证券投资基金业协会（amac.org.cn）| 社保基金理事会官网（ssf.gov.cn）</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer" style="margin-top:60px">
+  <p>📊 机构投资者知识手册 —— 帮助新手看懂市场权力结构</p>
+  <p>本手册基于公开信息编写，所有案例均为历史事实回顾，不构成任何投资建议。</p>
+  <p>理解机构，不是为了"抄作业"，而是为了不再做那个"不知道谁在对面"的人。</p>
+</div>
+</section>
+
+<!-- JAVASCRIPT -->
+<script>
+// ===== HERO CANVAS =====
+(function(){
+  const c=document.getElementById('heroCanvas'),ctx=c.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight}
+  window.addEventListener('resize',resize);resize();
+  for(let i=0;i<70;i++) particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
+  function draw(){
+    ctx.fillStyle='rgba(11,20,35,0.15)';ctx.fillRect(0,0,w,h);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;
+      if(p.y<0||p.y>h)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(59,130,246,0.5)';ctx.fill();
+    });
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle='rgba(59,130,246,'+(1-dist/120)*0.15+')';ctx.stroke()}
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== SCROLL REVEAL =====
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible')}});
+},{threshold:0.1});
+document.querySelectorAll('.section-reveal').forEach(el=>obs.observe(el));
+
+// ===== NAV ACTIVE =====
+const navLinks=document.querySelectorAll('.nav a');
+const navObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const link=document.querySelector('.nav a[href="#'+e.target.id+'"]');
+      if(link)link.classList.add('active');
+    }
+  });
+},{threshold:0.2,rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('.section,.chapter,.cover').forEach(el=>navObs.observe(el));
+
+// ===== ECHARTS LAZY LOAD =====
+const chartFns={};
+function initChart(id,fn){chartFns[id]=fn}
+const chartObs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&!e.target.dataset.init){
+      e.target.dataset.init='1';
+      const id=e.target.id;
+      if(chartFns[id]){chartFns[id]()}
+      chartObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.15});
+document.querySelectorAll('.chart-container').forEach(el=>chartObs.observe(el));
+
+// ===== CHART 1: Market Structure =====
+initChart('chart-market-structure',function(){
+  const c=echarts.init(document.getElementById('chart-market-structure'));
+  c.setOption({
+    tooltip:{trigger:'item',formatter:'{b}: {d}%'},
+    legend:{bottom:0,textStyle:{color:'#9CA8B8',fontSize:12}},
+    series:[{type:'pie',radius:['40%','70%'],center:['50%','45%'],
+      label:{color:'#E8ECF1',fontSize:12},
+      data:[
+        {value:25,name:'公募基金',itemStyle:{color:'#3B82F6'}},
+        {value:15,name:'私募基金',itemStyle:{color:'#8B5CF6'}},
+        {value:12,name:'保险资金',itemStyle:{color:'#22C55E'}},
+        {value:8,name:'社保基金',itemStyle:{color:'#F59E0B'}},
+        {value:10,name:'外资/北向资金',itemStyle:{color:'#EC4899'}},
+        {value:5,name:'游资',itemStyle:{color:'#EF4444'}},
+        {value:25,name:'散户',itemStyle:{color:'#6B7A8D'}}
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 2: Scale Compare =====
+initChart('chart-scale-compare',function(){
+  const c=echarts.init(document.getElementById('chart-scale-compare'));
+  c.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    grid:{left:80,right:30,top:20,bottom:40},
+    xAxis:{type:'value',name:'万亿元',axisLabel:{color:'#9CA8B8'},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'}},
+    yAxis:{type:'category',data:['社保基金','游资','外资（日均）','私募基金','公募基金（持股）','保险资金'],axisLabel:{color:'#E8ECF1',fontSize:12}},
+    series:[{type:'bar',barWidth:24,
+      data:[
+        {value:3,itemStyle:{color:'#F59E0B'}},
+        {value:0.5,itemStyle:{color:'#EF4444'}},
+        {value:2.5,itemStyle:{color:'#EC4899'}},
+        {value:5,itemStyle:{color:'#8B5CF6'}},
+        {value:6,itemStyle:{color:'#3B82F6'}},
+        {value:28,itemStyle:{color:'#22C55E'}}
+      ],
+      label:{show:true,position:'right',color:'#E8ECF1',fontSize:12,formatter:'{c}万亿'}
+    }]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 3: Feedback Loop =====
+initChart('chart-feedback-loop',function(){
+  const c=echarts.init(document.getElementById('chart-feedback-loop'));
+  c.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{data:['正反馈（抱团形成）','负反馈（抱团崩塌）'],textStyle:{color:'#9CA8B8'},top:0},
+    grid:{left:60,right:30,top:40,bottom:40},
+    xAxis:{type:'category',data:['阶段1','阶段2','阶段3','阶段4','阶段5','阶段6'],axisLabel:{color:'#9CA8B8'},axisLine:{lineStyle:{color:'#1E3050'}}},
+    yAxis:{type:'value',name:'股价/净值',axisLabel:{color:'#9CA8B8'},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'}},
+    series:[
+      {name:'正反馈（抱团形成）',type:'line',smooth:true,data:[100,120,150,190,240,300],lineStyle:{color:'#22C55E',width:3},itemStyle:{color:'#22C55E'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(34,197,94,0.25)'},{offset:1,color:'rgba(34,197,94,0)'}]}},markPoint:{data:[{type:'max',name:'极致',label:{color:'#fff'}}]}},
+      {name:'负反馈（抱团崩塌）',type:'line',smooth:true,data:[300,270,230,180,140,100],lineStyle:{color:'#EF4444',width:3},itemStyle:{color:'#EF4444'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(239,68,68,0.25)'},{offset:1,color:'rgba(239,68,68,0)'}]}},markPoint:{data:[{type:'min',name:'崩塌',label:{color:'#fff'}}]}}
+    ]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 4: Scale Paradox =====
+initChart('chart-scale-paradox',function(){
+  const c=echarts.init(document.getElementById('chart-scale-paradox'));
+  const sizes=[1,5,10,30,50,80,100,150];
+  const returns=[35,32,28,22,18,14,10,6];
+  const capacity=60;
+  c.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
+    legend:{data:['年化收益率','策略容量线'],textStyle:{color:'#9CA8B8'},top:0},
+    grid:{left:60,right:30,top:40,bottom:40},
+    xAxis:{type:'category',data:sizes.map(s=>s+'亿'),axisLabel:{color:'#9CA8B8'},axisLine:{lineStyle:{color:'#1E3050'}},name:'管理规模',nameTextStyle:{color:'#9CA8B8'}},
+    yAxis:[{type:'value',name:'年化收益率%',axisLabel:{color:'#9CA8B8'},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'}},{type:'value',show:false}],
+    series:[
+      {name:'年化收益率',type:'bar',data:returns.map((v,i)=>({value:v,itemStyle:{color:v>20?'#22C55E':v>12?'#F59E0B':'#EF4444'}})),label:{show:true,position:'top',color:'#E8ECF1',fontSize:11,formatter:'{c}%'}},
+      {name:'策略容量线',type:'line',markLine:{silent:true,lineStyle:{color:'#EF4444',type:'dashed',width:2},data:[{xAxis:'60亿',label:{formatter:'策略容量上限',color:'#EF4444',fontSize:11}}]}}
+    ]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 5: Insurance Allocation =====
+initChart('chart-insurance-alloc',function(){
+  const c=echarts.init(document.getElementById('chart-insurance-alloc'));
+  c.setOption({
+    tooltip:{trigger:'item',formatter:'{b}: {d}%'},
+    legend:{bottom:0,textStyle:{color:'#9CA8B8',fontSize:12}},
+    series:[{type:'pie',radius:['35%','65%'],center:['50%','42%'],
+      roseType:'radius',
+      label:{color:'#E8ECF1',fontSize:12},
+      data:[
+        {value:62,name:'债券',itemStyle:{color:'#3B82F6'}},
+        {value:13,name:'股票与基金',itemStyle:{color:'#22C55E'}},
+        {value:8,name:'不动产',itemStyle:{color:'#F59E0B'}},
+        {value:7,name:'银行存款',itemStyle:{color:'#8B5CF6'}},
+        {value:5,name:'其他',itemStyle:{color:'#6B7A8D'}},
+        {value:5,name:'长期股权投资',itemStyle:{color:'#EC4899'}}
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 6: Social Fund Timing =====
+initChart('chart-social-fund-timing',function(){
+  const c=echarts.init(document.getElementById('chart-social-fund-timing'));
+  const years=['2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'];
+  const idx=[1266,998,2675,5261,1820,3277,2808,2199,2269,2116,3234,3539,3104,3307,2494,3050,3474,3640,2890,2975];
+  const buys=[0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0];
+  c.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{data:['上证指数','社保加仓'],textStyle:{color:'#9CA8B8'},top:0},
+    grid:{left:60,right:30,top:40,bottom:40},
+    xAxis:{type:'category',data:years,axisLabel:{color:'#9CA8B8',rotate:45},axisLine:{lineStyle:{color:'#1E3050'}}},
+    yAxis:{type:'value',name:'点',axisLabel:{color:'#9CA8B8'},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'}},
+    series:[
+      {name:'上证指数',type:'line',data:idx,smooth:true,lineStyle:{color:'#3B82F6',width:2},itemStyle:{color:'#3B82F6'},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(59,130,246,0.2)'},{offset:1,color:'rgba(59,130,246,0)'}]}}},
+      {name:'社保加仓',type:'scatter',data:buys.map((b,i)=>b?[years[i],idx[i]]:null).filter(Boolean),symbolSize:24,itemStyle:{color:'#22C55E',borderColor:'#fff',borderWidth:2},label:{show:true,formatter:'社保买入',color:'#22C55E',fontSize:10,position:'top'}}
+    ]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 7: Northbound Flow =====
+initChart('chart-northbound',function(){
+  const c=echarts.init(document.getElementById('chart-northbound'));
+  const yrs=['2017','2018','2019','2020','2021','2022','2023'];
+  const flow=[2000,2942,3517,2089,4322,900,437];
+  const hs300=[3821,3010,4097,5211,5264,3871,3538];
+  c.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{data:['北向净流入（亿元）','沪深300指数'],textStyle:{color:'#9CA8B8'},top:0},
+    grid:{left:70,right:60,top:40,bottom:40},
+    xAxis:{type:'category',data:yrs,axisLabel:{color:'#9CA8B8'},axisLine:{lineStyle:{color:'#1E3050'}}},
+    yAxis:[
+      {type:'value',name:'净流入（亿元）',axisLabel:{color:'#9CA8B8'},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'}},
+      {type:'value',name:'沪深300',axisLabel:{color:'#9CA8B8'},splitLine:{show:false},nameTextStyle:{color:'#9CA8B8'}}
+    ],
+    series:[
+      {name:'北向净流入（亿元）',type:'bar',data:flow.map(v=>({value:v,itemStyle:{color:v>2000?'#22C55E':'#EF4444'}})),label:{show:true,position:'top',color:'#E8ECF1',fontSize:10}},
+      {name:'沪深300指数',type:'line',yAxisIndex:1,data:hs300,smooth:true,lineStyle:{color:'#3B82F6',width:2},itemStyle:{color:'#3B82F6'}}
+    ]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 8: Hot Money Flow =====
+initChart('chart-hot-money',function(){
+  const c=echarts.init(document.getElementById('chart-hot-money'));
+  c.setOption({
+    tooltip:{trigger:'axis'},
+    grid:{left:50,right:30,top:30,bottom:40},
+    xAxis:{type:'category',data:['Day1\n游资买入封板','Day2\n散户追涨','Day3\n游资出货','Day4\n散户套牢'],axisLabel:{color:'#E8ECF1',fontSize:11},axisLine:{lineStyle:{color:'#1E3050'}}},
+    yAxis:{type:'value',name:'股价变动%',axisLabel:{color:'#9CA8B8'},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'}},
+    series:[{type:'bar',barWidth:48,
+      data:[
+        {value:10,itemStyle:{color:'#22C55E'}},
+        {value:8,itemStyle:{color:'#F59E0B'}},
+        {value:-5,itemStyle:{color:'#EF4444'}},
+        {value:-8,itemStyle:{color:'#EF4444'}}
+      ],
+      label:{show:true,position:'inside',color:'#fff',fontSize:14,fontWeight:'bold',formatter:function(p){return p.value>0?'+'+p.value+'%':p.value+'%'}}
+    }]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 9: Timeframe =====
+initChart('chart-timeframe',function(){
+  const c=echarts.init(document.getElementById('chart-timeframe'));
+  c.setOption({
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+    grid:{left:80,right:30,top:20,bottom:40},
+    xAxis:{type:'log',name:'持仓周期',axisLabel:{color:'#9CA8B8',formatter:function(v){const labels={1:'1天',7:'1周',90:'1季度',365:'1年',3650:'10年',7300:'20年'};return labels[v]||v},interval:1},splitLine:{lineStyle:{color:'#1E3050'}},nameTextStyle:{color:'#9CA8B8'},min:1,max:7300},
+    yAxis:{type:'category',data:['游资','散户','公募基金','外资','保险资金','社保基金'],axisLabel:{color:'#E8ECF1',fontSize:12}},
+    series:[{type:'bar',barWidth:24,
+      data:[
+        {value:1,itemStyle:{color:'#EF4444'}},
+        {value:7,itemStyle:{color:'#F59E0B'}},
+        {value:90,itemStyle:{color:'#3B82F6'}},
+        {value:365,itemStyle:{color:'#EC4899'}},
+        {value:3650,itemStyle:{color:'#22C55E'}},
+        {value:7300,itemStyle:{color:'#F59E0B'}}
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+// ===== CHART 10: Cycle Map =====
+initChart('chart-cycle-map',function(){
+  const c=echarts.init(document.getElementById('chart-cycle-map'));
+  c.setOption({
+    tooltip:{},
+    radar:{
+      indicator:[
+        {name:'社保基金',max:5},
+        {name:'保险资金',max:5},
+        {name:'公募基金',max:5},
+        {name:'外资',max:5},
+        {name:'私募基金',max:5},
+        {name:'游资',max:5}
+      ],
+      shape:'circle',
+      splitNumber:5,
+      axisName:{color:'#E8ECF1',fontSize:11},
+      splitArea:{areaStyle:{color:['rgba(59,130,246,0.05)','rgba(59,130,246,0.1)']}},
+      splitLine:{lineStyle:{color:'#1E3050'}},
+      axisLine:{lineStyle:{color:'#1E3050'}}
+    },
+    legend:{data:['熊市底部','牛市中期','牛市顶部','暴跌期'],textStyle:{color:'#9CA8B8'},bottom:0},
+    series:[{type:'radar',
+      data:[
+        {value:[5,4,2,2,1,1],name:'熊市底部',lineStyle:{color:'#22C55E'},itemStyle:{color:'#22C55E'},areaStyle:{color:'rgba(34,197,94,0.15)'}},
+        {value:[2,3,4,4,4,3],name:'牛市中期',lineStyle:{color:'#3B82F6'},itemStyle:{color:'#3B82F6'},areaStyle:{color:'rgba(59,130,246,0.15)'}},
+        {value:[1,2,5,3,3,5],name:'牛市顶部',lineStyle:{color:'#F59E0B'},itemStyle:{color:'#F59E0B'},areaStyle:{color:'rgba(245,158,11,0.15)'}},
+        {value:[4,4,3,2,2,1],name:'暴跌期',lineStyle:{color:'#EF4444'},itemStyle:{color:'#EF4444'},areaStyle:{color:'rgba(239,68,68,0.15)'}}
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>c.resize());
+});
+
+</script>
+</div></section>
+</body>
+</html>
