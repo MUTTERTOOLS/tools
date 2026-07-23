@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PDF → 长图 PNG 转换器</title>
-  <script src="../../cdn/pdfjs/3.11.174/pdf.min.js"></script>
+  <script src="../cdn/pdfjs/3.11.174/pdf.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -334,7 +334,7 @@
 </head>
 <body>
   <div class="topbar">
-    <a class="back-link" href="../../index.html">← 返回工具入口</a>
+    <a class="back-link" href="../index.html">← 返回工具入口</a>
   </div>
 
   <h1>PDF → 长图 PNG</h1>
@@ -450,7 +450,7 @@
   </div>
 
   <script>
-    const _workerCdnUrl = '../../cdn/pdfjs/3.11.174/pdf.worker.min.js';
+    const _workerCdnUrl = '../cdn/pdfjs/3.11.174/pdf.worker.min.js';
     pdfjsLib.GlobalWorkerOptions.workerSrc = _workerCdnUrl;
 
     const dropZone = document.getElementById('dropZone');
