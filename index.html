@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>图片工具箱</title>
+  <title>工具箱</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -130,8 +130,14 @@
       border-radius: 2px;
     }
 
-    .quiet-links-separator {
-      color: #555;
+    .invest-link {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .invest-link-action {
+      color: #666;
     }
 
     @media (max-width: 820px) {
@@ -147,11 +153,11 @@
 </head>
 <body>
   <main class="shell">
-    <h1>图片工具箱</h1>
-    <p class="subtitle">将 PDF 转成长图，或在独立页面里完成图片拼接、图片裁剪与 SVG path 可视化调试。每个工具页单独处理一种任务，交互更清晰。</p>
+    <h1>文件与图像工具箱</h1>
+    <p class="subtitle">在一个入口处理 PDF 转长图、图片拼接与裁剪、SVG path 调试，并快速访问常用下载和格式转换服务。每个工具页单独处理一种任务，交互更清晰。</p>
 
     <section class="section">
-      <h2 class="section-title">站内图片工具</h2>
+      <h2 class="section-title">图片工具</h2>
       <p class="section-desc">当前项目内置的图片处理与调试工具，适合直接在本地浏览器中使用。</p>
       <div class="grid">
         <a class="card" href="./src/pdf-to-long-png.html">
@@ -199,10 +205,9 @@
     </section>
 
     <nav class="quiet-links" aria-label="投资阅读">
-      <span>投资阅读</span>
-      <a href="./src/invest/stock-handbook.html">新手入门</a>
-      <span class="quiet-links-separator" aria-hidden="true">·</span>
-      <a href="./src/invest/stock-advanced-handbook.html">进阶实战</a>
+      <a class="invest-link" href="./src/invest/index.html">
+        <span>投资阅读</span>
+      </a>
     </nav>
   </main>
 </body>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="从投资基础到实战进阶，选择适合你的股票阅读手册。" />
+  <title>Invest · 投资阅读</title>
+  <style>
+    :root {
+      --canvas: #08121f;
+      --surface: #0f1d2c;
+      --surface-raised: #142638;
+      --ink: #e7edf2;
+      --muted: #9aaab8;
+      --soft: #718290;
+      --line: rgba(180, 202, 218, 0.16);
+      --gold: #f2bb62;
+      --gold-soft: rgba(242, 187, 98, 0.14);
+      --green: #70c6a5;
+      --green-soft: rgba(112, 198, 165, 0.14);
+      --max-width: 1080px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { background: var(--canvas); }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 92% 4%, rgba(112, 198, 165, 0.11), transparent 26rem),
+        radial-gradient(circle at 7% 17%, rgba(242, 187, 98, 0.09), transparent 23rem),
+        var(--canvas);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    .page-shell {
+      width: min(var(--max-width), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 88px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wordmark,
+    .back-link {
+      text-decoration: none;
+    }
+
+    .wordmark {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .wordmark-mark {
+      color: var(--gold);
+      font-family: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      font-size: 1.35rem;
+      font-style: italic;
+    }
+
+    .wordmark-copy {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .back-link {
+      color: var(--soft);
+      font-size: 0.86rem;
+      transition: color 160ms ease;
+    }
+
+    .back-link:hover { color: var(--ink); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(260px, 0.82fr);
+      gap: 56px;
+      align-items: end;
+      padding: clamp(72px, 12vw, 144px) 0 clamp(56px, 9vw, 100px);
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 28px;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    h1 {
+      max-width: 670px;
+      margin-top: 18px;
+      font-family: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 600;
+      letter-spacing: -0.06em;
+      line-height: 1.08;
+    }
+
+    .hero-copy {
+      max-width: 530px;
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .hero-aside {
+      position: relative;
+      padding: 22px 0 10px 32px;
+      border-left: 1px solid var(--line);
+    }
+
+    .hero-aside::before {
+      position: absolute;
+      top: 22px;
+      left: -4px;
+      width: 7px;
+      height: 7px;
+      content: "";
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 7px var(--gold-soft);
+    }
+
+    .hero-aside-label {
+      color: var(--soft);
+      font-size: 0.74rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .hero-aside p {
+      margin-top: 10px;
+      color: var(--ink);
+      font-family: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      font-size: 1.36rem;
+      line-height: 1.45;
+    }
+
+    .library {
+      padding: 36px 0 clamp(82px, 12vw, 132px);
+      border-top: 1px solid var(--line);
+    }
+
+    .library-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .library-heading h2 {
+      font-family: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .library-heading p {
+      max-width: 355px;
+      color: var(--soft);
+      font-size: 0.88rem;
+      text-align: right;
+    }
+
+    .route {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .route::before {
+      position: absolute;
+      top: -13px;
+      left: 23%;
+      width: 54%;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, var(--gold), var(--green));
+    }
+
+    .handbook-card {
+      position: relative;
+      display: flex;
+      min-height: 340px;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: linear-gradient(145deg, rgba(20, 38, 56, 0.94), rgba(11, 24, 37, 0.94));
+      text-decoration: none;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .handbook-card::after {
+      position: absolute;
+      right: 30px;
+      bottom: -58px;
+      color: rgba(255, 255, 255, 0.035);
+      font-family: "Iowan Old Style", Georgia, serif;
+      font-size: 14rem;
+      font-style: italic;
+      font-weight: 600;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .handbook-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(224, 237, 244, 0.38);
+      background: linear-gradient(145deg, rgba(26, 47, 67, 0.98), rgba(13, 29, 44, 0.98));
+    }
+
+    .handbook-card:focus-visible,
+    .back-link:focus-visible,
+    .wordmark:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 5px;
+    }
+
+    .card-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--soft);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .card-stage {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-stage::before {
+      width: 8px;
+      height: 8px;
+      content: "";
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .beginner { color: var(--gold); }
+    .advanced { color: var(--green); }
+    .beginner::after { content: "101"; }
+    .advanced::after { content: "201"; }
+
+    .card-title {
+      position: relative;
+      z-index: 1;
+      margin-top: 54px;
+      font-family: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      font-size: clamp(2rem, 3.1vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: -0.055em;
+      line-height: 1.14;
+    }
+
+    .card-description {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .card-meta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: auto;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+      color: var(--soft);
+      font-size: 0.82rem;
+    }
+
+    .card-action {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .beginner .card-action { color: var(--gold); }
+    .advanced .card-action { color: var(--green); }
+
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 26px 0 36px;
+      border-top: 1px solid var(--line);
+      color: var(--soft);
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 720px) {
+      .page-shell { width: min(var(--max-width), calc(100% - 32px)); }
+      .site-header { min-height: 72px; }
+      .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 72px; }
+      .hero-aside { max-width: 440px; }
+      .library-heading { display: block; }
+      .library-heading p { margin-top: 10px; text-align: left; }
+      .route { grid-template-columns: 1fr; }
+      .route::before { top: 48%; left: -10px; width: 1px; height: 18%; background: linear-gradient(var(--gold), var(--green)); }
+      .handbook-card { min-height: 300px; padding: 26px; }
+      .card-title { margin-top: 40px; }
+      .page-footer { display: block; }
+      .page-footer p + p { margin-top: 6px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="wordmark" href="../../index.html" aria-label="返回图片工具箱首页">
+        <span class="wordmark-mark">Invest</span>
+        <span class="wordmark-copy">投资阅读</span>
+      </a>
+      <a class="back-link" href="../../index.html">← 返回工具箱</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Investment library</p>
+          <h1 id="page-title">从理解市场开始，逐步建立自己的判断。</h1>
+          <p class="hero-copy">这里收录两本面向不同阶段的股票阅读手册。先选择你的当前阶段，再进入对应的学习路径。</p>
+        </div>
+        <aside class="hero-aside" aria-label="阅读建议">
+          <span class="hero-aside-label">推荐阅读顺序</span>
+          <p>先打好基础，再把方法带进真实决策。</p>
+        </aside>
+      </section>
+
+      <section class="library" aria-labelledby="library-title">
+        <div class="library-heading">
+          <h2 id="library-title">选择一本手册</h2>
+          <p>两本手册可以独立阅读；如刚开始接触股票，建议从新手入门开始。</p>
+        </div>
+
+        <div class="route">
+          <a class="handbook-card beginner" href="./stock-handbook.html" aria-label="打开股票新手入门手册">
+            <div class="card-topline">
+              <span class="card-stage">基础</span>
+              <span>Stock 101</span>
+            </div>
+            <h3 class="card-title">股票新手<br />入门手册</h3>
+            <p class="card-description">认识市场规则、常见风险与分析框架，为第一次独立判断打下可靠基础。</p>
+            <div class="card-meta">
+              <span>适合刚开始学习的读者</span>
+              <span class="card-action">开始阅读 →</span>
+            </div>
+          </a>
+
+          <a class="handbook-card advanced" href="./stock-advanced-handbook.html" aria-label="打开股票进阶实战手册">
+            <div class="card-topline">
+              <span class="card-stage">进阶</span>
+              <span>Stock 201</span>
+            </div>
+            <h3 class="card-title">股票进阶<br />实战手册</h3>
+            <p class="card-description">从公司分析、估值到仓位和复盘，把零散知识整理为可持续的投资体系。</p>
+            <div class="card-meta">
+              <span>适合已有基础、准备实战的读者</span>
+              <span class="card-action">进入实战 →</span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>Invest · 投资阅读</p>
+      <p>投资有风险，学习与决策请保持独立判断。</p>
+    </footer>
+  </div>
+</body>
+</html>
