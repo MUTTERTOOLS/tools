@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>股票账户四大"隐藏功能"投资手册</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#0B1420;--bg2:#111D30;--bg3:#152540;--bg4:#1B2D4A;
+  --text:#E2E8F0;--text2:#94A3B8;--text3:#64748B;
+  --accent:#14B8A6;--accent2:#2DD4BF;--accent3:#0D9488;
+  --accent-glow:rgba(20,184,166,0.25);
+  --warn:#F59E0B;--danger:#EF4444;--success:#10B981;--info:#3B82F6;
+  --card:rgba(21,37,64,0.85);--border:rgba(148,163,184,0.12);
+  --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Microsoft YaHei','PingFang SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+::selection{background:var(--accent);color:#000}
+a{color:var(--accent2);text-decoration:none}
+
+/* ===== Sidebar ===== */
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+.sidebar-header{padding:20px 16px 12px;border-bottom:1px solid var(--border)}
+.sidebar-header h2{font-size:.85rem;color:var(--accent2);font-weight:700;letter-spacing:1px}
+.sidebar-header p{font-size:.7rem;color:var(--text3);margin-top:4px}
+.nav-section-title{font-size:.65rem;color:var(--text3);padding:14px 16px 4px;text-transform:uppercase;letter-spacing:1px}
+.nav-item{display:block;padding:6px 16px 6px 24px;font-size:.78rem;color:var(--text2);cursor:pointer;transition:all .2s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--accent2);background:rgba(20,184,166,0.06);border-left-color:var(--accent)}
+.nav-item.active{color:var(--accent2);border-left-color:var(--accent);background:rgba(20,184,166,0.08)}
+.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--bg2);border:1px solid var(--border);border-radius:8px;width:40px;height:40px;color:var(--accent2);font-size:1.2rem;cursor:pointer}
+
+/* ===== Main ===== */
+.main{margin-left:240px;padding:0 40px 60px;max-width:860px}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .menu-toggle{display:flex;align-items:center;justify-content:center}
+  .main{margin-left:0;padding:0 16px 40px}
+}
+
+/* ===== Hero ===== */
+.hero{position:relative;padding:80px 0 50px;text-align:center;overflow:hidden}
+.hero h1{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2),#67E8F9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.hero .sub{font-size:1.05rem;color:var(--text2);max-width:520px;margin:0 auto}
+.hero canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.4}
+
+/* ===== Sections ===== */
+.section{padding:32px 0 16px}
+.section:first-of-type{padding-top:0}
+h2{font-size:1.4rem;color:var(--accent2);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);font-weight:700}
+h3{font-size:1.1rem;color:var(--text);margin:28px 0 12px;font-weight:600}
+h4{font-size:.92rem;color:var(--accent2);margin:20px 0 8px;font-weight:600}
+p{font-size:.85rem;color:var(--text2);margin-bottom:10px;line-height:1.75}
+strong{color:var(--text)}
+ul,ol{margin:8px 0 12px 20px;font-size:.85rem;color:var(--text2)}
+li{margin-bottom:5px;line-height:1.65}
+
+/* ===== Chapter Header ===== */
+.chapter-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.ch-num{background:var(--accent);color:#000;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.chapter-header h3{margin:0;font-size:1.1rem;color:var(--text)}
+
+/* ===== Tables ===== */
+.table-wrapper{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:var(--bg3);color:var(--accent2);padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent3);white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2)}
+tr:hover td{background:rgba(20,184,166,0.04)}
+
+/* ===== Callouts ===== */
+.callout{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:14px 0}
+.callout h5{font-size:.85rem;margin-bottom:6px}
+.callout p{font-size:.82rem;margin-bottom:0}
+.tip-box{border-left:3px solid var(--info)}
+.tip-box h5{color:var(--info)}
+.key-box{border-left:3px solid var(--accent)}
+.key-box h5{color:var(--accent2)}
+.warn-box{border-left:3px solid var(--warn)}
+.warn-box h5{color:var(--warn)}
+.danger-box{border-left:3px solid var(--danger)}
+.danger-box h5{color:var(--danger)}
+
+/* ===== Channel Cards (4-grid) ===== */
+.channel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.channel-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .3s,transform .3s}
+.channel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.channel-card .icon{font-size:1.8rem;margin-bottom:8px}
+.channel-card h4{font-size:.95rem;color:var(--accent2);margin-bottom:6px}
+.channel-card p{font-size:.8rem;color:var(--text2);line-height:1.65;margin-bottom:0}
+.channel-card .tag{display:inline-block;font-size:.65rem;padding:2px 8px;border-radius:10px;margin-top:8px;font-weight:600}
+.tag-low{background:rgba(16,185,129,0.15);color:#10B981}
+.tag-mid{background:rgba(245,158,11,0.15);color:#F59E0B}
+.tag-high{background:rgba(239,68,68,0.15);color:#EF4444}
+.tag-r1{background:rgba(20,184,166,0.15);color:#14B8A6}
+@media(max-width:768px){.channel-grid{grid-template-columns:1fr}}
+
+/* ===== Timeline ===== */
+.timeline{position:relative;padding-left:28px;margin:16px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--accent3)}
+.tl-item{position:relative;margin-bottom:16px}
+.tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.tl-item .tl-label{font-size:.7rem;color:var(--accent2);font-weight:700;margin-bottom:2px}
+.tl-item .tl-text{font-size:.82rem;color:var(--text2)}
+
+/* ===== Interactive Panel ===== */
+.interactive-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:24px 0}
+.interactive-panel h4{font-size:.95rem;color:var(--accent2);margin-bottom:16px}
+.calc-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.calc-row label{font-size:.8rem;color:var(--text2);min-width:80px}
+.calc-row input,.calc-row select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:.82rem;width:120px}
+.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--accent)}
+.result-box{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px}
+.result-item{text-align:center}
+.result-item .val{font-size:1.5rem;font-weight:700;color:var(--accent2)}
+.result-item .label{font-size:.7rem;color:var(--text3)}
+.chart-container{width:100%;height:280px;margin-top:16px}
+
+/* ===== Pitfall List ===== */
+.pitfall-list{margin:14px 0}
+.pitfall-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;margin-bottom:8px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);font-size:.82rem;color:var(--text2);line-height:1.65}
+.pitfall-item .x{color:var(--danger);font-weight:700;flex-shrink:0;margin-top:1px}
+.pitfall-item .arrow{color:var(--accent2);flex-shrink:0;margin-top:1px}
+
+/* ===== Path Cards ===== */
+.path-grid{display:grid;gap:12px;margin:20px 0}
+.path-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.path-card .step{background:var(--accent);color:#000;font-size:.85rem;font-weight:700;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.path-card h5{font-size:.88rem;color:var(--text);margin-bottom:3px}
+.path-card p{font-size:.78rem;color:var(--text2);margin:0}
+
+/* ===== Reveal Animation ===== */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h2>CHANNEL 101</h2>
+    <p>四大隐藏功能投资手册</p>
+  </div>
+  <div class="nav-section-title">开篇</div>
+  <a class="nav-item" onclick="scrollToId('hero')">封面</a>
+  <a class="nav-item" onclick="scrollToId('path')">🗺️ 阅读路径</a>
+  <a class="nav-item" onclick="scrollToId('ch1')">第1章 四个隐藏功能</a>
+  <a class="nav-item" onclick="scrollToId('ch2')">第2章 权限与门槛</a>
+  <div class="nav-section-title">打新股</div>
+  <a class="nav-item" onclick="scrollToId('ch3')">第3章 打新入门</a>
+  <a class="nav-item" onclick="scrollToId('ch4')">第4章 打新进阶与避坑</a>
+  <div class="nav-section-title">国债逆回购</div>
+  <a class="nav-item" onclick="scrollToId('ch5')">第5章 逆回购入门</a>
+  <a class="nav-item" onclick="scrollToId('ch6')">第6章 逆回购进阶与避坑</a>
+  <div class="nav-section-title">场内基金ETF</div>
+  <a class="nav-item" onclick="scrollToId('ch7')">第7章 ETF入门</a>
+  <a class="nav-item" onclick="scrollToId('ch8')">第8章 ETF进阶与避坑</a>
+  <div class="nav-section-title">可转债</div>
+  <a class="nav-item" onclick="scrollToId('ch9')">第9章 可转债入门</a>
+  <a class="nav-item" onclick="scrollToId('ch10')">第10章 可转债进阶与避坑</a>
+  <div class="nav-section-title">附录</div>
+  <a class="nav-item" onclick="scrollToId('appA')">附录A 四渠道速查对比</a>
+  <a class="nav-item" onclick="scrollToId('appB')">附录B 打新日历模板</a>
+  <a class="nav-item" onclick="scrollToId('appC')">附录C 常用ETF速查</a>
+  <a class="nav-item" onclick="scrollToId('appD')">附录D 可转债术语速查</a>
+</nav>
+
+<div class="main">
+
+<!-- ===== Hero ===== -->
+<section id="hero" class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <h1>股票账户四大"隐藏功能"</h1>
+  <p class="sub">打新 · 逆回购 · ETF · 可转债<br>你的账户比你想象中能干</p>
+</section>
+
+<!-- ===== 阅读路径 ===== -->
+<section id="path" class="section">
+  <h2>🗺️ 阅读路径</h2>
+  <div class="path-grid">
+    <div class="path-card reveal"><div class="step">🚀</div><div><h5>快速上手</h5><p>第1-2章 → 跳到你想用的渠道（第3/5/7/9章）→ 附录A速查</p></div></div>
+    <div class="path-card reveal"><div class="step">📖</div><div><h5>系统学习</h5><p>从第1章顺序读到第10章 → 附录A-D完整查漏补缺</p></div></div>
+    <div class="path-card reveal"><div class="step">⚠️</div><div><h5>只看避坑</h5><p>每个渠道的进阶章（第4/6/8/10章）→ 附录A速查对比</p></div></div>
+  </div>
+</section>
+
+<!-- ===== 第一篇 ===== -->
+<h2>第一篇：你的账户比你想象中能干</h2>
+
+<!-- ===== 第1章 ===== -->
+<section id="ch1" class="section">
+  <div class="chapter-header"><span class="ch-num">第1章</span><h3>股票账户的四个隐藏功能</h3></div>
+
+  <h3>1.1 你的股票账户不只能买股票</h3>
+  <p>多数人开户后只做一件事：买卖股票。但你的账户里还藏着四个<strong>"低门槛"工具</strong>——它们不需要额外开户，不需要巨额资金，甚至风险比炒股票还低。</p>
+
+  <div class="channel-grid">
+    <div class="channel-card reveal">
+      <div class="icon">🎯</div>
+      <h4>打新股</h4>
+      <p>公司上市时按发行价申购，中签后买入，上市首日通常有涨幅。有市值才能打新——持有股票的"附赠彩票"。</p>
+      <span class="tag tag-low">风险：低</span>
+    </div>
+    <div class="channel-card reveal">
+      <div class="icon">💰</div>
+      <h4>国债逆回购</h4>
+      <p>把闲钱短期借给市场，有国债作抵押，赚取利息。月末/季末利率经常飙高。风险极低，适合闲置资金。</p>
+      <span class="tag tag-r1">风险：R1 极低</span>
+    </div>
+    <div class="channel-card reveal">
+      <div class="icon">📊</div>
+      <h4>场内基金（ETF）</h4>
+      <p>像买卖股票一样买卖指数基金，一笔交易买入整个市场。费率更低、交易更灵活——最推荐的新手入门工具。</p>
+      <span class="tag tag-mid">风险：中</span>
+    </div>
+    <div class="channel-card reveal">
+      <div class="icon">📜</div>
+      <h4>可转债</h4>
+      <p>既有债券的保底特性，又有转股的上涨潜力。T+0交易，100元/张起步。A股唯一"下有保底、上不封顶"的品种。</p>
+      <span class="tag tag-mid">风险：中~高</span>
+    </div>
+  </div>
+
+  <h3>1.2 四渠道速查对比</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>维度</th><th>🎯 打新股</th><th>💰 逆回购</th><th>📊 ETF</th><th>📜 可转债</th></tr></thead>
+      <tbody>
+        <tr><td><strong>前提条件</strong></td><td>持有A股市值≥1万</td><td>有股票账户即可</td><td>有股票账户即可</td><td>2年经验+10万资产</td></tr>
+        <tr><td><strong>资金门槛</strong></td><td>中签后缴款（几千~几万）</td><td>1000元</td><td>几百元（1手）</td><td>100元（1张）</td></tr>
+        <tr><td><strong>风险等级</strong></td><td>低（但有破发风险）</td><td>极低（R1）</td><td>中（跟随指数波动）</td><td>中~高（视价格和溢价率）</td></tr>
+        <tr><td><strong>收益预期</strong></td><td>单次几百~几千元</td><td>年化1%-10%（短期）</td><td>跟随指数（长期年化7%-12%）</td><td>打新几十~几百元；交易不确定</td></tr>
+        <tr><td><strong>流动性</strong></td><td>上市后卖出</td><td>到期自动回款</td><td>实时买卖</td><td>T+0实时买卖</td></tr>
+        <tr><td><strong>适合场景</strong></td><td>持有股票时的额外福利</td><td>账户闲钱暂存</td><td>长期配置/定投</td><td>小额试水/攻守兼备</td></tr>
+        <tr><td><strong>最大坑</strong></td><td>破发 / 忘记缴款</td><td>方向搞反 / 利率踩坑</td><td>跨境溢价 / 流动性差</td><td>强赎未操作 / 双高转债</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip-box"><h5>💡 四个渠道不用全学，先挑一个</h5><p>不用贪多——先从逆回购或ETF开始，用一两个月熟悉操作，再逐步解锁其他渠道。投资工具不在多，在于你真正会用。</p></div>
+
+  <div class="callout key-box"><h5>🔑 四个渠道的共同点</h5><p>都在股票账户内操作，都不需要额外开户（部分需开通权限），都是"花小钱练手"的好选择。它们不是替代炒股，而是让你账户里的每一分钱都不闲着。</p></div>
+
+  <h3>1.3 新手建议路径</h3>
+  <div class="path-grid">
+    <div class="path-card reveal"><div class="step">1</div><div><h5>国债逆回购 → 熟悉操作</h5><p>用闲钱做逆回购，感受"利率"概念和账户操作流程</p></div></div>
+    <div class="path-card reveal"><div class="step">2</div><div><h5>沪深300ETF → 感受波动</h5><p>开一个ETF，感受市场波动，建立长期持有习惯</p></div></div>
+    <div class="path-card reveal"><div class="step">3</div><div><h5>打新股+打新债 → 赚小钱</h5><p>坚持打新赚"低风险"小钱，理解中签与缴款规则</p></div></div>
+    <div class="path-card reveal"><div class="step">4</div><div><h5>可转债交易 → 理解规则后再进</h5><p>从打新债和100-130元平衡型开始，不要碰高价转债</p></div></div>
+  </div>
+
+  <div class="callout warn-box"><h5>⚠️ 不要跳步</h5><p>可转债虽然门槛低，但四大条款不理解就操作，亏钱概率最大。先通过打新债积累经验，再考虑二级市场交易。</p></div>
+</section>
+
+
+<!-- ===== 第2章 ===== -->
+<section id="ch2" class="section">
+  <div class="chapter-header"><span class="ch-num">第2章</span><h3>开始前：权限与门槛一览</h3></div>
+
+  <h3>2.1 哪些功能开完户就能用？</h3>
+  <p>不是所有功能都需要额外开通。有些开完户当天就能用，有些需要满足条件后手动申请。</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>功能</th><th>是否需要额外开通</th><th>开通条件</th><th>开通路径</th></tr></thead>
+      <tbody>
+        <tr><td>国债逆回购</td><td>❌ 不需要</td><td>有股票账户即可</td><td>不适用</td></tr>
+        <tr><td>场内ETF</td><td>❌ 不需要（宽基）</td><td>有股票账户即可</td><td>不适用</td></tr>
+        <tr><td>创业板ETF</td><td>✅ 需要</td><td>2年经验 + 10万资产</td><td>券商APP → 业务办理</td></tr>
+        <tr><td>科创板ETF</td><td>✅ 需要</td><td>2年经验 + 50万资产</td><td>券商APP → 业务办理</td></tr>
+        <tr><td>打新股（主板）</td><td>❌ 不需要</td><td>持有A股市值≥1万元</td><td>不适用</td></tr>
+        <tr><td>打新股（科创/创业）</td><td>✅ 需对应权限</td><td>同上科创/创业条件</td><td>券商APP → 业务办理</td></tr>
+        <tr><td>打新债（可转债）</td><td>✅ 需要</td><td>2年经验 + 10万资产</td><td>券商APP → 可转债权限</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>2.2 交易经验与资产门槛详解</h3>
+  <p><strong>交易经验怎么算？</strong>从你账户的第一笔股票成交日起算，不是开户日。即使你开户后三年没交易，第一笔买入的那天才开始计时。</p>
+  <p><strong>资产认定范围：</strong>账户内现金 + 股票市值 + 基金市值。不同券商认定口径略有差异，以券商规则为准。</p>
+
+  <div class="callout tip-box"><h5>💡 权限满足条件就尽早开通</h5><p>科创板、创业板、可转债权限不用等"想操作"时才开——满足条件后马上开通，不收额外费用，开完就有了。很多好机会是"碰上了才有资格"。</p></div>
+
+  <div class="callout warn-box"><h5>⚠️ 刚开户的新手看这里</h5><p>逆回购和宽基ETF可以马上用；打新股需要先买入股票积累市值；可转债交易/打新债需要等2年经验。但这2年不是"浪费"——用这段时间通过逆回购和ETF积累实战经验，等权限开了再上手可转债，正好水到渠成。</p></div>
+
+  <h3>2.3 交易费用一览</h3>
+  <p>四个渠道的费用差异不小，了解清楚能省不少钱：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>费用项</th><th>🎯 打新股</th><th>💰 逆回购</th><th>📊 ETF</th><th>📜 可转债</th></tr></thead>
+      <tbody>
+        <tr><td><strong>佣金</strong></td><td>卖出时收（万2.5左右）</td><td>极低（1天期十万分之一）</td><td>买卖都收（万2.5左右）</td><td>买卖都收（万0.5-万2）</td></tr>
+        <tr><td><strong>印花税</strong></td><td>卖出时收0.05%</td><td>❌ 无</td><td>❌ 无</td><td>❌ 无</td></tr>
+        <tr><td><strong>管理费</strong></td><td>❌ 无</td><td>❌ 无</td><td>含在净值中（年0.15%-0.5%）</td><td>❌ 无</td></tr>
+        <tr><td><strong>过户费</strong></td><td>沪深均收0.001%</td><td>❌ 无</td><td>沪市0.001%/深市免</td><td>❌ 无</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout key-box"><h5>🔑 省钱要点</h5><p>ETF和可转债<strong>免印花税</strong>，比买卖股票每笔省0.05%。频繁交易时，这个差异会被放大——10万元交易一次就省50元。</p></div>
+</section>
+
+
+<!-- ===== 第二篇 ===== -->
+<h2>第二篇：打新股——持有股票的"附赠彩票"</h2>
+
+<!-- ===== 第3章 ===== -->
+<section id="ch3" class="section">
+  <div class="chapter-header"><span class="ch-num">第3章</span><h3>打新入门：从申购到中签</h3></div>
+
+  <h3>3.1 打新本质：出厂价进货</h3>
+  <p>公司首次公开上市（IPO）时，以<strong>发行价</strong>向投资者出售新股。中签后你以发行价买入，上市后以市场价卖出——差价就是你的收益。</p>
+  <p>打个比方：发行价是工厂直销价，上市后的市场价是门店零售价。你以直销价买入、零售价卖出，赚的就是这个差。</p>
+
+  <div class="callout key-box"><h5>🔑 打新本质是套利，不是投资</h5><p>中签后首日卖出是主流策略。除非你真的研究过这家公司并打算长期持有，否则不要把打新当成"选股"。</p></div>
+
+  <h3>3.2 市值配售制：有市值才有资格</h3>
+  <p>打新股不是有钱就能打，必须持有A股市值。空仓不能参与。</p>
+  <ul>
+    <li><strong>市值计算口径：</strong>T-2日前20个交易日的日均持有市值（T日=申购日）</li>
+    <li><strong>沪市、深市分开计算，互不通算。</strong>只持有沪市股票→无法打深市新股，反之亦然</li>
+    <li>基金、债券不计入打新市值</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 沪深各配一些市值最划算</h5><p>如果你的持仓全部在沪市，深市的新股你一股都打不了。建议沪深各持一些市值，"双通道"打新效率最高。</p></div>
+
+  <h3>3.3 各板块规则对比</h3>
+  <p>A股有五个板块可以打新，规则各不相同：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>板块</th><th>市值归属</th><th>每签股数</th><th>每单位所需市值</th><th>首日/前5日涨跌幅</th><th>额外门槛</th></tr></thead>
+      <tbody>
+        <tr><td><strong>沪市主板</strong></td><td>沪市市值</td><td>1000股</td><td>1万元</td><td>首日涨幅44%</td><td>无</td></tr>
+        <tr><td><strong>深市主板</strong></td><td>深市市值</td><td>500股</td><td>1万元</td><td>首日涨幅44%</td><td>无</td></tr>
+        <tr><td><strong>创业板</strong></td><td>深市市值</td><td>500股</td><td>1万元</td><td>前5日不设涨跌幅</td><td>2年经验+10万资产</td></tr>
+        <tr><td><strong>科创板</strong></td><td>沪市市值</td><td>500股</td><td>1万元</td><td>前5日不设涨跌幅</td><td>2年经验+50万资产</td></tr>
+        <tr><td><strong>北交所</strong></td><td>❌ 无需市值</td><td>100股</td><td>不适用</td><td>首日不设涨跌幅</td><td>2年经验+50万资产</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn-box"><h5>⚠️ 权限不开=市值浪费</h5><p>科创板/创业板权限不开通，即使有对应市值也打不了。如果你的沪市市值够了但没开通科创板权限，那这部分市值只能用来打沪市主板新股。</p></div>
+
+  <h3>3.4 申购流程时间线</h3>
+  <div class="timeline">
+    <div class="tl-item reveal"><div class="tl-label">T日（申购日）</div><div class="tl-text">在交易软件点击"新股申购"，选择要打的新股，确认申购。此时<strong>不需要缴款</strong></div></div>
+    <div class="tl-item reveal"><div class="tl-label">T+1日</div><div class="tl-text">公布中签率，系统给你分配号码（配号）</div></div>
+    <div class="tl-item reveal"><div class="tl-label">T+2日</div><div class="tl-text">公布中签结果。<strong>当天16:00前账户必须有足够资金缴款</strong>，否则视为放弃</div></div>
+    <div class="tl-item reveal"><div class="tl-label">T+2日之后</div><div class="tl-text">等待上市（通常1-2周），期间无法操作</div></div>
+    <div class="tl-item reveal"><div class="tl-label">上市首日</div><div class="tl-text">可以卖出。首日涨幅通常较大，是兑现打新收益的主要时点</div></div>
+  </div>
+
+  <div class="callout key-box"><h5>🔑 申购时不缴款，中签后才缴款</h5><p>但忘记缴款=弃购。12个月内累计3次中签未缴款→暂停打新资格6个月。设置券商APP中签提醒，这是最简单的防坑手段。</p></div>
+
+  <h3>3.5 中签率与规律</h3>
+  <p>打新中签主要靠运气，但了解规律能帮你管理预期：</p>
+  <ul>
+    <li>主板中签率约0.01%-0.05%，基本是"千分之一"的级别</li>
+    <li>科创板/创业板略高，北交所更高（因为门槛高、参与者少）</li>
+    <li>市值越多→配号越多→中签概率越大，但顶格申购也不能保证中签</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 坚持就是策略</h5><p>单次中签概率低，但每次都打、坚持打，一年下来中一两次的概率不低。打新的成本几乎为零（不需要额外资金），不中也不亏——但中了忘了缴款就亏大了。</p></div>
+
+  <!-- 打新收益计算器 -->
+  <div class="interactive-panel reveal">
+    <h4>🧮 打新收益估算器</h4>
+    <div class="calc-row">
+      <label>发行价（元）</label>
+      <input type="number" id="ipoPrice" value="25" step="1" oninput="calcIPO()">
+    </div>
+    <div class="calc-row">
+      <label>中签股数</label>
+      <select id="ipoShares" onchange="calcIPO()">
+        <option value="500">500股（深市/科创/创业）</option>
+        <option value="1000" selected>1000股（沪市主板）</option>
+        <option value="100">100股（北交所）</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <label>首日涨幅</label>
+      <input type="range" id="ipoGain" min="0" max="200" value="44" oninput="calcIPO()">
+      <span id="ipoGainShow">44%</span>
+    </div>
+    <div class="result-box">
+      <div class="result-item"><div class="val" id="ipoCost">—</div><div class="label">缴款金额（元）</div></div>
+      <div class="result-item"><div class="val" id="ipoProfit">—</div><div class="label">预期收益（元）</div></div>
+      <div class="result-item"><div class="val" id="ipoReturn">—</div><div class="label">收益率</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 第4章 ===== -->
+<section id="ch4" class="section">
+  <div class="chapter-header"><span class="ch-num">第4章</span><h3>打新进阶：提高中签率与避坑</h3></div>
+
+  <h3>4.1 注册制下的重大变化</h3>
+  <p>2023年全面注册制落地后，打新逻辑发生了根本性变化：</p>
+  <ul>
+    <li><strong>核准制时代：</strong>发行价被人为压低，打新几乎稳赚——"闭眼打、中了就赚"</li>
+    <li><strong>注册制时代：</strong>发行定价市场化，"打新必赚"被打破，破发（上市首日跌破发行价）成为常态</li>
+  </ul>
+  <p>2024-2025年约15%-25%新股破发，尤其高发行价、高市盈率的科创板/创业板新股破发率更高。</p>
+
+  <div class="callout warn-box"><h5>⚠️ 注册制下打新不是"无脑操作"</h5><p>高发行PE + 高发行价 + 冷门行业 = 破发概率大。每只新股发行前花2分钟看看公司基本面，比中了再后悔强。</p></div>
+
+  <h3>4.2 如何判断一只新股值不值得打？</h3>
+  <p>三指标速判法：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>指标</th><th>看什么</th><th>信号判断</th></tr></thead>
+      <tbody>
+        <tr><td><strong>发行PE vs 行业PE</strong></td><td>发行市盈率是否明显高于行业均值</td><td>发行PE > 行业PE 50%以上 → 定价偏高，破发风险大</td></tr>
+        <tr><td><strong>申购倍数</strong></td><td>网上申购资金是发行募集资金的多少倍</td><td>申购倍数低（没人抢）→ 市场不看好</td></tr>
+        <tr><td><strong>公司基本面</strong></td><td>行业景气度、营收增速、盈利能力</td><td>行业下行+增速放缓 → 上市后可能跌破发行价</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout key-box"><h5>🔑 申购倍数低≠你容易中</h5><p>倍数低说明市场不看好，你容易中但可能破发。倍数高说明市场看好，难中但中了一般赚钱。打新的"甜蜜区"是倍数中等的优质公司。</p></div>
+
+  <h3>4.3 提高中签率的实操技巧</h3>
+  <ul>
+    <li><strong>市值配置策略：</strong>在沪/深两市各分配一些持仓市值，"双通道"打新比只配一边效率高</li>
+    <li><strong>顶格申购：</strong>市值越多配号越多，在自己能力范围内尽量顶格申购</li>
+    <li><strong>多账户"分仓"：</strong>同一投资者多账户市值合并，但家属账户独立计算——如果家人也有账户，各打各的</li>
+    <li><strong>坚持打每一只：</strong>不挑食比挑食中签概率更高，但注册制下"烂股"可以不打</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 不要为了打新特意买入不熟悉的股票</h5><p>持股亏损可能远大于打新收益。打新是持有股票的"额外福利"，不能本末倒置——你持有的股票应该是你自己愿意长期持有的，打新只是附赠品。</p></div>
+
+  <h3>4.4 中签后怎么操作？</h3>
+  <p>各板块上市后涨跌幅规则不同，决定了你卖出的策略：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>板块</th><th>首日/前5日</th><th>后续</th><th>建议策略</th></tr></thead>
+      <tbody>
+        <tr><td>主板</td><td>首日涨幅44%</td><td>±10%</td><td>首日卖出（涨幅锁定）</td></tr>
+        <tr><td>科创板/创业板</td><td>前5日无涨跌幅限制</td><td>±20%</td><td>首日择机卖出，波动大注意止盈</td></tr>
+        <tr><td>北交所</td><td>首日无涨跌幅限制</td><td>±30%</td><td>首日卖出为主，波动极大</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn-box"><h5>⚠️ 科创板/创业板前5日无涨跌限制</h5><p>首日可能大涨也可能大跌。如果首日涨幅过大，建议分批卖出——不要贪心等更高，也不要恐慌低抛。设置心理价位，到了就走。</p></div>
+
+  <h3>4.5 打新避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>中签忘记缴款 <span class="arrow">→</span> 设置券商APP中签提醒，T+2日16:00前保证资金到位</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>为了打新特意买不熟悉的股票 <span class="arrow">→</span> 本末倒置，持股亏损远大于打新收益</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>以为注册制下打新必赚 <span class="arrow">→</span> 破发率15%-25%，高PE新股慎打</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>科创/创业权限没开，市值浪费 <span class="arrow">→</span> 满足条件后尽早开通，否则只能打主板</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>重复申购以为能多中 <span class="arrow">→</span> 同一人同一新股只能申购一次，重复以第一笔为准</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 第三篇 ===== -->
+<h2>第三篇：国债逆回购——闲钱的"超短期存款"</h2>
+
+<!-- ===== 第5章 ===== -->
+<section id="ch5" class="section">
+  <div class="chapter-header"><span class="ch-num">第5章</span><h3>逆回购入门：把钱借给市场</h3></div>
+
+  <h3>5.1 逆回购本质：你把钱借出去</h3>
+  <p>国债逆回购，就是你把钱<strong>短期借给</strong>需要资金的机构（银行、券商等），对方用<strong>国债做抵押</strong>。到期后，对方还你本金+约定利息。</p>
+  <ul>
+    <li>你赚的是<strong>利息</strong>，不是股价涨跌</li>
+    <li>风险等级：<strong>R1（最低）</strong>——国债抵押+交易所中央对手方担保，至今零违约</li>
+    <li>适合场景：账户里暂时不用的闲钱，放一天也赚一天的利息</li>
+  </ul>
+
+  <div class="callout key-box"><h5>🔑 逆回购不是"买国债"</h5><p>国债只是抵押品，你不会收到国债，到期后自动收回本金+利息。你扮演的是"债主"的角色。</p></div>
+
+  <h3>5.2 操作方向：点"卖出"不是"买入"</h3>
+  <p>这是新手最容易搞错的地方——在交易软件中，你要点<strong>"卖出"</strong>，而不是"买入"。</p>
+  <p>为什么？因为你借出资金=卖出一份"回购合约"（承诺未来把钱收回来）。方向搞反的话，你变成在借钱（付出利息），而不是借出钱（收取利息）。</p>
+
+  <div class="callout danger-box"><h5>🚨 点了"买入"而不是"卖出"→你在借钱而不是借出</h5><p>这是逆回购最常见的新手错误。操作前默念一遍："我借钱出去=卖出"。如果不确定，先1000元试一笔，确认方向正确再放大金额。</p></div>
+
+  <h3>5.3 品种与代码</h3>
+  <p>沪深两市各有9个期限品种，新手用1天期最简单：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>期限</th><th>沪市代码</th><th>深市代码</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1天</strong></td><td>GC001（204001）</td><td>R-001（131810）</td><td>⭐ 最常用</td></tr>
+        <tr><td>2天</td><td>GC002（204002）</td><td>R-002（131811）</td><td></td></tr>
+        <tr><td>3天</td><td>GC003（204003）</td><td>R-003（131800）</td><td></td></tr>
+        <tr><td>7天</td><td>GC007（204007）</td><td>R-007（131801）</td><td>较常用</td></tr>
+        <tr><td>14天</td><td>GC014（204014）</td><td>R-014（131802）</td><td></td></tr>
+        <tr><td>28天</td><td>GC028（204028）</td><td>R-028（131803）</td><td></td></tr>
+        <tr><td>91天</td><td>GC091（204091）</td><td>R-091（131805）</td><td></td></tr>
+        <tr><td>182天</td><td>GC182（204182）</td><td>R-182（131806）</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>5.4 交易门槛与时间</h3>
+  <ul>
+    <li><strong>门槛：</strong>2022年5月起沪深统一为<strong>1000元起</strong>，以1000元整数倍递增（此前沪市10万起，现已大幅降低）</li>
+    <li><strong>交易时间：</strong>沪市截止15:00，深市截止<strong>15:30</strong>——比股票收盘多30分钟窗口</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 深市多30分钟窗口</h5><p>股票15:00收盘后，你还有30分钟可以做深市逆回购。如果收盘后才发现账户有闲钱，选深市131810还来得及。</p></div>
+
+  <h3>5.5 收益怎么算？</h3>
+  <p>核心公式：</p>
+  <p style="text-align:center;font-size:1rem;color:var(--accent2);padding:12px 0"><strong>利息 = 交易金额 × 年化利率 ÷ 365 × 实际占款天数</strong></p>
+  <p>你下单时看到的价格=年化利率。比如10万元做1天期，利率3%：利息=100000×3%÷365×1≈8.22元。</p>
+
+  <div class="callout warn-box"><h5>⚠️ 逆回购不是"高收益理财"</h5><p>平时利率只有1%-2.5%，和余额宝差不多。别被"年化10%"的说法忽悠——那是月末短暂的峰值，不是常态。逆回购的定位是"闲钱暂存"，不是"赚取高息"。</p></div>
+
+  <div class="callout key-box"><h5>🔑 实际占款天数≠产品期限天数</h5><p>这是逆回购最关键的知识点。1天期可能拿1天利息，也可能拿3天利息——取决于你什么时候做。下一章详细讲。</p></div>
+
+  <!-- 逆回购收益计算器 -->
+  <div class="interactive-panel reveal">
+    <h4>🧮 逆回购收益计算器</h4>
+    <div class="calc-row">
+      <label>金额（元）</label>
+      <input type="number" id="rrAmount" value="100000" step="1000" oninput="calcRR()">
+    </div>
+    <div class="calc-row">
+      <label>年化利率（%）</label>
+      <input type="number" id="rrRate" value="3" step="0.5" oninput="calcRR()">
+    </div>
+    <div class="calc-row">
+      <label>实际占款天数</label>
+      <select id="rrDays" onchange="calcRR()">
+        <option value="1">1天（普通工作日）</option>
+        <option value="3" selected>3天（周四做1天期）</option>
+        <option value="7">7天（长假前做1天期）</option>
+        <option value="8">8天（国庆前做1天期）</option>
+      </select>
+    </div>
+    <div class="result-box">
+      <div class="result-item"><div class="val" id="rrInterest">—</div><div class="label">利息收入（元）</div></div>
+      <div class="result-item"><div class="val" id="rrFee">—</div><div class="label">手续费（元）</div></div>
+      <div class="result-item"><div class="val" id="rrNet">—</div><div class="label">净收益（元）</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 第6章 ===== -->
+<section id="ch6" class="section">
+  <div class="chapter-header"><span class="ch-num">第6章</span><h3>逆回购进阶：薅羊毛技巧与避坑</h3></div>
+
+  <h3>6.1 计息天数：1天期可能拿3天利息</h3>
+  <p>实际占款天数从<strong>首次交收日（T+1）</strong>到<strong>到期交收日</strong>的自然日天数，遇周末/节假日自动累加。这意味着：</p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>操作时机</th><th>实际计息天数</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>周四做1天期</strong></td><td><strong>3天</strong>（周五+周六+周日）</td><td>⭐ 最经典窗口：周五到期但资金周一才可取，周末也算利息</td></tr>
+        <tr><td>周五做1天期</td><td>1天</td><td>周一到期，只算1天</td></tr>
+        <tr><td>长假前最后一个交易日做1天期</td><td>覆盖整个假期</td><td>如国庆前做1天期，可能拿7-8天利息</td></tr>
+        <tr><td>普通工作日做1天期</td><td>1天</td><td>最基本的操作</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip-box"><h5>💡 记住两句话</h5><p>① 周四做1天期=3天利息；② 长假前做1天期=假期利息全拿。这是逆回购最实用的两个"薅羊毛"窗口。</p></div>
+
+  <h3>6.2 利率什么时候高？</h3>
+  <p>逆回购利率不是固定的，它跟市场资金面的紧张程度有关：</p>
+  <ul>
+    <li><strong>平时：</strong>1天期年化1%-2.5%，和货币基金差不多</li>
+    <li><strong>月末/季末/半年末/年末：</strong>银行考核指标，短期资金需求暴增，利率常飙到5%-10%甚至更高</li>
+    <li><strong>长假前：</strong>资金锁定假期，利率明显上升</li>
+    <li><strong>盘中波动：</strong>上午利率通常高于下午，尾盘可能骤降</li>
+  </ul>
+
+  <div class="callout key-box"><h5>🔑 节前最后一个交易日是全年最佳窗口</h5><p>一方面利率高（资金紧张），另一方面计息天数多（覆盖假期）。两个buff叠满，逆回购的"黄金时间"。</p></div>
+
+  <h3>6.3 资金到账规则</h3>
+  <p>到期后<strong>资金自动回到账户</strong>，无需手动操作。但要注意"可用"和"可取"的区别：</p>
+  <ul>
+    <li><strong>T+0可用：</strong>到期当天资金可以买股票、买基金</li>
+    <li><strong>T+1可取：</strong>到期的下一个交易日才能转出银行卡</li>
+  </ul>
+  <p>比如周四做1天期：周五资金"可用"（能买股票），周一资金"可取"（能转出）。</p>
+
+  <h3>6.4 长品种vs短品种怎么选？</h3>
+  <p>7天/14天期的利率通常低于1天期在资金紧张时的峰值。灵活用1天期等高利率窗口，比锁定长品种更优。</p>
+  <p>例外：如果你判断未来利率会持续走低，可以提前锁定一个较长期限的品种。但对于新手，灵活优先。</p>
+
+  <div class="callout tip-box"><h5>💡 策略总结：等高利率窗口做1天期</h5><p>平时不急操作，等到月末/季末/节前利率飙升时再做。利率<2%时不如放货币基金，利率>4%时果断出手。</p></div>
+
+  <div class="callout warn-box"><h5>⚠️ 周四做1天期=3天利息，但周五做不是</h5><p>新手常犯的错误：听说"周四做逆回购好"，结果周五去做——周五做1天期只拿1天利息。记住：周四做1天期=3天，周五做1天期=1天，别搞混。</p></div>
+
+  <h3>6.5 逆回购避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>方向搞反（买入了而不是卖出） <span class="arrow">→</span> 操作前默念"我借钱出去=卖出"</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>利率踩坑（看到10%冲进去，成交时已回落） <span class="arrow">→</span> 逆回购利率盘中波动极大，下单前再看一眼</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>节后操作（利率极低） <span class="arrow">→</span> 节后第一个交易日资金大量回流，利率塌方，别在这时做</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>天天做（手续费侵蚀） <span class="arrow">→</span> 利率<2%时不如货基，手续费积少成多</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>为了等高利率长期空仓 <span class="arrow">→</span> 本末倒置，资金的时间价值远大于逆回购利息</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 第四篇 ===== -->
+<h2>第四篇：场内基金（ETF）——一键买下整个市场</h2>
+
+<!-- ===== 第7章 ===== -->
+<section id="ch7" class="section">
+  <div class="chapter-header"><span class="ch-num">第7章</span><h3>ETF入门：最推荐的新手投资工具</h3></div>
+
+  <h3>7.1 ETF本质：买它=买一篮子股票</h3>
+  <p>ETF = Exchange Traded Fund（交易所交易基金），跟踪某个指数，在股票账户里<strong>像买卖股票一样交易</strong>。</p>
+  <p>买沪深300ETF = 一次性买入A股最大的300家公司。买中证500ETF = 一次性买入500家中型企业。你不需要研究300家公司，买一个ETF就够了。</p>
+
+  <div class="callout warn-box"><h5>⚠️ ETF不是"稳赚不赔"</h5><p>买沪深300ETF=买A股最大的300家公司，它们也可能集体下跌——2022年沪深300跌了21%。ETF分散了个股风险，但不等于没有市场风险。做好长期持有的心理准备再入场。</p></div>
+
+  <div class="callout key-box"><h5>🔑 ETF是最推荐的新手入门工具</h5><p>不需要选股，天然分散风险，费率低，透明度高。如果你只学一个投资渠道，学ETF就够了。</p></div>
+
+  <h3>7.2 ETF vs 场外基金：核心区别</h3>
+  <p>很多人在支付宝或天天基金上买过基金，那是"场外基金"。ETF是"场内基金"，两者有本质区别：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>维度</th><th>场内ETF</th><th>场外基金（支付宝/天天基金）</th></tr></thead>
+      <tbody>
+        <tr><td><strong>交易方式</strong></td><td>实时买卖，价格每秒变动</td><td>每天只有一个净值（收盘后公布）</td></tr>
+        <tr><td><strong>到账速度</strong></td><td>卖出后资金T+1可用</td><td>赎回通常T+1至T+7到账</td></tr>
+        <tr><td><strong>费用</strong></td><td>券商佣金（万1-万3），<strong>无申赎费</strong></td><td>申购费0.1%-1.5%，赎回费0-1.5%</td></tr>
+        <tr><td><strong>最低金额</strong></td><td>1手=100份（几百元即可）</td><td>通常10元起</td></tr>
+        <tr><td><strong>能否定投</strong></td><td>需手动操作（部分券商支持自动定投）</td><td>支持自动定投</td></tr>
+        <tr><td><strong>透明度</strong></td><td>持仓完全公开，跟踪指数</td><td>季报才披露，可能有"风格漂移"</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip-box"><h5>💡 场内vs场外怎么选？</h5><p>场内ETF费率更低、流动性更好，但需手动定投；场外基金适合"设了就不管"的人。如果你已经有股票账户且愿意每月操作一次，场内ETF更划算。</p></div>
+
+  <h3>7.3 ETF vs 个股：分散vs集中</h3>
+  <p>买个股=押注一家公司，买ETF=买下整个行业/指数。ETF分散风险但没爆发力，个股有机会但波动大。</p>
+  <p>用赌场来类比：买个股是"押一个号码"，赢了翻倍、输了归零；买ETF是"押红或黑"，赢面大但赔率低。新手不适合"押号码"——你还没学会看庄家的牌。</p>
+  <p>另一个关键区别：<strong>指数会自我净化</strong>。沪深300每年调整两次成分股，表现差的公司会被踢出、优秀的公司会被纳入。但个股没有这种"自动换血"机制——买错了就是买错了，不会有人帮你换掉。</p>
+
+  <div class="callout key-box"><h5>🔑 新手第一笔投资建议从宽基ETF开始</h5><p>不是个股。个股选错了可能腰斩，宽基ETF即使短期下跌，长期大概率能回来——因为指数会定期优胜劣汰。</p></div>
+
+  <h3>7.4 交易规则与费用</h3>
+  <ul>
+    <li><strong>T+1买卖：</strong>今天买，明天才能卖（与股票一致）；部分跨境ETF支持T+0</li>
+    <li><strong>最小单位：</strong>100份（1手），门槛通常几百元</li>
+    <li><strong>涨跌幅限制：</strong>跟踪A股指数的±10%；跟踪创业板/科创板的±20%；跨境ETF无涨跌幅限制</li>
+    <li><strong>费用：</strong>佣金万2.5左右（免印花税！）+管理费年化0.15%-0.5%（含在净值中）</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 ETF免印花税</h5><p>股票卖出要收0.05%印花税，ETF不收。频繁交易时这个差异会被放大——10万元交易一次就省50元。</p></div>
+
+  <h3>7.5 常见ETF类型</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>类型</th><th>跟踪标的</th><th>典型品种举例</th><th>适合人群</th></tr></thead>
+      <tbody>
+        <tr><td><strong>宽基指数</strong></td><td>大盘/中盘/小盘整体</td><td>沪深300ETF、中证500ETF、科创50ETF</td><td>⭐ 新手首选</td></tr>
+        <tr><td><strong>行业/主题</strong></td><td>某一行业或主题</td><td>半导体ETF、医药ETF、军工ETF、消费ETF</td><td>看好特定行业</td></tr>
+        <tr><td><strong>跨境</strong></td><td>海外指数</td><td>纳斯达克100ETF、标普500ETF、恒生科技ETF</td><td>配置海外资产</td></tr>
+        <tr><td><strong>商品</strong></td><td>大宗商品</td><td>黄金ETF、豆粕ETF、有色金属ETF</td><td>对冲通胀</td></tr>
+        <tr><td><strong>债券</strong></td><td>国债/信用债</td><td>国债ETF、城投债ETF</td><td>低风险配置</td></tr>
+        <tr><td><strong>货币</strong></td><td>货币市场工具</td><td>货币ETF（华宝添益511990）</td><td>场内"余额宝"</td></tr>
+        <tr><td><strong>策略/风格</strong></td><td>特定因子</td><td>红利ETF、低波ETF、价值ETF</td><td>因子投资</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout key-box"><h5>🔑 新手从宽基ETF开始</h5><p>沪深300ETF（510300）是入门首选——买它等于买下A股最大的300家公司。理解行业后再考虑行业ETF，理解海外市场后再考虑跨境ETF。</p></div>
+</section>
+
+
+<!-- ===== 第8章 ===== -->
+<section id="ch8" class="section">
+  <div class="chapter-header"><span class="ch-num">第8章</span><h3>ETF进阶：选品种、看折溢价、避坑</h3></div>
+
+  <h3>8.1 IOPV：判断"买贵了还是买便宜了"的标尺</h3>
+  <p>交易软件里ETF旁边有个<strong>"IOPV"</strong>数字（Indicative Optimized Portfolio Value），这是ETF的实时净值估算——你可以理解为ETF的"合理价格"。</p>
+  <ul>
+    <li>ETF价格 > IOPV = 你买贵了（溢价）</li>
+    <li>ETF价格 < IOPV = 你买便宜了（折价）</li>
+    <li>ETF价格 ≈ IOPV = 正常</li>
+  </ul>
+
+  <div class="callout key-box"><h5>🔑 IOPV是ETF的"合理价格"</h5><p>你的成交价偏离IOPV越多，风险越大。溢价>2%就要警惕，溢价>5%建议放弃——你多付的钱不会凭空消失，最终会成为亏损。</p></div>
+
+  <h3>8.2 折价与溢价</h3>
+  <p>为什么ETF会折价或溢价？因为ETF有两个市场：</p>
+  <ul>
+    <li><strong>一级市场（申赎市场）：</strong>机构用一篮子股票申购ETF份额（最小单位50万或100万份）</li>
+    <li><strong>二级市场（交易市场）：</strong>散户在交易所买卖ETF</li>
+  </ul>
+  <p>当二级市场溢价时，机构在一级市场申购ETF后到二级市场卖出套利→价格回落。这就是ETF价格不会长期偏离净值的原因——<strong>套利机制</strong>在起作用。</p>
+  <p>反过来，当二级市场折价时，机构在二级市场低价买入ETF，然后在一级市场赎回换取一篮子股票再卖出→折价缩小。两个方向的套利让ETF价格始终围绕净值波动。</p>
+
+  <div class="callout tip-box"><h5>💡 普通投资者只需看IOPV折溢价率</h5><p>不需要理解套利机制的具体操作，只需记住：溢价率>2%要警惕，>5%坚决不买。特别是跨境ETF，溢价可能高达10%-20%。</p></div>
+
+  <h3>8.3 宽基ETF怎么选？</h3>
+  <p>选ETF就像选银行：规模大=靠谱，费率低=划算，误差小=精准。</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>指标</th><th>看什么</th><th>为什么重要</th></tr></thead>
+      <tbody>
+        <tr><td><strong>规模</strong></td><td>总份额×净值（越大越好）</td><td>规模越大→流动性越好→买卖价差越小</td></tr>
+        <tr><td><strong>费率</strong></td><td>管理费+托管费（越低越好）</td><td>长期持有0.15%和0.5%的差距，10年可能差几万元</td></tr>
+        <tr><td><strong>跟踪误差</strong></td><td>ETF收益率与指数收益率的偏差（越小越好）</td><td>误差小说明基金管理能力强</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>沪深300ETF首选<strong>510300</strong>（华泰柏瑞，规模超2000亿，流动性最佳）。</p>
+
+  <h3>8.4 行业/跨境ETF的特殊风险</h3>
+  <ul>
+    <li><strong>行业ETF集中度高</strong>，涨起来猛跌起来也猛。半导体ETF可能单日±5%+，不适合保守投资者</li>
+    <li><strong>跨境ETF溢价陷阱：</strong>QDII额度限制导致二级市场经常溢价10%-20%+。高位买入=接盘</li>
+  </ul>
+
+  <div class="callout warn-box"><h5>⚠️ 纳指ETF溢价20%买入=先亏20%才能回本</h5><p>这是ETF最隐蔽的坑。你可能以为自己买的是纳斯达克指数，但实际付出的是指数价值×1.2。指数涨5%你还是亏的。看IOPV折溢价率再决策。</p></div>
+
+  <h3>8.5 定投ETF：最推荐的新手策略</h3>
+  <p>定投宽基ETF是最推荐的新手策略：<strong>每月固定金额买入，不需要择时</strong>，长期享受市场平均收益。</p>
+  <ul>
+    <li>场内定投：每月手动买入（部分券商支持自动定投功能）</li>
+    <li>定投频率：月定投 vs 周定投，长期收益差异不大，选你能坚持的方式</li>
+    <li>定投标的选择：沪深300ETF（大盘）或中证500ETF（中盘），二选一即可</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 定投的敌人不是市场下跌，而是你中途放弃</h5><p>市场下跌时定投反而更好——同样的钱买到更多份额。真正让定投失败的是"跌了不敢买"或者"赚了一点就跑"。</p></div>
+
+  <!-- ETF定投模拟器 -->
+  <div class="interactive-panel reveal">
+    <h4>🧮 ETF定投模拟器</h4>
+    <div class="calc-row">
+      <label>每月投入（元）</label>
+      <input type="number" id="etpAmount" value="1000" step="100" oninput="calcETP()">
+    </div>
+    <div class="calc-row">
+      <label>预期年化收益率（%）</label>
+      <input type="number" id="etpRate" value="8" step="1" oninput="calcETP()">
+    </div>
+    <div class="calc-row">
+      <label>定投年限</label>
+      <input type="range" id="etpYears" min="1" max="30" value="10" oninput="calcETP()">
+      <span id="etpYearsShow">10年</span>
+    </div>
+    <div class="result-box">
+      <div class="result-item"><div class="val" id="etpTotal">—</div><div class="label">累计投入（元）</div></div>
+      <div class="result-item"><div class="val" id="etpValue">—</div><div class="label">预期总值（元）</div></div>
+      <div class="result-item"><div class="val" id="etpProfit">—</div><div class="label">预期收益（元）</div></div>
+    </div>
+    <div class="chart-container" id="chart-etp"></div>
+  </div>
+
+  <h3>8.6 ETF避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>跨境ETF溢价买入 <span class="arrow">→</span> 先看IOPV折溢价率，溢价>5%坚决不买</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>买小规模ETF（日均成交<1000万） <span class="arrow">→</span> 买卖价差大，大额进出困难</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>以为ETF不会"消失" <span class="arrow">→</span> 规模过小（通常<5000万）可能清盘，打乱投资计划</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>拆分/合并时恐慌 <span class="arrow">→</span> 总市值不变，只是份数变了，不影响持有价值</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>行业ETF当宽基用 <span class="arrow">→</span> 行业ETF波动远大于宽基，不适合"买了就放着"</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 第五篇 ===== -->
+<h2>第五篇：可转债——进可攻退可守的"变形金刚"</h2>
+
+<!-- ===== 第9章 ===== -->
+<section id="ch9" class="section">
+  <div class="chapter-header"><span class="ch-num">第9章</span><h3>可转债入门：债底保底 + 转股弹性</h3></div>
+
+  <h3>9.1 可转债本质：债券+看涨期权</h3>
+  <p>可转债是上市公司发行的一种特殊债券，持有人可以选择：</p>
+  <ul>
+    <li><strong>当债券持有到期</strong> → 拿回本金+利息（保底）</li>
+    <li><strong>在转股期内按约定价格转换成股票</strong> → 享受股价上涨收益（进攻）</li>
+  </ul>
+  <p>它就像一张"变形金刚"：行情不好时是债券（到期还本），行情好时变成股票（跟着涨）。面值<strong>100元/张</strong>。</p>
+
+  <div class="callout key-box"><h5>🔑 A股唯一"下有保底、上不封顶"的投资品种</h5><p>债券保住了下跌空间，转股权打开了上涨空间。但这不意味着稳赚——前提是你选对品种、理解条款、避开陷阱。</p></div>
+
+  <h3>9.2 核心概念速览</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>术语</th><th>含义</th><th>举例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>转股价</strong></td><td>约定的将债券转换为股票的价格</td><td>转股价20元→1张100元可转5股</td></tr>
+        <tr><td><strong>转股价值</strong></td><td>= 100 ÷ 转股价 × 正股当前价格</td><td>正股25元→100÷20×25=125元</td></tr>
+        <tr><td><strong>转股溢价率</strong></td><td>=(转债价格-转股价值)÷转股价值×100%</td><td>转债135元→(135-125)÷125=8%</td></tr>
+        <tr><td><strong>纯债价值</strong></td><td>把可转债当纯债券看的折现价值</td><td>"债底"，下跌的最后一道防线</td></tr>
+        <tr><td><strong>到期赎回价</strong></td><td>持有到期时公司偿还的价格</td><td>通常106-115元，最终的保底</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip-box"><h5>💡 转股溢价率越低，可转债越"跟涨"</h5><p>溢价率8%意味着正股涨8%后转债才开始真正赚钱。溢价率>50%时，正股涨它不涨——这就是"双高转债"的危险之处。</p></div>
+
+  <h3>9.3 交易规则</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>规则</th><th>内容</th><th>与股票的区别</th></tr></thead>
+      <tbody>
+        <tr><td><strong>交易制度</strong></td><td>T+0（当天买，当天可以卖）</td><td>股票是T+1</td></tr>
+        <tr><td><strong>上市首日</strong></td><td>涨幅上限57.3%，跌幅下限43.3%，盘中20%/30%临停</td><td>股票首日44%涨停</td></tr>
+        <tr><td><strong>次日起</strong></td><td>±20%涨跌幅限制</td><td>触发±20%停牌30分钟，触发±30%停牌至14:57</td></tr>
+        <tr><td><strong>最小交易单位</strong></td><td>1张（约100元）</td><td>股票1手=100股</td></tr>
+        <tr><td><strong>交易费用</strong></td><td>佣金（万0.5-万2），<strong>无印花税</strong></td><td>股票卖出收0.05%印花税</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn-box"><h5>⚠️ T+0≠可以频繁交易</h5><p>T+0的优势是可以当天止损，但也容易导致频繁交易、追涨杀跌。手续费和滑点会快速侵蚀利润——不要把可转债当"日内交易工具"。</p></div>
+
+  <h3>9.4 三大退出方式</h3>
+  <p>可转债有三种退出路径：</p>
+  <ul>
+    <li><strong>①到期还本付息（保底）：</strong>持有到期，公司按约定价赎回。这是最保守的退出方式</li>
+    <li><strong>②转股（正股涨了就转）：</strong>转股价值>100元时转股有利润</li>
+    <li><strong>③提前卖出：</strong>转债本身有交易价格，低买高卖赚差价</li>
+  </ul>
+  <p>绝大多数可转债最终以<strong>"强赎促转股"</strong>方式退场——公司不想还钱，会想方设法让转债价格涨到130元以上，触发强制赎回条款，逼你转股。</p>
+
+  <div class="callout key-box"><h5>🔑 可转债的终极逻辑</h5><p>公司希望你转股（不用还钱），你的利益和公司方向一致——公司越努力拉股价，你的转债越值钱。这是可转债和股票最大的不同：你有一个"不想还钱"的盟友。</p></div>
+
+  <h3>9.5 可转债打新：零市值参与</h3>
+  <p>可转债打新与打新股<strong>最大的区别</strong>：不需要持有股票市值，空仓也能申购。</p>
+  <ul>
+    <li>2022年6月新规：开通可转债交易权限需<strong>2年交易经验+10万元资产</strong></li>
+    <li>申购流程：T日申购→T+1配号→T+2中签缴款（1签=10张=1000元）</li>
+    <li>中签率极低（万分之几），但坚持打一年能中几次</li>
+    <li>上市首日多数涨10%-30%，但破发也不罕见（信用评级低、正股基本面差的）</li>
+  </ul>
+
+  <div class="callout tip-box"><h5>💡 可转债打新是"白嫖"机会</h5><p>不需要市值、中签才缴款、成本极低。但不是暴利——一签赚几十到几百元，是"加鸡腿"不是"换大餐"。坚持打就好，别刻意研究哪只该打。</p></div>
+
+  <h3>9.6 价格区间与风险特征</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>可转债价格</th><th>状态</th><th>特征</th><th>新手建议</th></tr></thead>
+      <tbody>
+        <tr><td><strong>&lt; 100元</strong></td><td>"债性"为主</td><td>接近纯债价值，下跌空间有限，但上涨也慢</td><td>安全但无聊</td></tr>
+        <tr><td><strong>100-130元</strong></td><td>"平衡型"</td><td>兼具债底保护和一定上涨弹性</td><td>⭐ 新手首选区间</td></tr>
+        <tr><td><strong>&gt; 130元</strong></td><td>"股性"为主</td><td>基本跟随正股涨跌，债底保护已失效</td><td>波动大，需谨慎</td></tr>
+        <tr><td><strong>&gt; 150元</strong></td><td>高风险区</td><td>溢价率可能很高，一旦正股回调或强赎，跌幅可能很大</td><td>❌ 新手别碰</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn-box"><h5>⚠️ 新手从打新债和100-130元平衡型开始</h5><p>不要碰>150元的高价转债。即使它看起来涨得猛，你不知道什么时候会触发强赎或者正股回调，一下跌可能20%+。</p></div>
+
+  <!-- 转股价值计算器 -->
+  <div class="interactive-panel reveal">
+    <h4>🧮 转股价值计算器</h4>
+    <div class="calc-row">
+      <label>转股价（元）</label>
+      <input type="number" id="cvPrice" value="20" step="0.5" oninput="calcCV()">
+    </div>
+    <div class="calc-row">
+      <label>正股当前价格（元）</label>
+      <input type="number" id="cvStock" value="25" step="0.5" oninput="calcCV()">
+    </div>
+    <div class="calc-row">
+      <label>可转债价格（元）</label>
+      <input type="number" id="cvBond" value="135" step="1" oninput="calcCV()">
+    </div>
+    <div class="result-box">
+      <div class="result-item"><div class="val" id="cvValue">—</div><div class="label">转股价值（元）</div></div>
+      <div class="result-item"><div class="val" id="cvPremium">—</div><div class="label">转股溢价率</div></div>
+      <div class="result-item"><div class="val" id="cvShares">—</div><div class="label">每张可转股数</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 第10章 ===== -->
+<section id="ch10" class="section">
+  <div class="chapter-header"><span class="ch-num">第10章</span><h3>可转债进阶：四大条款、双低策略与避坑</h3></div>
+
+  <h3>10.1 强制赎回条款（强赎）：公司的"催命符"</h3>
+  <p>转股期内，正股连续30个交易日中有≥15天收盘价≥转股价的<strong>130%</strong>时，公司有权以"面值+应计利息"（约<strong>100.5元</strong>）强制赎回剩余未转股的可转债。</p>
+  <p>为什么要这样做？<strong>公司不想还钱。</strong>强赎的目的就是逼你转股——你的转债值130元，但公司只给你100.5元，你当然会选择转股（转股价值更高），公司就不用还钱了。</p>
+
+  <div class="callout danger-box"><h5>🚨 强赎公告=最后通牒！这是新手最大的坑</h5><p>公司发布强赎公告后，你必须在截止日前<strong>卖出或转股</strong>，否则被按约100.5元强制赎回。转债价格130元被100.5元赎回=亏23%+。这不是吓你，是每年都有人踩的坑。</p></div>
+
+  <h3>10.2 下修条款：公司的"促销手段"</h3>
+  <p>正股持续低迷时（通常连续N日低于转股价80%-90%），公司可以<strong>下调转股价</strong>。</p>
+  <p>下修的逻辑：转股价从20元降到15元→转股价值从100÷20×18=90元变成100÷15×18=120元→转债价格上涨。公司主动"降价促销"，持有者受益。</p>
+  <p>但下修是<strong>公司的权利而非义务</strong>——可能提出但不通过股东大会（大股东持股比例高时更容易通过，股权分散时可能被否决）。</p>
+
+  <div class="callout tip-box"><h5>💡 下修是可转债的"隐藏福利"</h5><p>公司主动降价帮你——这在A股其他品种中几乎没有。下修后转债通常上涨5%-15%，是持有者的纯利好。</p></div>
+
+  <h3>10.3 回售条款：你的"安全绳"</h3>
+  <p>最后两个计息年度，正股连续30个交易日低于转股价的<strong>70%</strong>时，投资者有权按"面值+利息"（约103元）把转债卖回给公司。</p>
+  <p>回售是<strong>投资者的权利</strong>，公司不得拒绝。但公司不想还钱→会尽量下修避免触发回售。所以回售条款实际上保证了可转债不会"跌到没底"——公司要么下修，要么还钱。</p>
+  <p>注意：回售权利<strong>每年仅一次</strong>，首次触发不行权则该计息年度不能再次行权。</p>
+
+  <div class="callout key-box"><h5>🔑 回售条款的隐性价值</h5><p>回售条款让你有一张"底牌"——即使正股跌到很惨，你也可以选择把债卖回给公司。这大大限制了可转债的下跌空间。</p></div>
+
+  <h3>10.4 纯债价值、YTM与溢价率</h3>
+  <ul>
+    <li><strong>纯债价值：</strong>把可转债当纯债券看，按未来现金流折现的"债底"。纯债价值是下跌的最后一道防线</li>
+    <li><strong>YTM（到期收益率）：</strong>以当前价格买入并持有到期的年化收益率。YTM > 0说明"债底"有支撑</li>
+    <li><strong>溢价率详解：</strong>
+      <ul>
+        <li>溢价率 > 0：转债比转股价值贵（市场预期正股会涨，提前定价）</li>
+        <li>溢价率 < 0：转债比转股价值便宜（罕见的套利机会）</li>
+        <li>双高转债（价格>130且溢价率>50%）：债底保护几乎为零，跟炒垃圾股无异</li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="callout warn-box"><h5>⚠️ 双高转债="涨不跟、跌全跟"</h5><p>价格>130元且溢价率>50%的可转债，正股涨它不涨（溢价消化了涨幅），正股跌它跟着跌。这是可转债里最危险的品种，新手坚决不碰。</p></div>
+
+  <h3>10.5 双低策略：经典的可转债量化策略</h3>
+  <p>双低策略是可转债投资中最经典的策略之一：</p>
+  <ul>
+    <li><strong>选"价格低+溢价率低"</strong>的可转债（双低值 = 转债价格 + 转股溢价率×100 < 150）</li>
+    <li>价格低→债底保护强，下跌空间有限</li>
+    <li>溢价率低→跟涨能力强，正股涨转债跟着涨</li>
+    <li>回撤可控、长期收益稳健</li>
+  </ul>
+
+  <div class="callout key-box"><h5>🔑 双低策略的核心逻辑</h5><p>用债底防住下行（价格低→跌不动），用低溢价率捕获上行（溢价率低→涨得动）。不需要预测市场方向，只需要"跌不动+涨得动"的品种。</p></div>
+
+  <h3>10.6 可转债避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>强赎公告后不操作 <span class="arrow">→</span> 被100.5元赎回，亏损20%+。看到公告立刻卖出或转股</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>买双高转债（价格>130且溢价率>50%） <span class="arrow">→</span> 债底失效，"涨不跟、跌全跟"，跟炒垃圾股无异</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>等下修但下修不通过 <span class="arrow">→</span> 董事会提案可能被股东大会否决，别把下修当确定性事件</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>忽视信用风险 <span class="arrow">→</span> AA-以下评级需警惕，2024年搜特转债、蓝盾转债已出现实质违约</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>临停时恐慌 <span class="arrow">→</span> ±20%停牌30分钟是正常机制，14:57会恢复交易，不是"被锁住了"</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>T+0当日内交易工具 <span class="arrow">→</span> 手续费和滑点快速侵蚀利润，频繁交易是亏损捷径</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 附录 ===== -->
+<h2>附录</h2>
+
+<!-- 附录A -->
+<section id="appA" class="section">
+  <h3>附录A：四渠道速查对比表</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>维度</th><th>🎯 打新股</th><th>💰 逆回购</th><th>📊 ETF</th><th>📜 可转债</th></tr></thead>
+      <tbody>
+        <tr><td><strong>前提条件</strong></td><td>持有A股市值≥1万</td><td>有股票账户即可</td><td>有股票账户即可</td><td>2年经验+10万资产</td></tr>
+        <tr><td><strong>资金门槛</strong></td><td>中签后缴款</td><td>1000元</td><td>几百元</td><td>100元/打新1000元</td></tr>
+        <tr><td><strong>风险等级</strong></td><td>低（破发风险）</td><td>极低（R1）</td><td>中（指数波动）</td><td>中~高</td></tr>
+        <tr><td><strong>收益预期</strong></td><td>单次几百~几千</td><td>年化1%-10%</td><td>长期年化7%-12%</td><td>打新几十~几百</td></tr>
+        <tr><td><strong>流动性</strong></td><td>上市后卖出</td><td>到期自动回款</td><td>实时买卖</td><td>T+0实时买卖</td></tr>
+        <tr><td><strong>印花税</strong></td><td>有（0.05%）</td><td>无</td><td>无</td><td>无</td></tr>
+        <tr><td><strong>最大坑</strong></td><td>破发/忘缴款</td><td>方向搞反</td><td>跨境溢价</td><td>强赎未操作</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="chart-container" id="chart-radar" style="height:360px"></div>
+</section>
+
+<!-- 附录B -->
+<section id="appB" class="section">
+  <h3>附录B：打新中签与缴款日历模板</h3>
+  <p>打新最怕的不是不中，而是中了忘记缴款。用这个模板跟踪每一只新股的流程：</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>日期</th><th>事件</th><th>操作要点</th></tr></thead>
+      <tbody>
+        <tr><td>T日</td><td>申购日</td><td>在APP中点击"新股申购"，确认顶格申购，无需缴款</td></tr>
+        <tr><td>T+1日</td><td>配号日</td><td>系统分配号码，无需操作</td></tr>
+        <tr><td>T+2日</td><td>中签日</td><td>查看是否中签。如中签，<strong>16:00前</strong>保证账户有足够资金</td></tr>
+        <tr><td>T+2后1-2周</td><td>上市日</td><td>择机卖出兑现收益</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout tip-box"><h5>💡 弃购次数跟踪</h5><p>12个月内弃购3次→暂停打新6个月。建议在手机备忘录中记录每次弃购，确保不超过2次。</p></div>
+</section>
+
+<!-- 附录C -->
+<section id="appC" class="section">
+  <h3>附录C：常用ETF品种速查表</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>类型</th><th>名称</th><th>代码</th><th>规模参考</th><th>管理费</th><th>适合人群</th></tr></thead>
+      <tbody>
+        <tr><td>宽基</td><td>沪深300ETF</td><td>510300</td><td>>2000亿</td><td>0.15%</td><td>⭐ 新手首选</td></tr>
+        <tr><td>宽基</td><td>中证500ETF</td><td>510500</td><td>>500亿</td><td>0.15%</td><td>中盘配置</td></tr>
+        <tr><td>宽基</td><td>中证1000ETF</td><td>560010</td><td>>100亿</td><td>0.15%</td><td>小盘配置</td></tr>
+        <tr><td>宽基</td><td>科创50ETF</td><td>588000</td><td>>500亿</td><td>0.15%</td><td>科技创新</td></tr>
+        <tr><td>行业</td><td>半导体ETF</td><td>512480</td><td>>200亿</td><td>0.15%</td><td>看好芯片</td></tr>
+        <tr><td>行业</td><td>医药ETF</td><td>512010</td><td>>100亿</td><td>0.15%</td><td>看好医药</td></tr>
+        <tr><td>行业</td><td>军工ETF</td><td>512660</td><td>>100亿</td><td>0.15%</td><td>看好军工</td></tr>
+        <tr><td>跨境</td><td>纳指100ETF</td><td>513100</td><td>>200亿</td><td>0.20%</td><td>配置美股</td></tr>
+        <tr><td>跨境</td><td>恒生科技ETF</td><td>513180</td><td>>200亿</td><td>0.20%</td><td>配置港股科技</td></tr>
+        <tr><td>商品</td><td>黄金ETF</td><td>518880</td><td>>200亿</td><td>0.15%</td><td>对冲通胀</td></tr>
+        <tr><td>货币</td><td>华宝添益</td><td>511990</td><td>>1000亿</td><td>0.14%</td><td>场内闲钱</td></tr>
+        <tr><td>策略</td><td>红利ETF</td><td>510880</td><td>>100亿</td><td>0.15%</td><td>高分红策略</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout tip-box"><h5>💡 选ETF的优先级</h5><p>新手：沪深300ETF → 进阶：中证500ETF → 深入：行业/跨境ETF。不要一上来就买5个ETF，先把一个搞透。</p></div>
+</section>
+
+<!-- 附录D -->
+<section id="appD" class="section">
+  <h3>附录D：可转债核心术语速查表</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>术语</th><th>一句话解释</th><th>详细章节</th></tr></thead>
+      <tbody>
+        <tr><td><strong>转股价</strong></td><td>把债券转换成股票时用的"换算价"</td><td>第9章 9.2</td></tr>
+        <tr><td><strong>转股价值</strong></td><td>如果现在转股，值多少钱（=100÷转股价×正股价）</td><td>第9章 9.2</td></tr>
+        <tr><td><strong>转股溢价率</strong></td><td>转债价格比转股价值贵多少百分比</td><td>第9章 9.2</td></tr>
+        <tr><td><strong>强赎（强制赎回）</strong></td><td>正股涨到转股价130%时，公司可以约100.5元强制赎回</td><td>第10章 10.1</td></tr>
+        <tr><td><strong>下修（转股价向下修正）</strong></td><td>正股低迷时公司下调转股价，对持有者是利好</td><td>第10章 10.2</td></tr>
+        <tr><td><strong>回售</strong></td><td>正股跌到转股价70%时，你可以把债卖回给公司</td><td>第10章 10.3</td></tr>
+        <tr><td><strong>纯债价值</strong></td><td>把可转债当纯债券看的折现价值，即"债底"</td><td>第10章 10.4</td></tr>
+        <tr><td><strong>YTM</strong></td><td>到期收益率，以当前价格买入持有到期的年化收益率</td><td>第10章 10.4</td></tr>
+        <tr><td><strong>双低值</strong></td><td>转债价格+转股溢价率×100，<150为双低</td><td>第10章 10.5</td></tr>
+        <tr><td><strong>临停</strong></td><td>涨跌±20%停牌30分钟，±30%停牌至14:57</td><td>第9章 9.3</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div><!-- end main -->
+
+
+<script>
+// ===== Scroll to ID =====
+function scrollToId(id){
+  const el=document.getElementById(id);
+  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelector('.sidebar').classList.remove('open')}
+}
+
+// ===== Scroll Reveal =====
+const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ===== Active Nav =====
+const sections=document.querySelectorAll('section[id],h2');
+const navItems=document.querySelectorAll('.nav-item');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{
+    if(s.getBoundingClientRect().top<120) cur=s.id||s.textContent.trim().substring(0,6);
+  });
+  navItems.forEach(n=>{
+    n.classList.remove('active');
+    const oid=n.getAttribute('onclick')?.match(/scrollToId\('(.+?)'\)/)?.[1];
+    if(oid===cur) n.classList.add('active');
+  });
+});
+
+// ===== Hero Canvas =====
+(function(){
+  const c=document.getElementById('heroCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<60;i++){
+    particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+0.5,dx:(Math.random()-0.5)*0.4,dy:(Math.random()-0.5)*0.3,a:Math.random()*0.5+0.2})
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(20,184,166,${p.a})`;ctx.fill();
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.x<0||p.x>W)p.dx*=-1;
+      if(p.y<0||p.y>H)p.dy*=-1;
+    });
+    // connect nearby
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(20,184,166,${0.12*(1-d/120)})`;ctx.stroke()}
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== Calculator: IPO =====
+function calcIPO(){
+  const price=parseFloat(document.getElementById('ipoPrice').value)||0;
+  const shares=parseInt(document.getElementById('ipoShares').value)||1000;
+  const gain=parseFloat(document.getElementById('ipoGain').value)||0;
+  document.getElementById('ipoGainShow').textContent=gain+'%';
+  const cost=price*shares;
+  const profit=cost*gain/100;
+  const ret=cost>0?(profit/cost*100).toFixed(1):0;
+  document.getElementById('ipoCost').textContent=cost.toLocaleString();
+  document.getElementById('ipoProfit').textContent='+'+Math.round(profit).toLocaleString();
+  document.getElementById('ipoReturn').textContent=ret+'%';
+}
+calcIPO();
+
+// ===== Calculator: Reverse Repo =====
+function calcRR(){
+  const amt=parseFloat(document.getElementById('rrAmount').value)||0;
+  const rate=parseFloat(document.getElementById('rrRate').value)||0;
+  const days=parseInt(document.getElementById('rrDays').value)||1;
+  const interest=amt*rate/100/365*days;
+  const fee=amt*1/100000; // 1天期固定手续费，不随占款天数增加
+  const net=interest-fee;
+  document.getElementById('rrInterest').textContent=interest.toFixed(2);
+  document.getElementById('rrFee').textContent=fee.toFixed(2);
+  document.getElementById('rrNet').textContent=net.toFixed(2);
+}
+calcRR();
+
+// ===== Calculator: ETF DIP =====
+let etpChart=null;
+function calcETP(){
+  const m=parseFloat(document.getElementById('etpAmount').value)||0;
+  const r=parseFloat(document.getElementById('etpRate').value)/100/12;
+  const y=parseInt(document.getElementById('etpYears').value)||1;
+  document.getElementById('etpYearsShow').textContent=y+'年';
+  const total=m*12*y;
+  const value=r>0?m*((Math.pow(1+r,12*y)-1)/r*(1+r)):total;
+  document.getElementById('etpTotal').textContent=total.toLocaleString();
+  document.getElementById('etpValue').textContent=Math.round(value).toLocaleString();
+  document.getElementById('etpProfit').textContent=Math.round(value-total).toLocaleString();
+  // chart
+  const chartDom=document.getElementById('chart-etp');
+  if(!chartDom)return;
+  if(!etpChart)etpChart=echarts.init(chartDom);
+  const months=[];const investLine=[];const valueLine=[];
+  for(let i=1;i<=y*12;i++){
+    months.push('M'+i);
+    investLine.push(m*i);
+    valueLine.push(r>0?m*((Math.pow(1+r,i)-1)/r*(1+r)):m*i);
+  }
+  etpChart.setOption({
+    tooltip:{trigger:'axis',backgroundColor:'rgba(11,20,32,0.9)',borderColor:'#14B8A6',textStyle:{color:'#E2E8F0',fontSize:12}},
+    grid:{left:60,right:20,top:30,bottom:30},
+    xAxis:{type:'category',data:months,axisLabel:{interval:Math.max(0,Math.floor(months.length/6)-1),color:'#64748B',fontSize:10},axisLine:{lineStyle:{color:'#1B2D4A'}}},
+    yAxis:{type:'value',name:'金额(元)',axisLabel:{color:'#64748B',fontSize:10},splitLine:{lineStyle:{color:'rgba(148,163,184,0.06)'}}},
+    series:[
+      {name:'累计投入',type:'line',data:investLine,lineStyle:{color:'#64748B',width:1,type:'dashed'},itemStyle:{color:'#64748B'},symbol:'none'},
+      {name:'账户价值',type:'line',data:valueLine,lineStyle:{color:'#14B8A6',width:2},itemStyle:{color:'#14B8A6'},symbol:'none',areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(20,184,166,0.3)'},{offset:1,color:'rgba(20,184,166,0)'}]}}}
+    ]
+  });
+}
+setTimeout(calcETP,300);
+
+// ===== Calculator: Convertible Bond =====
+function calcCV(){
+  const cp=parseFloat(document.getElementById('cvPrice').value)||1;
+  const sp=parseFloat(document.getElementById('cvStock').value)||0;
+  const bp=parseFloat(document.getElementById('cvBond').value)||0;
+  const shares=100/cp;
+  const cv=shares*sp;
+  const prem=cv>0?((bp-cv)/cv*100):0;
+  document.getElementById('cvValue').textContent=cv.toFixed(2);
+  document.getElementById('cvPremium').textContent=prem.toFixed(1)+'%';
+  document.getElementById('cvShares').textContent=shares.toFixed(2);
+}
+calcCV();
+
+// ===== Radar Chart =====
+setTimeout(function(){
+  const dom=document.getElementById('chart-radar');
+  if(!dom)return;
+  const chart=echarts.init(dom);
+  chart.setOption({
+    tooltip:{trigger:'item'},
+    legend:{data:['打新股','逆回购','ETF','可转债'],textStyle:{color:'#94A3B8',fontSize:11},bottom:0},
+    radar:{
+      indicator:[
+        {name:'低门槛',max:10},{name:'低风险',max:10},{name:'高收益',max:10},{name:'高流动性',max:10},{name:'操作简单',max:10}
+      ],
+      shape:'circle',
+      splitNumber:4,
+      axisName:{color:'#94A3B8',fontSize:11},
+      splitLine:{lineStyle:{color:'rgba(148,163,184,0.1)'}},
+      splitArea:{areaStyle:{color:['rgba(20,184,166,0.02)','rgba(20,184,166,0.04)']}},
+      axisLine:{lineStyle:{color:'rgba(148,163,184,0.12)'}}
+    },
+    series:[{type:'radar',data:[
+      {value:[6,7,6,3,7],name:'打新股',lineStyle:{color:'#F59E0B'},areaStyle:{color:'rgba(245,158,11,0.15)'},itemStyle:{color:'#F59E0B'}},
+      {value:[9,10,2,4,5],name:'逆回购',lineStyle:{color:'#10B981'},areaStyle:{color:'rgba(16,185,129,0.15)'},itemStyle:{color:'#10B981'}},
+      {value:[8,5,7,8,8],name:'ETF',lineStyle:{color:'#3B82F6'},areaStyle:{color:'rgba(59,130,246,0.15)'},itemStyle:{color:'#3B82F6'}},
+      {value:[7,4,7,9,4],name:'可转债',lineStyle:{color:'#A78BFA'},areaStyle:{color:'rgba(167,139,250,0.15)'},itemStyle:{color:'#A78BFA'}}
+    ]}]
+  });
+},500);
+
+// ===== Resize Charts =====
+window.addEventListener('resize',()=>{
+  if(etpChart)etpChart.resize();
+  const radar=document.getElementById('chart-radar');
+  if(radar){const inst=echarts.getInstanceByDom(radar);if(inst)inst.resize()}
+});
+</script>
+</body>
+</html>

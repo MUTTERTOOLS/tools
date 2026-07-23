@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>知道做不到——投资里最贵的一课</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#0C0E1A;--bg2:#121528;--bg3:#1A1E38;--bg4:#222850;
+  --text:#E4E8F0;--text2:#9AA3B8;--text3:#5E6880;
+  --accent:#6366F1;--accent2:#818CF8;--accent3:#A5B4FC;
+  --green:#22C55E;--red:#EF4444;--orange:#F59E0B;--cyan:#06B6D4;--pink:#EC4899;
+  --border:#1E2245;
+  --font-display:"Noto Serif SC",Georgia,serif;
+  --font-body:"Noto Sans SC",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.85;font-size:16px}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+.nav{position:fixed;left:0;top:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:20px 0}
+.nav-logo{padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.nav-logo h2{font-family:var(--font-display);font-size:16px;color:var(--accent2)}
+.nav-logo p{font-size:11px;color:var(--text3);margin-top:3px}
+.nav a{display:block;padding:5px 20px;color:var(--text2);text-decoration:none;font-size:12.5px;transition:all .2s;border-left:3px solid transparent}
+.nav a:hover,.nav a.active{color:var(--accent2);background:rgba(99,102,241,.08);border-left-color:var(--accent)}
+.nav .nav-sep{padding:8px 20px 3px;font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.main{margin-left:240px}
+
+.cover{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cover-canvas{position:absolute;inset:0;z-index:0}
+.cover-content{position:relative;z-index:1;text-align:center;padding:40px;max-width:720px}
+.cover-icon{font-size:64px;margin-bottom:16px}
+.cover h1{font-family:var(--font-display);font-size:clamp(30px,5vw,52px);line-height:1.25;margin-bottom:12px;background:linear-gradient(135deg,var(--accent2),var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cover .sub{font-size:20px;color:var(--accent3);margin-bottom:8px;font-weight:600}
+.cover p{font-size:15px;color:var(--text2);margin-bottom:28px;line-height:1.7}
+.cover-btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:600;transition:all .3s}
+.cover-btn:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 6px 24px rgba(99,102,241,.3)}
+
+.section{max-width:860px;margin:0 auto;padding:50px 36px}
+.reveal{opacity:0;transform:translateY(24px);transition:all .55s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+
+h2.sec-title{font-family:var(--font-display);font-size:28px;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:12px}
+h2.sec-title .num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:var(--accent);color:#fff;font-size:18px;font-weight:700;flex-shrink:0}
+.sec-sub{color:var(--text2);font-size:14px;margin-bottom:24px;padding-left:52px}
+h3{font-size:18px;color:var(--accent2);margin:24px 0 10px;font-weight:600}
+h4{font-size:15px;color:var(--accent3);margin:18px 0 8px;font-weight:600}
+p{margin-bottom:10px}
+ul,ol{margin:8px 0 14px 20px}li{margin-bottom:5px}
+strong{color:var(--accent2)}
+
+.table-wrap{overflow-x:auto;margin:12px 0 20px;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:var(--bg3);color:var(--accent2);padding:10px 12px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:8px 12px;border-top:1px solid var(--border);color:var(--text)}
+tr:hover td{background:rgba(99,102,241,.04)}
+
+.tip-box,.key-box,.warn-box,.insight-box{border-radius:10px;padding:16px 20px;margin:16px 0;font-size:14px;line-height:1.7}
+.tip-box{background:rgba(34,197,94,.07);border-left:4px solid var(--green);color:#a7f3d0}
+.tip-box::before{content:"💡 ";font-weight:700}
+.key-box{background:rgba(99,102,241,.07);border-left:4px solid var(--accent);color:var(--accent3)}
+.key-box::before{content:"🔑 ";font-weight:700}
+.warn-box{background:rgba(239,68,68,.07);border-left:4px solid var(--red);color:#fca5a5}
+.warn-box::before{content:"⚠️ ";font-weight:700}
+.insight-box{background:rgba(6,182,212,.07);border-left:4px solid var(--cyan);color:#a5f3fc}
+.insight-box::before{content:"🔬 ";font-weight:700}
+
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin:18px 0}
+.chart-box h4{color:var(--accent2);margin:0 0 8px;font-size:14px}
+.chart-container{width:100%;height:360px}
+
+/* BRAIN VIS */
+.brain-compare{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:stretch;margin:20px 0}
+.brain-card{padding:20px;border-radius:12px;text-align:center}
+.brain-card.rational{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.25)}
+.brain-card.instinct{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25)}
+.brain-card .emoji{font-size:36px;margin-bottom:8px}
+.brain-card h4{margin:0 0 6px;font-size:16px}
+.brain-card p{margin:0 0 4px;font-size:12.5px;color:var(--text2)}
+.brain-vs{display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:var(--orange)}
+.brain-speed{text-align:center;margin:16px 0;padding:16px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)}
+.brain-speed .speed-num{font-size:48px;font-weight:900;background:linear-gradient(135deg,var(--red),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* SCENE CARDS */
+.scene-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0;position:relative;overflow:hidden}
+.scene-card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%}
+.scene-card.s1::before{background:var(--red)}.scene-card.s2::before{background:var(--orange)}
+.scene-card.s3::before{background:var(--pink)}.scene-card.s4::before{background:var(--red)}
+.scene-card.s5::before{background:var(--cyan)}
+.scene-title{font-size:17px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.scene-dialogue{background:var(--bg3);border-radius:8px;padding:14px 18px;margin:10px 0;font-size:13.5px;line-height:2;color:var(--text2)}
+.scene-dialogue .pct{color:var(--red);font-weight:700}
+.scene-mechanism{font-size:13px;color:var(--accent3);margin-top:8px;padding:8px 12px;background:rgba(99,102,241,.06);border-radius:6px}
+
+/* DEFENSE */
+.defense-flow{display:grid;grid-template-columns:1fr;gap:16px;margin:20px 0}
+.defense-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;position:relative}
+.defense-card .dc-num{position:absolute;top:-12px;left:20px;background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.defense-card h4{margin:4px 0 8px;font-size:16px;color:var(--text)}
+
+/* CHECKLIST */
+.checklist{background:var(--bg3);border:2px dashed var(--accent);border-radius:12px;padding:24px;margin:16px 0;font-size:13.5px;line-height:2}
+.checklist .cl-title{text-align:center;font-weight:700;font-size:15px;color:var(--accent2);margin-bottom:12px;letter-spacing:1px}
+.checklist .cl-item{padding:2px 0;border-bottom:1px solid rgba(99,102,241,.1)}
+.checklist .cl-item:last-child{border-bottom:none}
+.checklist .cl-blank{display:inline-block;min-width:120px;border-bottom:1px solid var(--accent3);margin:0 4px}
+
+/* RULE CONVERT */
+.rule-convert{margin:16px 0}
+.rule-row{display:grid;grid-template-columns:1fr 36px 1fr;gap:0;align-items:center;margin-bottom:12px}
+.rule-left{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:12px 14px;font-size:13px;color:#fca5a5}
+.rule-arrow{text-align:center;font-size:20px;color:var(--accent)}
+.rule-right{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:12px 14px;font-size:13px;color:#a7f3d0}
+.rule-label{font-size:11px;font-weight:700;margin-bottom:4px;display:block}
+.rule-left .rule-label{color:var(--red)}.rule-right .rule-label{color:var(--green)}
+
+/* PROGRESS */
+.progress-track{margin:20px 0;text-align:center}
+.progress-bar{display:flex;align-items:flex-end;justify-content:center;gap:24px;height:180px;margin:16px 0}
+.progress-col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.progress-fill{width:48px;border-radius:6px 6px 0 0;transition:height .8s ease}
+.progress-label{font-size:12px;color:var(--text2);text-align:center;max-width:60px}
+.progress-year{font-size:14px;font-weight:700;color:var(--text)}
+
+/* QUOTE */
+.big-quote{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(6,182,212,.1));border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:32px;margin:28px 0;text-align:center}
+.big-quote p{font-family:var(--font-display);font-size:18px;color:var(--text);line-height:1.8;font-style:italic}
+.big-quote .attribution{font-size:13px;color:var(--text3);margin-top:10px;font-style:normal}
+
+.footer{text-align:center;padding:40px;color:var(--text3);font-size:12px;border-top:1px solid var(--border);margin-top:40px}
+
+@media(max-width:900px){
+  .nav{display:none}.main{margin-left:0}
+  .section{padding:36px 18px}
+  .brain-compare{grid-template-columns:1fr;gap:12px}
+  .brain-vs{transform:rotate(90deg)}
+  .rule-row{grid-template-columns:1fr;gap:8px}
+  .rule-arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-logo"><h2>🧠 知道做不到</h2><p>投资里最贵的一课</p></div>
+  <a href="#cover">封面</a>
+  <div class="nav-sep">章节</div>
+  <a href="#s1">一、这不是你的问题</a>
+  <a href="#s2">二、大脑发生了什么</a>
+  <a href="#s3">三、五个照镜子场景</a>
+  <a href="#s4">四、三道防线</a>
+  <a href="#s5">五、知识转规则</a>
+  <a href="#s6">六、渐进进步</a>
+</nav>
+
+<div class="main">
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <canvas class="cover-canvas" id="heroCanvas"></canvas>
+  <div class="cover-content">
+    <div class="cover-icon">🧠</div>
+    <h1>知道做不到<br>才是投资里最贵的一课</h1>
+    <p>道理比谁都清楚，一上手就全忘了——这不是你的问题，<br>是几百万年进化出来的大脑结构决定的。<br>真正的解法不是"记牢道理"，而是"让道理不需要被记住"。</p>
+    <a href="#s1" class="cover-btn">开始阅读 →</a>
+  </div>
+</section>
+
+<!-- Section 1 -->
+<section class="section" id="s1">
+<div class="reveal">
+  <h2 class="sec-title"><span class="num">1</span>先说一句让你松口气的话</h2>
+  <p class="sec-sub">这不是你的问题</p>
+
+  <div class="big-quote" style="margin-top:0">
+    <p><strong>这不是你的问题。</strong></p>
+  </div>
+
+  <p>不是因为你笨，不是因为你学得不够，不是因为你"心态不好"。</p>
+
+  <p>你面对的是<strong>几百万年进化出来的一颗大脑</strong>——它的设计目标从来不是"在股市里赚钱"，而是"在草原上活下来"。</p>
+
+  <p>你晚上复盘时想："我当时怎么就买了呢？"——因为<strong>"当时"做决定的，根本不是那个晚上看书、学知识的"你"</strong>。</p>
+
+  <div class="tip-box">每个经历知行脱节的投资者都会自责，但自责本身就会加剧焦虑，而焦虑又会导致更多冲动操作。打破这个循环的第一步，是理解这不是"你的错"。</div>
+  <div class="key-box">知行鸿沟不是意志力问题，是大脑结构问题——理解了这一点，才能从"自责"切换到"设计对策"。</div>
+</div>
+</section>
+
+<!-- Section 2 -->
+<section class="section" id="s2">
+<div class="reveal">
+  <h2 class="sec-title"><span class="num">2</span>你的大脑在交易时到底发生了什么</h2>
+  <p class="sec-sub">0.3秒——你的理性甚至来不及上线，本能已经替你做了决定</p>
+
+  <h3>两个"你"在抢方向盘</h3>
+  <div class="brain-compare">
+    <div class="brain-card rational">
+      <div class="emoji">🧠</div>
+      <h4>前额叶（理性的你）</h4>
+      <p>安静、从容时工作</p>
+      <p>"季报显示机构在减仓，该考虑卖了"</p>
+      <p>速度：<strong>秒级到分钟级</strong></p>
+      <p>占上风：提前写好计划、冷静复盘时</p>
+    </div>
+    <div class="brain-vs">VS</div>
+    <div class="brain-card instinct">
+      <div class="emoji">⚡</div>
+      <h4>杏仁核（本能的你）</h4>
+      <p>恐惧、贪婪、紧迫时工作</p>
+      <p>"再等等！万一明天涨回来呢！"</p>
+      <p>速度：<strong>0.3秒</strong></p>
+      <p>占上风：盯着K线、账户跳动时</p>
+    </div>
+  </div>
+
+  <div class="brain-speed">
+    <div class="speed-num">0.3秒</div>
+    <p style="color:var(--text2);font-size:14px;margin-top:4px">当你看到浮亏变红的那一刻，杏仁核在0.3秒内就拉响了警报。<br>你的前额叶还没来得及想起"机构减仓信号"这六个字，你的手已经点了"卖出"。</p>
+  </div>
+
+  <h3>三个让"道理"消失的心理机制</h3>
+
+  <h4>① 损失厌恶：亏100块的痛苦 ≈ 赚250块的快乐</h4>
+  <p>你学了"社保基金在底部逆向买入"，但当持仓真的在跌，<strong>切肤之痛会完全淹没理性</strong>。你的大脑不会想"社保基金也在买"，它只会想"快跑，别再亏了"。</p>
+  <p>更致命的心理错觉：<strong>不卖=浮亏，卖了=真亏</strong>——但两者没有本质区别。你的钱已经少了，只是心理上不肯承认。</p>
+
+  <div class="chart-box">
+    <h4>📊 损失厌恶：痛苦与快乐的不对称性</h4>
+    <div class="chart-container" id="chart-loss-aversion"></div>
+  </div>
+
+  <h4>② 从众本能（FOMO）：别人都在买/卖，我不跟就"不安全"</h4>
+  <p>你学了"机构抱团到极端时要警惕"，但当同事、朋友、网上所有人都在赚钱，<strong>你空仓的感觉比亏钱还难受</strong>。原始人脱离群体意味着死亡——这种恐惧刻在基因里。在股市里，"和大家不一样"比"亏钱"更让人焦虑。</p>
+
+  <h4>③ 即时反馈成瘾：交易软件就是一个老虎机</h4>
+  <p>每一次刷新，数字都在变。涨了，多巴胺分泌，爽；跌了，焦虑，想操作来"做点什么"缓解焦虑。<strong>你频繁交易，很多时候不是因为该交易，而是因为"不操作"让你焦虑。</strong>这就是"行动偏差"。</p>
+
+  <div class="tip-box">你不需要"战胜"杏仁核——它比你的理性快0.3秒，你永远赢不了速度。你需要的是让杏仁核冲过来的时候，撞到一堵墙（规则/清单/冷静期），而不是一马平川直通交易按钮。</div>
+  <div class="key-box">知行脱节的根本原因不是"忘了道理"，而是理性脑物理上来不及上线——0.3秒内本能就已经替你做了决定。</div>
+</div>
+</section>
+
+<!-- Section 3 -->
+<section class="section" id="s3">
+<div class="reveal">
+  <h2 class="sec-title"><span class="num">3</span>你一定经历过这些时刻</h2>
+  <p class="sec-sub">五个"照镜子"场景——如果你看到了自己，恭喜，你是正常人</p>
+
+  <!-- Scene 1: Stop Loss -->
+  <div class="scene-card s1">
+    <div class="scene-title">🔴 场景一：止损时刻——"再等等，也许会涨回来"</div>
+    <div class="scene-dialogue">
+      亏损<span class="pct">-3%</span>："正常波动，不用紧张"<br>
+      亏损<span class="pct">-5%</span>："再观察一下"<br>
+      亏损<span class="pct">-8%</span>："已经亏这么多了，现在卖太亏了"<br>
+      亏损<span class="pct">-15%</span>："都亏这么多了，再割也没意义了"<br>
+      亏损<span class="pct">-30%</span>："装死吧，不看账户了"
+    </div>
+    <div class="scene-mechanism">🧬 劫持你的是：<strong>损失厌恶</strong>——不卖只是"账面浮亏"，卖了就变成"真亏了"，你的大脑拼命寻找"不卖"的理由来避免确认亏损的痛苦。但现实是：浮亏和真亏没有本质区别。</div>
+  </div>
+
+  <!-- Scene 2: Chasing -->
+  <div class="scene-card s2">
+    <div class="scene-title">🟠 场景二：追涨时刻——"这次不一样"</div>
+    <p>一只股票连涨3天，你没买；第4天继续涨，你开始焦虑"我是不是错过了"；第5天涨停，你终于冲进去了——<strong>正好是游资出货的那一天</strong>。</p>
+    <div class="scene-mechanism">🧬 劫持你的是：<strong>FOMO（错失恐惧）+ 可得性偏差</strong>——你只记得"上次没买结果涨了"的痛苦，忘了"上次追涨结果被套"的更深的痛苦。龙虎榜上可能全是游资席位——如果你在冲进去之前先看一眼，大概率就不想追了。</div>
+  </div>
+
+  <!-- Scene 3: Herding -->
+  <div class="scene-card s3">
+    <div class="scene-title">🩷 场景三：抱团时刻——"这么多人都在买，不会错的"</div>
+    <p>当所有人都说"核心资产永远涨""白酒是A股信仰"的时候，你反而觉得<strong>不买才是风险</strong>。</p>
+    <div class="scene-mechanism">🧬 劫持你的是：<strong>从众本能</strong>——"和大家一样"带来的安全感远超过"独立思考"带来的理性。公募的排名机制天然导致抱团，当所有机构都买同一类资产时，不是"大家看好"，而是"制度性共振"——恰恰是最危险的时刻。</div>
+  </div>
+
+  <!-- Scene 4: Panic -->
+  <div class="scene-card s4">
+    <div class="scene-title">🔴 场景四：恐慌时刻——"完了，要归零了"</div>
+    <p>满仓亏损25%，打开手机看到各种利空消息，觉得"还要跌"，一咬牙全卖了。<strong>两周后反弹15%，你站在岸上看着。</strong></p>
+    <div class="scene-mechanism">🧬 劫持你的是：<strong>杏仁核劫持</strong>——大脑的恐惧中心在极端压力下绕过理性脑直接指挥行动。你"一咬牙卖了"的那个瞬间，不是你的理性在做决策，是你的求生本能在做决策。社保基金几乎每次底部都在加仓——它之所以能逆向操作，不是因为它比你勇敢，而是因为它的制度设计让恐惧无法影响决策。</div>
+  </div>
+
+  <!-- Scene 5: Boredom -->
+  <div class="scene-card s5">
+    <div class="scene-title">🔵 场景五：无聊时刻——"我得做点什么"</div>
+    <p>市场横盘两周，你什么都没做，但每天都打开软件看。看了一天觉得"这样不行"，小仓位试一下；第二天赚了点觉得"手感来了"，加仓；第三天亏了赶紧换……一个月下来手续费亏了不少，本金也没赚到。</p>
+    <div class="scene-mechanism">🧬 劫持你的是：<strong>行动偏差 + 即时反馈成瘾</strong>——人类天生觉得"做点什么"比"什么都不做"更好。但在投资中，"不做"往往是最好的操作。</div>
+  </div>
+
+  <div class="chart-box">
+    <h4>📊 五大冲动场景与心理机制的对应关系</h4>
+    <div class="chart-container" id="chart-scene-mechanism"></div>
+  </div>
+
+  <div class="tip-box">如果你在以上5个场景中看到了自己——恭喜，你是正常人。每一个经验丰富的投资者都经历过这些时刻，区别只是他们修了"护栏"，而你还没修。</div>
+  <div class="key-box">知行脱节的5个高频场景，背后是3个心理机制（损失厌恶/从众本能/即时反馈成瘾）在不同组合下的激活——识别"此刻我被劫持了"，是夺回控制权的第一步。</div>
+</div>
+</section>
+
+<!-- Section 4 -->
+<section class="section" id="s4">
+<div class="reveal">
+  <h2 class="sec-title"><span class="num">4</span>三道防线：让道理不需要被记住</h2>
+  <p class="sec-sub">在冷静时设计规则，让交易时的"你"没有机会犯错</p>
+
+  <div class="big-quote" style="margin-top:0">
+    <p>❌ 错误思路：我要把道理记得更牢，下次交易时提醒自己。<br>✅ 正确思路：<strong>我要在冷静时设计一套规则，让交易时的"我"没有机会犯错。</strong></p>
+    <div class="attribution">你不需要在战场上临时回忆兵法。你需要的是在出发前就把路修好，让车只能往正确的方向开。</div>
+  </div>
+
+  <!-- Defense 1 -->
+  <div class="defense-card">
+    <div class="dc-num">1</div>
+    <h4>🛡️ 第一道防线：交易前——写下来</h4>
+    <p>准备一个<strong>实体笔记本</strong>（不是手机备忘录，是纸和笔），每次交易前必须手写回答以下6个问题：</p>
+
+    <div class="checklist">
+      <div class="cl-title">📋 交易前检查清单</div>
+      <div class="cl-item"><strong>1.</strong> 我为什么要买/卖这只股票？<br>理由：<span class="cl-blank"></span></div>
+      <div class="cl-item"><strong>2.</strong> 这个决定基于什么信息？（季报？新闻？朋友推荐？群里说的？）<br>来源：<span class="cl-blank"></span></div>
+      <div class="cl-item"><strong>3.</strong> 机构在做什么？（十大股东变化？北向资金？龙虎榜？）<br>情况：<span class="cl-blank"></span></div>
+      <div class="cl-item"><strong>4.</strong> 我打算持有多久？<br>计划：<span class="cl-blank"></span></div>
+      <div class="cl-item"><strong>5.</strong> 跌多少我止损？涨多少我止盈？<br>止损：<span class="cl-blank"></span> 止盈：<span class="cl-blank"></span></div>
+      <div class="cl-item"><strong>6.</strong> 这笔钱如果全亏了，影响我的生活吗？<br>回答：<span class="cl-blank"></span></div>
+      <div style="text-align:right;margin-top:8px;color:var(--text3);font-size:12px">签名：________ 日期：________</div>
+    </div>
+
+    <p>为什么必须<strong>手写</strong>？写字需要10-20秒，这10-20秒就是前额叶重新上线的时间。你打完这6行字，那股冲动已经消了一半。</p>
+    <p>第3问<strong>"机构在做什么"</strong>是连接机构知识的锚点——强迫你在每次交易前回顾机构行为信息。</p>
+  </div>
+
+  <!-- Defense 2 -->
+  <div class="defense-card" style="margin-top:20px">
+    <div class="dc-num">2</div>
+    <h4>🛡️ 第二道防线：交易中——物理隔离</h4>
+
+    <ul>
+      <li><strong>不要盯盘</strong>：如果你做中长线（持有>1个月），每天看一次收盘价就够了。把交易软件从手机首屏删掉，放到第三页的文件夹里</li>
+      <li><strong>设好条件单/提醒，然后关掉软件</strong>：比如"跌到XX元提醒我"，设完就走。让系统替你盯着，而不是让你的杏仁核盯着</li>
+      <li><strong>24小时冷静期</strong>：
+        <ul>
+          <li>想买入 → 等24小时再决定（99%的冲动会在24小时后消退）</li>
+          <li>想割肉 → 等一个交易日（如果第二天开盘你仍然想卖，再执行）</li>
+          <li>想追涨停板 → 先打开龙虎榜看一遍（看完游资席位，大概率你就不想追了）</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>为什么冷静期有效？冲动来自杏仁核，它的特点是<strong>来得快、走得也快</strong>。你只需要扛住最初的几分钟，冲动就会消退。冷静期就是给前额叶一个上线的机会。</p>
+
+    <div class="chart-box">
+      <h4>📊 交易频率与收益率的关系（示意数据）</h4>
+      <div class="chart-container" id="chart-frequency-return"></div>
+    </div>
+  </div>
+
+  <!-- Defense 3 -->
+  <div class="defense-card" style="margin-top:20px">
+    <div class="dc-num">3</div>
+    <h4>🛡️ 第三道防线：交易后——复盘三问</h4>
+
+    <p>每周日晚上，花30分钟，打开笔记本，回答三个问题：</p>
+    <div class="checklist" style="border-color:var(--cyan)">
+      <div class="cl-title">📝 周复盘三问</div>
+      <div class="cl-item"><strong>1.</strong> 这周我做了哪些操作？哪些是按计划执行的？哪些是临时起意的？</div>
+      <div class="cl-item"><strong>2.</strong> 临时起意的那些，当时是什么情绪？恐惧？贪婪？焦虑？无聊？</div>
+      <div class="cl-item"><strong>3.</strong> 如果重来一次，我应该在哪一步设置什么规则来阻止自己？<br><span style="color:var(--accent3);font-size:12px">不是"我应该更冷静"（这是废话），而是"我应该在哪一步设置什么规则"</span></div>
+    </div>
+
+    <p>复盘的目的不是自我批评，而是<strong>修补系统</strong>——你是在像工程师一样找bug、打补丁，不是在骂自己"怎么又犯了"。每次复盘后，把新发现的"漏洞"变成一条新规则，写入笔记本第一页。</p>
+  </div>
+
+  <h3>辅助工具一：反向自检——冲动来临时的紧急刹车</h3>
+  <div class="table-wrap"><table>
+    <tr><th>你想做的</th><th>反向自检问题</th></tr>
+    <tr><td>追涨买入</td><td>"如果明天这只股票跌5%，我还会觉得这是一个好机会吗？"</td></tr>
+    <tr><td>恐慌割肉</td><td>"如果我现在空仓，我会在这个价位买入吗？如果不会，说明我还看好，不该卖"</td></tr>
+    <tr><td>满仓一只股</td><td>"如果这只股票跌20%，我晚上睡得着吗？"</td></tr>
+    <tr><td>频繁交易</td><td>"过去6次频繁交易，我赚了几次？"</td></tr>
+    <tr><td>跟着机构买</td><td>"这个季报持仓已经是1个月前的数据了，机构可能已经卖了，我确定要跟吗？"</td></tr>
+  </table></div>
+  <p>原理：利用<strong>逆向思考</strong>——你不需要战胜情绪，只需要让情绪的对面也发一次言。</p>
+
+  <h3>辅助工具二：降低交易频率——少做=少犯错</h3>
+  <div class="table-wrap"><table>
+    <tr><th>操作</th><th>建议频率</th><th>理由</th></tr>
+    <tr><td>看账户盈亏</td><td><strong>每周1次</strong>（不是每天）</td><td>减少浮亏数字对情绪的冲击</td></tr>
+    <tr><td>复盘调仓</td><td><strong>每季度1次</strong>（季报发布后）</td><td>和机构信息更新节奏一致</td></tr>
+    <tr><td>日常操作</td><td><strong>每月≤2次</strong>买卖</td><td>强制降低频率</td></tr>
+    <tr><td>刷财经新闻</td><td><strong>每天≤15分钟</strong></td><td>大部分新闻是噪音，只看关键公告</td></tr>
+  </table></div>
+  <p>巴菲特："投资的成功不需要你做很多事，而是需要你少犯错。"——少操作，就少给杏仁核犯蠢的机会。</p>
+
+  <div class="tip-box">三道防线的核心逻辑是"时间错位"——在理性在线时（交易前）设计规则，在理性离线时（交易中）依靠规则，在理性恢复时（交易后）修补规则。你不需要在战场上比本能更快，你只需要让本能撞到墙上。</div>
+  <div class="key-box">防线的本质不是"记住道理"，而是"让道理不需要被记住"——通过清单、冷静期、物理隔离、反向自检、降频五个工具，在冲动和行动之间插入缓冲。</div>
+</div>
+</section>
+
+<!-- Section 5 -->
+<section class="section" id="s5">
+<div class="reveal">
+  <h2 class="sec-title"><span class="num">5</span>把机构知识变成"自动触发的规则"</h2>
+  <p class="sec-sub">这是全章最核心的一节——没有这条桥梁，所有知识在交易时都会被冲散</p>
+
+  <div class="big-quote" style="margin-top:0">
+    <p>前面学到的所有机构知识，如果停留在"道理"层面，在交易时统统会被杏仁核冲散。<br><strong>唯一的出路，是把它们改写成"当____时，我将____"的可执行规则。</strong></p>
+  </div>
+
+  <h3>知识 vs 规则——一字之差，天壤之别</h3>
+
+  <div class="rule-convert">
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"社保基金逆向买入，说明市场可能在底部"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"当上证指数连续下跌超过20%，且社保基金当季新进股票数量超过10只时，我将本月定投金额翻倍"</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"机构抱团要小心"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"当某只股票被超过50只基金持有，且本季度基金持仓占比超过流通股15%时，我不再买入"</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"险资喜欢高股息"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"每年1月，我检查一次持仓中有没有股息率低于3%的股票，如果有，考虑替换为险资重仓的高股息标的"</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"北向资金是聪明钱"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"当北向资金连续5个交易日净流出超过50亿时，我不抄底，等它转正再说"</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"不要追涨"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"任何股票，如果我在它已经涨了30%之后才注意到它，我不买。没有例外"</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"游资赚的是散户追涨的钱"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"看到连续涨停的股票，先打开龙虎榜——如果买方全是游资营业部，我不追。没有例外"</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-left"><span class="rule-label">❌ 知识（模糊的）</span>"险资重仓股是价值筛选器"</div>
+      <div class="rule-arrow">→</div>
+      <div class="rule-right"><span class="rule-label">✅ 规则（具体的）</span>"选股时，先查十大股东有没有险资——没有险资的股票，我要多问自己一句：为什么长期资金不看好？"</div>
+    </div>
+  </div>
+
+  <h3>规则模板：当____时，我将____</h3>
+  <p>通用句式：<strong>"当 [可观测的具体条件] 时，我将 [具体的操作动作]"</strong></p>
+
+  <h4>好规则的三条标准</h4>
+  <div class="table-wrap"><table>
+    <tr><th>标准</th><th>含义</th><th>❌ 反例</th><th>✅ 正例</th></tr>
+    <tr><td><strong>可观测</strong></td><td>条件必须是客观数据</td><td>"估值太高"</td><td>"PE>历史70%分位"</td></tr>
+    <tr><td><strong>可执行</strong></td><td>动作必须是具体操作</td><td>"谨慎一点"</td><td>"减仓至50%"</td></tr>
+    <tr><td><strong>无例外</strong></td><td>规则没有"除非"</td><td>"一般不追涨，除非……"</td><td>"涨30%后注意到的，不买。没有例外"</td></tr>
+  </table></div>
+
+  <p>把你学到的每一条机构知识，都用这个模板改写一遍，写在笔记本第一页。</p>
+
+  <h3>最朴素的建议：交易前看30秒</h3>
+  <div class="insight-box">
+    在你打开交易软件之前，先打开你的笔记本，看30秒。<br>
+    就30秒。看看你冷静时写下的那些规则。<br><br>
+    你不需要"想起来"那些道理。你只需要<strong>让那张纸出现在你眼前</strong>。<br><br>
+    那30秒，就是你的前额叶和杏仁核之间的一道缓冲带。<br>
+    <strong>很多错误，就消解在这30秒里。</strong>
+  </div>
+
+  <div class="tip-box">如果你只能做一件事，就做这一件——每次交易前先打开笔记本看30秒。这30秒能让前额叶重新上线，而你学到的所有机构知识都在那本笔记本里等着你。</div>
+  <div class="key-box">机构知识从"道理"变成"规则"的唯一桥梁是"当____时，我将____"句式——没有这条桥梁，所有知识在交易时都会被杏仁核冲散。</div>
+</div>
+</section>
+
+<!-- Section 6 -->
+<section class="section" id="s6">
+<div class="reveal">
+  <h2 class="sec-title"><span class="num">6</span>接受一个不舒服的事实</h2>
+  <p class="sec-sub">你不可能完全做到——但可以渐进进步</p>
+
+  <h3>没有人能完全做到知行合一</h3>
+  <p>巴菲特说过：<strong>"投资很简单，但并不容易。"</strong>（Investing is simple, but not easy.）</p>
+
+  <ul>
+    <li>你会有忍不住追涨的时候</li>
+    <li>你会有恐慌割肉的时候</li>
+    <li>你会有明明设了止损线但临时改主意的时候</li>
+  </ul>
+
+  <p><strong>这很正常。</strong></p>
+
+  <p>关键不是"永远不犯错"，而是：</p>
+  <div class="insight-box" style="font-size:16px;text-align:center">
+    <strong>犯错的次数在减少</strong><br>
+    <strong>犯错的幅度在缩小</strong><br>
+    <strong>犯错后恢复的速度在加快</strong>
+  </div>
+
+  <div class="chart-box">
+    <h4>📊 渐进式进步：冲动交易次数的年变化（示意）</h4>
+    <div class="chart-container" id="chart-progress"></div>
+  </div>
+
+  <ul>
+    <li>第一年：10次交易可能有8次是冲动的</li>
+    <li>第二年：变成5次</li>
+    <li>第三年：变成2次</li>
+    <li>而且那2次冲动，因为你设了止损，只亏了3%而不是15%</li>
+  </ul>
+
+  <p><strong>这就是进步。</strong> 不需要完美，只需要方向正确。</p>
+
+  <div class="big-quote" style="margin-top:36px">
+    <p>在投资中，你最大的敌人不是机构，不是庄家，不是市场。<br>
+    是早上9:30打开交易软件时，<br>
+    那个和昨晚看书时<strong>完全不同的自己</strong>。</p>
+    <p style="margin-top:16px;font-size:20px">所以，别试图改变那个自己。<br>
+    <strong>给他修一条只能走对的路。</strong></p>
+  </div>
+
+  <div class="tip-box">如果你只能做一件事——在打开交易软件之前，先打开你的笔记本看30秒。那30秒，就是前额叶和杏仁核之间的缓冲带。</div>
+  <div class="key-box">知行合一不是"永远不犯错"，而是"犯错在减少、幅度在缩小、恢复在加快"——渐进式进步替代完美执行。</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>📖 知道做不到——投资里最贵的一课 | 交互式知识手册</p>
+  <p>本手册基于公开信息编写，所有案例均为历史事实回顾，不构成任何投资建议。</p>
+</div>
+
+</div><!-- .main end -->
+
+<script>
+// ===== HERO CANVAS =====
+(function(){
+  const c=document.getElementById('heroCanvas'),ctx=c.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight}
+  window.addEventListener('resize',resize);resize();
+  for(let i=0;i<60;i++) particles.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*2+1});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(99,102,241,.35)';ctx.fill();
+    });
+    for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++){
+      const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle='rgba(99,102,241,'+(1-d/110)*.2+')';ctx.stroke()}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== SCROLL REVEAL =====
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ===== NAV ACTIVE =====
+const navLinks=document.querySelectorAll('.nav a[href^="#"]');
+const navObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  navLinks.forEach(l=>l.classList.remove('active'));
+  const id=e.target.id,l=document.querySelector('.nav a[href="#'+id+'"]');
+  if(l)l.classList.add('active');
+}})},{threshold:.2,rootMargin:'-40% 0px -50% 0px'});
+document.querySelectorAll('.section,.cover').forEach(s=>navObs.observe(s));
+
+// ===== ECHARTS LAZY LOAD =====
+const chartFns={};
+const chartObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+  const id=e.target.id;
+  if(chartFns[id]){chartFns[id]();delete chartFns[id];chartObs.unobserve(e.target)}
+}})},{threshold:.15});
+
+function regChart(id,fn){chartFns[id]=fn;const el=document.getElementById(id);if(el)chartObs.observe(el)}
+
+// ===== CHART 1: Loss Aversion =====
+regChart('chart-loss-aversion',function(){
+  const ch=echarts.init(document.getElementById('chart-loss-aversion'));
+  const valData=[];const emoData=[];
+  for(let g=-50;g<=50;g+=5){
+    valData.push([g,g]);
+    const emo=g>=0?g*1:g*2.5;
+    emoData.push([g,emo]);
+  }
+  ch.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'axis',backgroundColor:'#1A1E38',borderColor:'#6366F1',textStyle:{color:'#E4E8F0',fontSize:12}},
+    legend:{data:['账面损益','心理感受'],top:8,textStyle:{color:'#9AA3B8',fontSize:11}},
+    grid:{left:50,right:30,top:50,bottom:40},
+    xAxis:{type:'value',name:'损益%',nameTextStyle:{color:'#5E6880'},axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#5E6880',fontSize:11},splitLine:{lineStyle:{color:'#1E2245'}}},
+    yAxis:{type:'value',name:'心理强度',nameTextStyle:{color:'#5E6880'},axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#5E6880',fontSize:11},splitLine:{lineStyle:{color:'#1E2245'}}},
+    series:[
+      {name:'账面损益',type:'line',data:valData,smooth:true,lineStyle:{color:'#6366F1',width:2},itemStyle:{color:'#6366F1'},symbol:'none'},
+      {name:'心理感受',type:'line',data:emoData,smooth:true,lineStyle:{color:'#EF4444',width:2.5},itemStyle:{color:'#EF4444'},symbol:'none',
+        areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(239,68,68,.15)'},{offset:1,color:'rgba(239,68,68,0)'}])},
+        markArea:{silent:true,data:[[{xAxis:-50,itemStyle:{color:'rgba(239,68,68,.06)'}},{xAxis:0}]]},
+        markPoint:{data:[{coord:[-20,-50],value:'亏损区的痛苦\n远大于等额盈利的快乐',symbolSize:0,label:{color:'#fca5a5',fontSize:11,formatter:'{b}'},name:'亏损的痛苦 ≈ 2.5倍快乐'}]}
+      }
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+});
+
+// ===== CHART 2: Scene-Mechanism =====
+regChart('chart-scene-mechanism',function(){
+  const ch=echarts.init(document.getElementById('chart-scene-mechanism'));
+  ch.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'axis',backgroundColor:'#1A1E38',borderColor:'#6366F1',textStyle:{color:'#E4E8F0',fontSize:12}},
+    legend:{data:['损失厌恶','从众本能(FOMO)','即时反馈成瘾'],top:8,textStyle:{color:'#9AA3B8',fontSize:11}},
+    grid:{left:80,right:30,top:50,bottom:40},
+    xAxis:{type:'category',data:['止损拖延','追涨冲动','抱团跟风','恐慌割肉','无聊操作'],axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#9AA3B8',fontSize:11},splitLine:{show:false}},
+    yAxis:{type:'value',name:'参与程度',max:100,nameTextStyle:{color:'#5E6880'},axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#5E6880',fontSize:11},splitLine:{lineStyle:{color:'#1E2245'}}},
+    series:[
+      {name:'损失厌恶',type:'bar',stack:'a',data:[95,30,20,85,25],itemStyle:{color:'#EF4444',borderRadius:[0,0,0,0]}},
+      {name:'从众本能(FOMO)',type:'bar',stack:'a',data:[5,70,90,10,15],itemStyle:{color:'#EC4899'}},
+      {name:'即时反馈成瘾',type:'bar',stack:'a',data:[0,0,0,5,60],itemStyle:{color:'#06B6D4',borderRadius:[4,4,0,0]}}
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+});
+
+// ===== CHART 3: Frequency vs Return =====
+regChart('chart-frequency-return',function(){
+  const ch=echarts.init(document.getElementById('chart-frequency-return'));
+  ch.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'axis',backgroundColor:'#1A1E38',borderColor:'#6366F1',textStyle:{color:'#E4E8F0',fontSize:12}},
+    grid:{left:60,right:30,top:30,bottom:40},
+    xAxis:{type:'category',data:['月1次','周1-2次','日1次','日3次','日5次+'],axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#9AA3B8',fontSize:11},splitLine:{show:false}},
+    yAxis:{type:'value',name:'年化收益率(%)',nameTextStyle:{color:'#5E6880'},axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#5E6880',fontSize:11},splitLine:{lineStyle:{color:'#1E2245'}}},
+    series:[{type:'bar',data:[
+      {value:8.2,itemStyle:{color:'#22C55E'}},
+      {value:5.1,itemStyle:{color:'#84CC16'}},
+      {value:1.3,itemStyle:{color:'#F59E0B'}},
+      {value:-6.8,itemStyle:{color:'#EF4444'}},
+      {value:-15.2,itemStyle:{color:'#B91C1C'}}
+    ],barWidth:36,label:{show:true,position:'top',color:'#9AA3B8',fontSize:11,formatter:'{c}%'}}]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+});
+
+// ===== CHART 4: Progress =====
+regChart('chart-progress',function(){
+  const ch=echarts.init(document.getElementById('chart-progress'));
+  ch.setOption({
+    backgroundColor:'transparent',
+    tooltip:{trigger:'axis',backgroundColor:'#1A1E38',borderColor:'#6366F1',textStyle:{color:'#E4E8F0',fontSize:12}},
+    grid:{left:50,right:30,top:30,bottom:40},
+    xAxis:{type:'category',data:['第1年','第2年','第3年','第4年','第5年'],axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#9AA3B8',fontSize:11},splitLine:{show:false}},
+    yAxis:{type:'value',name:'冲动交易占比(%)',max:100,nameTextStyle:{color:'#5E6880'},axisLine:{lineStyle:{color:'#1E2245'}},axisLabel:{color:'#5E6880',fontSize:11},splitLine:{lineStyle:{color:'#1E2245'}}},
+    series:[{type:'bar',data:[
+      {value:80,itemStyle:{color:'#EF4444'}},
+      {value:50,itemStyle:{color:'#F59E0B'}},
+      {value:20,itemStyle:{color:'#84CC16'}},
+      {value:10,itemStyle:{color:'#22C55E'}},
+      {value:5,itemStyle:{color:'#10B981'}}
+    ],barWidth:40,label:{show:true,position:'top',color:'#9AA3B8',fontSize:11,formatter:'{c}%'}}]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+});
+
+</script>
+</body>
+</html>
