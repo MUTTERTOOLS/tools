@@ -1,0 +1,2949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>股票新手入门手册</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+/* ===== CSS Reset & Variables ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0B1120;--bg2:#111B2E;--bg3:#162036;--bg4:#1A2742;
+  --text:#E2E8F0;--text2:#94A3B8;--text3:#64748B;
+  --accent:#F59E0B;--accent2:#FBBF24;--accent3:#D97706;
+  --red:#EF4444;--green:#22C55E;--blue:#3B82F6;--purple:#A78BFA;--cyan:#22D3EE;
+  --card:rgba(22,32,54,0.85);--border:rgba(148,163,184,0.12);
+  --radius:12px;--shadow:0 8px 32px rgba(0,0,0,0.3);
+  --font-display:'Playfair Display','Noto Serif SC',serif;
+  --font-body:'Noto Sans SC','Source Han Sans SC',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',monospace;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.8;overflow-x:hidden}
+::selection{background:var(--accent);color:var(--bg)}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+
+/* ===== Navigation ===== */
+.sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:24px 0;transition:transform .3s}
+.sidebar.hidden{transform:translateX(-100%)}
+.sidebar .logo{padding:0 24px 24px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar .logo h2{font-family:var(--font-display);font-size:1.1rem;color:var(--accent);letter-spacing:1px}
+.sidebar .logo p{font-size:.75rem;color:var(--text3);margin-top:4px}
+.nav-section{padding:8px 0}
+.nav-section-title{padding:8px 24px;font-size:.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:2px}
+.nav-item{display:block;padding:6px 24px 6px 32px;font-size:.82rem;color:var(--text2);text-decoration:none;transition:all .2s;border-left:3px solid transparent;cursor:pointer}
+.nav-item:hover,.nav-item.active{color:var(--accent2);background:rgba(245,158,11,.06);border-left-color:var(--accent)}
+.nav-item.sub{padding-left:44px;font-size:.78rem}
+
+/* ===== Main Content ===== */
+.main{margin-left:280px;min-height:100vh}
+.toggle-btn{position:fixed;left:280px;top:16px;z-index:101;width:36px;height:36px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--accent);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.toggle-btn.shifted{left:16px}
+
+/* ===== Hero / Cover ===== */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.hero-content{position:relative;z-index:2;text-align:center;padding:40px}
+.hero-content h1{font-family:var(--font-display);font-size:3.5rem;font-weight:700;color:var(--accent);margin-bottom:12px;animation:fadeUp .8s ease-out}
+.hero-content .subtitle{font-size:1.2rem;color:var(--text2);margin-bottom:32px;animation:fadeUp .8s ease-out .2s both}
+.hero-content .desc{max-width:600px;margin:0 auto 40px;font-size:.95rem;color:var(--text3);animation:fadeUp .8s ease-out .4s both}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease-out .6s both}
+.hero-stat{text-align:center}
+.hero-stat .num{font-family:var(--font-display);font-size:2rem;color:var(--accent2);font-weight:700}
+.hero-stat .label{font-size:.75rem;color:var(--text3)}
+.scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);color:var(--text3);font-size:.8rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ===== Reading Guide ===== */
+.reading-guide{background:linear-gradient(135deg,var(--bg2),var(--bg3));padding:60px 40px;border-bottom:1px solid var(--border)}
+.reading-guide h2{font-family:var(--font-display);font-size:1.8rem;color:var(--accent);margin-bottom:24px;text-align:center}
+.path-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+.path-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.path-card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.path-card .step{position:absolute;top:12px;right:16px;font-family:var(--font-display);font-size:2.5rem;color:rgba(245,158,11,.1);font-weight:700}
+.path-card h3{font-size:1rem;color:var(--accent2);margin-bottom:8px}
+.path-card p{font-size:.82rem;color:var(--text2);line-height:1.6}
+.path-card .chapters{margin-top:12px;font-size:.75rem;color:var(--text3)}
+
+/* ===== Part Header ===== */
+.part-header{position:relative;padding:80px 40px 48px;overflow:hidden}
+.part-header::before{content:'';position:absolute;top:0;left:0;right:0;height:100%;background:linear-gradient(135deg,rgba(245,158,11,.08),transparent);pointer-events:none}
+.part-header .part-num{font-family:var(--font-display);font-size:4rem;color:rgba(245,158,11,.12);font-weight:700;position:absolute;top:24px;right:40px}
+.part-header h2{font-family:var(--font-display);font-size:2rem;color:var(--accent);margin-bottom:8px}
+.part-header .part-desc{font-size:.95rem;color:var(--text2);max-width:600px}
+
+/* ===== Chapter ===== */
+.chapter{padding:20px 40px 40px}
+.chapter-header{display:flex;align-items:baseline;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.chapter-header .ch-num{font-family:var(--font-display);font-size:.9rem;color:var(--accent3);font-weight:700;white-space:nowrap}
+.chapter-header h3{font-size:1.4rem;color:var(--text);font-weight:600}
+
+/* ===== Section ===== */
+.section{margin-bottom:28px}
+.section h4{font-size:1.05rem;color:var(--accent2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section h4::before{content:'';display:inline-block;width:4px;height:18px;background:var(--accent);border-radius:2px}
+.section p{font-size:.92rem;color:var(--text2);margin-bottom:10px;line-height:1.85}
+.section ul,.section ol{padding-left:20px;margin-bottom:12px}
+.section li{font-size:.9rem;color:var(--text2);margin-bottom:6px;line-height:1.7}
+
+/* ===== Tip & Key Boxes ===== */
+.tip-box{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-left:4px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:20px 0}
+.tip-box .tip-label{font-size:.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.tip-box p{font-size:.88rem;color:var(--text2);margin:0}
+.key-box{background:rgba(34,211,238,.05);border:1px solid rgba(34,211,238,.15);border-left:4px solid var(--cyan);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:20px 0}
+.key-box .key-label{font-size:.75rem;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.key-box p{font-size:.88rem;color:var(--text2);margin:0}
+.warn-box{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-left:4px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:20px 0}
+.warn-box .warn-label{font-size:.75rem;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.warn-box p{font-size:.88rem;color:var(--text2);margin:0}
+
+/* ===== Tables ===== */
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead th{background:var(--bg3);color:var(--accent2);padding:10px 14px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent3);white-space:nowrap}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2)}
+tbody tr:hover{background:rgba(245,158,11,.04)}
+tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+
+/* ===== Chart Container ===== */
+.chart-container{width:100%;height:400px;margin:20px 0;border-radius:var(--radius);overflow:hidden}
+.chart-container.sm{height:300px}
+.chart-container.xs{height:250px}
+
+/* ===== Canvas Container ===== */
+.canvas-container{width:100%;margin:20px 0;border-radius:var(--radius);overflow:hidden;display:flex;justify-content:center}
+.canvas-container canvas{border-radius:var(--radius)}
+
+/* ===== Callout Grid ===== */
+.callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0}
+.callout{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:border-color .3s}
+.callout:hover{border-color:var(--accent)}
+.callout h5{font-size:.9rem;color:var(--accent2);margin-bottom:8px}
+.callout p{font-size:.82rem;color:var(--text2);line-height:1.6}
+
+/* ===== Interactive Panel ===== */
+.interactive-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:24px 0}
+.interactive-panel h5{font-size:1rem;color:var(--accent2);margin-bottom:16px}
+.calc-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.calc-row label{font-size:.85rem;color:var(--text2);min-width:100px}
+.calc-row input,.calc-row select{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.85rem;font-family:var(--font-mono);flex:1;min-width:120px}
+.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--accent)}
+.calc-result{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:16px;margin-top:12px}
+.calc-result .result-num{font-family:var(--font-display);font-size:1.8rem;color:var(--accent2);font-weight:700}
+.calc-result .result-label{font-size:.8rem;color:var(--text3)}
+
+/* ===== Checklist ===== */
+.checklist{margin:16px 0}
+.checklist label{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:4px 0;border-radius:8px;background:var(--bg3);cursor:pointer;transition:all .2s;font-size:.88rem;color:var(--text2)}
+.checklist label:hover{background:var(--bg4)}
+.checklist input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+.checklist label.checked{color:var(--green);text-decoration:line-through;opacity:.7}
+
+/* ===== Flow Diagram ===== */
+.flow-steps{display:flex;align-items:center;gap:8px;margin:20px 0;flex-wrap:wrap;justify-content:center}
+.flow-step{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;text-align:center;min-width:100px;transition:all .3s}
+.flow-step:hover{border-color:var(--accent);transform:scale(1.05)}
+.flow-step .step-num{font-size:.7rem;color:var(--accent);font-weight:700}
+.flow-step .step-text{font-size:.82rem;color:var(--text2);margin-top:4px}
+.flow-arrow{color:var(--accent);font-size:1.2rem}
+
+/* ===== Appendix ===== */
+.appendix{padding:20px 40px 40px}
+.appendix h3{font-size:1.3rem;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--accent3)}
+.appendix h4{font-size:1rem;color:var(--accent2);margin:20px 0 12px}
+
+/* ===== Footer ===== */
+.footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px;text-align:center}
+.footer p{font-size:.8rem;color:var(--text3)}
+
+/* ===== Animations ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{opacity:0;transform:translateY(20px);transition:all .6s ease-out}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s ease-out}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== Back to Top ===== */
+.back-top{position:fixed;right:24px;bottom:24px;width:44px;height:44px;background:var(--accent3);color:var(--bg);border:none;border-radius:50%;font-size:1.2rem;cursor:pointer;z-index:99;opacity:0;transition:all .3s;box-shadow:0 4px 12px rgba(245,158,11,.3)}
+.back-top.show{opacity:1}
+.back-top:hover{transform:scale(1.1)}
+
+/* ===== Responsive ===== */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.show{transform:translateX(0)}
+  .main{margin-left:0}
+  .toggle-btn{left:16px}
+  .toggle-btn.shifted{left:16px}
+  .hero-content h1{font-size:2.2rem}
+  .chapter,.part-header,.appendix{padding-left:20px;padding-right:20px}
+  .chart-container{height:300px}
+}
+@media(max-width:600px){
+  .hero-content h1{font-size:1.8rem}
+  .callout-grid{grid-template-columns:1fr}
+  .path-cards{grid-template-columns:1fr}
+  .flow-steps{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg)}
+}
+
+/* ===== Print ===== */
+@media print{
+  .sidebar,.toggle-btn,.back-top{display:none!important}
+  .main{margin-left:0}
+  body{background:#fff;color:#222}
+  .tip-box,.key-box,.warn-box{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar" id="sidebar">
+  <div class="logo">
+    <h2>Stock 101</h2>
+    <p>股票新手入门手册</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">导航</div>
+    <a class="nav-item" onclick="scrollToId('cover')">封面</a>
+    <a class="nav-item" onclick="scrollToId('reading-guide')">阅读路径</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第一篇 认知与防坑</div>
+    <a class="nav-item" onclick="scrollToId('ch1')">第1章 通货膨胀</a>
+    <a class="nav-item" onclick="scrollToId('ch2')">第2章 复利与时间</a>
+    <a class="nav-item" onclick="scrollToId('ch3')">第3章 投资还是赌博</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第二篇 股票本质</div>
+    <a class="nav-item" onclick="scrollToId('ch4')">第4章 股票的前世今生</a>
+    <a class="nav-item" onclick="scrollToId('ch5')">第5章 收益两种来源</a>
+    <a class="nav-item" onclick="scrollToId('ch6')">第6章 市场参与者</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第三篇 市场规则</div>
+    <a class="nav-item" onclick="scrollToId('ch7')">第7章 交易规则</a>
+    <a class="nav-item" onclick="scrollToId('ch8')">第8章 账户与费用</a>
+    <a class="nav-item" onclick="scrollToId('ch9')">第9章 开户与券商</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第四篇 市场语言</div>
+    <a class="nav-item" onclick="scrollToId('ch10')">第10章 K线与行情</a>
+    <a class="nav-item" onclick="scrollToId('ch11')">第11章 核心术语</a>
+    <a class="nav-item" onclick="scrollToId('ch12')">第12章 技术分析入门</a>
+    <a class="nav-item" onclick="scrollToId('ch13')">第13章 指数与板块</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第五篇 公司分析</div>
+    <a class="nav-item" onclick="scrollToId('ch14')">第14章 财务报表</a>
+    <a class="nav-item" onclick="scrollToId('ch15')">第15章 财务指标</a>
+    <a class="nav-item" onclick="scrollToId('ch16')">第16章 宏观与行业</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">第六篇 防坑与实战</div>
+    <a class="nav-item" onclick="scrollToId('ch17')">第17章 防坑大全</a>
+    <a class="nav-item" onclick="scrollToId('ch18')">第18章 第一笔投资</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">附录</div>
+    <a class="nav-item" onclick="scrollToId('appA')">A 术语速查</a>
+    <a class="nav-item" onclick="scrollToId('appB')">B 规则对比</a>
+    <a class="nav-item" onclick="scrollToId('appC')">C 指标速查</a>
+    <a class="nav-item" onclick="scrollToId('appD')">D 信息渠道</a>
+    <a class="nav-item" onclick="scrollToId('appE')">E 自检清单</a>
+  </div>
+</nav>
+
+<button class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">☰</button>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<div class="main" id="mainContent">
+
+<!-- ==================== COVER ==================== -->
+<section class="hero" id="cover">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <h1>股票新手入门手册</h1>
+    <p class="subtitle">从零开始，读懂股市的第一本书</p>
+    <p class="desc">这不是一本让你快速致富的秘籍，而是一份帮你避免踩坑的生存指南。6篇18章，由浅入深，陪你走完从"想投资"到"会投资"的第一段路。</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">6</div><div class="label">核心篇章</div></div>
+      <div class="hero-stat"><div class="num">18</div><div class="label">专题章节</div></div>
+      <div class="hero-stat"><div class="num">50+</div><div class="label">投研要点</div></div>
+      <div class="hero-stat"><div class="num">0</div><div class="label">前置门槛</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ 向下滚动开始阅读</div>
+</section>
+
+<!-- ==================== READING GUIDE ==================== -->
+<section class="reading-guide" id="reading-guide">
+  <h2>🗺️ 阅读路径</h2>
+  <div class="path-cards">
+    <div class="path-card reveal">
+      <div class="step">1</div>
+      <h3>你为什么要投资？</h3>
+      <p>先想清楚"该不该来"，再学"怎么做"。建立正确认知是第一步。</p>
+      <div class="chapters">第1-3章</div>
+    </div>
+    <div class="path-card reveal">
+      <div class="step">2</div>
+      <h3>股票到底是什么？</h3>
+      <p>理解你买的是什么，赚的是谁的钱，对手是谁。</p>
+      <div class="chapters">第4-6章</div>
+    </div>
+    <div class="path-card reveal">
+      <div class="step">3</div>
+      <h3>市场怎么运转？</h3>
+      <p>不懂规则就上场，等于蒙着眼开车。规则、费用、开户全知道。</p>
+      <div class="chapters">第7-9章</div>
+    </div>
+    <div class="path-card reveal">
+      <div class="step">4</div>
+      <h3>看懂市场语言</h3>
+      <p>K线、术语、均线、指数——市场在"说话"，你得先学会听。</p>
+      <div class="chapters">第10-13章</div>
+    </div>
+    <div class="path-card reveal">
+      <div class="step">5</div>
+      <h3>分析一家公司</h3>
+      <p>三张表、核心指标、估值方法、宏观行业——判断"好不好"和"贵不贵"。</p>
+      <div class="chapters">第14-16章</div>
+    </div>
+    <div class="path-card reveal">
+      <div class="step">6</div>
+      <h3>防坑与第一笔</h3>
+      <p>避开所有坑，完成第一笔投资，建立可持续的习惯。</p>
+      <div class="chapters">第17-18章</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== PART 1: 你为什么要投资？ ==================== -->
+<div class="part-header reveal" id="part1">
+  <div class="part-num">01</div>
+  <h2>第一篇：你为什么要投资？</h2>
+  <p class="part-desc">核心目标：回答"我该不该来"，建立正确投资观，理解股市残酷现实。在学任何操作之前，先想清楚这个问题。</p>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<div class="chapter reveal" id="ch1">
+  <div class="chapter-header">
+    <span class="ch-num">第1章</span>
+    <h3>钱为什么会变少——通货膨胀与购买力</h3>
+  </div>
+
+  <div class="section">
+    <h4>1.1 什么是通货膨胀？一个包子告诉你</h4>
+    <p>你有没有发现，小时候5毛钱能买一个肉包子，现在要2块甚至3块？钱还是那张钱，但它能买到的东西越来越少了——这就是<strong>通货膨胀</strong>（简称"通胀"）。</p>
+    <p>通胀的本质是：<strong>货币供应增加 > 商品供应增加</strong>，导致每一单位货币的购买力下降。简单说，钱"变薄了"。</p>
+    <p>衡量通胀最常用的指标叫<strong>CPI</strong>（居民消费价格指数，Consumer Price Index），它跟踪一篮子日常商品和服务的价格变化。CPI同比上涨3%，意味着你买同样的东西，比去年贵了3%。</p>
+  </div>
+
+  <div class="section">
+    <h4>1.2 钱放银行真的"安全"吗？——实际利率的真相</h4>
+    <p>很多人觉得"钱放银行最安全"。确实，本金不会少——但<strong>购买力</strong>会少。关键在于"实际利率"：</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>名义利率</h5>
+        <p>银行给你的挂牌利率，比如一年期定存1.5%</p>
+      </div>
+      <div class="callout">
+        <h5>通货膨胀率</h5>
+        <p>CPI同比涨幅，比如2.5%</p>
+      </div>
+      <div class="callout">
+        <h5>实际利率</h5>
+        <p>= 名义利率 - 通胀率 = 1.5% - 2.5% = <strong style="color:var(--red)">-1%</strong></p>
+      </div>
+    </div>
+    <p>实际利率为负，意味着你虽然拿到了利息，但钱的购买力反而缩水了。这就是"看似安全，实则慢亏"。</p>
+  </div>
+
+  <!-- 通胀 vs 资产收益 Chart -->
+  <div class="section">
+    <h4>1.3 跑赢通胀的几种方式</h4>
+    <p>下面这张图展示了2015-2025年间，不同资产类别的大致年化回报与通胀的对比：</p>
+    <div class="chart-container" id="chart-inflation"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>方式</th><th>大致年化回报</th><th>能否跑赢通胀</th><th>风险等级</th><th>流动性</th></tr></thead>
+        <tbody>
+          <tr><td>活期存款</td><td>0.2%-0.3%</td><td>❌ 远远不够</td><td>极低</td><td>极高</td></tr>
+          <tr><td>定期存款</td><td>1.5%-2.5%</td><td>⚠️ 勉强持平</td><td>低</td><td>中</td></tr>
+          <tr><td>银行理财</td><td>2.5%-4.0%</td><td>✅ 略超</td><td>中低</td><td>中</td></tr>
+          <tr><td>债券基金</td><td>3.0%-5.0%</td><td>✅ 可以</td><td>中</td><td>中高</td></tr>
+          <tr><td>房产</td><td>因城而异</td><td>✅ 历史上可以</td><td>中</td><td>低</td></tr>
+          <tr><td>股票/基金</td><td>8%-12%（长期）</td><td>✅✅ 明显超越</td><td>高</td><td>高</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>看CPI数据的方法——为什么"官方通胀"和你感受不一样？CPI统计的是全国平均的一篮子消费品，但你的消费结构可能不同。如果你在大城市租房、经常在外吃饭，你感受到的"通胀"可能远高于CPI数字。此外，CPI不含房价变动（只算房租），这也是一大差异。</p>
+  </div>
+</div>
+
+<!-- ===== 第2章 ===== -->
+<div class="chapter reveal" id="ch2">
+  <div class="chapter-header">
+    <span class="ch-num">第2章</span>
+    <h3>投资的魔法——复利与时间</h3>
+  </div>
+
+  <div class="section">
+    <h4>2.1 复利到底是什么？——从1万元到100万元的数学</h4>
+    <p><strong>复利</strong>，就是"利滚利"——上一期的收益成为下一期的本金，如此循环。听起来平淡无奇，但它的威力是指数级的。</p>
+    <p>假设你投入1万元，年化收益率10%：</p>
+    <div class="chart-container" id="chart-compound"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>年数</th><th>单利（1万元）</th><th>复利（1万元）</th><th>差距</th></tr></thead>
+        <tbody>
+          <tr><td>10年</td><td>2.0万</td><td>2.59万</td><td>0.59万</td></tr>
+          <tr><td>20年</td><td>3.0万</td><td>6.73万</td><td>3.73万</td></tr>
+          <tr><td>30年</td><td>4.0万</td><td>17.45万</td><td>13.45万</td></tr>
+          <tr><td>40年</td><td>5.0万</td><td>45.26万</td><td>40.26万</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>40年后，复利是单利的<strong>9倍</strong>！这就是爱因斯坦说"复利是世界第八大奇迹"的原因。</p>
+  </div>
+
+  <div class="section">
+    <h4>2.2 时间是最大的杠杆：25岁开始 vs 35岁开始</h4>
+    <p>假设年化收益率8%，目标60岁时积累100万：</p>
+    <div class="chart-container sm" id="chart-age-start"></div>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>25岁开始</h5>
+        <p>每月只需投入 <strong style="color:var(--accent2)">约290元</strong><br>35年复利滚动，总投入约12万</p>
+      </div>
+      <div class="callout">
+        <h5>35岁开始</h5>
+        <p>每月需要投入 <strong style="color:var(--red)">约670元</strong><br>25年复利滚动，总投入约20万</p>
+      </div>
+      <div class="callout">
+        <h5>45岁开始</h5>
+        <p>每月需要投入 <strong style="color:var(--red)">约1,740元</strong><br>15年复利滚动，总投入约31万</p>
+      </div>
+    </div>
+    <p>晚10年起步，你需要多投入近<strong>70%</strong>的钱才能达到同样的目标。时间，是投资中最大的杠杆。</p>
+  </div>
+
+  <!-- Interactive Compound Calculator -->
+  <div class="interactive-panel">
+    <h5>🧮 复利计算器——动手算一算</h5>
+    <div class="calc-row">
+      <label>初始金额（元）</label>
+      <input type="number" id="calc-principal" value="10000">
+    </div>
+    <div class="calc-row">
+      <label>每月定投（元）</label>
+      <input type="number" id="calc-monthly" value="500">
+    </div>
+    <div class="calc-row">
+      <label>年化收益率（%）</label>
+      <input type="number" id="calc-rate" value="8" step="0.5">
+    </div>
+    <div class="calc-row">
+      <label>投资年限（年）</label>
+      <input type="range" id="calc-years" min="1" max="40" value="20" oninput="updateCalc()">
+      <span id="calc-years-label" style="color:var(--accent2);font-weight:600;min-width:40px">20年</span>
+    </div>
+    <div class="calc-result">
+      <div class="result-num" id="calc-total">¥0</div>
+      <div class="result-label">预计总金额（本金：<span id="calc-input-total">¥0</span>，收益：<span id="calc-profit" style="color:var(--green)">¥0</span>）</div>
+    </div>
+    <div class="chart-container xs" id="chart-calc"></div>
+  </div>
+
+  <div class="section">
+    <h4>2.3 股市长期回报：A股主要指数的年化收益率</h4>
+    <p>很多人觉得A股"不赚钱"。但拉长周期看，数据会说话：</p>
+    <div class="chart-container sm" id="chart-index-return"></div>
+    <p>关键不是"能不能赚钱"，而是<strong>"你有没有耐心等到赚钱的那一天"</strong>。短期波动是噪声，长期趋势才是信号。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p><strong>72法则</strong>——心算翻倍年数的快捷方式：用72除以年化收益率，就是本金翻倍所需的年数。比如年化8%，72÷8=9年翻倍；年化12%，72÷12=6年翻倍。这个近似值在4%-15%的收益率范围内非常准确。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>投资越早开始越好，但<strong>"懂了再开始"比"早开始"更重要</strong>。如果你连基本规则和风险都不了解就冲进市场，复利会变成反向的——亏损也在滚雪球。</p>
+  </div>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div class="chapter reveal" id="ch3">
+  <div class="chapter-header">
+    <span class="ch-num">第3章</span>
+    <h3>投资还是赌博？——股市的残酷与希望</h3>
+  </div>
+
+  <div class="section">
+    <h4>3.1 投资vs投机vs赌博：三个根本区别</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>维度</th><th>投资</th><th>投机</th><th>赌博</th></tr></thead>
+        <tbody>
+          <tr><td>决策依据</td><td>公司基本面与估值</td><td>价格趋势与市场情绪</td><td>直觉与运气</td></tr>
+          <tr><td>持有期限</td><td>长期（年）</td><td>中短期（天-月）</td><td>极短期（秒-天）</td></tr>
+          <tr><td>预期收益来源</td><td>企业盈利增长+分红</td><td>价格波动差价</td><td>纯随机事件</td></tr>
+          <tr><td>风险控制</td><td>深入研究+分散持仓</td><td>止损+仓位管理</td><td>无</td></tr>
+          <tr><td>长期胜率</td><td>较高</td><td>中等偏低</td><td>极低</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>举个例子：同样是买一只股票——</p>
+    <ul>
+      <li><strong>投资</strong>：你研究了这家公司的财报，发现它盈利稳定、估值合理、行业前景好，准备持有3年以上。</li>
+      <li><strong>投机</strong>：你听说这只股票"有庄家要做"，看K线觉得要拉升，打算快进快出赚一票。</li>
+      <li><strong>赌博</strong>：你什么都没研究，就因为朋友说"这只肯定涨"，闭着眼睛全仓买入。</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>3.2 七亏二平一赚：数据告诉你真实胜率</h4>
+    <p>"七亏二平一赚"不是危言耸听，而是A股长期统计的残酷事实：</p>
+    <div class="chart-container sm" id="chart-7021"></div>
+    <p>上交所2016-2019年统计数据显示：散户贡献了约<strong>80%的交易量</strong>，却只获得了约<strong>9%的盈利</strong>。机构用20%的交易量拿走了大部分利润。这说明：<strong>交易越多，不一定赚得越多</strong>。</p>
+  </div>
+
+  <div class="section">
+    <h4>3.3 为什么大多数人亏钱？——五大常见死因</h4>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>❶ 追涨杀跌</h5>
+        <p>涨了怕错过追进去，跌了怕更多割肉出来。永远在高点买、低点卖。</p>
+      </div>
+      <div class="callout">
+        <h5>❷ 频繁交易</h5>
+        <p>每天买卖，手续费累积惊人。一年下来，手续费可能吃掉全部利润。</p>
+      </div>
+      <div class="callout">
+        <h5>❸ 满仓单只股</h5>
+        <p>把全部身家押在一只股票上，赌对翻倍赌对腰斩，不是投资是赌博。</p>
+      </div>
+      <div class="callout">
+        <h5>❹ 听消息炒股</h5>
+        <p>内幕消息到你耳朵里时，往往已经是最后一个知道的人。</p>
+      </div>
+      <div class="callout">
+        <h5>❺ 不设止损</h5>
+        <p>小亏不止，大亏割不动。10%的亏损只需涨11%回本，50%的亏损需要涨100%。</p>
+      </div>
+    </div>
+    <!-- 亏损回本难度 Chart -->
+    <div class="chart-container sm" id="chart-loss-recover"></div>
+  </div>
+
+  <div class="section">
+    <h4>3.4 为什么少数人能长期赚钱？——他们的共同特征</h4>
+    <ul>
+      <li><strong>有体系</strong>：不是拍脑袋决策，而是有明确的买入/卖出标准和仓位规则</li>
+      <li><strong>有耐心</strong>：能忍受短期波动，不因一天的涨跌改变判断</li>
+      <li><strong>有纪律</strong>：到了止损线坚决止损，到了止盈线不贪心</li>
+      <li><strong>持续学习</strong>：不断复盘、迭代，而不是重复同样的错误</li>
+      <li><strong>风险管理优先</strong>：先想"最坏能亏多少"，再想"最好能赚多少"</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>如果你身边所有人都在讨论股票，往往该<strong>警惕</strong>而非跟风。历史上，"全民炒股"的时刻（2007年、2015年），往往是市场见顶的信号。巴菲特说："在别人贪婪时恐惧，在别人恐惧时贪婪。"</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>股市不是赌场，但如果你用赌的方式参与，<strong>它比赌场更残酷</strong>——赌场至少有明确的规则和上限，而股市的亏损没有底。来股市之前，先问自己：我是来投资的，还是来赌博的？</p>
+  </div>
+</div>
+
+
+<!-- ==================== PART 2: 股票到底是什么？ ==================== -->
+<div class="part-header reveal" id="part2">
+  <div class="part-num">02</div>
+  <h2>第二篇：股票到底是什么？</h2>
+  <p class="part-desc">核心目标：从底层逻辑理解股票，知道你买的是什么、赚的是什么钱、对手是谁。</p>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div class="chapter reveal" id="ch4">
+  <div class="chapter-header">
+    <span class="ch-num">第4章</span>
+    <h3>一张股票的前世今生</h3>
+  </div>
+
+  <div class="section">
+    <h4>4.1 从合伙做生意说起：股票的本质是公司所有权</h4>
+    <p>想象一下：你的朋友开了一家奶茶店，需要50万启动资金，但他只有30万。你出20万入股，占股40%——从此，这家店赚的利润你有40%的份，重大决策你有40%的投票权。</p>
+    <p>这就是<strong>股票</strong>的本质：<strong>你买入一家公司的部分所有权</strong>。你不是在买一张纸或一个代码，而是在买这家公司的一部分生意。</p>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-text">公司需要钱</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-text">把所有权拆分出售</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-text">你买入=成为股东</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-text">分享利润+投票权</div></div>
+    </div>
+    <p><strong>股东</strong>（stockholder）拥有的核心权利：</p>
+    <ul>
+      <li><strong>分红权</strong>：公司赚了钱，按持股比例分红</li>
+      <li><strong>投票权</strong>：对公司重大事项（如选董事、重大并购）投票</li>
+      <li><strong>剩余索取权</strong>：公司清算时，在还清债务后，剩余资产按比例分配</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>4.2 股票是怎么来的？IPO与上市流程简述</h4>
+    <p>一家公司从"私人公司"变成"公众公司"的过程，叫<strong>IPO</strong>（Initial Public Offering，首次公开发行）。</p>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-text">股份制改造</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-text">券商辅导</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-text">申报材料</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-text">证监会审核</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-text">路演定价</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">6</div><div class="step-text">挂牌交易</div></div>
+    </div>
+    <p>IPO之后，股票就在<strong>二级市场</strong>（即交易所）自由买卖。你日常买卖股票，都是在二级市场上与其他投资者交易，而不是与公司直接交易。</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>一级市场</h5>
+        <p>公司首次发行股票，投资者直接从公司购买。如打新股。</p>
+      </div>
+      <div class="callout">
+        <h5>二级市场</h5>
+        <p>已发行的股票在投资者之间自由买卖。你日常的交易都在这里。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>4.3 一张股票值多少钱？——价格与价值的区别</h4>
+    <p>这是投资最重要的概念之一：<strong>价格</strong>是你付出的，<strong>价值</strong>是你得到的。两者经常不一致。</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th></th><th>价格（Price）</th><th>价值（Value）</th></tr></thead>
+        <tbody>
+          <tr><td>定义</td><td>市场上当前的交易价格</td><td>公司内在的合理价值</td></tr>
+          <tr><td>谁决定</td><td>所有买卖者的博弈</td><td>公司的盈利能力与资产</td></tr>
+          <tr><td>变化频率</td><td>每秒都在变</td><td>相对稳定，随业绩缓慢变化</td></tr>
+          <tr><td>可否观察</td><td>直接可见</td><td>需要估算，不同人算出不同值</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>巴菲特的老师格雷厄姆有个经典比喻：<strong>市场先生</strong>——想象有一个情绪化的合伙人叫"市场先生"，每天跑来给你报价，有时兴奋报高价，有时恐慌报低价。你可以选择接受，也可以选择忽略。聪明的投资者，只在价格远低于价值时买入，在价格远高于价值时卖出。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>"买股票就是买公司"——这句话改变了巴菲特的一生。当你想买一只股票时，问自己：如果这只股票明天退市，我再也卖不掉，我还愿意按这个价格买入这家公司的一部分吗？如果答案是"愿意"，你才是真的在投资。</p>
+  </div>
+</div>
+
+<!-- ===== 第5章 ===== -->
+<div class="chapter reveal" id="ch5">
+  <div class="chapter-header">
+    <span class="ch-num">第5章</span>
+    <h3>股市赚的是什么钱？——收益的两种来源</h3>
+  </div>
+
+  <div class="section">
+    <h4>5.1 价差收益（资本利得）：低买高卖，但没那么简单</h4>
+    <p><strong>资本利得</strong>（Capital Gain）就是"低买高卖"赚的差价。10元买入，15元卖出，5元就是你的资本利得。</p>
+    <p>这是大多数新手唯一关注的收益来源，但它的问题在于：<strong>你赚的价差，一定来自别人亏的钱</strong>（或者未来接盘人的钱）。它是一个零和博弈——在扣除交易成本后，甚至是负和博弈。</p>
+  </div>
+
+  <div class="section">
+    <h4>5.2 分红收益（股息）：容易被忽视的"睡后收入"</h4>
+    <p><strong>股息</strong>（Dividend）是公司把赚到的利润拿出一部分，按持股比例分给股东。这是你作为"公司所有者"最直接的回报。</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>每股分红</h5>
+        <p>公司宣布每10股派5元，即每股0.5元。持有1000股就能收到500元。</p>
+      </div>
+      <div class="callout">
+        <h5>股息率</h5>
+        <p>= 每股分红 / 股价。如股价20元，每股分红0.5元，股息率=2.5%。</p>
+      </div>
+      <div class="callout">
+        <h5>分红率</h5>
+        <p>= 分红总额 / 净利润。如赚100亿分30亿，分红率=30%。</p>
+      </div>
+    </div>
+    <p>注意：A股公司分红后股价会相应下调（<strong>除息</strong>），你的总资产在分红瞬间不会增加，但拿到了"真金白银"可以自由支配。</p>
+  </div>
+
+  <div class="section">
+    <h4>5.3 两种收益哪个更重要？——不同市场、不同阶段的答案</h4>
+    <div class="chart-container sm" id="chart-return-source"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>市场/阶段</th><th>价差收益占比</th><th>分红收益占比</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>A股整体（近10年）</td><td>约60%</td><td>约40%</td><td>分红贡献逐年提升</td></tr>
+          <tr><td>成熟市场（美股长期）</td><td>约50%</td><td>约50%</td><td>分红和回购是重要回报</td></tr>
+          <tr><td>高增长公司（如科技股）</td><td>90%+</td><td>极少</td><td>利润用于再投资，很少分红</td></tr>
+          <tr><td>成熟行业（如银行/公用事业）</td><td>30-40%</td><td>60-70%</td><td>分红是主要持有理由</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>5.4 什么是分红率/股息率？怎么查？</h4>
+    <p>查分红数据的方法：</p>
+    <ul>
+      <li><strong>行情软件</strong>：东方财富/同花顺个股页面的"分红融资"栏目</li>
+      <li><strong>巨潮资讯网</strong>（cninfo.com.cn）：搜索公司公告，关键词"利润分配"</li>
+      <li><strong>公司年报</strong>：第四章"股本及股东情况"中会披露分红方案</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>高股息不等于好投资——警惕"股息陷阱"。有些公司股息率高达8%-10%，可能是因为股价大幅下跌导致的"被动高股息"。如果公司盈利在下滑，分红不可持续，你拿到一期分红却亏了本金。正确做法：<strong>先看盈利是否稳定，再看股息率是否合理</strong>。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>长期看，分红是股市回报的重要组成部分，不要只盯着价差。价差来自市场博弈（有人赚就有人亏），而分红来自企业真实的盈利创造（是正和博弈）。理解这一点，你的投资思路会完全不同。</p>
+  </div>
+</div>
+
+<!-- ===== 第6章 ===== -->
+<div class="chapter reveal" id="ch6">
+  <div class="chapter-header">
+    <span class="ch-num">第6章</span>
+    <h3>股市里都有谁？——你的对手和伙伴</h3>
+  </div>
+
+  <div class="section">
+    <h4>6.1 散户：数量最多、贡献最大、赚得最少</h4>
+    <p><strong>散户</strong>（个人投资者）是A股最大的参与群体，账户数量超过2亿。但"人多势众"不等于"赚钱最多"——散户贡献了约80%的交易量，盈利却只占市场的9%左右。</p>
+    <p>散户的典型劣势：信息不对称、研究能力有限、情绪化交易、频繁换手。但也有优势：资金量小进出灵活、没有业绩排名压力、可以长期持有。</p>
+  </div>
+
+  <div class="section">
+    <h4>6.2 机构投资者：公募/私募/保险/社保</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>类型</th><th>资金来源</th><th>风格特点</th><th>关注重点</th></tr></thead>
+        <tbody>
+          <tr><td>公募基金</td><td>大众申购</td><td>相对收益排名，仓位有下限</td><td>季度持仓、基金经理风格</td></tr>
+          <tr><td>私募基金</td><td>高净值客户</td><td>绝对收益，灵活度更高</td><td>策略类型、历史业绩</td></tr>
+          <tr><td>保险资金</td><td>保费收入</td><td>长期、稳健、偏好高股息</td><td>大类资产配置方向</td></tr>
+          <tr><td>社保基金</td><td>国家社保储备</td><td>极长期、极稳健</td><td>持仓变动是"国家队"风向标</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>6.3 外资（北向资金）：聪明钱还是风向标？</h4>
+    <p><strong>北向资金</strong>是指通过沪港通/深港通从香港流入A股的资金，以外资机构为主。因其投资风格偏价值、偏长期，常被称为"聪明钱"。</p>
+    <p>但要注意：北向资金不是"万能指标"——它也会短期进出，也会追涨杀跌。把它当作<strong>参考信号之一</strong>，而非唯一依据。</p>
+  </div>
+
+  <div class="section">
+    <h4>6.4 游资与庄家：短期炒作的幕后推手</h4>
+    <p><strong>游资</strong>是A股特有的现象——大资金短期快速拉抬股价后出货，留下追高的散户接盘。特征：连续涨停、换手率极高、龙虎榜上出现知名游资席位。</p>
+    <p><strong>庄家</strong>是指通过控制大量筹码操纵股价的资金。在现代监管下，明目张胆的"坐庄"越来越少，但"联合操纵"仍时有发生。</p>
+    <div class="warn-box">
+      <div class="warn-label">⚠️ 警告</div>
+      <p>新手绝对不要追游资概念股！那些连续涨停的股票看起来很诱人，但等你买进去的时候，往往是游资出货的时候。追涨被套是散户亏钱的第一大原因。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>6.5 上市公司本身：回购与大股东增减持</h4>
+    <p>上市公司也是市场参与者：</p>
+    <ul>
+      <li><strong>回购</strong>：公司用自己的钱在市场上买回股票，通常意味着管理层认为股价被低估</li>
+      <li><strong>大股东增持</strong>：大股东掏自己的钱买入，信号更强烈——"内部人"最了解公司</li>
+      <li><strong>大股东减持</strong>：大股东在卖！如果大规模减持，需要警惕</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>6.6 读懂"对手盘"：你在和谁交易？</h4>
+    <p>每一笔交易都有买卖双方——你买的时候，有人在卖；你卖的时候，有人在买。问题是：<strong>你的对手是谁？他为什么做相反的决定？</strong></p>
+    <div class="chart-container sm" id="chart-market-players"></div>
+    <p>如果对手是比你信息更多、研究更深、资金更雄厚的机构，你需要更加谨慎。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>机构持仓数据哪里看？每季度结束后15个交易日内，公募基金必须披露季报，其中包含前十大重仓股。在天天基金网或东方财富的基金持仓页面可以查询。这是免费了解"专业选手怎么看"的最佳渠道之一。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>了解市场参与者，才能理解价格波动背后的力量。你是散户，你的优势是灵活和耐心，你的劣势是信息和研究能力。扬长避短，才是生存之道。</p>
+  </div>
+</div>
+
+
+<!-- ==================== PART 3: 市场怎么运转？ ==================== -->
+<div class="part-header reveal" id="part3">
+  <div class="part-num">03</div>
+  <h2>第三篇：市场怎么运转？</h2>
+  <p class="part-desc">核心目标：看懂交易规则，理解市场机制，避免因不懂规则而亏钱。不懂规则就上场，等于蒙着眼开车。</p>
+</div>
+
+<!-- ===== 第7章 ===== -->
+<div class="chapter reveal" id="ch7">
+  <div class="chapter-header">
+    <span class="ch-num">第7章</span>
+    <h3>交易规则全知道</h3>
+  </div>
+
+  <div class="section">
+    <h4>7.1 A股交易时间与休市安排</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>时段</th><th>时间</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>早盘集合竞价</td><td>9:15 - 9:25</td><td>确定开盘价（9:15-9:20可撤单，9:20-9:25不可撤单）</td></tr>
+          <tr><td>上午连续竞价</td><td>9:30 - 11:30</td><td>正常交易时段</td></tr>
+          <tr><td>午休</td><td>11:30 - 13:00</td><td>休市</td></tr>
+          <tr><td>下午连续竞价</td><td>13:00 - 14:57</td><td>正常交易时段</td></tr>
+          <tr><td>尾盘集合竞价</td><td>14:57 - 15:00</td><td>确定收盘价，不可撤单</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>休市日：周末（周六日）、法定节假日。注意：A股有时会在节假日前后安排"调休上班日"，但股市不补开市。</p>
+  </div>
+
+  <div class="section">
+    <h4>7.2 T+1交收制度：今天买明天才能卖</h4>
+    <p>A股实行<strong>T+1</strong>制度：今天买入的股票，最快明天才能卖出。这意味着你不能在同一天内"低买高卖"做日内交易。</p>
+    <p>与<strong>T+0</strong>（如港股、美股）的区别：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>制度</th><th>A股</th><th>港股/美股</th></tr></thead>
+        <tbody>
+          <tr><td>交收周期</td><td>T+1（次日可卖）</td><td>T+0（当天可买卖）</td></tr>
+          <tr><td>优点</td><td>抑制过度投机</td><td>灵活，可及时纠错</td></tr>
+          <tr><td>缺点</td><td>买入后当天无法止损</td><td>容易频繁交易</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn-box">
+      <div class="warn-label">⚠️ 新手注意</div>
+      <p>T+1意味着：如果你早盘买入后午后暴跌，你当天无法卖出止损，只能眼睁睁看着亏损扩大。这就是为什么<strong>不要在早盘冲动追高</strong>。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>7.3 涨跌幅限制：主板±10%、创业板/科创板±20%</h4>
+    <p>A股对股票每日涨跌幅度有限制：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>板块</th><th>涨跌幅限制</th><th>新股上市首日</th><th>ST股</th></tr></thead>
+        <tbody>
+          <tr><td>主板</td><td>±10%</td><td>±44%</td><td>±5%</td></tr>
+          <tr><td>创业板</td><td>±20%</td><td>无涨跌幅限制（前5日）</td><td>±5%</td></tr>
+          <tr><td>科创板</td><td>±20%</td><td>无涨跌幅限制（前5日）</td><td>不适用</td></tr>
+          <tr><td>北交所</td><td>±30%</td><td>无涨跌幅限制（首日）</td><td>±5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>ST</strong>（Special Treatment）是交易所对财务异常公司的风险警示，ST股票涨跌幅收窄至±5%。如果公司情况继续恶化，可能退市。</p>
+  </div>
+
+  <div class="section">
+    <h4>7.4 集合竞价 vs 连续竞价</h4>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>集合竞价</h5>
+        <p>所有买卖单集中撮合，按"最大成交量"原则确定一个统一价格。用于开盘价和收盘价的确定。</p>
+      </div>
+      <div class="callout">
+        <h5>连续竞价</h5>
+        <p>逐笔撮合——只要有人出价匹配，立刻成交。上午9:30-11:30和下午13:00-14:57就是连续竞价时段。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>7.5 委托方式：限价委托、市价委托、条件单</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>方式</th><th>含义</th><th>优点</th><th>缺点</th></tr></thead>
+        <tbody>
+          <tr><td>限价委托</td><td>指定价格买入/卖出</td><td>价格可控</td><td>可能不成交</td></tr>
+          <tr><td>市价委托</td><td>以当前市场最优价成交</td><td>保证成交</td><td>价格不可控，可能滑点</td></tr>
+          <tr><td>条件单</td><td>达到设定条件自动触发</td><td>不用盯盘</td><td>需了解触发规则</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>新手建议：<strong>优先使用限价委托</strong>，确保你以自己认可的价格成交。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>集合竞价的"9:15-9:25"这10分钟，暗藏玄机。9:15-9:20可以撤单，有些大资金会挂大量买单制造"抢筹"假象，然后在9:19:50瞬间撤单。9:20-9:25不可撤单，这时候的挂单才是真实的。看开盘竞价，重点看9:20之后的数据。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>不懂规则就交易，就像不看交通规则就上路——你也许能侥幸到达目的地，但迟早会出事故。花30分钟彻底搞懂交易规则，是你在股市里最划算的时间投资。</p>
+  </div>
+</div>
+
+<!-- ===== 第8章 ===== -->
+<div class="chapter reveal" id="ch8">
+  <div class="chapter-header">
+    <span class="ch-num">第8章</span>
+    <h3>账户、权限与费用</h3>
+  </div>
+
+  <div class="section">
+    <h4>8.1 股票账户能做什么？——不只是炒股</h4>
+    <p>很多人以为股票账户只能买卖股票，实际上它能做很多事：</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>🎯 打新股</h5>
+        <p>参与新股申购，中签后以发行价买入，上市首日通常有涨幅。有市值才能打新，这是持有股票的"额外福利"。</p>
+      </div>
+      <div class="callout">
+        <h5>💰 国债逆回购</h5>
+        <p>把闲钱短期借给市场，赚取利息。月末/季末/年末利率经常飙高。风险极低，适合闲置资金。</p>
+      </div>
+      <div class="callout">
+        <h5>📊 场内基金（ETF）</h5>
+        <p>像买卖股票一样买卖指数基金，费率更低、交易更灵活。是新手入门的好选择。</p>
+      </div>
+      <div class="callout">
+        <h5>📜 可转债</h5>
+        <p>既有债券的保底特性，又有转股的上涨潜力。T+0交易，适合小额试水。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>8.2 权限门槛一览</h4>
+    <p>开了股票账户不等于什么都能买，部分板块和功能有门槛：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>权限</th><th>资金门槛</th><th>经验门槛</th><th>其他要求</th></tr></thead>
+        <tbody>
+          <tr><td>创业板</td><td>前20日日均资产≥10万</td><td>24个月交易经验</td><td>风险测评</td></tr>
+          <tr><td>科创板</td><td>前20日日均资产≥50万</td><td>24个月交易经验</td><td>风险测评</td></tr>
+          <tr><td>北交所</td><td>前20日日均资产≥50万</td><td>24个月交易经验</td><td>风险测评</td></tr>
+          <tr><td>融资融券</td><td>前20日日均资产≥50万</td><td>6个月交易经验</td><td>风险测评</td></tr>
+          <tr><td>港股通</td><td>前20日日均资产≥50万</td><td>无硬性要求</td><td>风险测评</td></tr>
+          <tr><td>主板</td><td>无</td><td>无</td><td>开户即可</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>新手刚开户，<strong>只能交易主板股票</strong>。创业板和科创板的权限需要满足资金和经验要求后单独申请开通。</p>
+  </div>
+
+  <div class="section">
+    <h4>8.3 交易费用拆解：一次交易到底被扣了多少钱？</h4>
+    <p>很多新手完全不了解交易费用，以为买卖都是"免费的"。实际上每一笔交易都有成本：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>费用项目</th><th>费率</th><th>收取方</th><th>买入收？</th><th>卖出收？</th></tr></thead>
+        <tbody>
+          <tr><td>佣金</td><td>约0.025%（可谈，最低5元）</td><td>券商</td><td>✅</td><td>✅</td></tr>
+          <tr><td>印花税</td><td>0.05%（2023年8月下调）</td><td>国家</td><td>❌</td><td>✅</td></tr>
+          <tr><td>过户费</td><td>0.001%</td><td>结算公司</td><td>✅</td><td>✅</td></tr>
+          <tr><td>规费</td><td>约0.0068%</td><td>交易所</td><td>含在佣金中</td><td>含在佣金中</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Interactive Fee Calculator -->
+    <div class="interactive-panel">
+      <h5>🧮 交易费用计算器</h5>
+      <div class="calc-row">
+        <label>交易金额（元）</label>
+        <input type="number" id="fee-amount" value="50000">
+      </div>
+      <div class="calc-row">
+        <label>佣金费率（%）</label>
+        <input type="number" id="fee-rate" value="0.025" step="0.005">
+      </div>
+      <div class="calc-row">
+        <label>买入/卖出</label>
+        <select id="fee-direction">
+          <option value="buy">买入</option>
+          <option value="sell">卖出</option>
+        </select>
+      </div>
+      <div style="margin-top:12px;font-size:.88rem;color:var(--text2)">
+        <p>佣金：<span id="fee-commission" style="color:var(--accent2)">¥0</span> | 印花税：<span id="fee-stamp" style="color:var(--accent2)">¥0</span> | 过户费：<span id="fee-transfer" style="color:var(--accent2)">¥0</span></p>
+        <p style="margin-top:8px;font-size:1rem">总费用：<strong id="fee-total" style="color:var(--red);font-size:1.2rem">¥0</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>8.4 如何选择佣金费率？——谈佣金的正确姿势</h4>
+    <ul>
+      <li><strong>默认佣金</strong>：通常万分之8到千分之3，偏高</li>
+      <li><strong>可谈佣金</strong>：主动联系客户经理，通常可谈到万分之2.5左右</li>
+      <li><strong>大资金优惠</strong>：资金量50万以上，可谈到万分之1.5甚至更低</li>
+      <li><strong>注意</strong>：佣金有最低5元限制，小额交易（2万以下）无论佣金率多低，都会按5元收取</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>交易频繁的人，一年手续费可能吃掉全部利润——算笔账：假设你有10万本金，每周买卖各1次（全年100次），每次交易5万。按万2.5佣金+千1印花税估算，一年交易费用约<strong>7,500元</strong>，占本金7.5%！如果你年化收益才8%，几乎全给券商和税务局打工了。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>交易是有成本的，频繁交易=给券商打工。每次买卖之前，想想手续费——它可能比你想象的贵得多。</p>
+  </div>
+</div>
+
+<!-- ===== 第9章 ===== -->
+<div class="chapter reveal" id="ch9">
+  <div class="chapter-header">
+    <span class="ch-num">第9章</span>
+    <h3>开户与券商选择</h3>
+  </div>
+
+  <div class="section">
+    <h4>9.1 如何选择券商？——五大考量维度</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>维度</th><th>说明</th><th>新手建议</th></tr></thead>
+        <tbody>
+          <tr><td>佣金费率</td><td>直接决定你的交易成本</td><td>争取万2.5以下</td></tr>
+          <tr><td>App体验</td><td>行情速度、操作流畅度</td><td>下载体验后再决定</td></tr>
+          <tr><td>研报服务</td><td>是否提供优质研究报告</td><td>大型券商研报更丰富</td></tr>
+          <tr><td>客户服务</td><td>问题响应速度</td><td>有专属客户经理更好</td></tr>
+          <tr><td>线下网点</td><td>部分业务需临柜办理</td><td>附近有网点更方便</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>9.2 开户流程详解</h4>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-num">1</div><div class="step-text">准备身份证+银行卡</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">2</div><div class="step-text">下载券商App</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">3</div><div class="step-text">身份验证+视频认证</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">4</div><div class="step-text">设置密码+绑定银行卡</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">5</div><div class="step-text">风险测评</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="step-num">6</div><div class="step-text">开户成功！</div></div>
+    </div>
+    <p>全程线上完成，通常15-30分钟。开户成功后，下一个交易日即可交易。</p>
+  </div>
+
+  <div class="section">
+    <h4>9.3 银证转账：资金怎么进出？</h4>
+    <p><strong>银证转账</strong>是银行账户与证券账户之间的资金划转：</p>
+    <ul>
+      <li><strong>银行→证券</strong>（转入/入金）：把银行卡的钱转入股票账户，才能买股票</li>
+      <li><strong>证券→银行</strong>（转出/出金）：卖出股票后，资金从股票账户转回银行卡</li>
+    </ul>
+    <p>注意：卖出股票后，资金当天可用（可买其他股票），但<strong>T+1日才可转出</strong>银行卡。</p>
+  </div>
+
+  <div class="section">
+    <h4>9.4 开户后的第一件事：熟悉你的交易软件</h4>
+    <p>建议开户后先不要急着买股票，花几天时间熟悉交易软件：</p>
+    <ul>
+      <li>学会看个股行情页面（价格、涨跌幅、成交量、买卖盘）</li>
+      <li>学会下单（限价买入/卖出）</li>
+      <li>学会查持仓和盈亏</li>
+      <li>学会查交易记录和资金流水</li>
+      <li>尝试用<strong>模拟盘</strong>练习至少2周</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>一个身份证最多可以开3个沪A账户（上海市场）和多个深A账户（深圳市场），但同一时间只能指定1个券商作为沪A的指定交易。也就是说，你可以同时在3家券商开户，但上海市场的股票只能在指定那一家买卖。深圳市场没有此限制。</p>
+  </div>
+</div>
+
+
+<!-- ==================== PART 4: 看懂市场语言 ==================== -->
+<div class="part-header reveal" id="part4">
+  <div class="part-num">04</div>
+  <h2>第四篇：看懂市场语言</h2>
+  <p class="part-desc">核心目标：掌握基本分析工具，能读懂行情界面和关键指标。市场在"说话"，你得先学会听。</p>
+</div>
+
+<!-- ===== 第10章 ===== -->
+<div class="chapter reveal" id="ch10">
+  <div class="chapter-header">
+    <span class="ch-num">第10章</span>
+    <h3>K线与行情界面</h3>
+  </div>
+
+  <div class="section">
+    <h4>10.1 K线是什么？——一根蜡烛里的四个价格</h4>
+    <p><strong>K线</strong>（也叫蜡烛线、日本蜡烛图）是记录一段时间内价格变动的图形，最早由日本米商用于记录米价。一根K线包含四个价格：</p>
+    <div style="text-align:center;margin:20px 0">
+      <canvas id="candlestickCanvas" width="600" height="320" style="max-width:100%;border-radius:12px;background:#111B2E"></canvas>
+    </div>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>阳线（红色/A股）</h5>
+        <p>收盘价 > 开盘价，表示上涨。实体下边是开盘价，上边是收盘价。</p>
+      </div>
+      <div class="callout">
+        <h5>阴线（绿色/A股）</h5>
+        <p>收盘价 < 开盘价，表示下跌。实体上边是开盘价，下边是收盘价。</p>
+      </div>
+      <div class="callout">
+        <h5>上影线</h5>
+        <p>从实体向上延伸的细线，最高点到实体顶端的距离。越长说明上方抛压越重。</p>
+      </div>
+      <div class="callout">
+        <h5>下影线</h5>
+        <p>从实体向下延伸的细线，最低点到实体底端的距离。越长说明下方支撑越强。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>10.2 阳线与阴线：红涨绿跌 vs 绿涨红跌</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>市场</th><th>上涨</th><th>下跌</th></tr></thead>
+        <tbody>
+          <tr><td>A股/港股</td><td style="color:#EF4444">🔴 红色</td><td style="color:#22C55E">🟢 绿色</td></tr>
+          <tr><td>美股</td><td style="color:#22C55E">🟢 绿色</td><td style="color:#EF4444">🔴 红色</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A股是"红涨绿跌"，美股是"绿涨红跌"——这是文化差异，和国际通用的"绿=涨"正好相反。新手看美股行情时要注意，别搞反了方向。</p>
+  </div>
+
+  <div class="section">
+    <h4>10.3 分时图：盘中走势怎么看？</h4>
+    <p><strong>分时图</strong>显示当天每一分钟的股价走势，是短线交易者最常看的图。</p>
+    <ul>
+      <li><strong>白色线</strong>：实时股价曲线</li>
+      <li><strong>黄色线</strong>：成交均价线（当天所有成交的加权平均价）</li>
+      <li>白线在黄线上方：当前价高于均价，偏强；白线在黄线下方：偏弱</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>10.4 买卖五档：挂单里藏着什么信息？</h4>
+    <p>行情界面的右侧有"买卖五档"，显示当前挂单的量和价：</p>
+    <div style="text-align:center;margin:20px 0">
+      <canvas id="orderBookCanvas" width="440" height="340" style="max-width:100%;border-radius:12px;background:#111B2E"></canvas>
+    </div>
+    <ul>
+      <li><strong>卖五→卖一</strong>：从高到低排列的5个卖出挂单价位</li>
+      <li><strong>买一→买五</strong>：从高到低排列的5个买入挂单价位</li>
+      <li>买一和卖一之间的价差叫<strong>买卖价差（Bid-Ask Spread）</strong>，差价越小流动性越好</li>
+    </ul>
+    <div class="tip-box">
+      <div class="tip-label">💡 投研Tips</div>
+      <p>大单挂单可能是"障眼法"——有人在买一挂几万手制造"支撑很强"的假象，实际成交前就撤单了。看五档数据只能参考，不能作为决策依据。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>10.5 成交量与换手率：活跃度的温度计</h4>
+    <p><strong>成交量</strong>是一段时间内买卖双方达成交易的总股数。<strong>换手率</strong>=当日成交量÷流通股本×100%。</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>换手率</th><th>含义</th><th>提示</th></tr></thead>
+        <tbody>
+          <tr><td>< 1%</td><td>极度低迷</td><td>关注度低，流动性差</td></tr>
+          <tr><td>1% - 3%</td><td>正常</td><td>大盘股的日常水平</td></tr>
+          <tr><td>3% - 7%</td><td>活跃</td><td>有资金关注</td></tr>
+          <tr><td>7% - 15%</td><td>高度活跃</td><td>可能有重大消息或游资介入</td></tr>
+          <tr><td>> 15%</td><td>异常活跃</td><td>警惕过热，可能是短期顶部</td></tr>
+          <tr><td>> 20%</td><td>极端</td><td>风险极高，换手充分后可能见顶</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>K线和成交量是市场在"说话"，先学会听。记住：<strong>量在价先</strong>——成交量的变化往往领先于价格变化。放量上涨可信度高，缩量上涨要存疑。</p>
+  </div>
+</div>
+
+<!-- ===== 第11章 ===== -->
+<div class="chapter reveal" id="ch11">
+  <div class="chapter-header">
+    <span class="ch-num">第11章</span>
+    <h3>核心术语速释</h3>
+  </div>
+
+  <div class="section">
+    <h4>11.1 价格类术语</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>术语</th><th>含义</th><th>注意</th></tr></thead>
+        <tbody>
+          <tr><td>开盘价</td><td>当天集合竞价产生的第一笔成交价</td><td>受隔夜消息影响</td></tr>
+          <tr><td>收盘价</td><td>当天最后一笔成交价（或尾盘集合竞价价）</td><td>技术分析最重要的价格</td></tr>
+          <tr><td>最高价/最低价</td><td>当天成交的最高/最低价格</td><td>影线反映多空博弈</td></tr>
+          <tr><td>涨停/跌停</td><td>达到涨跌幅限制的价格</td><td>涨停板可能封不住（打开涨停）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>11.2 估值类术语——"贵不贵"的标尺</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>术语</th><th>公式</th><th>怎么用</th></tr></thead>
+        <tbody>
+          <tr><td>市盈率 PE</td><td>股价 ÷ 每股收益</td><td>PE越低越"便宜"，但要同行业对比。PE=20意味着按当前盈利20年回本</td></tr>
+          <tr><td>市净率 PB</td><td>股价 ÷ 每股净资产</td><td>PB<1叫"破净"，可能被低估，也可能是资产质量差</td></tr>
+          <tr><td>市销率 PS</td><td>市值 ÷ 营业收入</td><td>适合亏损的互联网公司，PS越低越"便宜"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>11.3 规模类术语——为什么同一个公司有三个"市值"？</h4>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>总市值</h5>
+        <p>股价 × 总股本。包含所有股份，即使有些不能交易。是衡量公司"体量"的标准。</p>
+      </div>
+      <div class="callout">
+        <h5>流通市值</h5>
+        <p>股价 × 流通股本。排除了限售股（不能卖的部分），反映实际可交易的市值。</p>
+      </div>
+      <div class="callout">
+        <h5>自由流通市值</h5>
+        <p>进一步排除大股东长期不卖的战略持股。最接近"真实可交易"的市值。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>11.4 交易类术语</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>术语</th><th>含义</th><th>举例</th></tr></thead>
+        <tbody>
+          <tr><td>做多</td><td>买入看涨，低买高卖</td><td>10元买入，15元卖出</td></tr>
+          <tr><td>做空</td><td>借入卖出看跌（A股普通账户不可做空）</td><td>融券卖出</td></tr>
+          <tr><td>止损</td><td>亏损到预设价位卖出，控制损失</td><td>买入价-8%止损</td></tr>
+          <tr><td>止盈</td><td>盈利到预设价位卖出，锁定利润</td><td>买入价+20%止盈</td></tr>
+          <tr><td>仓位</td><td>已投入资金占总资金的比例</td><td>50%仓位=半仓</td></tr>
+          <tr><td>满仓/空仓</td><td>全部资金已买入/全部资金空闲</td><td>新手不建议满仓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>11.5 市场类术语</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>术语</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td>大盘</td><td>通常指上证指数，代表A股整体走势</td></tr>
+          <tr><td>板块</td><td>按行业或概念归类的股票群，如"白酒板块""新能源板块"</td></tr>
+          <tr><td>龙头</td><td>板块中市值最大、影响力最强的公司</td></tr>
+          <tr><td>蓝筹</td><td>业绩稳定、分红较高的大盘股，如银行、电力</td></tr>
+          <tr><td>白马</td><td>业绩优良、成长性好的公司，如消费龙头</td></tr>
+          <tr><td>黑马</td><td>出乎意料大幅上涨的股票，通常难以提前识别</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>看到不懂的术语怎么办？三个靠谱的查询渠道：①东方财富/同花顺的术语百科；②本书附录A术语速查表；③直接搜索"XX术语 股票"（注意辨别来源，优先看券商投教文章）。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>术语不是用来装懂的，是避免误操作的<strong>保命知识</strong>。比如不知道"涨停"是什么，可能以为股价"坏了"卖不出去；不知道"止损"是什么，可能一直拿着亏损的股票等回本。</p>
+  </div>
+</div>
+
+<!-- ===== 第12章 ===== -->
+<div class="chapter reveal" id="ch12">
+  <div class="chapter-header">
+    <span class="ch-num">第12章</span>
+    <h3>均线与技术分析入门</h3>
+  </div>
+
+  <div class="section">
+    <h4>12.1 均线系统：MA5/MA20/MA60分别看什么？</h4>
+    <p><strong>均线</strong>（Moving Average，MA）是把过去N天的收盘价取平均值连成线，用来观察趋势方向。</p>
+    <div class="chart-container sm" id="chart-ma-demo"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>均线</th><th>周期</th><th>观察什么</th><th>特点</th></tr></thead>
+        <tbody>
+          <tr><td>MA5</td><td>5日</td><td>一周内的短期趋势</td><td>反应快，噪声多</td></tr>
+          <tr><td>MA20</td><td>20日</td><td>一个月的中期趋势</td><td>平衡性好，最常用</td></tr>
+          <tr><td>MA60</td><td>60日</td><td>一个季度的长期趋势</td><td>反应慢，但方向性强</td></tr>
+          <tr><td>MA250</td><td>250日</td><td>一年的趋势，也叫"年线"</td><td>牛熊分界线</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>12.2 金叉与死叉：听起来很厉害，实际要谨慎</h4>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>金叉 📈</h5>
+        <p>短期均线从下方穿越长期均线向上。传统解读为"买入信号"。</p>
+      </div>
+      <div class="callout">
+        <h5>死叉 📉</h5>
+        <p>短期均线从上方穿越长期均线向下。传统解读为"卖出信号"。</p>
+      </div>
+    </div>
+    <p>但要注意：均线是<strong>滞后指标</strong>——等金叉出现时，往往已经涨了一段；等死叉出现时，往往已经跌了不少。它更适合确认趋势，而非预测拐点。</p>
+  </div>
+
+  <div class="section">
+    <h4>12.3 支撑位与压力位：价格的"天花板"和"地板"</h4>
+    <p><strong>支撑位</strong>是价格下跌到某个位置后容易止跌反弹的价位；<strong>压力位</strong>是价格上涨到某个位置后容易遇阻回落的价位。</p>
+    <ul>
+      <li>常见的支撑位：前期低点、重要均线位置、整数关口</li>
+      <li>常见的压力位：前期高点、重要均线位置、整数关口</li>
+    </ul>
+    <p>支撑和压力不是绝对的——<strong>突破了压力位，原来的压力位就变成了支撑位</strong>，反之亦然。这叫"角色互换"。</p>
+  </div>
+
+  <div class="section">
+    <h4>12.4 技术分析的定位：辅助工具，不是圣杯</h4>
+    <p>关于技术分析，新手需要建立正确的认知：</p>
+    <ul>
+      <li>技术分析看的是<strong>市场情绪的温度</strong>，不是预测未来的水晶球</li>
+      <li>任何技术指标都有<strong>滞后性</strong>和<strong>失效的时候</strong></li>
+      <li>指标越多≠越准——太多指标反而互相矛盾，让你无所适从</li>
+      <li>技术分析应该<strong>配合基本面</strong>使用，不能单独作为决策依据</li>
+    </ul>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>新手学技术分析最容易犯的错——指标太多、信号太杂。建议入门阶段只学<strong>均线+成交量</strong>两个指标就够了。先把这两个看懂用熟，比堆砌十个指标有用得多。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>技术分析看的是"市场情绪的温度"，不预测未来。它最大的价值是帮你<strong>确认趋势和设定纪律</strong>（比如"跌破20日均线就止损"），而不是帮你抓住每一个拐点。</p>
+  </div>
+</div>
+
+<!-- ===== 第13章 ===== -->
+<div class="chapter reveal" id="ch13">
+  <div class="chapter-header">
+    <span class="ch-num">第13章</span>
+    <h3>指数与板块——市场的全景地图</h3>
+  </div>
+
+  <div class="section">
+    <h4>13.1 什么是指数？</h4>
+    <p><strong>指数</strong>（Index）是一篮子股票价格的加权平均值，用来衡量市场或某个板块的整体表现。就像"班级平均分"代表全班的学习水平，指数代表一组股票的总体走势。</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>指数</th><th>代码</th><th>包含什么</th><th>特点</th></tr></thead>
+        <tbody>
+          <tr><td>上证指数</td><td>000001.SH</td><td>上交所所有股票</td><td>最常说的"大盘"，但被金融股权重影响大</td></tr>
+          <tr><td>深证成指</td><td>399001.SZ</td><td>深交所500只代表股</td><td>科技和消费占比更大</td></tr>
+          <tr><td>创业板指</td><td>399006.SZ</td><td>创业板100只代表股</td><td>成长型公司为主，波动大</td></tr>
+          <tr><td>科创50</td><td>000688.SH</td><td>科创板50只代表股</td><td>硬科技公司为主，风险最高</td></tr>
+          <tr><td>沪深300</td><td>000300.SH</td><td>两市最大的300只</td><td>最代表"核心资产"</td></tr>
+          <tr><td>中证500</td><td>000905.SH</td><td>排除沪深300后的500只</td><td>中等市值公司，弹性更大</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>13.2 宽基指数 vs 行业指数 vs 主题指数</h4>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>宽基指数</h5>
+        <p>跨行业选股，代表整体市场。如沪深300、中证500。适合定投入门。</p>
+      </div>
+      <div class="callout">
+        <h5>行业指数</h5>
+        <p>只选某个行业的股票。如中证白酒、中证医药。看好某个行业时关注。</p>
+      </div>
+      <div class="callout">
+        <h5>主题指数</h5>
+        <p>按投资主题选股。如人工智能、碳中和。概念性强，波动大。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>13.3 主要板块分类</h4>
+    <div class="chart-container sm" id="chart-sector-map"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>板块</th><th>代表行业</th><th>特点</th><th>适合人群</th></tr></thead>
+        <tbody>
+          <tr><td>金融</td><td>银行、保险、券商</td><td>低估值、高股息、与经济周期相关</td><td>稳健型</td></tr>
+          <tr><td>消费</td><td>白酒、食品、家电</td><td>业绩稳定、品牌护城河强</td><td>价值型</td></tr>
+          <tr><td>科技</td><td>半导体、软件、AI</td><td>高成长、高波动、政策驱动</td><td>成长型</td></tr>
+          <tr><td>医药</td><td>创新药、医疗器械</td><td>防御性强、人口老龄化受益</td><td>长期配置</td></tr>
+          <tr><td>新能源</td><td>锂电、光伏、风电</td><td>高景气、竞争加剧、政策敏感</td><td>趋势型</td></tr>
+          <tr><td>周期</td><td>煤炭、钢铁、化工</td><td>与经济周期强相关，利润波动大</td><td>周期把握强的人</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>13.4 看板块轮动：为什么今天涨这个、明天涨那个？</h4>
+    <p><strong>板块轮动</strong>是A股最显著的特征之一：资金在不同板块之间流动，导致"轮着涨"。</p>
+    <p>轮动的驱动因素：</p>
+    <ul>
+      <li><strong>政策催化</strong>：如出台新能源补贴→新能源板块涨</li>
+      <li><strong>业绩周期</strong>：如消费旺季→消费板块涨</li>
+      <li><strong>资金博弈</strong>：某板块涨多了资金获利了结→转向低估值板块</li>
+      <li><strong>宏观环境</strong>：如降息→金融和地产受益</li>
+    </ul>
+    <p>新手不要追轮动——等你发现某板块在涨的时候，往往已经涨了一段。追进去容易被套。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>北向资金流向是观察板块风向的参考指标之一。当北向资金连续多日大额流入某个板块，说明外资看好该板块。但北向资金也会犯错，不能盲目跟随。查看渠道：东方财富"北向资金"页面。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>先看指数和板块，再看个股——<strong>自上而下</strong>的思维。一个上涨的板块里，大部分股票都会涨；一个下跌的板块里，好公司也难独善其身。选对板块，比选对个股更重要。</p>
+  </div>
+</div>
+
+
+<!-- ==================== PART 5: 分析一家公司的基础 ==================== -->
+<div class="part-header reveal" id="part5">
+  <div class="part-num">05</div>
+  <h2>第五篇：分析一家公司的基础</h2>
+  <p class="part-desc">核心目标：能看懂基本财务数据，判断一家公司"好不好"和"贵不贵"。记住：买股票就是买公司，你得先看得懂这家公司的"体检报告"。</p>
+</div>
+
+<!-- ===== 第14章 ===== -->
+<div class="chapter reveal" id="ch14">
+  <div class="chapter-header">
+    <span class="ch-num">第14章</span>
+    <h3>财务报表三分钟入门</h3>
+  </div>
+
+  <div class="section">
+    <h4>14.1 利润表：公司赚不赚钱？</h4>
+    <p><strong>利润表</strong>（Income Statement）记录公司一段时间内的收入、成本和利润。核心逻辑：</p>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="step-text">营业收入</div></div>
+      <div class="flow-arrow">-</div>
+      <div class="flow-step"><div class="step-text">营业成本</div></div>
+      <div class="flow-arrow">=</div>
+      <div class="flow-step"><div class="step-text">毛利润</div></div>
+      <div class="flow-arrow">-</div>
+      <div class="flow-step"><div class="step-text">费用+税</div></div>
+      <div class="flow-arrow">=</div>
+      <div class="flow-step"><div class="step-text">净利润</div></div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>指标</th><th>含义</th><th>关注点</th></tr></thead>
+        <tbody>
+          <tr><td>营业收入</td><td>卖东西/提供服务收到的总钱</td><td>是否持续增长？</td></tr>
+          <tr><td>营业成本</td><td>生产/采购的直接成本</td><td>毛利率=（营收-成本）/营收</td></tr>
+          <tr><td>毛利润</td><td>营收减去成本</td><td>反映产品本身赚钱能力</td></tr>
+          <tr><td>期间费用</td><td>销售费用+管理费用+研发费用+财务费用</td><td>费用率是否合理？</td></tr>
+          <tr><td>净利润</td><td>最终赚到口袋的钱</td><td>增速是否与营收匹配？</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>14.2 资产负债表：公司家底厚不厚？</h4>
+    <p><strong>资产负债表</strong>（Balance Sheet）是一张"快照"，记录某一时点公司的资产、负债和股东权益。核心公式：</p>
+    <div style="text-align:center;padding:16px;background:var(--bg3);border-radius:12px;margin:16px 0;font-size:1.1rem">
+      <strong style="color:var(--accent2)">资产</strong> = <strong style="color:var(--red)">负债</strong> + <strong style="color:var(--green)">股东权益</strong>
+    </div>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>资产（有什么）</h5>
+        <p>现金、存货、应收账款、厂房设备、无形资产等。分为流动资产（1年内可变现）和非流动资产。</p>
+      </div>
+      <div class="callout">
+        <h5>负债（欠什么）</h5>
+        <p>银行贷款、应付账款、预收款、债券等。分为流动负债（1年内需还）和非流动负债。</p>
+      </div>
+      <div class="callout">
+        <h5>股东权益（净值）</h5>
+        <p>= 资产 - 负债。是真正属于股东的部分，也叫"净资产"。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>14.3 现金流量表：公司真的有钱吗？</h4>
+    <p><strong>现金流量表</strong>（Cash Flow Statement）记录公司现金的流入和流出，分为三部分：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>活动</th><th>内容</th><th>健康表现</th></tr></thead>
+        <tbody>
+          <tr><td>经营活动现金流</td><td>日常经营收到/支出的现金</td><td>持续为正，且与净利润匹配</td></tr>
+          <tr><td>投资活动现金流</td><td>买设备、买公司、卖资产</td><td>成长期公司通常为负（在扩张）</td></tr>
+          <tr><td>筹资活动现金流</td><td>借款、还债、分红、融资</td><td>看具体情况，过度借债要警惕</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn-box">
+      <div class="warn-label">⚠️ 财务排雷信号</div>
+      <p>如果一家公司净利润很高，但<strong>经营现金流持续为负</strong>——说明"纸面富贵"，利润可能没有变成真金白银。可能的原因：应收账款收不回来、存货积压卖不掉、收入确认激进。这就是所谓的"利润可以'做'，现金流难'装'"。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>14.4 三张表怎么看？——一个实际案例拆解</h4>
+    <p>以一家虚拟的"小张奶茶公司"为例，用最简单的方式理解三张表：</p>
+    <div class="chart-container sm" id="chart-financial-demo"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>报表</th><th>核心问题</th><th>小张奶茶的情况</th></tr></thead>
+        <tbody>
+          <tr><td>利润表</td><td>赚不赚钱？</td><td>年营收500万，净利润60万，净利率12%→还不错</td></tr>
+          <tr><td>资产负债表</td><td>家底厚不厚？</td><td>总资产300万，负债100万，资产负债率33%→比较健康</td></tr>
+          <tr><td>现金流量表</td><td>真的有钱吗？</td><td>经营现金流80万>净利润60万→利润质量好，真金白银</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>利润可以"做"，现金流难"装"——经营现金流是验钞机。如果只看一张表，看<strong>现金流量表</strong>；如果只看一个数字，看<strong>经营活动现金流净额</strong>。它告诉你这家公司日常经营到底有没有真的在收钱。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>三张表是公司的体检报告，<strong>先看现金流再看利润</strong>。利润表告诉你"账面上赚了多少"，现金流量表告诉你"实际收到了多少"。两者一致说明健康，两者背离说明有猫腻。</p>
+  </div>
+</div>
+
+<!-- ===== 第15章 ===== -->
+<div class="chapter reveal" id="ch15">
+  <div class="chapter-header">
+    <span class="ch-num">第15章</span>
+    <h3>必知财务指标与估值指标</h3>
+  </div>
+
+  <div class="section">
+    <h4>15.1 盈利能力：ROE/毛利率/净利率</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>指标</th><th>公式</th><th>判断标准</th><th>注意</th></tr></thead>
+        <tbody>
+          <tr><td>ROE（净资产收益率）</td><td>净利润 ÷ 净资产</td><td>>15%为优秀，<10%偏弱</td><td>高ROE可能来自高负债，要拆解</td></tr>
+          <tr><td>毛利率</td><td>（营收-成本）÷ 营收</td><td>越高产品竞争力越强</td><td>不同行业差异大，要同业对比</td></tr>
+          <tr><td>净利率</td><td>净利润 ÷ 营收</td><td>>10%算不错</td><td>受费用率和税率影响</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>ROE是巴菲特最看重的指标，他说："如果只能用一个指标来选股，我选ROE。"但要注意，ROE=净利率×周转率×杠杆率，高ROE可能来自高负债（高杠杆），这不一定是好事。可以用<strong>杜邦分析</strong>拆解ROE的来源。</p>
+  </div>
+
+  <div class="section">
+    <h4>15.2 成长能力：营收增速/净利润增速</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>增速</th><th>含义</th><th>公司类型</th></tr></thead>
+        <tbody>
+          <tr><td>营收增速 > 20%</td><td>高速增长</td><td>成长股，市场给高估值</td></tr>
+          <tr><td>营收增速 5%-15%</td><td>稳健增长</td><td>价值股，市场给合理估值</td></tr>
+          <tr><td>营收增速 < 0%</td><td>衰退</td><td>需要警惕，除非是周期底部</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>看增速时，要区分<strong>同比</strong>（与去年同期比）和<strong>环比</strong>（与上季度比）。同比消除季节性影响，更常用；环比反映短期变化趋势。</p>
+  </div>
+
+  <div class="section">
+    <h4>15.3 偿债能力：资产负债率/流动比率</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>指标</th><th>公式</th><th>判断标准</th><th>注意</th></tr></thead>
+        <tbody>
+          <tr><td>资产负债率</td><td>总负债 ÷ 总资产</td><td><60%相对安全（金融除外）</td><td>不同行业标准不同</td></tr>
+          <tr><td>流动比率</td><td>流动资产 ÷ 流动负债</td><td>>1.5比较健康</td><td><1可能有短期偿债压力</td></tr>
+          <tr><td>速动比率</td><td>（流动资产-存货）÷ 流动负债</td><td>>1比较安全</td><td>排除了变现慢的存货</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>15.4 估值指标实战：PE/PB怎么看？</h4>
+    <p>估值指标告诉你"这家公司现在贵不贵"。但单独看一个数字没意义，必须对比：</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>横向对比（同业）</h5>
+        <p>同行业相似公司对比PE。如白酒行业平均PE=25x，某公司PE=18x→可能被低估。</p>
+      </div>
+      <div class="callout">
+        <h5>纵向对比（历史）</h5>
+        <p>当前PE在近10年中排第几？<30%分位=低估区间，>70%分位=高估区间。</p>
+      </div>
+    </div>
+    <div class="chart-container sm" id="chart-pe-percentile"></div>
+  </div>
+
+  <div class="section">
+    <h4>15.5 一个速查模板：5分钟判断一家公司值不值得深入研究</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>#</th><th>检查项</th><th>快速判断</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>ROE近3年是否>15%？</td><td>是→盈利能力强</td></tr>
+          <tr><td>2</td><td>经营现金流是否持续为正？</td><td>是→利润质量好</td></tr>
+          <tr><td>3</td><td>营收和净利润是否持续增长？</td><td>是→成长性好</td></tr>
+          <tr><td>4</td><td>资产负债率是否合理？</td><td>是→财务健康</td></tr>
+          <tr><td>5</td><td>当前PE历史分位是否<50%？</td><td>是→估值不贵</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>5项全通过→值得深入研究；3-4项→可以关注但有瑕疵；2项以下→暂时跳过。</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>PE低不一定是便宜——警惕"价值陷阱"。PE=股价/每股收益，PE低可能是因为股价低（真便宜），也可能是因为利润在下滑（市场预期未来更差，所以给低估值）。判断方法：看利润趋势——如果利润在下滑，低PE不是"便宜"而是"贵了还可能更贵"。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>财务指标是工具不是答案，关键是<strong>理解数字背后的生意</strong>。ROE高是因为产品好还是借钱多？PE低是因为真便宜还是利润在下滑？多问几个"为什么"，比背公式重要一百倍。</p>
+  </div>
+</div>
+
+<!-- ===== 第16章 ===== -->
+<div class="chapter reveal" id="ch16">
+  <div class="chapter-header">
+    <span class="ch-num">第16章</span>
+    <h3>宏观与行业——大环境怎么影响你的股票</h3>
+  </div>
+
+  <div class="section">
+    <h4>16.1 宏观经济的几个关键信号</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>指标</th><th>含义</th><th>对股市的影响</th></tr></thead>
+        <tbody>
+          <tr><td>GDP增速</td><td>经济总量增长速度</td><td>经济向上→企业盈利改善→利好股市</td></tr>
+          <tr><td>CPI</td><td>消费物价涨幅（通胀指标）</td><td>温和通胀利好，过高可能引发加息→利空</td></tr>
+          <tr><td>利率（LPR/MLF）</td><td>资金的价格</td><td>降息→资金成本低→利好股市；加息→利空</td></tr>
+          <tr><td>PMI</td><td>制造业景气度（>50为扩张）</td><td>PMI>50→制造业扩张→经济向好</td></tr>
+          <tr><td>M2增速</td><td>货币供应量增长</td><td>M2增速快→市场流动性充裕→利好股市</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>新手不需要自己预测宏观数据，但要知道这些数字公布后对市场意味着什么。重要数据公布时间可关注"财经日历"。</p>
+  </div>
+
+  <div class="section">
+    <h4>16.2 政策对行业的影响：鼓励vs限制</h4>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>鼓励政策 📈</h5>
+        <p>补贴、税收优惠、纳入国家战略→行业景气提升。如新能源补贴、半导体国产替代支持。</p>
+      </div>
+      <div class="callout">
+        <h5>限制政策 📉</h5>
+        <p>监管收紧、限制产能、加税→行业承压。如教培行业双减、房地产调控。</p>
+      </div>
+      <div class="callout">
+        <h5>怎么看？</h5>
+        <p>关注"国务院/发改委/工信部/证监会"官网的政策文件。券商研报也会解读政策影响。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>16.3 行业生命周期：你在哪个阶段买入？</h4>
+    <div class="chart-container sm" id="chart-lifecycle"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>阶段</th><th>特征</th><th>投资含义</th></tr></thead>
+        <tbody>
+          <tr><td>导入期</td><td>技术不成熟、市场小、亏损</td><td>高风险高回报，适合专业投资者</td></tr>
+          <tr><td>成长期</td><td>快速增长、利润率提升、竞争者涌入</td><td>最佳投资窗口，估值可能偏高</td></tr>
+          <tr><td>成熟期</td><td>增速放缓、格局稳定、现金流好</td><td>低估值高股息，适合稳健投资者</td></tr>
+          <tr><td>衰退期</td><td>需求萎缩、企业退出</td><td>一般回避，除非有转型预期</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>16.4 2025-2026年值得关注的几个方向</h4>
+    <p>（仅作知识介绍，不构成投资建议）</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>🤖 人工智能</h5>
+        <p>大模型驱动算力需求爆发，从芯片到应用全产业链受益。但竞争激烈、估值偏高。</p>
+      </div>
+      <div class="callout">
+        <h5>🔋 新能源</h5>
+        <p>光伏和锂电经历产能出清后有望触底回升。关注技术路线变化和海外市场拓展。</p>
+      </div>
+      <div class="callout">
+        <h5>💊 创新药</h5>
+        <p>人口老龄化长期受益。国产创新药出海提速，但研发失败风险高。</p>
+      </div>
+      <div class="callout">
+        <h5>🏦 高股息资产</h5>
+        <p>利率下行环境中，银行、煤炭、公用事业等高股息板块配置价值凸显。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>政策文件怎么看？关注"国务院/发改委/工信部"官网，重点是"规划""意见""通知"类文件。不必逐字阅读，看券商研报的政策解读即可——他们会提炼出对哪些行业利好/利空。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>好行业里的普通公司 > 差行业里的好公司。行业是土壤，公司是种子。再好的种子，种在盐碱地上也长不好。先选对行业，再选公司。</p>
+  </div>
+</div>
+
+
+<!-- ==================== PART 6: 防坑与第一笔投资 ==================== -->
+<div class="part-header reveal" id="part6">
+  <div class="part-num">06</div>
+  <h2>第六篇：防坑与第一笔投资</h2>
+  <p class="part-desc">核心目标：建立风控意识，完成第一笔投资，形成可持续的习惯。在股市里，活下去比赚得多更重要。</p>
+</div>
+
+<!-- ===== 第17章 ===== -->
+<div class="chapter reveal" id="ch17">
+  <div class="chapter-header">
+    <span class="ch-num">第17章</span>
+    <h3>新手防坑大全</h3>
+  </div>
+
+  <div class="section">
+    <h4>17.1 绝对红线：三条不可逾越的底线</h4>
+    <div class="callout-grid">
+      <div class="callout" style="border-color:var(--red)">
+        <h5 style="color:var(--red)">🚫 不借钱炒股</h5>
+        <p>借钱会放大贪婪和恐惧——赚了想加码，亏了还不起。配资、融资融券、信用卡套现炒股，都是通往深渊的捷径。</p>
+      </div>
+      <div class="callout" style="border-color:var(--red)">
+        <h5 style="color:var(--red)">🚫 不加杠杆</h5>
+        <p>杠杆让你的亏损也乘以倍数。1倍杠杆下跌50%就爆仓归零。巴菲特说："杠杆是唯一能让聪明人破产的东西。"</p>
+      </div>
+      <div class="callout" style="border-color:var(--red)">
+        <h5 style="color:var(--red)">🚫 不碰内幕消息</h5>
+        <p>内幕消息到你耳朵里时，已经不知道传了多少手。更严重的是，利用内幕消息交易是<strong>违法行为</strong>，可能面临刑事处罚。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>17.2 常见骗局识别</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>骗局类型</th><th>手法</th><th>识别方法</th></tr></thead>
+        <tbody>
+          <tr><td>荐股群</td><td>拉你进群，"老师"推荐涨停股，前期小赚诱你加码</td><td>真有这本事自己早赚翻了，何必要拉你？</td></tr>
+          <tr><td>杀猪盘</td><td>先交友/恋爱建立信任，然后推荐"稳赚"投资平台</td><td>任何非正规券商平台的"投资"都是骗局</td></tr>
+          <tr><td>场外配资</td><td>声称可1:5甚至1:10配资炒股</td><td>非法！资金不受监管，平台随时跑路</td></tr>
+          <tr><td>虚假App</td><td>仿冒正规券商App，你看到的涨跌是假的</td><td>只在官方渠道下载，核实券商资质</td></tr>
+          <tr><td>代客理财</td><td>"专业操盘手"帮你操作账户，收益分成</td><td>你的密码就是你的钱，交出去就失控了</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn-box">
+      <div class="warn-label">⚠️ 牢记</div>
+      <p>如果有人告诉你"稳赚不赔"，那他一定在骗你。股市中唯一确定的就是不确定性——任何承诺保本保收益的"投资"，100%是骗局。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>17.3 新手十大常见误区</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>#</th><th>误区</th><th>正确做法</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>追涨杀跌——涨了怕错过，跌了怕更多</td><td>建立买入逻辑，设好止损，不被情绪驱动</td></tr>
+          <tr><td>2</td><td>频繁交易——觉得不操作就"浪费"了</td><td>少操作多研究，一年3-5笔好交易胜过50笔差交易</td></tr>
+          <tr><td>3</td><td>只看PE就买——PE低=便宜</td><td>PE要结合增长看，低PE+利润下滑=价值陷阱</td></tr>
+          <tr><td>4</td><td>消息面炒股——听朋友/大V/群消息</td><td>自己做研究，别人的买卖逻辑和你不一样</td></tr>
+          <tr><td>5</td><td>满仓一只股——"我看好它！"</td><td>单只不超过总仓位30%，分散到3-5个行业</td></tr>
+          <tr><td>6</td><td>不设止损——"总会涨回来的"</td><td>设好止损线（-8%~-10%），到了坚决执行</td></tr>
+          <tr><td>7</td><td>赚一点就跑，亏了死扛</td><td>让利润奔跑，让亏损止步——反向操作才是正道</td></tr>
+          <tr><td>8</td><td>羡慕别人的收益——"他一年翻倍了"</td><td>你只看到了赚的人，没看到亏的人。走自己的路</td></tr>
+          <tr><td>9</td><td>以为技术分析能预测未来</td><td>技术分析是辅助确认工具，不是预言水晶球</td></tr>
+          <tr><td>10</td><td>新手就买小盘股/概念股</td><td>新手从大盘蓝筹或指数基金开始，先学走路再学跑</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>17.4 什么时候该止损？——止损不是认输，是保命</h4>
+    <p>止损是最难执行但最重要的纪律。为什么难？因为它要求你<strong>承认自己错了</strong>——这是反人性的。但不止损的后果更严重：</p>
+    <div class="chart-container sm" id="chart-stop-loss"></div>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>亏损幅度</th><th>需要涨多少才能回本</th><th>难度</th></tr></thead>
+        <tbody>
+          <tr><td>-5%</td><td>+5.3%</td><td>容易</td></tr>
+          <tr><td>-10%</td><td>+11.1%</td><td>还好</td></tr>
+          <tr><td>-20%</td><td>+25%</td><td>较难</td></tr>
+          <tr><td>-30%</td><td>+42.9%</td><td>很难</td></tr>
+          <tr><td>-50%</td><td>+100%</td><td>极难</td></tr>
+          <tr><td>-70%</td><td>+233%</td><td>几乎不可能</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>止损方法</strong>：</p>
+    <ul>
+      <li><strong>固定比例止损</strong>：买入后跌8%无条件卖出（最简单，新手首选）</li>
+      <li><strong>技术位止损</strong>：跌破重要支撑位或均线时止损</li>
+      <li><strong>逻辑止损</strong>：买入理由被推翻时止损（如公司业绩大幅低于预期）</li>
+    </ul>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>在股市里，<strong>活下去比赚得多更重要</strong>。每一次止损都是在保护你的本金——本金还在，就有翻本的机会；本金没了，就彻底出局了。</p>
+  </div>
+</div>
+
+<!-- ===== 第18章 ===== -->
+<div class="chapter reveal" id="ch18">
+  <div class="chapter-header">
+    <span class="ch-num">第18章</span>
+    <h3>你的第一笔投资</h3>
+  </div>
+
+  <div class="section">
+    <h4>18.1 入市前的最终检查清单</h4>
+    <div class="checklist" id="entryChecklist">
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我理解股票是公司所有权，不是彩票</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我了解A股的基本交易规则（T+1、涨跌幅限制等）</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我知道交易是有成本的，不会频繁交易</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我已经设定了止损纪律（如-8%止损）</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我不会用借来的钱或生活必需资金投资</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我了解了常见的骗局，不会被"稳赚"诱惑</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我知道"七亏二平一赚"，不会盲目乐观</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我已选定正规券商并完成开户</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我已花至少2周熟悉交易软件</label>
+      <label><input type="checkbox" onchange="toggleCheck(this)"> 我的第一笔投入是亏得起的钱</label>
+    </div>
+    <p style="margin-top:12px;font-size:.88rem;color:var(--text3)">10项全勾选=你准备好了。如果还有未勾选项，建议先回去把对应章节重读一遍。</p>
+  </div>
+
+  <div class="section">
+    <h4>18.2 用多少钱开始？——亏得起的钱，才是入市的钱</h4>
+    <p>关于初始资金的建议：</p>
+    <ul>
+      <li><strong>绝对不用</strong>：房贷/房租/孩子学费/应急储备金</li>
+      <li><strong>建议金额</strong>：总资产的5%-10%，或几千到一两万（对多数人而言）</li>
+      <li><strong>心态标准</strong>：即使全部亏完，也不影响你的正常生活——这才是"亏得起"</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h4>18.3 第一个买什么？——个股vs指数基金，新人的最优选择</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>维度</th><th>个股</th><th>指数基金（ETF）</th></tr></thead>
+        <tbody>
+          <tr><td>选择难度</td><td>高——需要研究公司</td><td>低——跟踪指数即可</td></tr>
+          <tr><td>风险</td><td>集中——一只股跌停很常见</td><td>分散——指数不会归零</td></tr>
+          <tr><td>收益上限</td><td>可能很高</td><td>跟随市场平均</td></tr>
+          <tr><td>适合阶段</td><td>有经验之后</td><td>新手首选</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>新手的第一笔投资，<strong>强烈建议从指数基金（ETF）开始</strong>。沪深300ETF是入门首选——它包含了A股最大的300家公司，买它就等于买下"中国核心资产"的整体。</p>
+  </div>
+
+  <div class="section">
+    <h4>18.4 指数基金定投入门：什么是定投？为什么适合新手？</h4>
+    <p><strong>定投</strong>（定期定额投资）就是每个月固定日期、固定金额买入同一只基金。它的核心优势：</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>📈 不用择时</h5>
+        <p>涨了买少点，跌了买多点，自动摊平成本。不用纠结"现在能不能买"。</p>
+      </div>
+      <div class="callout">
+        <h5>🧠 克服人性</h5>
+        <p>跌的时候最不敢买，但定投强制你在低位买入——恰恰是最该买的时候。</p>
+      </div>
+      <div class="callout">
+        <h5>⏰ 适合上班族</h5>
+        <p>设定自动扣款，不用盯盘，不用研究个股。每月几百块就能参与。</p>
+      </div>
+    </div>
+
+    <!-- 定投模拟计算器 -->
+    <div class="interactive-panel">
+      <h5>🧮 定投收益模拟器</h5>
+      <div class="calc-row">
+        <label>每月定投金额（元）</label>
+        <input type="number" id="dip-monthly" value="1000">
+      </div>
+      <div class="calc-row">
+        <label>年化收益率（%）</label>
+        <input type="number" id="dip-rate" value="8" step="0.5">
+      </div>
+      <div class="calc-row">
+        <label>定投年限（年）</label>
+        <input type="range" id="dip-years" min="1" max="30" value="10" oninput="updateDip()">
+        <span id="dip-years-label" style="color:var(--accent2);font-weight:600;min-width:40px">10年</span>
+      </div>
+      <div class="calc-result">
+        <div class="result-num" id="dip-total">¥0</div>
+        <div class="result-label">预计总金额（累计投入：<span id="dip-input-total">¥0</span>，收益：<span id="dip-profit" style="color:var(--green)">¥0</span>）</div>
+      </div>
+      <div class="chart-container xs" id="chart-dip"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h4>18.5 建立投资日记：记录每一笔交易的逻辑</h4>
+    <p>投资日记是你进步最快的方法。每一笔交易前，写下：</p>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>记录项</th><th>示例</th></tr></thead>
+        <tbody>
+          <tr><td>买入日期</td><td>2026-07-22</td></tr>
+          <tr><td>买入标的</td><td>沪深300ETF（510300）</td></tr>
+          <tr><td>买入价格</td><td>3.85元</td></tr>
+          <tr><td>买入理由</td><td>估值处于近10年30%分位，定投计划第3期</td></tr>
+          <tr><td>计划卖出条件</td><td>定投满3年或估值到70%分位以上</td></tr>
+          <tr><td>止损线</td><td>不适用（定投不止损，越跌越买）</td></tr>
+          <tr><td>情绪状态</td><td>平静，按计划执行</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>定期复盘：每季度回顾一次，看当初的买入理由是否还成立，有哪些判断对了、哪些错了。这就是你最好的"投资教材"。</p>
+  </div>
+
+  <div class="section">
+    <h4>18.6 下一步学什么？——从本手册到进阶之路</h4>
+    <p>本手册覆盖了"认知+规则"的基础，接下来你可以继续深入：</p>
+    <div class="callout-grid">
+      <div class="callout">
+        <h5>📖 阅读经典</h5>
+        <p>《聪明的投资者》《巴菲特致股东的信》《投资最重要的事》</p>
+      </div>
+      <div class="callout">
+        <h5>🔬 深入行业</h5>
+        <p>选择1-2个你感兴趣的行业，做深度研究。消费、科技、医药各有逻辑。</p>
+      </div>
+      <div class="callout">
+        <h5>📊 学估值建模</h5>
+        <p>DCF现金流折现、相对估值法，从简单到复杂。</p>
+      </div>
+      <div class="callout">
+        <h5>🧘 修炼心态</h5>
+        <p>投资最终比的不是聪明，而是耐心和纪律。持续复盘，持续迭代。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-label">💡 投研Tips</div>
+    <p>定投的关键不是"买什么"，而是<strong>"坚持多久"</strong>。很多人在市场下跌时停止定投——恰恰相反，下跌时正是摊低成本的最佳时机。坚持3年以上的定投，胜率远高于择时买卖。</p>
+  </div>
+
+  <div class="key-box">
+    <div class="key-label">🔑 核心要点</div>
+    <p>第一笔投资不在于赚多少，而在于<strong>验证你的方法和心态</strong>。用亏得起的钱，从指数基金定投开始，记录每一笔交易逻辑，定期复盘。这是你在股市里走得更远的起点。</p>
+  </div>
+</div>
+
+
+<!-- ==================== 附录 ==================== -->
+<div class="part-header reveal" id="appendix">
+  <div class="part-num">+</div>
+  <h2>附录</h2>
+  <p class="part-desc">速查工具箱——遇到问题随时翻阅</p>
+</div>
+
+<!-- 附录A -->
+<div class="appendix reveal" id="appA">
+  <h3>附录A：术语速查表</h3>
+  <p style="font-size:.85rem;color:var(--text3);margin-bottom:16px">按拼音排序，一句话解释+所在章节</p>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>术语</th><th>一句话解释</th><th>章节</th></tr></thead>
+      <tbody>
+        <tr><td>北向资金</td><td>通过沪港通/深港通流入A股的外资</td><td>第6章</td></tr>
+        <tr><td>仓位</td><td>已投入资金占总资金的比例</td><td>第11章</td></tr>
+        <tr><td>成长股</td><td>营收和利润高速增长的公司</td><td>第16章</td></tr>
+        <tr><td>持仓</td><td>你当前持有的股票组合</td><td>第11章</td></tr>
+        <tr><td>大股东减持</td><td>大股东卖出持股，通常被解读为利空信号</td><td>第6章</td></tr>
+        <tr><td>分红/股息</td><td>公司将利润按比例分配给股东</td><td>第5章</td></tr>
+        <tr><td>复利</td><td>利滚利，上一期收益成为下一期本金</td><td>第2章</td></tr>
+        <tr><td>股票</td><td>公司所有权的凭证，持有即为股东</td><td>第4章</td></tr>
+        <tr><td>估值</td><td>判断股价贵不贵的过程</td><td>第11、15章</td></tr>
+        <tr><td>行情</td><td>股票当前的价格和交易信息</td><td>第10章</td></tr>
+        <tr><td>护城河</td><td>企业持久的竞争优势</td><td>第16章</td></tr>
+        <tr><td>回购</td><td>公司用自己的钱在市场上买回股票</td><td>第6章</td></tr>
+        <tr><td>集合竞价</td><td>所有买卖单集中撮合，确定统一价格</td><td>第7章</td></tr>
+        <tr><td>价值陷阱</td><td>低PE但利润下滑，越"便宜"越危险</td><td>第15章</td></tr>
+        <tr><td>交易费用</td><td>佣金+印花税+过户费等买卖成本</td><td>第8章</td></tr>
+        <tr><td>金叉/死叉</td><td>短期均线上穿/下穿长期均线</td><td>第12章</td></tr>
+        <tr><td>K线</td><td>记录开盘/收盘/最高/最低价的蜡烛图</td><td>第10章</td></tr>
+        <tr><td>蓝筹股</td><td>业绩稳定、市值大、分红好的公司</td><td>第11章</td></tr>
+        <tr><td>连续竞价</td><td>逐笔撮合，只要有匹配价格就成交</td><td>第7章</td></tr>
+        <tr><td>流动比率</td><td>流动资产/流动负债，衡量短期偿债能力</td><td>第15章</td></tr>
+        <tr><td>毛利/毛利率</td><td>营收减去成本/占营收的比例</td><td>第14、15章</td></tr>
+        <tr><td>均线（MA）</td><td>过去N天收盘价的平均值连成的线</td><td>第12章</td></tr>
+        <tr><td>PE（市盈率）</td><td>股价/每股收益，衡量估值水平</td><td>第11、15章</td></tr>
+        <tr><td>PB（市净率）</td><td>股价/每股净资产，<1为"破净"</td><td>第11、15章</td></tr>
+        <tr><td>ROE</td><td>净利润/净资产，衡量股东回报水平</td><td>第15章</td></tr>
+        <tr><td>上证指数</td><td>上交所所有股票的综合指数，常说的"大盘"</td><td>第13章</td></tr>
+        <tr><td>止损</td><td>亏损到预设价位卖出，控制损失</td><td>第11、17章</td></tr>
+        <tr><td>T+1</td><td>今天买入的股票，明天才能卖出</td><td>第7章</td></tr>
+        <tr><td>涨停/跌停</td><td>达到涨跌幅限制的价格</td><td>第7章</td></tr>
+        <tr><td>投资vs投机</td><td>基于基本面vs基于价格波动的交易</td><td>第3章</td></tr>
+        <tr><td>通胀（CPI）</td><td>物价持续上涨，货币购买力下降</td><td>第1章</td></tr>
+        <tr><td>现金流量表</td><td>记录公司现金流入流出的报表</td><td>第14章</td></tr>
+        <tr><td>限价委托</td><td>指定价格买入/卖出</td><td>第7章</td></tr>
+        <tr><td>指数</td><td>一篮子股票价格的加权平均值</td><td>第13章</td></tr>
+        <tr><td>指数基金/ETF</td><td>跟踪特定指数的基金，可像股票一样买卖</td><td>第13、18章</td></tr>
+        <tr><td>印花费</td><td>卖出时按成交金额0.05%收取的税</td><td>第8章</td></tr>
+        <tr><td>银证转账</td><td>银行账户与证券账户之间的资金划转</td><td>第9章</td></tr>
+        <tr><td>定投</td><td>定期定额买入同一标的，适合新手</td><td>第18章</td></tr>
+        <tr><td>资产负债率</td><td>总负债/总资产，衡量财务杠杆</td><td>第15章</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 附录B -->
+<div class="appendix reveal" id="appB">
+  <h3>附录B：交易规则对比表</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>规则</th><th>A股</th><th>港股</th><th>美股</th></tr></thead>
+      <tbody>
+        <tr><td>交易时间</td><td>9:30-11:30 / 13:00-15:00</td><td>9:30-12:00 / 13:00-16:00</td><td>美东 9:30-16:00</td></tr>
+        <tr><td>涨跌幅限制</td><td>主板±10%，创业板/科创板±20%</td><td>无</td><td>无（个股熔断机制）</td></tr>
+        <tr><td>交收制度</td><td>T+1</td><td>T+2</td><td>T+1</td></tr>
+        <tr><td>最小交易单位</td><td>100股（1手）</td><td>按个股不同（1手可为100-5000股）</td><td>1股</td></tr>
+        <tr><td>交易货币</td><td>人民币</td><td>港币</td><td>美元</td></tr>
+        <tr><td>做空机制</td><td>融资融券（有门槛）</td><td>可做空</td><td>可做空</td></tr>
+        <tr><td>涨跌颜色</td><td>红涨绿跌</td><td>无涨跌停限制</td><td>绿涨红跌</td></tr>
+        <tr><td>印花税</td><td>卖出0.05%</td><td>买卖双向0.13%</td><td>无</td></tr>
+        <tr><td>打新制度</td><td>市值配售，中签后缴款</td><td>现金申购，中签后缴款</td><td>无打新制度</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 附录C -->
+<div class="appendix reveal" id="appC">
+  <h3>附录C：财务指标速查卡</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>指标</th><th>英文</th><th>公式</th><th>判断标准</th><th>注意</th></tr></thead>
+      <tbody>
+        <tr><td>ROE</td><td>Return on Equity</td><td>净利润/净资产</td><td>>15%优秀</td><td>可能被高杠杆推高</td></tr>
+        <tr><td>ROA</td><td>Return on Assets</td><td>净利润/总资产</td><td>>6%不错</td><td>资产越轻通常越高</td></tr>
+        <tr><td>毛利率</td><td>Gross Margin</td><td>(营收-成本)/营收</td><td>越高越好</td><td>同行业对比才有意义</td></tr>
+        <tr><td>净利率</td><td>Net Margin</td><td>净利润/营收</td><td>>10%不错</td><td>受费用和税率影响</td></tr>
+        <tr><td>营收增速</td><td>Revenue Growth</td><td>(本期-上期)/上期</td><td>>15%为成长</td><td>区分同比和环比</td></tr>
+        <tr><td>资产负债率</td><td>Debt Ratio</td><td>总负债/总资产</td><td><60%安全</td><td>金融行业除外</td></tr>
+        <tr><td>流动比率</td><td>Current Ratio</td><td>流动资产/流动负债</td><td>>1.5健康</td><td><1需警惕</td></tr>
+        <tr><td>PE</td><td>Price/Earnings</td><td>股价/每股收益</td><td>看行业和历史</td><td>低PE≠便宜</td></tr>
+        <tr><td>PB</td><td>Price/Book</td><td>股价/每股净资产</td><td><1为破净</td><td>轻资产公司不适用</td></tr>
+        <tr><td>PS</td><td>Price/Sales</td><td>市值/营收</td><td>看行业</td><td>亏损公司常用</td></tr>
+        <tr><td>股息率</td><td>Dividend Yield</td><td>每股分红/股价</td><td>>3%较高</td><td>高股息≠好投资</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 附录D -->
+<div class="appendix reveal" id="appD">
+  <h3>附录D：数据与信息渠道清单</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>类别</th><th>渠道</th><th>用途</th><th>费用</th></tr></thead>
+      <tbody>
+        <tr><td>官方公告</td><td>巨潮资讯网 cninfo.com.cn</td><td>上市公司公告（法定披露）</td><td>免费</td></tr>
+        <tr><td>官方公告</td><td>上交所/深交所官网</td><td>交易所规则、监管信息</td><td>免费</td></tr>
+        <tr><td>行情数据</td><td>东方财富 eastmoney.com</td><td>行情、财务数据、资讯</td><td>免费</td></tr>
+        <tr><td>行情数据</td><td>同花顺 10jqka.com.cn</td><td>行情、选股、数据</td><td>免费/付费</td></tr>
+        <tr><td>研报</td><td>慧博投研资讯</td><td>券商研报检索</td><td>免费/付费</td></tr>
+        <tr><td>基金数据</td><td>天天基金 fund.eastmoney.com</td><td>基金净值、持仓、排名</td><td>免费</td></tr>
+        <tr><td>宏观数据</td><td>国家统计局 stats.gov.cn</td><td>GDP、CPI、PMI等</td><td>免费</td></tr>
+        <tr><td>财经日历</td><td>金十数据 jin10.com</td><td>重要经济数据发布时间</td><td>免费</td></tr>
+        <tr><td>学习社区</td><td>雪球 xueqiu.com</td><td>投资者讨论、专栏</td><td>免费</td></tr>
+        <tr><td>投教平台</td><td>中国投资者网 investor.org.cn</td><td>官方投资者教育</td><td>免费</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 附录E -->
+<div class="appendix reveal" id="appE">
+  <h3>附录E：新手自检清单</h3>
+  <p style="font-size:.85rem;color:var(--text3);margin-bottom:16px">入市前30问，全答"是"才算准备好</p>
+  
+  <h4>认知篇（10问）</h4>
+  <div class="checklist">
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 1. 我理解股票是公司所有权，不是彩票</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 2. 我知道通胀会侵蚀购买力，投资是必要的</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 3. 我理解复利的力量，也知道亏损同样会复利</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 4. 我知道"七亏二平一赚"，不会盲目乐观</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 5. 我能区分投资、投机和赌博</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 6. 我理解股价短期波动是正常的，不会恐慌</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 7. 我知道"买股票就是买公司"的含义</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 8. 我理解分红和价差是两种收益来源</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 9. 我了解市场参与者和他们的优势</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 10. 我接受"慢慢变富"的理念，不追求一夜暴富</label>
+  </div>
+  
+  <h4>规则篇（10问）</h4>
+  <div class="checklist">
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 11. 我知道A股的交易时间和T+1规则</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 12. 我了解涨跌幅限制和集合竞价机制</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 13. 我知道交易有费用，不会频繁交易</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 14. 我了解账户权限门槛（创业板/科创板等）</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 15. 我已在正规券商开户</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 16. 我熟悉交易软件的基本操作</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 17. 我知道怎么看K线、成交量和换手率</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 18. 我了解PE/PB等基本估值指标</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 19. 我知道什么是指数和板块</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 20. 我知道去哪里查公司公告和财务数据</label>
+  </div>
+  
+  <h4>风控篇（10问）</h4>
+  <div class="checklist">
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 21. 我不会用借来的钱或生活必需资金投资</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 22. 我不会加杠杆炒股</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 23. 我不会碰"内幕消息"</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 24. 我能识别常见的股市骗局</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 25. 我已设定止损纪律</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 26. 我不会满仓一只股票</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 27. 我的第一笔投入是亏得起的钱</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 28. 我知道定投是适合新手的入门方式</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 29. 我准备写投资日记记录交易逻辑</label>
+    <label><input type="checkbox" onchange="toggleCheck(this)"> 30. 我接受"先学会活下来，再追求赚得多"</label>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>股票新手入门手册 · 仅供学习参考，不构成投资建议</p>
+  <p style="margin-top:8px;font-size:.75rem;color:var(--text3)">投资有风险，入市需谨慎。本手册所有数据为示例或历史数据，不构成任何买卖建议。</p>
+</div>
+
+</div><!-- end mainContent -->
+
+
+<script>
+// ===== Scroll Reveal =====
+function initReveal(){
+  const els=document.querySelectorAll('.reveal,.fade-in');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>obs.observe(el));
+}
+
+// ===== Sidebar =====
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const btn=document.getElementById('toggleBtn');
+  sb.classList.toggle('show');
+  btn.classList.toggle('shifted');
+}
+function scrollToId(id){
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
+  if(window.innerWidth<=900){document.getElementById('sidebar').classList.remove('show')}
+}
+
+// ===== Back to Top =====
+window.addEventListener('scroll',()=>{
+  document.getElementById('backTop').classList.toggle('show',window.scrollY>600);
+  // Active nav
+  const navItems=document.querySelectorAll('.nav-item');
+  let current='';
+  document.querySelectorAll('[id]').forEach(el=>{
+    if(el.getBoundingClientRect().top<200) current=el.id;
+  });
+  navItems.forEach(item=>{
+    item.classList.remove('active');
+    if(item.getAttribute('onclick')?.includes(current)) item.classList.add('active');
+  });
+});
+
+// ===== Checkbox Toggle =====
+function toggleCheck(el){
+  el.parentElement.classList.toggle('checked',el.checked);
+}
+
+// ===== Hero Canvas - Floating Particles =====
+function initHeroCanvas(){
+  const c=document.getElementById('heroCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=c.width=c.offsetWidth;h=c.height=c.offsetHeight}
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<80;i++){
+    particles.push({
+      x:Math.random()*w, y:Math.random()*h,
+      vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+      r:Math.random()*2+.5, a:Math.random()*.4+.1
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=w; if(p.x>w)p.x=0;
+      if(p.y<0)p.y=h; if(p.y>h)p.y=0;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(245,158,11,${p.a})`; ctx.fill();
+    });
+    // Lines
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){
+          ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(245,158,11,${.08*(1-d/120)})`; ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ===== Candlestick Canvas =====
+function drawCandlestick(){
+  const c=document.getElementById('candlestickCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  const W=c.width, H=c.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#111B2E'; ctx.fillRect(0,0,W,H);
+  
+  // Draw a yang (bullish) candle
+  const yangX=150, yangTop=80, yangBot=180, yangOpen=140, yangClose=100;
+  // Wick
+  ctx.beginPath(); ctx.moveTo(yangX,yangTop); ctx.lineTo(yangX,yangBot);
+  ctx.strokeStyle='#EF4444'; ctx.lineWidth=2; ctx.stroke();
+  // Body
+  ctx.fillStyle='rgba(239,68,68,.8)';
+  ctx.fillRect(yangX-25, yangClose, 50, yangOpen-yangClose);
+  ctx.strokeStyle='#EF4444'; ctx.strokeRect(yangX-25, yangClose, 50, yangOpen-yangClose);
+  
+  // Labels for yang
+  ctx.fillStyle='#EF4444'; ctx.font='13px "Noto Sans SC"'; ctx.textAlign='left';
+  ctx.fillText('最高价',yangX+35,yangTop+5);
+  ctx.fillStyle='#FBBF24'; ctx.fillText('收盘价（阳线上边）',yangX+35,yangClose+5);
+  ctx.fillStyle='#FBBF24'; ctx.fillText('开盘价（阳线下边）',yangX+35,yangOpen+5);
+  ctx.fillStyle='#EF4444'; ctx.fillText('最低价',yangX+35,yangBot+5);
+  
+  // Draw a yin (bearish) candle
+  const yinX=420, yinTop=80, yinBot=180, yinOpen=100, yinClose=150;
+  // Wick
+  ctx.beginPath(); ctx.moveTo(yinX,yinTop); ctx.lineTo(yinX,yinBot);
+  ctx.strokeStyle='#22C55E'; ctx.lineWidth=2; ctx.stroke();
+  // Body - filled for yin
+  ctx.fillStyle='rgba(34,197,94,.8)';
+  ctx.fillRect(yinX-25, yinOpen, 50, yinClose-yinOpen);
+  
+  // Labels for yin
+  ctx.fillStyle='#22C55E'; ctx.textAlign='right';
+  ctx.fillText('最高价',yinX-35,yinTop+5);
+  ctx.fillStyle='#FBBF24'; ctx.fillText('开盘价（阴线上边）',yinX-35,yinOpen+5);
+  ctx.fillStyle='#FBBF24'; ctx.fillText('收盘价（阴线下边）',yinX-35,yinClose+5);
+  ctx.fillStyle='#22C55E'; ctx.fillText('最低价',yinX-35,yinBot+5);
+  
+  // Title labels
+  ctx.textAlign='center'; ctx.font='bold 14px "Noto Sans SC"';
+  ctx.fillStyle='#EF4444'; ctx.fillText('阳线（上涨）',yangX,230);
+  ctx.fillStyle='#22C55E'; ctx.fillText('阴线（下跌）',yinX,230);
+  
+  // Upper/Lower shadow explanation
+  ctx.textAlign='center'; ctx.font='12px "Noto Sans SC"'; ctx.fillStyle='#94A3B8';
+  ctx.fillText('上影线',yangX,yangTop-8);
+  ctx.fillText('上影线',yinX,yinTop-8);
+  ctx.fillText('下影线',yangX,yangBot+20);
+  ctx.fillText('下影线',yinX,yinBot+20);
+  
+  // Arrow labels
+  ctx.font='12px "Noto Sans SC"'; ctx.fillStyle='#64748B';
+  ctx.textAlign='center';
+  ctx.fillText('← 实体 →',yangX,(yangOpen+yangClose)/2+4);
+  ctx.fillText('← 实体 →',yinX,(yinOpen+yinClose)/2+4);
+  
+  // Bottom note
+  ctx.font='11px "Noto Sans SC"'; ctx.fillStyle='#64748B'; ctx.textAlign='center';
+  ctx.fillText('A股：红色=上涨（阳线），绿色=下跌（阴线）',W/2,280);
+}
+
+// ===== Order Book Canvas =====
+function drawOrderBook(){
+  const c=document.getElementById('orderBookCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  const W=c.width, H=c.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#111B2E'; ctx.fillRect(0,0,W,H);
+  
+  const midY=H/2;
+  const barH=22, gap=4;
+  const centerX=W/2;
+  
+  // Sell orders (above, green)
+  const sells=[
+    {price:'卖五 25.08',vol:'120'},
+    {price:'卖四 25.06',vol:'350'},
+    {price:'卖三 25.05',vol:'200'},
+    {price:'卖二 25.03',vol:'580'},
+    {price:'卖一 25.02',vol:'890'},
+  ];
+  sells.forEach((s,i)=>{
+    const y=midY-100+(4-i)*(barH+gap);
+    const barW=parseInt(s.vol)/890*160;
+    ctx.fillStyle='rgba(34,197,94,.15)';
+    ctx.fillRect(centerX-barW,y,barW,barH);
+    ctx.fillStyle='#22C55E'; ctx.font='12px "Noto Sans SC"'; ctx.textAlign='right';
+    ctx.fillText(s.price,centerX-barW-8,y+15);
+    ctx.textAlign='left'; ctx.fillText(s.vol+'手',centerX+8,y+15);
+  });
+  
+  // Buy orders (below, red)
+  const buys=[
+    {price:'买一 25.01',vol:'1200'},
+    {price:'买二 25.00',vol:'680'},
+    {price:'买三 24.98',vol:'450'},
+    {price:'买四 24.97',vol:'300'},
+    {price:'买五 24.95',vol:'150'},
+  ];
+  buys.forEach((b,i)=>{
+    const y=midY+10+i*(barH+gap);
+    const barW=parseInt(b.vol)/1200*160;
+    ctx.fillStyle='rgba(239,68,68,.15)';
+    ctx.fillRect(centerX-barW,y,barW,barH);
+    ctx.fillStyle='#EF4444'; ctx.font='12px "Noto Sans SC"'; ctx.textAlign='right';
+    ctx.fillText(b.price,centerX-barW-8,y+15);
+    ctx.textAlign='left'; ctx.fillText(b.vol+'手',centerX+8,y+15);
+  });
+  
+  // Center line
+  ctx.beginPath(); ctx.moveTo(centerX,0); ctx.lineTo(centerX,H);
+  ctx.strokeStyle='rgba(148,163,184,.2)'; ctx.lineWidth=1; ctx.stroke();
+  
+  // Label
+  ctx.fillStyle='#F59E0B'; ctx.font='bold 12px "Noto Sans SC"'; ctx.textAlign='center';
+  ctx.fillText('← 买卖五档示意图 →',W/2,H-20);
+}
+
+// ===== ECharts Theme =====
+const theme={
+  color:['#F59E0B','#22C55E','#EF4444','#3B82F6','#A78BFA','#22D3EE','#F472B6','#FB923C'],
+  backgroundColor:'transparent',
+  textStyle:{color:'#94A3B8',fontFamily:'"Noto Sans SC",sans-serif'},
+  title:{textStyle:{color:'#F59E0B',fontSize:14}},
+  legend:{textStyle:{color:'#94A3B8'}},
+  xAxis:{axisLine:{lineStyle:{color:'#334155'}},axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,.08)'}}},
+  yAxis:{axisLine:{lineStyle:{color:'#334155'}},axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'rgba(148,163,184,.08)'}}},
+};
+
+function echartsInit(id){
+  const el=document.getElementById(id);
+  if(!el) return null;
+  return echarts.init(el,'dark');
+}
+
+// ===== Chart: Inflation vs Assets =====
+function initInflationChart(){
+  const ch=echartsInit('chart-inflation');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    legend:{data:['通胀率','活期','定期','理财','债券基金','股票基金'],top:5,textStyle:{color:'#94A3B8',fontSize:11}},
+    grid:{left:50,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025']},
+    yAxis:{type:'value',name:'年化收益率(%)',nameTextStyle:{color:'#94A3B8'}},
+    series:[
+      {name:'通胀率',type:'bar',data:[2.0,1.6,2.1,2.9,2.5,0.9,2.0,0.2,0.2,0.5],itemStyle:{color:'#EF4444'}},
+      {name:'活期',type:'line',data:[0.3,0.3,0.3,0.3,0.3,0.3,0.25,0.2,0.2,0.15],itemStyle:{color:'#64748B'}},
+      {name:'定期',type:'line',data:[1.9,1.5,1.5,2.0,1.8,1.5,1.3,1.2,1.1,1.0],itemStyle:{color:'#94A3B8'}},
+      {name:'理财',type:'line',data:[3.8,3.5,3.2,3.0,2.8,2.6,2.4,2.2,2.0,1.8],itemStyle:{color:'#3B82F6'}},
+      {name:'债券基金',type:'line',data:[4.5,3.8,4.2,4.8,3.5,4.0,2.2,3.5,4.2,3.8],itemStyle:{color:'#22D3EE'}},
+      {name:'股票基金',type:'line',data:[-8,12,-22,35,42,6,-18,-10,5,8],itemStyle:{color:'#F59E0B'},lineStyle:{type:'dashed'}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Compound Interest =====
+function initCompoundChart(){
+  const ch=echartsInit('chart-compound');
+  if(!ch) return;
+  const years=Array.from({length:41},(_,i)=>i);
+  const simple=years.map(y=>10000*(1+y*0.1));
+  const compound=years.map(y=>10000*Math.pow(1.1,y));
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'},formatter:p=>{
+      let s=`第${p[0].axisValue}年<br>`;
+      p.forEach(x=>s+=`${x.seriesName}: ¥${x.value.toLocaleString()}<br>`);
+      return s;
+    }},
+    legend:{data:['单利','复利'],top:5,textStyle:{color:'#94A3B8'}},
+    grid:{left:70,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:years.map(y=>y),name:'年'},
+    yAxis:{type:'value',name:'金额(元)',axisLabel:{formatter:v=>v>=10000?(v/10000).toFixed(0)+'万':v}},
+    series:[
+      {name:'单利',type:'line',data:simple.map(v=>Math.round(v)),smooth:true,itemStyle:{color:'#94A3B8'},areaStyle:{color:'rgba(148,163,184,.05)'}},
+      {name:'复利',type:'line',data:compound.map(v=>Math.round(v)),smooth:true,itemStyle:{color:'#F59E0B'},areaStyle:{color:'rgba(245,158,11,.1)'}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Age Start =====
+function initAgeStartChart(){
+  const ch=echartsInit('chart-age-start');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'item',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    series:[{
+      type:'pie',radius:['40%','70%'],center:['50%','55%'],
+      label:{color:'#94A3B8',formatter:'{b}\n月投{c}元'},
+      data:[
+        {value:290,name:'25岁开始',itemStyle:{color:'#22C55E'}},
+        {value:670,name:'35岁开始',itemStyle:{color:'#F59E0B'}},
+        {value:1740,name:'45岁开始',itemStyle:{color:'#EF4444'}},
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Index Returns =====
+function initIndexReturnChart(){
+  const ch=echartsInit('chart-index-return');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    legend:{data:['沪深300','中证500','创业板指'],top:5,textStyle:{color:'#94A3B8'}},
+    grid:{left:50,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025H1']},
+    yAxis:{type:'value',name:'年化收益率(%)'},
+    series:[
+      {name:'沪深300',type:'bar',data:[-11,22,-25,36,27,-5,-21,-11,15,2],itemStyle:{color:'#3B82F6'}},
+      {name:'中证500',type:'bar',data:[-17,0,-33,26,20,12,-20,-7,8,5],itemStyle:{color:'#F59E0B'}},
+      {name:'创业板指',type:'bar',data:[-27,-11,-29,44,65,12,-29,-19,12,6],itemStyle:{color:'#A78BFA'}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: 70-20-10 =====
+function init7021Chart(){
+  const ch=echartsInit('chart-7021');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'item',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    series:[{
+      type:'pie',radius:['45%','72%'],center:['50%','55%'],
+      label:{color:'#94A3B8',formatter:'{b}\n{d}%',fontSize:13},
+      data:[
+        {value:70,name:'亏损',itemStyle:{color:'#EF4444'}},
+        {value:20,name:'持平',itemStyle:{color:'#94A3B8'}},
+        {value:10,name:'盈利',itemStyle:{color:'#22C55E'}},
+      ],
+      emphasis:{scaleSize:8}
+    }],
+    graphic:[{type:'text',left:'center',top:'42%',style:{text:'7:2:1',fill:'#F59E0B',fontSize:28,fontWeight:'bold',fontFamily:'"Playfair Display"'}}]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Loss Recovery =====
+function initLossRecoverChart(){
+  const ch=echartsInit('chart-loss-recover');
+  if(!ch) return;
+  const losses=[5,10,15,20,25,30,40,50,60,70];
+  const recoveries=losses.map(l=>+(100*l/(100-l)).toFixed(1));
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'},
+      formatter:p=>`亏损${p[0].axisValue}% → 需涨${p[0].value}%回本`},
+    grid:{left:60,right:20,top:30,bottom:30},
+    xAxis:{type:'category',data:losses.map(l=>l+'%'),name:'亏损幅度'},
+    yAxis:{type:'value',name:'需涨回本(%)',axisLabel:{formatter:v=>v+'%'}},
+    series:[{
+      type:'bar',data:recoveries,
+      itemStyle:{color:p=>{
+        const v=p.data;
+        if(v<15) return '#22C55E';
+        if(v<30) return '#F59E0B';
+        if(v<60) return '#FB923C';
+        return '#EF4444';
+      }},
+      label:{show:true,position:'top',color:'#94A3B8',fontSize:10,formatter:'{c}%'}
+    }]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Return Source =====
+function initReturnSourceChart(){
+  const ch=echartsInit('chart-return-source');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    legend:{data:['价差收益','分红收益'],top:5,textStyle:{color:'#94A3B8'}},
+    grid:{left:60,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:['A股整体','美股长期','高增长公司','成熟行业']},
+    yAxis:{type:'value',name:'占比(%)',max:100},
+    series:[
+      {name:'价差收益',type:'bar',stack:'total',data:[60,50,92,35],itemStyle:{color:'#3B82F6'}},
+      {name:'分红收益',type:'bar',stack:'total',data:[40,50,8,65],itemStyle:{color:'#22C55E'}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Market Players =====
+function initMarketPlayersChart(){
+  const ch=echartsInit('chart-market-players');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'item',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    series:[{
+      type:'pie',radius:['35%','65%'],center:['50%','55%'],
+      roseType:'radius',
+      label:{color:'#94A3B8',formatter:'{b}\n盈利占{d}%'},
+      data:[
+        {value:9,name:'散户',itemStyle:{color:'#EF4444'}},
+        {value:45,name:'公募基金',itemStyle:{color:'#3B82F6'}},
+        {value:20,name:'外资',itemStyle:{color:'#22C55E'}},
+        {value:15,name:'保险/社保',itemStyle:{color:'#F59E0B'}},
+        {value:11,name:'私募/其他',itemStyle:{color:'#A78BFA'}},
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: MA Demo =====
+function initMADemoChart(){
+  const ch=echartsInit('chart-ma-demo');
+  if(!ch) return;
+  // Generate mock data
+  let price=25;
+  const prices=[price];
+  for(let i=1;i<60;i++){
+    price+=((Math.random()-.45)*0.5);
+    price=Math.max(20,Math.min(32,price));
+    prices.push(+price.toFixed(2));
+  }
+  const ma5=prices.map((_,i)=>i<4?null:+(prices.slice(Math.max(0,i-4),i+1).reduce((a,b)=>a+b)/5).toFixed(2));
+  const ma20=prices.map((_,i)=>i<19?null:+(prices.slice(Math.max(0,i-19),i+1).reduce((a,b)=>a+b)/20).toFixed(2));
+  const ma60=prices.map((_,i)=>i<59?null:+(prices.slice(0,i+1).reduce((a,b)=>a+b)/(i+1)).toFixed(2));
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    legend:{data:['股价','MA5','MA20','MA60'],top:5,textStyle:{color:'#94A3B8'}},
+    grid:{left:50,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:prices.map((_,i)=>i+1),name:'交易日'},
+    yAxis:{type:'value',name:'价格(元)',scale:true},
+    series:[
+      {name:'股价',type:'line',data:prices,smooth:true,lineStyle:{width:1.5,color:'#E2E8F0'},showSymbol:false},
+      {name:'MA5',type:'line',data:ma5,smooth:true,lineStyle:{width:1,color:'#F59E0B'},showSymbol:false},
+      {name:'MA20',type:'line',data:ma20,smooth:true,lineStyle:{width:1,color:'#3B82F6'},showSymbol:false},
+      {name:'MA60',type:'line',data:ma60,smooth:true,lineStyle:{width:1,color:'#A78BFA'},showSymbol:false},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Sector Map =====
+function initSectorMapChart(){
+  const ch=echartsInit('chart-sector-map');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'item',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    series:[{
+      type:'treemap',
+      width:'90%',height:'80%',left:'5%',top:'10%',
+      label:{show:true,color:'#E2E8F0',fontSize:12},
+      itemStyle:{borderColor:'#0B1120',borderWidth:2,gapWidth:2},
+      data:[
+        {name:'金融',value:25,itemStyle:{color:'#3B82F6'},children:[
+          {name:'银行',value:15,itemStyle:{color:'#2563EB'}},
+          {name:'保险',value:5,itemStyle:{color:'#3B82F6'}},
+          {name:'券商',value:5,itemStyle:{color:'#60A5FA'}},
+        ]},
+        {name:'消费',value:22,itemStyle:{color:'#F59E0B'},children:[
+          {name:'白酒',value:10,itemStyle:{color:'#D97706'}},
+          {name:'食品',value:7,itemStyle:{color:'#F59E0B'}},
+          {name:'家电',value:5,itemStyle:{color:'#FBBF24'}},
+        ]},
+        {name:'科技',value:20,itemStyle:{color:'#A78BFA'},children:[
+          {name:'半导体',value:8,itemStyle:{color:'#7C3AED'}},
+          {name:'软件',value:6,itemStyle:{color:'#A78BFA'}},
+          {name:'AI',value:6,itemStyle:{color:'#C4B5FD'}},
+        ]},
+        {name:'医药',value:15,itemStyle:{color:'#22C55E'},children:[
+          {name:'创新药',value:7,itemStyle:{color:'#16A34A'}},
+          {name:'医疗器械',value:5,itemStyle:{color:'#22C55E'}},
+          {name:'中药',value:3,itemStyle:{color:'#4ADE80'}},
+        ]},
+        {name:'新能源',value:12,itemStyle:{color:'#22D3EE'},children:[
+          {name:'锂电',value:5,itemStyle:{color:'#06B6D4'}},
+          {name:'光伏',value:4,itemStyle:{color:'#22D3EE'}},
+          {name:'风电',value:3,itemStyle:{color:'#67E8F9'}},
+        ]},
+        {name:'周期',value:6,itemStyle:{color:'#FB923C'},children:[
+          {name:'煤炭',value:2,itemStyle:{color:'#EA580C'}},
+          {name:'钢铁',value:2,itemStyle:{color:'#FB923C'}},
+          {name:'化工',value:2,itemStyle:{color:'#FDBA74'}},
+        ]},
+      ]
+    }]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Financial Demo =====
+function initFinancialDemoChart(){
+  const ch=echartsInit('chart-financial-demo');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    legend:{data:['营收','成本','净利润','经营现金流'],top:5,textStyle:{color:'#94A3B8'}},
+    grid:{left:50,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:['2022Q1','2022Q2','2022Q3','2022Q4','2023Q1','2023Q2','2023Q3','2023Q4','2024Q1','2024Q2','2024Q3','2024Q4']},
+    yAxis:{type:'value',name:'万元'},
+    series:[
+      {name:'营收',type:'bar',data:[110,120,125,135,115,128,132,140,122,135,142,155],itemStyle:{color:'#3B82F6'}},
+      {name:'成本',type:'bar',data:[70,75,78,82,72,78,80,85,74,80,85,90],itemStyle:{color:'#EF4444'}},
+      {name:'净利润',type:'line',data:[12,14,15,16,13,15,16,18,14,17,19,22],itemStyle:{color:'#F59E0B'},lineStyle:{width:2}},
+      {name:'经营现金流',type:'line',data:[15,16,18,20,14,18,20,22,16,20,23,26],itemStyle:{color:'#22C55E'},lineStyle:{width:2}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: PE Percentile =====
+function initPEPercentileChart(){
+  const ch=echartsInit('chart-pe-percentile');
+  if(!ch) return;
+  const percentiles=Array.from({length:101},(_,i)=>i);
+  const peValues=percentiles.map(p=>{
+    if(p<10) return 8+p*0.3;
+    if(p<30) return 11+(p-10)*0.35;
+    if(p<50) return 18+(p-30)*0.4;
+    if(p<70) return 26+(p-50)*0.55;
+    if(p<90) return 37+(p-70)*0.8;
+    return 53+(p-90)*1.2;
+  });
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'},
+      formatter:p=>`历史分位：${p[0].axisValue}%<br>PE：${p[0].value}x`},
+    grid:{left:50,right:20,top:30,bottom:35},
+    xAxis:{type:'category',data:percentiles.map(p=>p+'%'),name:'历史分位',
+      axisLabel:{interval:9}},
+    yAxis:{type:'value',name:'PE(x)'},
+    visualMap:{show:false,dimension:0,pieces:[
+      {lte:30,color:'#22C55E'},
+      {gt:30,lte:70,color:'#F59E0B'},
+      {gt:70,color:'#EF4444'},
+    ]},
+    series:[{
+      type:'line',data:peValues.map(v=>+v.toFixed(1)),smooth:true,
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
+        {offset:0,color:'rgba(245,158,11,.2)'},
+        {offset:1,color:'rgba(245,158,11,.02)'},
+      ])},
+      markArea:{silent:true,data:[
+        [{xAxis:'0%',itemStyle:{color:'rgba(34,197,94,.08)'}},{xAxis:'30%'}],
+        [{xAxis:'70%',itemStyle:{color:'rgba(239,68,68,.08)'}},{xAxis:'100%'}],
+      ]},
+      markLine:{data:[{xAxis:'30%'}, {xAxis:'70%'}],lineStyle:{color:'#64748B',type:'dashed'},label:{show:true,formatter:p=>p.axisValue==='30%'?'低估上限':'高估下限',color:'#94A3B8',fontSize:10}},
+    }]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Lifecycle =====
+function initLifecycleChart(){
+  const ch=echartsInit('chart-lifecycle');
+  if(!ch) return;
+  const x=Array.from({length:100},(_,i)=>i);
+  const y=x.map(i=>{
+    if(i<15) return 2+Math.pow(i/15,2)*15;
+    if(i<40) return 17+Math.pow((i-15)/25,0.6)*40;
+    if(i<70) return 57+Math.pow((70-i)/30,0.3)*5;
+    return 62*(1-Math.pow((i-70)/30,1.5));
+  });
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    grid:{left:50,right:20,top:30,bottom:40},
+    xAxis:{type:'category',data:x,name:'行业发展阶段',
+      axisLabel:{formatter:v=>{if(v<15)return'导入';if(v<40)return'成长';if(v<70)return'成熟';return'衰退'},interval:14}},
+    yAxis:{type:'value',name:'行业规模/增速'},
+    visualMap:{show:false,dimension:0,pieces:[
+      {lte:15,color:'#A78BFA'},
+      {gt:15,lte:40,color:'#22C55E'},
+      {gt:40,lte:70,color:'#3B82F6'},
+      {gt:70,color:'#EF4444'},
+    ]},
+    series:[{type:'line',data:y,smooth:true,areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
+      {offset:0,color:'rgba(245,158,11,.15)'},
+      {offset:1,color:'rgba(245,158,11,.02)'},
+    ])}}],
+    graphic:[
+      {type:'text',left:'8%',top:'75%',style:{text:'导入期',fill:'#A78BFA',fontSize:13,fontWeight:'bold'}},
+      {type:'text',left:'28%',top:'30%',style:{text:'成长期',fill:'#22C55E',fontSize:13,fontWeight:'bold'}},
+      {type:'text',left:'53%',top:'20%',style:{text:'成熟期',fill:'#3B82F6',fontSize:13,fontWeight:'bold'}},
+      {type:'text',left:'78%',top:'45%',style:{text:'衰退期',fill:'#EF4444',fontSize:13,fontWeight:'bold'}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Chart: Stop Loss =====
+function initStopLossChart(){
+  const ch=echartsInit('chart-stop-loss');
+  if(!ch) return;
+  ch.setOption({
+    ...theme,
+    tooltip:{trigger:'axis',backgroundColor:'#1A2742',borderColor:'#334155',textStyle:{color:'#E2E8F0'}},
+    legend:{data:['亏损幅度','回本所需涨幅'],top:5,textStyle:{color:'#94A3B8'}},
+    grid:{left:60,right:20,top:45,bottom:30},
+    xAxis:{type:'category',data:['5%','10%','15%','20%','30%','40%','50%','60%','70%']},
+    yAxis:{type:'value',name:'%',axisLabel:{formatter:v=>v+'%'}},
+    series:[
+      {name:'亏损幅度',type:'line',data:[5,10,15,20,30,40,50,60,70],smooth:true,itemStyle:{color:'#EF4444'},areaStyle:{color:'rgba(239,68,68,.1)'}},
+      {name:'回本所需涨幅',type:'line',data:[5.3,11.1,17.6,25.0,42.9,66.7,100,150,233],smooth:true,itemStyle:{color:'#F59E0B'},areaStyle:{color:'rgba(245,158,11,.1)'}},
+    ]
+  });
+  window.addEventListener('resize',()=>ch.resize());
+}
+
+// ===== Compound Calculator =====
+let calcChart=null;
+function updateCalc(){
+  const P=parseFloat(document.getElementById('calc-principal').value)||0;
+  const M=parseFloat(document.getElementById('calc-monthly').value)||0;
+  const R=(parseFloat(document.getElementById('calc-rate').value)||0)/100;
+  const Y=parseInt(document.getElementById('calc-years').value)||1;
+  document.getElementById('calc-years-label').textContent=Y+'年';
+  
+  const months=Y*12;
+  const monthlyR=R/12;
+  let total=P;
+  const data=[{month:0,value:P}];
+  for(let i=1;i<=months;i++){
+    total=total*(1+monthlyR)+M;
+    if(i%12===0) data.push({month:i,value:Math.round(total)});
+  }
+  
+  const inputTotal=P+M*months;
+  const profit=total-inputTotal;
+  document.getElementById('calc-total').textContent='¥'+Math.round(total).toLocaleString();
+  document.getElementById('calc-input-total').textContent='¥'+Math.round(inputTotal).toLocaleString();
+  document.getElementById('calc-profit').textContent='¥'+Math.round(profit).toLocaleString();
+  
+  if(!calcChart) calcChart=echartsInit('chart-calc');
+  if(!calcChart) return;
+  calcChart.setOption({
+    ...theme,
+    grid:{left:60,right:10,top:10,bottom:25},
+    xAxis:{type:'category',data:data.map(d=>d.month/12+'年')},
+    yAxis:{type:'value',axisLabel:{formatter:v=>v>=10000?(v/10000).toFixed(0)+'万':v}},
+    series:[{
+      type:'line',data:data.map(d=>d.value),smooth:true,
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
+        {offset:0,color:'rgba(245,158,11,.2)'},
+        {offset:1,color:'rgba(245,158,11,.02)'},
+      ])},
+      lineStyle:{color:'#F59E0B',width:2},
+      itemStyle:{color:'#F59E0B'},
+    }]
+  });
+}
+
+// ===== Fee Calculator =====
+function updateFee(){
+  const A=parseFloat(document.getElementById('fee-amount').value)||0;
+  const R=(parseFloat(document.getElementById('fee-rate').value)||0.025)/100;
+  const dir=document.getElementById('fee-direction').value;
+  const commission=Math.max(5,A*R);
+  const stamp=dir==='sell'?A*0.0005:0;
+  const transfer=A*0.00001;
+  const total=commission+stamp+transfer;
+  document.getElementById('fee-commission').textContent='¥'+commission.toFixed(2);
+  document.getElementById('fee-stamp').textContent='¥'+stamp.toFixed(2);
+  document.getElementById('fee-transfer').textContent='¥'+transfer.toFixed(2);
+  document.getElementById('fee-total').textContent='¥'+total.toFixed(2);
+}
+
+// ===== DIP Calculator =====
+let dipChart=null;
+function updateDip(){
+  const M=parseFloat(document.getElementById('dip-monthly').value)||0;
+  const R=(parseFloat(document.getElementById('dip-rate').value)||0)/100;
+  const Y=parseInt(document.getElementById('dip-years').value)||1;
+  document.getElementById('dip-years-label').textContent=Y+'年';
+  
+  const months=Y*12;
+  const monthlyR=R/12;
+  let total=0;
+  const data=[{month:0,value:0}];
+  for(let i=1;i<=months;i++){
+    total=(total+M)*(1+monthlyR);
+    if(i%12===0) data.push({month:i,value:Math.round(total)});
+  }
+  
+  const inputTotal=M*months;
+  const profit=total-inputTotal;
+  document.getElementById('dip-total').textContent='¥'+Math.round(total).toLocaleString();
+  document.getElementById('dip-input-total').textContent='¥'+Math.round(inputTotal).toLocaleString();
+  document.getElementById('dip-profit').textContent='¥'+Math.round(profit).toLocaleString();
+  
+  if(!dipChart) dipChart=echartsInit('chart-dip');
+  if(!dipChart) return;
+  dipChart.setOption({
+    ...theme,
+    grid:{left:60,right:10,top:10,bottom:25},
+    xAxis:{type:'category',data:data.map(d=>d.month/12+'年')},
+    yAxis:{type:'value',axisLabel:{formatter:v=>v>=10000?(v/10000).toFixed(0)+'万':v}},
+    series:[{
+      type:'line',data:data.map(d=>d.value),smooth:true,
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[
+        {offset:0,color:'rgba(34,211,238,.2)'},
+        {offset:1,color:'rgba(34,211,238,.02)'},
+      ])},
+      lineStyle:{color:'#22D3EE',width:2},
+      itemStyle:{color:'#22D3EE'},
+    }]
+  });
+}
+
+// ===== Initialize Everything =====
+document.addEventListener('DOMContentLoaded',()=>{
+  initReveal();
+  initHeroCanvas();
+  drawCandlestick();
+  drawOrderBook();
+  
+  // ECharts (lazy init with IntersectionObserver)
+  const chartInits={
+    'chart-inflation':initInflationChart,
+    'chart-compound':initCompoundChart,
+    'chart-age-start':initAgeStartChart,
+    'chart-index-return':initIndexReturnChart,
+    'chart-7021':init7021Chart,
+    'chart-loss-recover':initLossRecoverChart,
+    'chart-return-source':initReturnSourceChart,
+    'chart-market-players':initMarketPlayersChart,
+    'chart-ma-demo':initMADemoChart,
+    'chart-sector-map':initSectorMapChart,
+    'chart-financial-demo':initFinancialDemoChart,
+    'chart-pe-percentile':initPEPercentileChart,
+    'chart-lifecycle':initLifecycleChart,
+    'chart-stop-loss':initStopLossChart,
+  };
+  
+  const chartObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const fn=chartInits[e.target.id];
+        if(fn){fn();chartObs.unobserve(e.target)}
+      }
+    });
+  },{rootMargin:'100px'});
+  
+  Object.keys(chartInits).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) chartObs.observe(el);
+  });
+  
+  // Calculator event listeners
+  ['calc-principal','calc-monthly','calc-rate'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input',updateCalc);
+  });
+  ['fee-amount','fee-rate','fee-direction'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input',updateFee);
+    document.getElementById(id)?.addEventListener('change',updateFee);
+  });
+  ['dip-monthly','dip-rate'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input',updateDip);
+  });
+  
+  // Initial calculations
+  updateCalc();
+  updateFee();
+  updateDip();
+});
+</script>
+
+</body>
+</html>
