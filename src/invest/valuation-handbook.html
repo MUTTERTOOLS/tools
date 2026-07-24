@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>估值指标（PE/PB/PS）投资手册</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#0B1420;--bg2:#111D30;--bg3:#152540;--bg4:#1B2D4A;
+  --text:#E2E8F0;--text2:#94A3B8;--text3:#64748B;
+  --accent:#F43F5E;--accent2:#FB7185;--accent3:#E11D48;
+  --accent-glow:rgba(244,63,94,0.25);
+  --warn:#F59E0B;--danger:#EF4444;--success:#10B981;--info:#3B82F6;
+  --card:rgba(21,37,64,0.85);--border:rgba(148,163,184,0.12);
+  --radius:10px;
+  --pe:#3B82F6;--pb:#10B981;--ps:#F59E0B;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Microsoft YaHei','PingFang SC',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+::selection{background:var(--accent);color:#000}
+a{color:var(--accent2);text-decoration:none}
+
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;transition:transform .3s}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+.sidebar-header{padding:20px 16px 12px;border-bottom:1px solid var(--border)}
+.sidebar-header h2{font-size:.85rem;color:var(--accent2);font-weight:700;letter-spacing:1px}
+.sidebar-header p{font-size:.7rem;color:var(--text3);margin-top:4px}
+.nav-section-title{font-size:.65rem;color:var(--text3);padding:14px 16px 4px;text-transform:uppercase;letter-spacing:1px}
+.nav-item{display:block;padding:6px 16px 6px 24px;font-size:.78rem;color:var(--text2);cursor:pointer;transition:all .2s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--accent2);background:rgba(244,63,94,0.06);border-left-color:var(--accent)}
+.nav-item.active{color:var(--accent2);border-left-color:var(--accent);background:rgba(244,63,94,0.08)}
+.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--bg2);border:1px solid var(--border);border-radius:8px;width:40px;height:40px;color:var(--accent2);font-size:1.2rem;cursor:pointer}
+
+.main{margin-left:240px;padding:0 40px 60px;max-width:860px}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .menu-toggle{display:flex;align-items:center;justify-content:center}
+  .main{margin-left:0;padding:0 16px 40px}
+}
+
+.hero{position:relative;padding:80px 0 50px;text-align:center;overflow:hidden}
+.hero h1{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2),#FCA5A5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px}
+.hero .sub{font-size:1.05rem;color:var(--text2);max-width:520px;margin:0 auto}
+.hero canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;opacity:.4}
+.hero-badges{display:flex;gap:12px;justify-content:center;margin-top:20px}
+.hero-badge{font-size:.78rem;padding:6px 14px;border-radius:20px;font-weight:600}
+.hero-badge.pe{background:rgba(59,130,246,0.2);color:var(--pe)}
+.hero-badge.pb{background:rgba(16,185,129,0.2);color:var(--pb)}
+.hero-badge.ps{background:rgba(245,158,11,0.2);color:var(--ps)}
+
+.section{padding:32px 0 16px}
+.section:first-of-type{padding-top:0}
+h2{font-size:1.4rem;color:var(--accent2);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);font-weight:700}
+h3{font-size:1.1rem;color:var(--text);margin:28px 0 12px;font-weight:600}
+h4{font-size:.92rem;color:var(--accent2);margin:20px 0 8px;font-weight:600}
+p{font-size:.85rem;color:var(--text2);margin-bottom:10px;line-height:1.75}
+strong{color:var(--text)}
+ul,ol{margin:8px 0 12px 20px;font-size:.85rem;color:var(--text2)}
+li{margin-bottom:5px;line-height:1.65}
+
+.chapter-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+.ch-num{font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.ch-num.pe{background:var(--pe);color:#fff}
+.ch-num.pb{background:var(--pb);color:#fff}
+.ch-num.ps{background:var(--ps);color:#fff}
+.ch-num.mix{background:var(--accent);color:#fff}
+.chapter-header h3{margin:0;font-size:1.1rem;color:var(--text)}
+
+.table-wrapper{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:var(--bg3);color:var(--accent2);padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent3);white-space:nowrap}
+td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2)}
+tr:hover td{background:rgba(244,63,94,0.04)}
+
+.callout{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin:14px 0}
+.callout h5{font-size:.85rem;margin-bottom:6px}
+.callout p{font-size:.82rem;margin-bottom:0}
+.tip-box{border-left:3px solid var(--info)}
+.tip-box h5{color:var(--info)}
+.key-box{border-left:3px solid var(--accent)}
+.key-box h5{color:var(--accent2)}
+.warn-box{border-left:3px solid var(--warn)}
+.warn-box h5{color:var(--warn)}
+.danger-box{border-left:3px solid var(--danger)}
+.danger-box h5{color:var(--danger)}
+
+.indicator-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0;transition:border-color .3s,transform .3s}
+.indicator-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.indicator-card .badge{display:inline-block;font-size:.65rem;padding:2px 10px;border-radius:10px;margin-bottom:8px;font-weight:700}
+.indicator-card .badge.pe{background:rgba(59,130,246,0.2);color:var(--pe)}
+.indicator-card .badge.pb{background:rgba(16,185,129,0.2);color:var(--pb)}
+.indicator-card .badge.ps{background:rgba(245,158,11,0.2);color:var(--ps)}
+.indicator-card h4{font-size:.95rem;color:var(--text);margin-bottom:6px}
+.indicator-card p{font-size:.8rem;color:var(--text2);margin-bottom:0;line-height:1.65}
+.indicator-card .formula{font-size:.82rem;color:var(--accent2);margin-top:8px;font-weight:600}
+
+.interactive-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:24px 0}
+.interactive-panel h4{font-size:.95rem;color:var(--accent2);margin-bottom:16px}
+.calc-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.calc-row label{font-size:.8rem;color:var(--text2);min-width:80px}
+.calc-row input,.calc-row select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-size:.82rem;width:120px}
+.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--accent)}
+.result-box{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px}
+.result-item{text-align:center}
+.result-item .val{font-size:1.5rem;font-weight:700;color:var(--accent2)}
+.result-item .label{font-size:.7rem;color:var(--text3)}
+.chart-container{width:100%;height:280px;margin-top:16px}
+
+.pitfall-list{margin:14px 0}
+.pitfall-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;margin-bottom:8px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);font-size:.82rem;color:var(--text2);line-height:1.65}
+.pitfall-item .x{color:var(--danger);font-weight:700;flex-shrink:0;margin-top:1px}
+.pitfall-item .arrow{color:var(--accent2);flex-shrink:0;margin-top:1px}
+
+.path-grid{display:grid;gap:12px;margin:20px 0}
+.path-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+.path-card .step{font-size:.85rem;font-weight:700;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--accent);color:#fff}
+.path-card h5{font-size:.88rem;color:var(--text);margin-bottom:3px}
+.path-card p{font-size:.78rem;color:var(--text2);margin:0}
+
+.error-grid{display:grid;gap:10px;margin:20px 0}
+.error-item{display:flex;align-items:flex-start;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.error-num{background:var(--danger);color:#fff;font-size:.7rem;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.error-item h5{font-size:.88rem;color:var(--danger);margin-bottom:3px}
+.error-item p{font-size:.78rem;color:var(--text2);margin:0}
+
+.checklist{margin:14px 0}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;margin-bottom:6px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);font-size:.82rem;color:var(--text2);line-height:1.65}
+.checklist-item .q{color:var(--accent2);font-weight:700;flex-shrink:0;margin-top:1px}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:3px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h2>VALUATION 101</h2>
+    <p>估值指标投资手册</p>
+  </div>
+  <div class="nav-section-title">开篇</div>
+  <a class="nav-item" onclick="scrollToId('hero')">封面</a>
+  <a class="nav-item" onclick="scrollToId('path')">🗺️ 阅读路径</a>
+  <a class="nav-item" onclick="scrollToId('ch1')">第1章 估值是什么</a>
+  <a class="nav-item" onclick="scrollToId('ch2')">第2章 三指标速览</a>
+  <div class="nav-section-title">市盈率 PE</div>
+  <a class="nav-item" onclick="scrollToId('ch3')">第3章 PE入门</a>
+  <a class="nav-item" onclick="scrollToId('ch4')">第4章 PE进阶</a>
+  <a class="nav-item" onclick="scrollToId('ch5')">第5章 PE陷阱</a>
+  <div class="nav-section-title">市净率 PB</div>
+  <a class="nav-item" onclick="scrollToId('ch6')">第6章 PB入门</a>
+  <a class="nav-item" onclick="scrollToId('ch7')">第7章 PB进阶</a>
+  <a class="nav-item" onclick="scrollToId('ch8')">第8章 PB陷阱</a>
+  <div class="nav-section-title">市销率 PS</div>
+  <a class="nav-item" onclick="scrollToId('ch9')">第9章 PS入门</a>
+  <a class="nav-item" onclick="scrollToId('ch10')">第10章 PS进阶</a>
+  <a class="nav-item" onclick="scrollToId('ch11')">第11章 PS陷阱</a>
+  <div class="nav-section-title">综合实战</div>
+  <a class="nav-item" onclick="scrollToId('ch12')">第12章 联合框架与铁律</a>
+  <div class="nav-section-title">附录</div>
+  <a class="nav-item" onclick="scrollToId('appA')">附录A 行业×指标对应</a>
+  <a class="nav-item" onclick="scrollToId('appB')">附录B 历史区间参考</a>
+  <a class="nav-item" onclick="scrollToId('appC')">附录C 查询工具渠道</a>
+  <a class="nav-item" onclick="scrollToId('appD')">附录D 术语速查表</a>
+</nav>
+
+<div class="main">
+
+<!-- ===== Hero ===== -->
+<section id="hero" class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <h1>估值指标投资手册</h1>
+  <p class="sub">PE · PB · PS——从"知道是什么"到"知道什么时候不能用"</p>
+  <div class="hero-badges">
+    <span class="hero-badge pe">🔵 PE 为利润付钱</span>
+    <span class="hero-badge pb">🟢 PB 为家底付钱</span>
+    <span class="hero-badge ps">🟡 PS 为规模付钱</span>
+  </div>
+</section>
+
+<!-- ===== 阅读路径 ===== -->
+<section id="path" class="section">
+  <h2>🗺️ 阅读路径</h2>
+  <div class="path-grid">
+    <div class="path-card reveal"><div class="step">🚀</div><div><h5>快速上手</h5><p>第2章速览 → 第3/6/9章入门 → 附录A行业对应表</p></div></div>
+    <div class="path-card reveal"><div class="step">📖</div><div><h5>系统学习</h5><p>从第1章顺序读到第12章 → 附录A-D完整查漏补缺</p></div></div>
+    <div class="path-card reveal"><div class="step">⚠️</div><div><h5>只看陷阱</h5><p>第5/8/11章陷阱专篇 → 第12章10条铁律 → 附录A速查</p></div></div>
+    <div class="path-card reveal"><div class="step">🔍</div><div><h5>查工具</h5><p>附录A-C工具渠道 → 各章"在哪里看"小节</p></div></div>
+  </div>
+</section>
+
+<!-- ===== 第一篇 ===== -->
+<h2>第一篇：估值——你在为"什么"付钱？</h2>
+
+<section id="ch1" class="section">
+  <div class="chapter-header"><span class="ch-num mix">第1章</span><h3>估值是什么？为什么新手必须学？</h3></div>
+
+  <h3>1.1 估值不是猜涨跌，是判断"贵不贵"</h3>
+  <p>估值的本质：你付出的价格 vs 你得到的价值。买西瓜不看价格只看大小——可能花了10元买了个烂瓜；买股票不看估值只看涨跌——可能花了50元买了个只值30元的公司。</p>
+  <p>估值告诉你"贵不贵"，不告诉你"什么时候涨/跌"。估值是<strong>安全边际</strong>的判断工具，不是择时工具。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>估值是安全边际的判断工具，不是择时工具。低估值=安全边际更高≠马上赚钱。</p></div>
+
+  <h3>1.2 为什么新手最容易在估值上犯错</h3>
+  <p>新手最常见的6大估值错误：</p>
+  <ol>
+    <li><strong>"PE越低越好"</strong> → 周期股PE最低时最危险</li>
+    <li><strong>"破净=抄底"</strong> → 净资产有水分</li>
+    <li><strong>跨行业比PE/PB</strong> → 银行PE=5 vs 消费PE=30无意义</li>
+    <li><strong>看PE不看利润质量</strong> → 一次性利润虚低</li>
+    <li><strong>用PE给亏损公司估值</strong> → PE为负无意义</li>
+    <li><strong>估值低=马上会涨</strong> → 安全边际≠时间表</li>
+  </ol>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>以上6条，你犯过几条？如果≥3条，这本手册对你很重要。每条在后续章节都有详细展开。</p></div>
+
+  <h3>1.3 估值的"不可能三角"</h3>
+  <p>你不可能同时拥有：低估值（低PE/PB/PS）+ 高增长 + 高确定性。市场大部分时候有效——如果一个指标看起来"极度便宜"，大概率存在你没看到的风险。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>看到PE=3或PB=0.4时，先问"为什么这么便宜"而不是"赶紧买"。答案通常是：周期顶部、利润下滑、净资产有水分、一次性收益。</p></div>
+</section>
+
+<section id="ch2" class="section">
+  <div class="chapter-header"><span class="ch-num mix">第2章</span><h3>PE/PB/PS一句话速览</h3></div>
+
+  <h3>2.1 三指标一句话定义</h3>
+  <div class="indicator-card">
+    <span class="badge pe">PE</span>
+    <h4>市盈率 PE——为利润付多少钱</h4>
+    <p>股价÷利润。PE=20→你花20元买1元年利润。适用：盈利稳定行业（消费/医药）。最大盲区：周期股和亏损公司。</p>
+    <div class="formula">PE = 股价 ÷ EPS = 总市值 ÷ 净利润</div>
+  </div>
+  <div class="indicator-card">
+    <span class="badge pb">PB</span>
+    <h4>市净率 PB——为家底付多少钱</h4>
+    <p>股价÷净资产。PB=2→你花2元买1元账面资产。适用：重资产行业（银行/地产）。最大盲区：轻资产公司和净资产水分。</p>
+    <div class="formula">PB = 股价 ÷ 每股净资产 = 总市值 ÷ 净资产</div>
+  </div>
+  <div class="indicator-card">
+    <span class="badge ps">PS</span>
+    <h4>市销率 PS——为规模付多少钱</h4>
+    <p>股价÷营收。PS=5→你花5元买1元年营收。适用：亏损成长股（SaaS/互联网）。最大盲区：不反映盈利能力。</p>
+    <div class="formula">PS = 股价 ÷ 每股营收 = 总市值 ÷ 营业收入</div>
+  </div>
+
+  <h3>2.2 三指标速查对比</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>维度</th><th>PE</th><th>PB</th><th>PS</th></tr>
+    <tr><td>分母</td><td>净利润</td><td>净资产</td><td>营业收入</td></tr>
+    <tr><td>适用阶段</td><td>盈利稳定期</td><td>重资产/周期底部</td><td>亏损/高成长期</td></tr>
+    <tr><td>最适用行业</td><td>消费、医药</td><td>银行、地产、周期</td><td>SaaS、互联网、创新药</td></tr>
+    <tr><td>最大盲区</td><td>周期股、亏损股</td><td>轻资产、高ROE</td><td>不反映盈利能力</td></tr>
+    <tr><td>可操纵性</td><td>中（利润调节）</td><td>低（但资产可减值）</td><td>低（但营收确认有空间）</td></tr>
+    <tr><td>负值含义</td><td>亏损</td><td>资不抵债</td><td>极少为负</td></tr>
+  </table></div>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PE看赚钱能力，PB看家底厚度，PS看规模潜力。三者没有绝对好坏，只有"用对场景"和"用错场景"。</p></div>
+
+  <h3>2.3 行业×指标对应速查</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>行业类型</th><th>主看指标</th><th>辅看指标</th><th>警惕指标</th></tr>
+    <tr><td>银行/保险</td><td>PB</td><td>PE</td><td>PE可能虚低</td></tr>
+    <tr><td>消费/医药</td><td>PE</td><td>PEG</td><td>PS（利润率太高PS误导）</td></tr>
+    <tr><td>互联网/SaaS</td><td>PS</td><td>EV/Sales</td><td>PE（亏损时无意义）</td></tr>
+    <tr><td>周期股（钢铁/煤炭/有色）</td><td>PB</td><td>EV/EBITDA</td><td>PE反着看！</td></tr>
+    <tr><td>地产</td><td>PB</td><td>NAV</td><td>PE（利润不稳定）</td></tr>
+    <tr><td>亏损成长股</td><td>PS</td><td>PEG</td><td>PE（为负）</td></tr>
+  </table></div>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>先判断公司所处阶段，再选对指标——不要上来就比PE。稳定盈利看PE，周期看PB，亏损看PS。</p></div>
+
+  <h3>2.4 新手第一步：确认你看的是哪种PE/PB</h3>
+  <p>行情软件默认显示可能是<strong>静态PE</strong>而非PE TTM。PB可能是PB MRQ而非PB LYR。估值口径不同→结论可能完全相反。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>查估值前先确认口径！静态PE和PE TTM差距可能非常大。一只股票Q1利润暴增，静态PE仍用去年数据，看起来"很贵"其实可能很便宜。</p></div>
+</section>
+
+
+<!-- ===== 第二篇：PE ===== -->
+<h2>第二篇：市盈率 PE——为利润付多少钱？</h2>
+
+<section id="ch3" class="section">
+  <div class="chapter-header"><span class="ch-num pe">第3章</span><h3>PE入门：从定义到三种口径</h3></div>
+
+  <h3>3.1 PE是什么？一个奶茶店的类比</h3>
+  <p>PE = 股价÷每股收益（EPS）= 总市值÷净利润。买一家奶茶店年赚10万、出价100万→PE=10→"10年回本"。PE=20意味着你花20元买1元年利润。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PE就是"回本年数"的粗略概念——但这个"回本"有很多前提条件：利润不变、利润真实、利润可持续。</p></div>
+
+  <h3>3.2 PE越低≠越好：第一道防线</h3>
+  <p>PE低只说明"利润相对股价便宜"，但利润本身可能不可持续。PE=5的钢铁股可能比PE=30的消费股更危险。一家店说"3年回本"但明年可能倒闭→3年回本的前提是利润不变。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>"PE越低越好"是新手最大的误区——后面第5章专门讲为什么周期股PE最低时最危险。</p></div>
+
+  <h3>3.3 三种PE口径（极其重要）</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>类型</th><th>公式中的E</th><th>优点</th><th>缺陷</th><th>适用场景</th></tr>
+    <tr><td>静态PE（LYR）</td><td>上一完整财年净利润</td><td>数据确定</td><td>严重滞后，年报4月才出</td><td>回顾历史</td></tr>
+    <tr><td>滚动PE（TTM）</td><td>最近4个季度净利润之和</td><td>兼顾时效与真实</td><td>仍含季节性干扰</td><td><strong>日常使用（最推荐）</strong></td></tr>
+    <tr><td>动态PE（Forward）</td><td>分析师预测当年净利润</td><td>前瞻性强</td><td>依赖预测，可能严重失真</td><td>成长股研究</td></tr>
+  </table></div>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>大多数场景用PE TTM。必须确认你看的是哪种PE，很多行情软件默认显示静态PE——一只股票Q1暴增，静态PE仍用去年数据，看起来"很贵"或"很便宜"都是错觉。</p></div>
+
+  <h3>3.4 PE的特殊值：负数、无穷大、>100</h3>
+  <ul>
+    <li><strong>PE为负</strong>→公司亏损，PE无意义（软件显示"—"或"亏损"）</li>
+    <li><strong>PE=∞</strong>→利润为零，PE无意义</li>
+    <li><strong>PE>100</strong>→要么极度看好未来增长，要么利润暂时极低（基数效应）</li>
+    <li>利润从负转正第一年PE可能畸高，不代表真正"贵"</li>
+  </ul>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>看到PE显示"—"或>100时，不要直接跳过或恐慌→先看利润绝对值和利润趋势。</p></div>
+
+  <h3>3.5 PE在哪里看</h3>
+  <p>券商APP个股页→"估值"或"基本资料"→PE TTM；东方财富/同花顺/i问财等网站。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>建议在APP中设置默认显示PE TTM而非静态PE，避免口径误差。</p></div>
+
+  <!-- PE三种口径对比器 -->
+  <div class="interactive-panel">
+    <h4>📊 PE三种口径对比器</h4>
+    <p style="font-size:.82rem;color:var(--text2);margin-bottom:12px">输入数据，同时计算三种PE，直观对比差异。</p>
+    <div class="calc-row"><label>当前股价（元）</label><input id="pe-price" type="number" value="50" placeholder="股价"></div>
+    <div class="calc-row"><label>去年全年EPS</label><input id="pe-lyr-eps" type="number" value="2.5" placeholder="去年EPS"></div>
+    <div class="calc-row"><label>最近4季度EPS合计</label><input id="pe-ttm-eps" type="number" value="3.0" placeholder="TTM EPS"></div>
+    <div class="calc-row"><label>预测今年EPS</label><input id="pe-forward-eps" type="number" value="4.0" placeholder="预测EPS"></div>
+    <div class="calc-row"><button onclick="calcPE()" style="background:var(--pe);color:#fff;padding:8px 20px;border:none;border-radius:6px;cursor:pointer;font-size:.82rem">计算三种PE</button></div>
+    <div class="result-box" id="pe-results">
+      <div class="result-item"><div class="val" id="pe-lyr-val">—</div><div class="label">静态PE</div></div>
+      <div class="result-item"><div class="val" id="pe-ttm-val">—</div><div class="label">PE TTM</div></div>
+      <div class="result-item"><div class="val" id="pe-forward-val">—</div><div class="label">动态PE</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="ch4" class="section">
+  <div class="chapter-header"><span class="ch-num pe">第4章</span><h3>PE进阶：对比、分位数与增速匹配</h3></div>
+
+  <h3>4.1 同行业对比才有效</h3>
+  <p>比较PE必须同行业内比：银行PE=5和消费PE=30，不说明银行更便宜，因为行业盈利模式完全不同。只能在同行业内比较：招行PE=7 vs 工行PE=5→有意义。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>跨行业比PE是新手第二大的误区——结论可能完全错误。银行PE=5不代表比消费PE=30"更便宜"。</p></div>
+
+  <h3>4.2 不同行业的"正常PE"差异</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>行业/指数</th><th>常见PE区间</th><th>原因</th></tr>
+    <tr><td>银行</td><td>4-7倍</td><td>低增长+高杠杆+ROE有限</td></tr>
+    <tr><td>公用事业</td><td>8-15倍</td><td>稳定但增长慢</td></tr>
+    <tr><td>消费龙头</td><td>20-35倍</td><td>品牌溢价+稳定增长</td></tr>
+    <tr><td>医药</td><td>25-45倍</td><td>研发溢价+政策预期</td></tr>
+    <tr><td>科技/互联网</td><td>30-60倍</td><td>高增长预期</td></tr>
+    <tr><td>沪深300</td><td>10-14倍</td><td>大盘蓝筹中枢</td></tr>
+    <tr><td>标普500</td><td>15-22倍</td><td>美股长期均值约16倍</td></tr>
+    <tr><td>港股恒指</td><td>8-12倍</td><td>长期折价+流动性弱</td></tr>
+  </table></div>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PE没有绝对标准，"合理"取决于行业+增速+利率环境。不同市场PE中枢完全不同，不能跨市场简单比较。</p></div>
+
+  <h3>4.3 PE历史分位数</h3>
+  <p>当前PE在历史数据中的百分位。百分位<30%通常偏低，>70%通常偏高。用来判断指数估值比个股更稳定可靠。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>沪深300 PE百分位<30%→大盘偏低可加仓；>80%→偏高需谨慎。指数PE百分位比个股PE百分位更稳定可靠。</p></div>
+
+  <h3>4.4 PE百分位的两个陷阱</h3>
+  <ul>
+    <li>①<strong>时间窗口影响</strong>：3年百分位和10年百分位可能差很大</li>
+    <li>②<strong>行业结构变化</strong>：银行PE长期走低→"历史低位"可能持续很多年</li>
+  </ul>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>百分位低≠一定要回归均值——PE可能"永久性下台阶"（如银行从PE=10降到PE=5可能是新常态）。</p></div>
+
+  <h3>4.5 PE与增速匹配（PEG）</h3>
+  <p>PEG = PE ÷ 利润增速(%)。PEG<1通常认为合理（PE=30+增速30%→PEG=1）。但增速预测本身极不可靠——增速从40%降到15%，原来"合理"的60倍PE瞬间变成泡沫。</p>
+  <!-- PEG速算器 -->
+  <div class="interactive-panel">
+    <h4>📊 PEG速算器</h4>
+    <div class="calc-row"><label>PE（倍）</label><input id="peg-pe" type="number" value="30"></div>
+    <div class="calc-row"><label>利润增速（%）</label><input id="peg-g" type="number" value="30"></div>
+    <div class="calc-row"><button onclick="calcPEG()" style="background:var(--pe);color:#fff;padding:8px 20px;border:none;border-radius:6px;cursor:pointer;font-size:.82rem">计算PEG</button></div>
+    <div class="result-box" id="peg-results">
+      <div class="result-item"><div class="val" id="peg-val">—</div><div class="label">PEG值</div></div>
+      <div class="result-item"><div class="val" id="peg-judge">—</div><div class="label">判断</div></div>
+    </div>
+  </div>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PEG是PE的"增速修正版"，但G（增速预测）是最大不确定性来源。增速预测错了→PEG结论全错。</p></div>
+
+  <h3>4.6 扣非PE与非经常性损益</h3>
+  <p>卖楼/卖子公司一次性赚10亿→PE看起来极低→扣除后实际PE很高。扣非PE = 市值÷扣非净利润→反映持续经营能力的真实估值。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>看PE必须同时看扣非PE——两者差距大说明利润不可持续。差距>30%时要特别警惕。</p></div>
+
+  <h3>4.7 PE与ROE的关系</h3>
+  <p>PE × ROE ≈ PB。ROE高的公司理应PE高——同样利润用更少净资产创造=更值钱。脱离ROE谈PE不完整。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>看PE时顺便看ROE：PE=15+ROE=25%=好公司合理；PE=15+ROE=5%=可能有问题（利润用了很多资产创造）。</p></div>
+
+  <h3>4.8 利率对PE的底层影响</h3>
+  <p>合理PE ≈ 1/(无风险利率+风险溢价-增长率)。10年期国债从2%→4%→合理PE中枢从25降到15。2022年美联储加息→全球成长股暴跌——公司没变差，是折现率变了。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>低PE不一定便宜（高利率环境），高PE不一定贵（低利率环境）。利率变了→PE中枢整体移动→用历史PE中枢刻舟求剑会出错。</p></div>
+
+  <h3>4.9 PE不是买卖信号</h3>
+  <p>PE低不代表马上会涨，PE高不代表马上会跌。PE百分位5%→可能持续5%很久（日本股市PE低迷了20年）。用PE做定投信号比做买卖信号更靠谱。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>宽基ETF的PE百分位<20%→加倍定投；20-80%→正常定投；>80%→减少定投或暂停。定投信号比择时信号更实用。</p></div>
+</section>
+
+
+<!-- ===== 第5章：PE陷阱 ===== -->
+<section id="ch5" class="section">
+  <div class="chapter-header"><span class="ch-num pe">第5章</span><h3>PE陷阱：周期股反着看与低估值陷阱</h3></div>
+
+  <h3>5.1 🔴 周期股PE反着看（核心知识点）</h3>
+  <p>钢铁/煤炭/有色/化工/航运/猪肉等周期行业，利润在<strong>周期顶部时最高</strong>→PE最低→看似便宜实际最危险。利润在<strong>周期底部时最低</strong>→PE最高→看似贵实际是布局时机。</p>
+  <p><strong>口诀："周期股高PE买、低PE卖"</strong>——与常识完全相反。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>这是绝大多数入门教程不会讲、但杀伤力最大的误区。周期股PE最低点=最危险时（周期顶部），PE最高点=最安全时（周期底部）。</p></div>
+
+  <h3>5.2 周期股案例与正确估值</h3>
+  <ul>
+    <li><strong>宝钢股份</strong>2021年PE≈5倍→钢铁价格见顶→股价随后大跌</li>
+    <li><strong>中远海控</strong>2021年PE仅2-3倍→随后利润暴跌股价腰斩</li>
+    <li><strong>猪肉股</strong>（牧原/温氏）猪价高点PE极低→随后暴跌</li>
+  </ul>
+  <p>正确做法：周期股应看<strong>PB</strong>或<strong>EV/EBITDA</strong>，而非PE。或者看"正常化盈利"（取一个完整周期的平均利润）。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>周期股PE最低点=最危险时，PE最高点=最安全时。记住口诀："周期股高PE买、低PE卖"。</p></div>
+
+  <!-- 周期股PE动态图 -->
+  <div class="interactive-panel">
+    <h4>📊 周期股利润与PE走势：为什么PE"反着看"</h4>
+    <div class="chart-container" id="chart-cycle"></div>
+  </div>
+
+  <h3>5.3 低PE价值陷阱</h3>
+  <p>PE低但利润持续下滑→今年PE=10，明年利润腰斩→实际PE=20→"越持越贵"。典型：夕阳行业、被技术颠覆的公司。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>低PE≠便宜。利润下滑的公司PE会"越持越贵"——今年PE=10，明年利润腰斩后PE=20。你以为捡了便宜，实际上越来越贵。</p></div>
+
+  <h3>5.4 一次性利润导致PE虚低</h3>
+  <p>公司卖地赚20亿→当年PE=3→极便宜→但这20亿明年没有→PE回到15。必须看扣非PE。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>看到PE极低（<5）时，先查利润来源——有没有一次性收益（卖资产/卖子公司/投资收益）。扣非PE才是真实估值。</p></div>
+
+  <h3>5.5 会计利润≠真金白银</h3>
+  <p>净利润可通过应收账款、折旧政策、资本化/费用化调节。交叉验证：经营性现金流÷净利润>1才健康；长期<0.7→利润含金量存疑。会计政策影响：折旧方法（直线法vs加速折旧）、研发资本化vs费用化→利润不同但现金流一样。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>看PE同时看现金流比率——经营现金流/净利润长期>1的公司PE可信度更高。比值<0.7的"低PE"公司要格外警惕。</p></div>
+
+  <h3>5.6 财务洗澡后PE失真</h3>
+  <p>一次性计提大额减值→当年利润暴降→PE飙升→次年恢复→PE暴跌。这种"PE过山车"不代表估值变化。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>PE异常飙升或暴跌时，先查是否有大额减值或一次性损益。财务洗澡后的PE失真，不是公司变贵或变便宜了。</p></div>
+
+  <h3>5.7 PE的"分母游戏"与其他陷阱</h3>
+  <ul>
+    <li><strong>回购减少股本</strong>→EPS上升→PE下降（但公司价值未变）→需关注总股本变化</li>
+    <li><strong>低PE≠高股息</strong>：PE=5但不分红→永远拿不到5年回本的收益</li>
+    <li><strong>PE"均值回归"不保证</strong>：行业逻辑变了PE可能永久下台阶</li>
+    <li><strong>高PE不一定贵</strong>：PE=50但增速50%→PEG=1→合理</li>
+  </ul>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PE的5个"看似"陷阱：看似便宜可能贵（周期/一次性/利润下滑）、看似贵可能合理（高增长/利润基数低）、看似不变实际变了（股本/利率/行业格局）。</p></div>
+
+  <h3>5.8 PE避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>用PE给周期股估值 → 在顶部"抄底"亏损50%+</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>跨行业比较PE → 结论完全错误</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>只看静态PE不看TTM → 严重滞后或误判</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>忽略非经常性损益 → 被一次性利润欺骗</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>不看现金流只看利润 → 买入"纸面富贵"公司</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>用历史PE中枢刻舟求剑 → 利率/增速/行业格局已变</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>PE低=马上会涨 → 安全边际≠时间表</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>忽略股本变化（增发/回购） → EPS失真</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 第三篇：PB ===== -->
+<h2>第三篇：市净率 PB——为家底付多少钱？</h2>
+
+<section id="ch6" class="section">
+  <div class="chapter-header"><span class="ch-num pb">第6章</span><h3>PB入门：从定义到净资产的水分</h3></div>
+
+  <h3>6.1 PB是什么？一套房的类比</h3>
+  <p>PB = 股价÷每股净资产 = 总市值÷净资产。买房类比：房主当初花了100万装修（净资产），你出价150万→PB=1.5。PB=1→"1元买1元"；PB<1→"打折买资产"；PB>1→"付溢价买资产"。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PB是"为家底付多少钱"——但家底的账面价≠真实价。打折买资产≠买到了好资产。</p></div>
+
+  <h3>6.2 净资产是什么？构成与"水分"</h3>
+  <p>净资产=总资产-总负债。理解PB要先理解"净资产是什么"以及"账面净资产≠真实价值"。</p>
+  <div class="table-wrapper"><table>
+    <tr><th>资产类型</th><th>账面值可能偏离真实的原因</th></tr>
+    <tr><td>商誉</td><td>并购溢价，可能一次性减值归零</td></tr>
+    <tr><td>存货</td><td>可能过时跌价（服装/电子产品）</td></tr>
+    <tr><td>应收账款</td><td>可能收不回来（坏账）</td></tr>
+    <tr><td>固定资产</td><td>折旧政策不同，实际偏差大</td></tr>
+    <tr><td>投资性房地产</td><td>成本法vs公允价值差异巨大</td></tr>
+    <tr><td>土地/矿产</td><td>账面成本远低于市场价值（隐藏价值）</td></tr>
+  </table></div>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>账面净资产≠真实价值。如果净资产中60%是商誉和应收账款，实际清算价值远低于账面→PB看起来低但你买到的"资产"不值那么多。</p></div>
+
+  <h3>6.3 PB的特殊值与含义</h3>
+  <ul>
+    <li><strong>PB为负</strong>→净资产为负（资不抵债）→可能面临破产风险</li>
+    <li><strong>PB与清算价值</strong>：PB<1说明市场认为清算价值低于账面</li>
+  </ul>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>PB为负的公司——远离，不管PE看起来多"便宜"。资不抵债意味着公司已经"欠的比有的多"。</p></div>
+
+  <h3>6.4 PB在哪里看</h3>
+  <p>券商APP个股页→"估值"→PB（默认PB MRQ=最近季度净资产）。部分软件区分PB MRQ和PB LYR。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>PB MRQ用的是最近季度净资产，比PB LYR（去年年报）更及时。建议默认看PB MRQ。</p></div>
+</section>
+
+<section id="ch7" class="section">
+  <div class="chapter-header"><span class="ch-num pb">第7章</span><h3>PB进阶：PB-ROE黄金搭档与行业适用</h3></div>
+
+  <h3>7.1 PB适用与不适用行业</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>适用行业</th><th>原因</th><th>不适用行业</th><th>原因</th></tr>
+    <tr><td>银行/保险</td><td>资产以金融资产为主，账面值接近真实</td><td>互联网/软件</td><td>核心价值是用户/技术不在账面</td></tr>
+    <tr><td>地产/钢铁/煤炭</td><td>重资产行业，资产是核心价值来源</td><td>消费品牌</td><td>品牌价值不在净资产中</td></tr>
+    <tr><td>交运/公用事业</td><td>基础设施资产占比高</td><td>咨询/设计</td><td>核心资产是人，不在账面</td></tr>
+  </table></div>
+  <p>茅台PB=10+→不是"贵"而是品牌和工艺不在净资产中。腾讯PB=5→不代表"贵"。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>轻资产公司PB高≠贵，重资产公司PB低≠便宜——行业资产结构天差地别，跨行业比PB毫无意义。</p></div>
+
+  <h3>7.2 🔴 PB与ROE的黄金搭档（核心公式）</h3>
+  <p>核心公式：<strong>PB = PE × ROE</strong></p>
+  <p>推导：PB = P/B = (P/E) × (E/B) = PE × ROE。ROE高→PB理应高（好资产值得溢价）；ROE低→PB理应低（差资产不该溢价）。<strong>脱离ROE谈PB毫无意义</strong>。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>看到PB=0.8就兴奋"破净了！便宜！"——但如果ROE只有3%，这个PB完全合理甚至偏贵。银行股PB长期<1，不是因为"被低估"，而是因为ROE仅10%左右且增长乏力。</p></div>
+
+  <h3>7.3 PB-ROE框架：四种组合</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>组合</th><th>含义</th><th>操作建议</th></tr>
+    <tr><td>高ROE + 低PB</td><td>被低估（好公司打折卖）</td><td>值得关注</td></tr>
+    <tr><td>低ROE + 高PB</td><td>被高估（差公司卖高价）</td><td>远离</td></tr>
+    <tr><td>高ROE + 高PB</td><td>合理但贵</td><td>等回调再买</td></tr>
+    <tr><td>低ROE + 低PB</td><td>不是便宜是"该便宜"</td><td>别当低估</td></tr>
+  </table></div>
+  <!-- PB-ROE四象限图 -->
+  <div class="interactive-panel">
+    <h4>📊 PB-ROE四象限图</h4>
+    <div class="chart-container" id="chart-pb-roe"></div>
+  </div>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>用PB-ROE框架快速判断：先看ROE（好不好），再看PB（贵不贵）。低ROE的"低PB"不是便宜——是"该便宜"。</p></div>
+
+  <h3>7.4 PB与银行股</h3>
+  <p>银行股长期破净（PB=0.4-0.7）→自2018年起连续7年未修复。原因：市场对不良贷款、ROE下滑的定价→净资产有水分。A股银行PB长期在0.4-1.2之间波动，<0.5通常是历史底部区域。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>银行破净≠抄底信号→可能是新常态而非错杀。连续7年破净意味着市场认为银行的账面净资产有水分。</p></div>
+
+  <h3>7.5 PB与地产股：纸面资产陷阱</h3>
+  <p>地产股PB极低甚至破净→但土地和存货的账面价值可能高估。市价下跌但账面未减值→"纸面资产"不值账面那么多。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>地产PB<1要看存货减值是否充分——未减值=净资产虚高→"打折买"的资产本身就不值标价。</p></div>
+
+  <h3>7.6 PB历史分位数与变化信号</h3>
+  <ul>
+    <li>PB分位数对银行股比PE分位数更常用</li>
+    <li>PB持续走低→市场对资产质量越来越不信任</li>
+    <li>PB突然飙升→可能有重组/并购预期</li>
+    <li><strong>周期股底部信号</strong>：钢铁/煤炭PB跌破0.8-1.0→往往接近周期底部</li>
+  </ul>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>破净股筛选条件：PB<1 + ROE>8% + 现金流健康——但必须验证资产质量。PB低+ROE低≠低估。</p></div>
+</section>
+
+<section id="ch8" class="section">
+  <div class="chapter-header"><span class="ch-num pb">第8章</span><h3>PB陷阱：破净≠便宜与高负债幻觉</h3></div>
+
+  <h3>8.1 🔴 "破净=便宜"是最大误区</h3>
+  <p>PB<1只说明股价低于账面净资产→但账面净资产可能虚高：①资产减值不充分 ②存货跌价未反映 ③不良资产未核销。</p>
+  <p>类比：商品打折→先看商品本身值不值标价，再看折扣。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>PB<1≠打折买好东西——可能是在打折买烂东西。账面净资产可能虚高→"商品"本身不值标价，打折只是承认了这一点。</p></div>
+
+  <h3>8.2 破净陷阱案例</h3>
+  <p>某钢铁股PB=0.6看似便宜→①设备老化实际价值远低于账面 ②环保改造需大额投入 ③行业产能过剩→这些"资产"不值账面那么多。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>PB低的公司→先问"资产质量怎么样"而非"折扣多大"。答案是：很多破净公司的资产质量很差。</p></div>
+
+  <h3>8.3 高负债公司的PB幻觉</h3>
+  <p>地产公司PB=0.6看似便宜→但负债率80%，净资产仅占总资产20%→资产减值10%→净资产直接腰斩→PB从0.6变1.2。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>负债率>70%的公司PB低≠便宜→资产小幅减值就可能让净资产腰斩，PB瞬间从"便宜"变"贵"。必须结合资产负债率一起看。</p></div>
+
+  <h3>8.4 商誉虚增净资产</h3>
+  <p>收购溢价计入商誉→净资产虚高→PB变低。一旦商誉减值→净资产骤降→PB反而升高。看PB时要扣商誉。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>商誉占比>30%净资产的PB→扣除商誉后再看真实PB。商誉可能一次性减值归零→净资产瞬间缩水。</p></div>
+
+  <h3>8.5 其他PB陷阱</h3>
+  <ul>
+    <li><strong>大额回购/分红侵蚀净资产</strong>→PB被动升高≠变贵</li>
+    <li><strong>金融资产公允价值波动</strong>→牛市净资产膨胀PB降低≠变便宜</li>
+    <li><strong>重置成本vs账面成本</strong>→通胀下资产重置成本远高于账面→PB看似高实际不贵</li>
+    <li><strong>土地/矿产隐藏价值</strong>→账面成本远低于市场价值→PB看似高实际有隐藏资产</li>
+  </ul>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>PB<1时思考"如果公司清算，股东能拿回多少？"——答案通常低于账面净资产。除非公司有隐藏资产（土地/矿产），清算价值可能高于账面。</p></div>
+
+  <h3>8.6 PB避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>PB<1就认为"破净=便宜" → 忽略ROE和资产质量</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>跨行业比PB → 资产结构天差地别</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>高负债公司看PB不看负债率 → 净资产可能一减就腰斩</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>商誉占比大的PB → 扣商誉后再判断</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>轻资产公司看PB → 品牌价值不在净资产中</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>银行长期破净=抄底 → 可能是新常态</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>PB低=资产打折 → 先验证资产值不值账面价</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 第四篇：PS ===== -->
+<h2>第四篇：市销率 PS——为规模付多少钱？</h2>
+
+<section id="ch9" class="section">
+  <div class="chapter-header"><span class="ch-num ps">第9章</span><h3>PS入门：从定义到利润率关系</h3></div>
+
+  <h3>9.1 PS是什么？一家奶茶店的营收类比</h3>
+  <p>PS = 股价÷每股营收 = 总市值÷总营收。奶茶店类比：年营收50万、出价200万→PS=4→"每1元营收付4元"。注意：营收≠利润→PS衡量的是"规模"而非"赚钱能力"。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>PS衡量"你为营收付了多少"——营收能不能变成利润才是关键。PS低≠公司值钱，营收便宜≠利润便宜。</p></div>
+
+  <h3>9.2 PS为什么存在？</h3>
+  <p>有些公司营收增长很快但还在亏损→PE为负→无法用PE估值→用PS代替。只要公司有收入，PS就能算。适用场景：亏损成长股、营收稳定但利润波动、净资产为负。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>PE显示"—"的公司→不要直接跳过→改看PS。亏损公司的估值必须用PS替代PE。</p></div>
+
+  <h3>9.3 PS与利润率的关系（核心公式）</h3>
+  <p>PS × 利润率 ≈ PE（隐含关系）。PS=5 + 利润率20%→隐含PE=25（可接受）；PS=5 + 利润率2%→隐含PE=250（极贵）。<strong>必须结合毛利率/净利率一起看</strong>。</p>
+  <!-- PS隐含PE推算器 -->
+  <div class="interactive-panel">
+    <h4>📊 PS隐含PE推算器</h4>
+    <p style="font-size:.82rem;color:var(--text2);margin-bottom:12px">输入PS和利润率，推算隐含PE是否合理。</p>
+    <div class="calc-row"><label>PS（倍）</label><input id="ps-val" type="number" value="5"></div>
+    <div class="calc-row"><label>净利率（%）</label><input id="ps-margin" type="number" value="20"></div>
+    <div class="calc-row"><button onclick="calcPSPE()" style="background:var(--ps);color:#fff;padding:8px 20px;border:none;border-radius:6px;cursor:pointer;font-size:.82rem">推算隐含PE</button></div>
+    <div class="result-box" id="ps-results">
+      <div class="result-item"><div class="val" id="ps-impl-pe">—</div><div class="label">隐含PE</div></div>
+      <div class="result-item"><div class="val" id="ps-judge">—</div><div class="label">判断</div></div>
+    </div>
+  </div>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>同样PS=3，毛利率80%的SaaS vs 毛利率15%的超市→含义天差地别。不看利润率只看PS=空中楼阁。</p></div>
+
+  <h3>9.4 PS没有"绝对标准"</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>行业类型</th><th>常见PS区间</th><th>原因</th></tr>
+    <tr><td>软件/SaaS</td><td>10-20倍</td><td>毛利率80%+，营收含金量极高</td></tr>
+    <tr><td>互联网平台</td><td>5-15倍</td><td>毛利率50%+，增速高</td></tr>
+    <tr><td>消费品牌</td><td>2-5倍</td><td>毛利率30-50%，稳定盈利</td></tr>
+    <tr><td>超市/零售</td><td>0.3-0.5倍</td><td>毛利率20%，薄利多销</td></tr>
+    <tr><td>贸易公司</td><td>0.1-0.2倍</td><td>毛利率3%，过手营收</td></tr>
+  </table></div>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>不同行业的PS"正常值"相差100倍——必须同行业内比。跨行业比较PS毫无意义。</p></div>
+
+  <h3>9.5 PS在哪里看</h3>
+  <p>部分券商APP有；东方财富→个股→估值分析；i问财搜索"PS市销率"。PS不如PE/PB普及，需要主动查找。查不到时可用PS=市值÷营收手动计算。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>PS查不到时，可以用PS=市值÷营收手动计算（营收在财报利润表中）。市值=股价×总股本。</p></div>
+</section>
+
+<section id="ch10" class="section">
+  <div class="chapter-header"><span class="ch-num ps">第10章</span><h3>PS进阶：亏损成长股估值与EV/Sales</h3></div>
+
+  <h3>10.1 PS适用行业：亏损成长股</h3>
+  <p>新能源/SaaS/互联网/生物医药→早期烧钱扩营收、利润为负→PE无意义→PS是最佳替代。案例：美团早期PS>10但营收增速>50%→估值"贵但增速支撑"。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>亏损成长股的估值逻辑：用PS看规模，用增速判断PS是否合理。高PS必须配高增速。</p></div>
+
+  <h3>10.2 PS适用行业：营收稳定但利润波动</h3>
+  <p>零售/超市→利润率薄、利润波动大但营收稳定→PS比PE更稳定（营收波动远小于利润波动）。利润波动大的公司→PS比PE更靠谱。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>利润波动大的公司（零售/周期底部亏损）→PS比PE更稳定。营收比利润波动小，PS更可靠。</p></div>
+
+  <h3>10.3 PS与增速匹配</h3>
+  <p>PS=10 + 营收增速80%→可能合理；PS=10 + 营收增速10%→明显太贵。类似PEG逻辑：PS÷增速越小越合理。<strong>高PS必须配高增速——增速一旦放缓，PS暴跌</strong>。</p>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>高PS+增速放缓=戴维斯双杀的温床。增速从50%降到10%→PS可能从15杀到5→股价跌67%。</p></div>
+
+  <h3>10.4 PS推算"目标利润率"</h3>
+  <p>PS=5 + 假设行业正常利润率15%→隐含PE=33。如果公司能将利润率提升到15%→当前估值合理。这是SaaS公司的核心估值逻辑：当前亏损但利润率有提升空间→PS看的是"未来利润率兑现后的PE"。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>用PS推算目标利润率：PS÷行业正常利润率=隐含PE→判断是否可接受。隐含PE>50→需要极高的利润率提升才能支撑。</p></div>
+
+  <h3>10.5 PS/毛利率修正与PS Band</h3>
+  <p><strong>修正PS=PS÷毛利率</strong>→使不同利润率的公司具有可比性。高毛利率(>60%)+高PS→可能合理（SaaS）；低毛利率(<10%)+高PS→极度高估（贸易公司）。</p>
+  <p>PS Band（PS通道）：画出历史PS上下轨判断当前位置。</p>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>修正PS让不同利润率的公司可以横向比较——但增速差异仍需单独考虑。修正PS=PS÷毛利率。</p></div>
+
+  <h3>10.6 EV/Sales（比PS更严谨）</h3>
+  <p>EV=市值+净负债→EV/Sales消除了资本结构（负债多少）的影响。并购估值中更常用。普通投资者可先理解PS，进阶再学EV/Sales。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>EV/Sales解决了"公司负债多少"的问题→但计算更复杂，新手先用PS。进阶投资者建议同时看PS和EV/Sales。</p></div>
+</section>
+
+<section id="ch11" class="section">
+  <div class="chapter-header"><span class="ch-num ps">第11章</span><h3>PS陷阱：营收≠利润与戴维斯双杀</h3></div>
+
+  <h3>11.1 🔴 PS完全不考虑盈利能力</h3>
+  <p>公司A：营收100亿净利20亿（净利率20%）PS=2；公司B：营收100亿净利-5亿（净利率-5%）PS=2。两者PS相同但价值天差地别。"营收便宜"≠"公司值钱"。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>PS最低的公司可能亏最多——营收越大亏越多。PS只看规模不看赚钱能力，不看利润率的PS=空中楼阁。</p></div>
+
+  <h3>11.2 营收的"质量"问题</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>问题</th><th>说明</th><th>验证方法</th></tr>
+    <tr><td>关联交易</td><td>大股东贡献营收可能是"左手倒右手"</td><td>看关联交易占比</td></tr>
+    <tr><td>一次性大单</td><td>不可持续</td><td>看营收增速趋势</td></tr>
+    <tr><td>总额法vs净额法</td><td>平台GMV 100亿但只抽成5亿</td><td>看"净收入"而非"GMV"</td></tr>
+    <tr><td>赊销/应收</td><td>营收确认了但钱没收到</td><td>看经营现金流÷营收</td></tr>
+    <tr><td>并购并表</td><td>营收跳增非有机增长</td><td>看"内生增速"</td></tr>
+  </table></div>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>营收质量验证五维度——不看质量只看数字的PS=空中楼阁。必须看经营现金流÷营收比值，>1才健康。</p></div>
+
+  <h3>11.3 🔴 高PS+增速放缓的"戴维斯双杀"</h3>
+  <p>PS=8 + 营收增速从50%降到10%→PS应大幅下调→市场可能滞后反应→你买到的是"过去的高增速"。一旦增速不达预期→PS从15杀到5→股价跌67%。典型案例：2021年大量SaaS股、2022年新能源股。</p>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>增速是PS的"地基"——地基一塌，PS整栋楼倒塌。高PS+增速放缓=戴维斯双杀，股价可能跌60%+。</p></div>
+
+  <h3>11.4 PS不适用于成熟盈利公司</h3>
+  <p>公司已稳定盈利→应直接看PE→PS反而可能误导。PS低+利润率高=PE更低=真正的便宜（但PS看不出这一点）。用PS给高利润公司估值会严重高估。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>公司盈利后就该从PS切换到PE——PS是亏损期的过渡指标，不是终身指标。成熟公司看PE更准确。</p></div>
+
+  <h3>11.5 PS避坑清单</h3>
+  <div class="pitfall-list">
+    <div class="pitfall-item"><span class="x">❌</span><span>PS最低=最便宜 → 可能亏最多</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>跨行业比PS → 含义天差地别</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>不看利润率只看PS → SaaS和超市的PS=3完全不同</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>不看营收质量 → 关联交易/总额法可能虚增营收</span></div>
+    <div class="pitfall-item"><span class="x">❌</span><span>高PS+增速放缓 → 戴维斯双杀，股价跌60%+</span></div>
+  </div>
+</section>
+
+
+<!-- ===== 第五篇：综合实战 ===== -->
+<h2>第五篇：综合实战——选对指标、交叉验证、排除陷阱</h2>
+
+<section id="ch12" class="section">
+  <div class="chapter-header"><span class="ch-num mix">第12章</span><h3>三指标联合使用框架与10条铁律</h3></div>
+
+  <h3>12.1 联合使用三步框架</h3>
+  <p><strong>第一步：判断公司所处阶段</strong></p>
+  <div class="table-wrapper"><table>
+    <tr><th>公司阶段</th><th>主看指标</th><th>辅看指标</th></tr>
+    <tr><td>稳定盈利</td><td>PE</td><td>PB</td></tr>
+    <tr><td>周期波动</td><td>PB / EV/EBITDA</td><td>警惕PE</td></tr>
+    <tr><td>高增长未盈利</td><td>PS / EV/Sales</td><td>PEG</td></tr>
+    <tr><td>亏损且无收入</td><td>现金流 / 资产</td><td>高风险</td></tr>
+  </table></div>
+
+  <p><strong>第二步：交叉验证</strong></p>
+  <div class="table-wrapper"><table>
+    <tr><th>组合</th><th>含义</th><th>判断</th></tr>
+    <tr><td>PE低 + PB低 + ROE高</td><td>好公司打折卖</td><td>可能真低估 ✅</td></tr>
+    <tr><td>PE低 + PB高</td><td>利润高但资产少</td><td>一次性利润，警惕 ⚠️</td></tr>
+    <tr><td>PB低 + ROE低</td><td>差资产打折卖</td><td>不是便宜，是"该便宜" ❌</td></tr>
+    <tr><td>PS低 + 毛利率低</td><td>薄利多销正常水平</td><td>正常，不是低估 ➡️</td></tr>
+    <tr><td>PS高 + 毛利率高 + 增速快</td><td>SaaS高增速</td><td>可能合理 ✅</td></tr>
+  </table></div>
+
+  <p><strong>第三步：排除陷阱</strong></p>
+  <ul>
+    <li>扣非净利润验证PE</li>
+    <li>商誉/应收占比验证PB</li>
+    <li>营收质量/现金流验证PS</li>
+    <li>行业周期位置验证所有指标</li>
+  </ul>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>三步框架：选指标→交叉验证→排除陷阱。任何一步跳过→估值结论可能完全错误。</p></div>
+
+  <h3>12.2 10条铁律：绝对不能犯的错误</h3>
+  <div class="error-grid">
+    <div class="error-item"><div class="error-num">1</div><div><h5>用PE给周期股估值</h5><p>后果：在周期顶部"抄底"亏损50%+ → 第5章详解</p></div></div>
+    <div class="error-item"><div class="error-num">2</div><div><h5>跨行业比较PE/PB/PS</h5><p>后果：得出完全错误的结论 → 第4/7/9章详解</p></div></div>
+    <div class="error-item"><div class="error-num">3</div><div><h5>只看静态PE不看TTM</h5><p>后果：严重滞后或误判 → 第3章详解</p></div></div>
+    <div class="error-item"><div class="error-num">4</div><div><h5>PB<1就认为"破净=便宜"</h5><p>后果：忽略ROE和资产质量 → 第8章详解</p></div></div>
+    <div class="error-item"><div class="error-num">5</div><div><h5>用PS给高利润公司估值</h5><p>后果：严重高估 → 第11章详解</p></div></div>
+    <div class="error-item"><div class="error-num">6</div><div><h5>忽略非经常性损益</h5><p>后果：被一次性利润欺骗 → 第4/5章详解</p></div></div>
+    <div class="error-item"><div class="error-num">7</div><div><h5>不看现金流只看利润</h5><p>后果：买入"纸面富贵"公司 → 第5章详解</p></div></div>
+    <div class="error-item"><div class="error-num">8</div><div><h5>用历史PE中枢刻舟求剑</h5><p>后果：利率/增速/行业格局已变 → 第4章详解</p></div></div>
+    <div class="error-item"><div class="error-num">9</div><div><h5>只看单一指标不做交叉验证</h5><p>后果：盲人摸象 → 第12章详解</p></div></div>
+    <div class="error-item"><div class="error-num">10</div><div><h5>忽略股本变化（增发/回购）</h5><p>后果：EPS/每股净资产失真 → 第5章详解</p></div></div>
+  </div>
+  <div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>10条铁律是手册的"红线"——犯任何一条，估值结论可能完全错误。建议打印贴在电脑旁。</p></div>
+
+  <h3>12.3 低估值与高估值的正确理解</h3>
+  <p><strong>低估值</strong>=安全边际更高≠马上赚钱。用5毛钱买1块钱的东西→但不知道什么时候市场会发现它值1块。</p>
+  <p><strong>高估值</strong>=市场期望高→增速不达预期→"杀估值"（PE从50跌到20→股价可能跌60%）。</p>
+  <p>估值的"不可能三角"回顾：低估值+高增长+高确定性不可能同时拥有。</p>
+  <div class="callout tip-box"><h5>💡 实操建议</h5><p>低估提供安全边际，不提供时间表；高估提供风险预警，不提供暴跌日期。估值是"该问什么问题"的起点，不是"答案是什么"的终点。</p></div>
+
+  <h3>12.4 估值自检清单</h3>
+  <div class="checklist">
+    <div class="checklist-item"><span class="q">❓</span><span>我用的是哪种PE/PB？（静态/TTM/动态？MRQ/LYR？）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>我在同行业内对比吗？</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>扣非PE和原始PE差距大吗？（>30%要警惕）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>经营现金流/净利润>1吗？（<0.7要警惕）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>PB是否结合了ROE？（脱离ROE的PB无意义）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>净资产中商誉占比大吗？（>30%扣商誉再看）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>PS是否结合了利润率？（不看利润率的PS=空中楼阁）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>营收增速可持续吗？（不可持续=戴维斯双杀）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>这家公司是周期股吗？（周期股PE反着看！）</span></div>
+    <div class="checklist-item"><span class="q">❓</span><span>利率环境变化了吗？（利率变了PE中枢移动）</span></div>
+  </div>
+  <div class="callout key-box"><h5>🔑 核心要点</h5><p>每次做估值判断前，过一遍这10个问题——答不上来就别下结论。估值分析是起点而非终点，它告诉你"该问什么问题"，而不是"答案是什么"。</p></div>
+</section>
+
+<!-- ===== 附录 ===== -->
+<h2>附录</h2>
+
+<section id="appA" class="section">
+  <h3>附录A：行业×指标速查对应表</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>行业类型</th><th>主看指标</th><th>辅看指标</th><th>警惕指标</th><th>正常PE区间</th><th>正常PB区间</th><th>正常PS区间</th></tr>
+    <tr><td>银行</td><td>PB</td><td>PE</td><td>PE可能虚低</td><td>4-7</td><td>0.4-1.2</td><td>1-3</td></tr>
+    <tr><td>保险</td><td>PB</td><td>PEV</td><td>PE（受投资收益干扰）</td><td>8-15</td><td>0.8-2.5</td><td>0.5-1.5</td></tr>
+    <tr><td>券商</td><td>PB</td><td>PE</td><td>利润波动大</td><td>10-20</td><td>1-2</td><td>2-4</td></tr>
+    <tr><td>地产</td><td>PB/NAV</td><td>PE</td><td>利润不稳定</td><td>5-10</td><td>0.3-1.5</td><td>0.2-0.8</td></tr>
+    <tr><td>钢铁/煤炭</td><td>PB</td><td>EV/EBITDA</td><td>PE反着看！</td><td>3-8（陷阱）</td><td>0.5-1.5</td><td>0.3-1</td></tr>
+    <tr><td>有色/化工</td><td>PB</td><td>EV/EBITDA</td><td>PE反着看！</td><td>5-15（陷阱）</td><td>1-3</td><td>0.5-2</td></tr>
+    <tr><td>消费龙头</td><td>PE</td><td>PEG</td><td>PS（利润率太高PS误导）</td><td>20-35</td><td>3-10</td><td>2-5</td></tr>
+    <tr><td>医药</td><td>PE</td><td>PEG</td><td>PS（创新药亏损期用）</td><td>25-45</td><td>3-8</td><td>3-8</td></tr>
+    <tr><td>互联网</td><td>PS</td><td>EV/Sales</td><td>PE（亏损时无意义）</td><td>30-60（盈利后）</td><td>2-5</td><td>5-15</td></tr>
+    <tr><td>SaaS/云计算</td><td>PS</td><td>EV/Sales</td><td>PE（亏损期无意义）</td><td>50-100（盈利后）</td><td>5-15</td><td>10-20</td></tr>
+    <tr><td>新能源</td><td>PE/PS</td><td>PEG</td><td>周期股PE陷阱</td><td>20-40</td><td>2-5</td><td>1-5</td></tr>
+    <tr><td>零售/超市</td><td>PS</td><td>PE</td><td>利润波动大PE不稳</td><td>10-20</td><td>1-3</td><td>0.3-0.5</td></tr>
+  </table></div>
+</section>
+
+<section id="appB" class="section">
+  <h3>附录B：PE/PB/PS历史区间参考表</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>指数/行业</th><th>PE TTM区间</th><th>PB区间</th><th>PS区间</th><th>百分位查询来源</th></tr>
+    <tr><td>沪深300</td><td>10-14倍</td><td>1.1-1.7</td><td>0.8-1.3</td><td>乐咕乐股/理杏仁</td></tr>
+    <tr><td>中证500</td><td>15-25倍</td><td>1.5-2.5</td><td>0.8-1.5</td><td>乐咕乐股/百分位网</td></tr>
+    <tr><td>创业板指</td><td>30-50倍</td><td>3-6</td><td>2-4</td><td>乐咕乐股</td></tr>
+    <tr><td>恒生指数</td><td>8-12倍</td><td>0.8-1.3</td><td>0.5-1</td><td>恒指公司官网</td></tr>
+    <tr><td>标普500</td><td>15-22倍</td><td>2.5-4</td><td>1.5-2.5</td><td>multpl.com</td></tr>
+    <tr><td>A股银行板块</td><td>4-7倍</td><td>0.4-1.2</td><td>1-3</td><td>理杏仁</td></tr>
+    <tr><td>A股消费板块</td><td>20-35倍</td><td>3-10</td><td>2-5</td><td>理杏仁</td></tr>
+    <tr><td>A股医药板块</td><td>25-45倍</td><td>3-8</td><td>3-8</td><td>理杏仁</td></tr>
+  </table></div>
+  <div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>以上区间为历史大致范围，非绝对标准。利率环境变化会导致区间整体移动。请以实际百分位数据为准。</p></div>
+</section>
+
+<section id="appC" class="section">
+  <h3>附录C：估值查询工具与数据渠道</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>工具</th><th>覆盖范围</th><th>特色功能</th><th>使用场景</th></tr>
+    <tr><td>东方财富</td><td>个股估值</td><td>PE/PB/PS/股息率</td><td>个股估值查询</td></tr>
+    <tr><td>同花顺（i问财）</td><td>筛选+估值</td><td>智能筛选低PE/PB</td><td>批量筛选估值标的</td></tr>
+    <tr><td>乐咕乐股</td><td>指数PE/PB百分位</td><td>沪深300/中证500等</td><td>判断大盘估值高低</td></tr>
+    <tr><td>百分位网</td><td>指数百分位</td><td>多指数历史百分位</td><td>定投信号参考</td></tr>
+    <tr><td>理杏仁</td><td>个股+行业百分位</td><td>PE/PB历史百分位</td><td>个股估值分位查询</td></tr>
+    <tr><td>券商APP</td><td>个股基本资料</td><td>PE TTM/PB MRQ</td><td>日常快速查看</td></tr>
+  </table></div>
+</section>
+
+<section id="appD" class="section">
+  <h3>附录D：估值指标术语速查表</h3>
+  <div class="table-wrapper"><table>
+    <tr><th>术语</th><th>一句话解释</th><th>详细章节</th></tr>
+    <tr><td>PE</td><td>股价÷利润，"回本年数"</td><td>第3章</td></tr>
+    <tr><td>PE TTM</td><td>最近4季度利润计算的PE（最推荐）</td><td>第3章</td></tr>
+    <tr><td>静态PE（LYR）</td><td>去年全年利润计算的PE（滞后）</td><td>第3章</td></tr>
+    <tr><td>动态PE（Forward）</td><td>预测利润计算的PE（前瞻）</td><td>第3章</td></tr>
+    <tr><td>扣非PE</td><td>扣非净利润计算的PE（真实估值）</td><td>第4章</td></tr>
+    <tr><td>PEG</td><td>PE÷增速，增速修正版PE</td><td>第4章</td></tr>
+    <tr><td>EPS</td><td>每股收益，净利润÷总股本</td><td>第3章</td></tr>
+    <tr><td>PB</td><td>股价÷净资产，"为家底付多少钱"</td><td>第6章</td></tr>
+    <tr><td>PB MRQ</td><td>最近季度净资产计算的PB</td><td>第6章</td></tr>
+    <tr><td>ROE</td><td>净利润÷净资产，"股东回报水平"</td><td>第7章</td></tr>
+    <tr><td>PS</td><td>股价÷营收，"为规模付多少钱"</td><td>第9章</td></tr>
+    <tr><td>EV</td><td>市值+净负债，企业价值</td><td>第10章</td></tr>
+    <tr><td>EV/Sales</td><td>企业价值÷营收（比PS更严谨）</td><td>第10章</td></tr>
+    <tr><td>EV/EBITDA</td><td>企业价值÷EBITDA（周期股常用）</td><td>第5章</td></tr>
+    <tr><td>经营现金流比率</td><td>经营现金流÷净利润（>1才健康）</td><td>第5章</td></tr>
+    <tr><td>PE百分位</td><td>当前PE在历史中的排名百分比</td><td>第4章</td></tr>
+    <tr><td>修正PS</td><td>PS÷毛利率（跨利润率可比）</td><td>第10章</td></tr>
+  </table></div>
+</section>
+
+</div><!-- end main -->
+
+<script>
+// ===== Scroll To =====
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+
+// ===== PE三种口径对比器 =====
+function calcPE(){
+  const price=parseFloat(document.getElementById('pe-price').value)||0;
+  const lyrEps=parseFloat(document.getElementById('pe-lyr-eps').value)||0;
+  const ttmEps=parseFloat(document.getElementById('pe-ttm-eps').value)||0;
+  const fwdEps=parseFloat(document.getElementById('pe-forward-eps').value)||0;
+  const lyrPE=lyrEps>0?(price/lyrEps).toFixed(1):'亏损';
+  const ttmPE=ttmEps>0?(price/ttmEps).toFixed(1):'亏损';
+  const fwdPE=fwdEps>0?(price/fwdEps).toFixed(1):'亏损';
+  document.getElementById('pe-lyr-val').textContent=lyrPE;
+  document.getElementById('pe-ttm-val').textContent=ttmPE;
+  document.getElementById('pe-forward-val').textContent=fwdPE;
+}
+
+// ===== PEG速算器 =====
+function calcPEG(){
+  const pe=parseFloat(document.getElementById('peg-pe').value)||0;
+  const g=parseFloat(document.getElementById('peg-g').value)||0;
+  if(g===0){document.getElementById('peg-val').textContent='∞';document.getElementById('peg-judge').textContent='无意义';return}
+  const peg=pe/g;
+  document.getElementById('peg-val').textContent=peg.toFixed(2);
+  if(peg<1)document.getElementById('peg-judge').textContent='合理 ✅';
+  else if(peg<2)document.getElementById('peg-judge').textContent='偏高 ⚠️';
+  else document.getElementById('peg-judge').textContent='过高 ❌';
+}
+
+// ===== PS隐含PE推算器 =====
+function calcPSPE(){
+  const ps=parseFloat(document.getElementById('ps-val').value)||0;
+  const margin=parseFloat(document.getElementById('ps-margin').value)||0;
+  if(margin===0){document.getElementById('ps-impl-pe').textContent='∞';document.getElementById('ps-judge').textContent='利润率为0';return}
+  const implPE=ps/margin*100;
+  document.getElementById('ps-impl-pe').textContent=implPE.toFixed(1);
+  if(implPE<20)document.getElementById('ps-judge').textContent='偏低 ✅';
+  else if(implPE<40)document.getElementById('ps-judge').textContent='偏高 ⚠️';
+  else document.getElementById('ps-judge').textContent='过高 ❌';
+}
+
+// ===== Hero Canvas 粒子动画 =====
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  const colors=['#F43F5E','#FB7185','#3B82F6','#10B981','#F59E0B'];
+  for(let i=0;i<60;i++){particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,c:colors[Math.floor(Math.random()*colors.length)]})}
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.globalAlpha=0.6;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== ECharts: 周期股利润与PE走势 =====
+function initCycleChart(){
+  const el=document.getElementById('chart-cycle');
+  if(!el||!echarts)return;
+  const chart=echarts.init(el);
+  const years=['2016','2017','2018','2019','2020','2021','2022','2023','2024'];
+  const profit=[5,8,3,4,6,30,15,8,5]; // 利润（亿元）- 周期股模拟
+  const pe=[20,12,33,25,17,5,10,15,20]; // PE - 周期股模拟
+  // 标注周期顶部和底部
+  const markData=[
+    {name:'⚠️ 周期顶部(利润30亿)',coord:['2021',30],itemStyle:{color:'#EF4444'}},
+    {name:'✅ 周期底部(利润3亿)',coord:['2018',3],itemStyle:{color:'#10B981'}}
+  ];
+  chart.setOption({
+    tooltip:{trigger:'axis'},
+    legend:{data:['利润（亿元）','PE（倍）'],textStyle:{color:'#94A3B8'},top:10},
+    grid:{left:60,right:30,top:50,bottom:30},
+    xAxis:{type:'category',data:years,axisLabel:{color:'#94A3B8'},axisLine:{lineStyle:{color:'#64748B'}}},
+    yAxis:[
+      {type:'value',name:'利润（亿元）',nameTextStyle:{color:'#94A3B8'},axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'#1B2D4A'}}},
+      {type:'value',name:'PE（倍）',nameTextStyle:{color:'#94A3B8'},axisLabel:{color:'#94A3B8'},splitLine:{show:false}}
+    ],
+    series:[
+      {name:'利润（亿元）',type:'bar',data:profit,yAxisIndex:0,itemStyle:{color:'#3B82F6'},markPoint:{data:markData,symbol:'pin',symbolSize:40,label:{fontSize:10,color:'#fff'}}},
+      {name:'PE（倍）',type:'line',data:pe,yAxisIndex:1,smooth:true,lineStyle:{color:'#F43F5E',width:2},itemStyle:{color:'#F43F5E'},markPoint:{data:[{name:'🔴 PE最低=最危险',coord:['2021',5],symbolSize:50,label:{fontSize:9,color:'#fff'}},{name:'🟢 PE最高=最安全',coord:['2018',33],symbolSize:50,label:{fontSize:9,color:'#fff'}}]}}
+    ]
+  });
+  window.addEventListener('resize',()=>chart.resize());
+}
+
+// ===== ECharts: PB-ROE四象限 =====
+function initPbRoeChart(){
+  const el=document.getElementById('chart-pb-roe');
+  if(!el||!echarts)return;
+  const chart=echarts.init(el);
+  // 模拟公司数据点
+  const data=[
+    {name:'招行',roe:15,pb:0.8,type:'good'},
+    {name:'某城商行',roe:8,pb:0.5,type:'fair'},
+    {name:'茅台',roe:30,pb:10,type:'expensive'},
+    {name:'某夕阳公司',roe:3,pb:0.8,type:'trap'},
+    {name:'某科技股',roe:25,pb:5,type:'expensive'},
+    {name:'某钢铁股',roe:5,pb:0.6,type:'trap'},
+    {name:'某消费股',roe:20,pb:3,type:'good'},
+    {name:'某亏损公司',roe:1,pb:1.5,type:'overvalued'}
+  ];
+  const seriesData=data.map(d=>[d.roe,d.pb,d.name]);
+  chart.setOption({
+    tooltip:{formatter:p=>`${p.data[2]}<br/>ROE=${p.data[0]}% PB=${p.data[1]}`},
+    grid:{left:60,right:30,top:40,bottom:40},
+    xAxis:{type:'value',name:'ROE (%)',nameTextStyle:{color:'#94A3B8'},axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'#1B2D4A'}},min:0,max:35},
+    yAxis:{type:'value',name:'PB (倍)',nameTextStyle:{color:'#94A3B8'},axisLabel:{color:'#94A3B8'},splitLine:{lineStyle:{color:'#1B2D4A'}},min:0,max:12},
+    series:[{
+      type:'scatter',symbolSize:20,data:seriesData,
+      itemStyle:{color:function(p){
+        const d=data[p.dataIndex];
+        if(d.type==='good')return '#10B981';
+        if(d.type==='trap')return '#EF4444';
+        if(d.type==='overvalued')return '#F59E0B';
+        return '#3B82F6';
+      }},
+      label:{show:true,formatter:p=>p.data[2],fontSize:10,color:'#E2E8F0',position:'right'},
+      markLine:{
+        silent:true,
+        lineStyle:{color:'#64748B',type:'dashed',width:1},
+        data:[
+          {yAxis:3,label:{show:false}},
+          {xAxis:12,label:{show:false}}
+        ]
+      }
+    }],
+    graphic:[
+      {type:'text',left:'15%',top:'15%',style:{text:'高ROE+低PB\n✅ 可能低估',fill:'#10B981',fontSize:12}},
+      {type:'text',right:'15%',top:'15%',style:{text:'高ROE+高PB\n⚠️ 合理但贵',fill:'#3B82F6',fontSize:12}},
+      {type:'text',left:'15%',bottom:'15%',style:{text:'低ROE+低PB\n❌ 不是便宜',fill:'#EF4444',fontSize:12}},
+      {type:'text',right:'15%',bottom:'15%',style:{text:'低ROE+高PB\n❌ 被高估',fill:'#F59E0B',fontSize:12}}
+    ]
+  });
+  window.addEventListener('resize',()=>chart.resize());
+}
+
+// ===== Scroll Reveal =====
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ===== Nav Highlight =====
+const sections=document.querySelectorAll('.section');
+const navItems=document.querySelectorAll('.nav-item');
+const sidebar=document.querySelector('.sidebar');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{
+    const top=s.offsetTop-80;
+    if(window.scrollY>=top)current=s.id;
+  });
+  navItems.forEach(n=>{
+    n.classList.remove('active');
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes(current))n.classList.add('active');
+  });
+});
+
+// ===== Init Charts =====
+window.addEventListener('load',()=>{
+  initCycleChart();
+  initPbRoeChart();
+});
+</script>
+</body>
+</html>
