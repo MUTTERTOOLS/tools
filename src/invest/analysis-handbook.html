@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>读懂分析面：股市新手的多维视角必修课</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{
+  --primary:#3B82F6;--primary-light:#60A5FA;--primary-dark:#1E40AF;
+  --accent:#10B981;--accent2:#F59E0B;--accent3:#EF4444;--accent4:#8B5CF6;
+  --bg:#0A1628;--bg2:#0F2035;--bg3:#152A45;--bg4:#1B3A5C;
+  --text:#E2E8F0;--text2:#94A3B8;--text3:#64748B;
+  --border:#1E3A5F;--border2:#2A4F7A;
+  --card:#152A45;--card-hover:#1B3A5C;
+  --surface:#0F2035;
+  --tip-bg:#0D3320;--tip-border:#10B981;--tip-text:#6EE7B7;
+  --key-bg:#1A2744;--key-border:#3B82F6;--key-text:#93C5FD;
+  --warn-bg:#2A1A0D;--warn-border:#F59E0B;--warn-text:#FCD34D;
+  --danger-bg:#2D0D0D;--danger-border:#EF4444;--danger-text:#FCA5A5;
+  --sidebar-w:240px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+h1{font-size:1.5em;color:var(--primary);border-bottom:2px solid var(--primary);padding-bottom:.3em;margin:1.5em 0 .8em}
+h2{font-size:1.3em;color:var(--primary-light);margin:1.2em 0 .6em}
+h3{font-size:1.1em;color:var(--accent);margin:1em 0 .5em}
+h4{font-size:1em;color:var(--text2);margin:.8em 0 .4em}
+p{margin:.5em 0}
+a{color:var(--primary-light);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent)}
+ul,ol{margin:.5em 0 .5em 1.5em}
+li{margin:.3em 0}
+strong{color:var(--accent)}
+code{background:var(--bg3);padding:.2em .4em;border-radius:3px;font-size:.9em;color:var(--accent2)}
+table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.9em}
+th{background:var(--bg4);color:var(--primary-light);padding:.6em .8em;text-align:left;border:1px solid var(--border2)}
+td{padding:.5em .8em;border:1px solid var(--border);color:var(--text)}
+tr:hover td{background:var(--card-hover)}
+.table-wrapper{overflow-x:auto;margin:.8em 0}
+
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:1em .5em;transition:transform .3s}
+.sidebar-header{font-size:.95em;color:var(--primary);text-align:center;padding:.8em 0;border-bottom:1px solid var(--border);margin-bottom:.5em}
+.nav-section{font-size:.8em;color:var(--text3);padding:.5em .8em;margin-top:.5em;text-transform:uppercase}
+.nav-item{display:block;padding:.4em .8em;font-size:.85em;color:var(--text2);border-radius:4px;margin:.2em 0;cursor:pointer;transition:all .2s}
+.nav-item:hover{background:var(--bg4);color:var(--text)}
+.nav-item.active{background:var(--primary-dark);color:var(--text)}
+.nav-badge{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:.5em}
+.nb-blue{background:var(--primary)}.nb-green{background:var(--accent)}.nb-yellow{background:var(--accent2)}.nb-red{background:var(--accent3)}.nb-purple{background:var(--accent4)}
+
+.main{margin-left:var(--sidebar-w);padding:2em 2.5em;max-width:900px}
+.section{margin:2em 0;padding:1.5em;background:var(--surface);border-radius:8px;border:1px solid var(--border);transition:border .3s}
+.section:hover{border-color:var(--border2)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:none}
+
+.hero{position:relative;min-height:380px;background:linear-gradient(135deg,var(--bg) 0%,var(--bg3) 50%,var(--bg) 100%);border-radius:12px;overflow:hidden;margin:0 0 2em;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3em 2em}
+#heroCanvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0}
+.hero-content{z-index:1}
+.hero-title{font-size:2.2em;color:var(--text);margin-bottom:.3em;letter-spacing:.05em}
+.hero-sub{font-size:1.1em;color:var(--text2);margin-bottom:1em}
+.hero-badges{display:flex;gap:.8em;justify-content:center;flex-wrap:wrap;margin-top:1em}
+.hero-badge{padding:.4em 1em;border-radius:20px;font-size:.85em;border:1px solid var(--border2);background:var(--card);color:var(--text2)}
+.hero-badge b{color:var(--primary-light)}
+
+.path-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1em;margin:1em 0}
+.path-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2em;cursor:pointer;transition:all .3s}
+.path-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.path-card h4{color:var(--primary-light);margin-bottom:.5em;font-size:1em}
+.path-card p{font-size:.85em;color:var(--text2)}
+.path-icon{font-size:1.5em;margin-bottom:.5em}
+
+.callout{padding:1em 1.2em;border-radius:6px;margin:1em 0;border-left:4px solid}
+.tip-box{background:var(--tip-bg);border-color:var(--tip-border);color:var(--tip-text)}
+.key-box{background:var(--key-bg);border-color:var(--key-border);color:var(--key-text)}
+.warn-box{background:var(--warn-bg);border-color:var(--warn-border);color:var(--warn-text)}
+.danger-box{background:var(--danger-bg);border-color:var(--danger-border);color:var(--danger-text)}
+.callout h5{margin-bottom:.5em;font-size:.95em}
+.callout p{font-size:.9em;margin:.3em 0}
+
+.chapter-header{display:flex;align-items:center;gap:.8em;margin-bottom:1em}
+.ch-num{display:inline-block;padding:.3em .8em;border-radius:4px;font-size:.85em;font-weight:bold;color:#fff}
+.cn-blue{background:var(--primary)}.cn-green{background:var(--accent)}.cn-yellow{background:var(--accent2)}.cn-red{background:var(--accent3)}.cn-purple{background:var(--accent4)}
+
+.indicator-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1em;margin:.5em 0;transition:all .3s}
+.indicator-card:hover{border-color:var(--primary)}
+.indicator-card h4{color:var(--primary-light);font-size:.95em;margin-bottom:.3em}
+.indicator-card p{font-size:.85em;color:var(--text2)}
+
+.interactive-panel{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:1.5em;margin:1em 0}
+.interactive-panel h4{color:var(--accent2);margin-bottom:.8em;font-size:1em}
+.calc-row{display:flex;align-items:center;gap:.8em;margin:.5em 0;flex-wrap:wrap}
+.calc-row label{font-size:.9em;color:var(--text2);min-width:140px}
+.calc-row input{background:var(--bg);border:1px solid var(--border2);color:var(--text);padding:.4em .6em;border-radius:4px;width:120px;font-size:.9em}
+.calc-row select{background:var(--bg);border:1px solid var(--border2);color:var(--text);padding:.4em .6em;border-radius:4px;font-size:.9em}
+.calc-btn{background:var(--primary);color:#fff;padding:.4em 1.2em;border:none;border-radius:4px;font-size:.9em;cursor:pointer;transition:background .2s}
+.calc-btn:hover{background:var(--primary-dark)}
+.result-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:1em;margin:.8em 0}
+.result-row{display:flex;justify-content:space-between;padding:.3em 0;font-size:.9em}
+.result-label{color:var(--text2)}
+.result-val{color:var(--accent);font-weight:bold}
+
+.chart-container{width:100%;height:350px;margin:1em 0;border:1px solid var(--border);border-radius:8px;background:var(--bg2)}
+
+.face-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8em;margin:1em 0}
+.face-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1em;text-align:center;cursor:pointer;transition:all .3s}
+.face-card:hover{transform:translateY(-3px);border-color:var(--primary)}
+.face-icon{font-size:2em;margin-bottom:.5em}
+.face-name{font-size:.9em;color:var(--primary-light);margin-bottom:.3em}
+.face-q{font-size:.8em;color:var(--text2)}
+
+.pitfall-list{margin:.8em 0}
+.pitfall-item{display:flex;align-items:flex-start;gap:.8em;padding:.5em .8em;margin:.3em 0;border-radius:4px;background:var(--warn-bg);border:1px solid var(--warn-border)}
+.pitfall-num{color:var(--accent3);font-weight:bold;font-size:1.1em;min-width:2em}
+.pitfall-text{font-size:.9em;color:var(--warn-text)}
+
+.bias-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8em;margin:1em 0}
+.bias-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1em}
+.bias-card h4{color:var(--accent3);font-size:.9em;margin-bottom:.3em}
+.bias-card .bias-name{color:var(--accent2);font-size:.8em}
+.bias-card p{font-size:.85em;color:var(--text2)}
+
+.checklist{margin:1em 0}
+.checklist-item{display:flex;align-items:flex-start;gap:.5em;padding:.4em .6em;margin:.3em 0;border-radius:4px;background:var(--bg3);font-size:.9em}
+.checklist-q{color:var(--accent2);font-weight:bold;min-width:2em}
+
+.timeline{position:relative;margin:1.5em 0;padding-left:2em}
+.timeline-item{position:relative;padding:.8em 0;border-left:2px solid var(--border2)}
+.timeline-item::before{content:'';position:absolute;left:-6px;top:1em;width:10px;height:10px;border-radius:50%;background:var(--primary)}
+.timeline-time{font-size:.8em;color:var(--primary-light);margin-bottom:.2em}
+.timeline-content{font-size:.9em;color:var(--text)}
+
+.term-table{font-size:.85em}
+.term-table td:first-child{color:var(--accent2);font-weight:bold;min-width:80px}
+.term-table td:nth-child(3){color:var(--primary-light);font-size:.8em}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:1em}
+  .path-grid{grid-template-columns:1fr}
+  .face-grid{grid-template-columns:repeat(2,1fr)}
+  .bias-grid{grid-template-columns:1fr}
+  .hero-title{font-size:1.5em}
+  .calc-row{flex-direction:column}
+  .calc-row label{min-width:auto}
+}
+.mobile-toggle{position:fixed;top:.8em;left:.8em;z-index:200;background:var(--primary);color:#fff;border:none;padding:.5em .8em;border-radius:4px;font-size:.9em;cursor:pointer;display:none}
+@media(max-width:768px){.mobile-toggle{display:block}}
+</style>
+</head>
+<body>
+
+<button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰ 目录</button>
+
+<div class="sidebar">
+<div class="sidebar-header">📖 读懂分析面</div>
+<div class="nav-section">第一篇 认识分析面</div>
+<div class="nav-item" onclick="scrollToId('ch1')"><span class="nav-badge nb-blue"></span>第1章 为什么多面看</div>
+<div class="nav-item" onclick="scrollToId('ch2')"><span class="nav-badge nb-green"></span>第2章 九面全景地图</div>
+<div class="nav-section">第二篇 基本面</div>
+<div class="nav-item" onclick="scrollToId('ch3')"><span class="nav-badge nb-blue"></span>第3章 基本面入门</div>
+<div class="nav-item" onclick="scrollToId('ch4')"><span class="nav-badge nb-green"></span>第4章 基本面进阶</div>
+<div class="nav-section">第三篇 宏观/政策面</div>
+<div class="nav-item" onclick="scrollToId('ch5')"><span class="nav-badge nb-yellow"></span>第5章 宏观入门</div>
+<div class="nav-item" onclick="scrollToId('ch6')"><span class="nav-badge nb-yellow"></span>第6章 宏观进阶</div>
+<div class="nav-item" onclick="scrollToId('ch7')"><span class="nav-badge nb-red"></span>第7章 政策面</div>
+<div class="nav-section">第四篇 技术面</div>
+<div class="nav-item" onclick="scrollToId('ch8')"><span class="nav-badge nb-purple"></span>第8章 技术面入门</div>
+<div class="nav-item" onclick="scrollToId('ch9')"><span class="nav-badge nb-purple"></span>第9章 技术面进阶</div>
+<div class="nav-item" onclick="scrollToId('ch10')"><span class="nav-badge nb-purple"></span>第10章 技术面实操</div>
+<div class="nav-section">第五篇 资金面+筹码面</div>
+<div class="nav-item" onclick="scrollToId('ch11')"><span class="nav-badge nb-blue"></span>第11章 资金面入门</div>
+<div class="nav-item" onclick="scrollToId('ch12')"><span class="nav-badge nb-blue"></span>第12章 资金面进阶</div>
+<div class="nav-item" onclick="scrollToId('ch13')"><span class="nav-badge nb-green"></span>第13章 筹码面</div>
+<div class="nav-section">第六篇 情绪+消息+量化</div>
+<div class="nav-item" onclick="scrollToId('ch14')"><span class="nav-badge nb-red"></span>第14章 情绪面入门</div>
+<div class="nav-item" onclick="scrollToId('ch15')"><span class="nav-badge nb-red"></span>第15章 情绪面进阶</div>
+<div class="nav-item" onclick="scrollToId('ch16')"><span class="nav-badge nb-yellow"></span>第16章 消息面</div>
+<div class="nav-item" onclick="scrollToId('ch17')"><span class="nav-badge nb-purple"></span>第17章 量化入门</div>
+<div class="nav-item" onclick="scrollToId('ch18')"><span class="nav-badge nb-purple"></span>第18章 量化交叉</div>
+<div class="nav-section">第七篇 综合实战</div>
+<div class="nav-item" onclick="scrollToId('ch19')"><span class="nav-badge nb-blue"></span>第19章 交叉验证</div>
+<div class="nav-item" onclick="scrollToId('ch20')"><span class="nav-badge nb-green"></span>第20章 自检体系</div>
+<div class="nav-section">附录</div>
+<div class="nav-item" onclick="scrollToId('appA')"><span class="nav-badge nb-yellow"></span>A 术语速查</div>
+<div class="nav-item" onclick="scrollToId('appB')"><span class="nav-badge nb-yellow"></span>B 查询渠道</div>
+<div class="nav-item" onclick="scrollToId('appC')"><span class="nav-badge nb-yellow"></span>C 宏观日历</div>
+<div class="nav-item" onclick="scrollToId('appD')"><span class="nav-badge nb-yellow"></span>D 局限性速查</div>
+<div class="nav-item" onclick="scrollToId('appE')"><span class="nav-badge nb-green"></span>E 自检清单</div>
+</div>
+
+<div class="main">
+
+<!-- ===== 封面 ===== -->
+<div class="hero reveal">
+<canvas id="heroCanvas"></canvas>
+<div class="hero-content">
+<div class="hero-title">读懂分析面</div>
+<div class="hero-sub">股市新手的多维视角必修课</div>
+<div class="hero-sub" style="font-size:.9em;color:var(--text3)">从"只看一个面"到"九面交叉验证"</div>
+<div class="hero-badges">
+<div class="hero-badge"><b>6篇</b> 20章</div>
+<div class="hero-badge"><b>9面</b> 256知识点</div>
+<div class="hero-badge"><b>8个</b> 交互组件</div>
+<div class="hero-badge"><b>13问</b> 自检清单</div>
+</div>
+</div>
+</div>
+
+<!-- ===== 推荐阅读路径 ===== -->
+<h1>推荐阅读路径</h1>
+<div class="path-grid reveal">
+<div class="path-card" onclick="scrollToId('ch1')">
+<div class="path-icon">🌱</div>
+<h4>新手必读路径</h4>
+<p>第1章→第2章→第3-4章→第14章→第19-20章</p>
+</div>
+<div class="path-card" onclick="scrollToId('ch3')">
+<div class="path-icon">📈</div>
+<h4>进阶完整路径</h4>
+<p>按篇顺序完整阅读20章</p>
+</div>
+<div class="path-card" onclick="scrollToId('appA')">
+<div class="path-icon">🔍</div>
+<h4>速查路径</h4>
+<p>遇到问题→附录A术语→附录E自检清单</p>
+</div>
+</div>
+
+<!-- ===== 第一篇：认识分析面 ===== -->
+<h1>第一篇：认识分析面——为什么不能只看一个面</h1>
+
+<section id="ch1" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-blue">第1章</span><h2>为什么要多面看股市</h2></div>
+
+<h3>1.1 单一视角的致命代价</h3>
+<p><strong>只看基本面</strong>：好公司也可能跌3年——估值回归时间不确定，2020-2022年大量消费龙头基本面优秀但股价腰斩。</p>
+<p><strong>只看技术面</strong>：图形完美但财务造假——技术面对基本面突变完全无效，康美药业技术面长期"完美"但造假300亿。</p>
+<p><strong>只看消息面</strong>：利好兑现反而下跌——"买预期卖事实"，财报超预期但股价跌，因为市场早已预期超预期。</p>
+<p><strong>只看宏观面</strong>：宏观好≠个股好——GDP增速6%但行业分化严重，新能源暴涨、地产暴跌，宏观好只告诉你"大方向"。</p>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>2021年消费抱团解散：基本面好（消费龙头ROE>20%）+ 情绪过热（公募抱团+爆款基金频出）+ 政策收紧（反垄断+消费税讨论）= 三面共振→踩踏→消费股平均跌40%+。</p></div>
+
+<h3>1.2 九面全景：一句话记住每个面</h3>
+<div class="face-grid">
+<div class="face-card"><div class="face-icon">📊</div><div class="face-name">基本面</div><div class="face-q">买什么？</div></div>
+<div class="face-card"><div class="face-icon">📈</div><div class="face-name">技术面</div><div class="face-q">何时买？</div></div>
+<div class="face-card"><div class="face-icon">💰</div><div class="face-name">资金面</div><div class="face-q">谁在买？</div></div>
+<div class="face-card"><div class="face-icon">😰</div><div class="face-name">情绪面</div><div class="face-q">怕还是贪？</div></div>
+<div class="face-card"><div class="face-icon">🌍</div><div class="face-name">宏观/政策面</div><div class="face-q">风往哪吹？</div></div>
+<div class="face-card"><div class="face-icon">⚡</div><div class="face-name">消息面</div><div class="face-q">发生了什么？</div></div>
+<div class="face-card"><div class="face-icon">🎯</div><div class="face-name">筹码面</div><div class="face-q">谁在车上？</div></div>
+<div class="face-card"><div class="face-icon">🧮</div><div class="face-name">量化/行为面</div><div class="face-q">统计+弱点？</div></div>
+</div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>一句话口诀：基本面选股，技术面择时，资金面确认，情绪面防极端，宏观定方向，消息防意外，筹码看持仓，量化筛候选。</p></div>
+
+<h3>1.3 没有任何单一面能"包打天下"</h3>
+<p>成熟投资者以1-2面为主干，其余为辅助验证。新手从基本面+技术面入门→逐步加入资金面+情绪面→最终九面全看。</p>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>单一维度的确信，往往是亏损的开始。九面不是九选一，而是以一面为主、多面验证。</p></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>各流派都有自己的偏见：基本面派忽视择时，技术面派忽视黑天鹅，消息派忽视"买预期卖事实"，量化派忽视过拟合。详见第2章偏见对照表。</p></div>
+</section>
+
+<section id="ch2" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-green">第2章</span><h2>九面全景地图与核心术语速释</h2></div>
+
+<h3>2.1 九面总览表</h3>
+<div class="table-wrapper"><table>
+<tr><th>面</th><th>一句话定义</th><th>核心问题</th><th>适用周期</th><th>新手先学</th></tr>
+<tr><td>基本面</td><td>公司真实的赚钱能力</td><td>"值多少钱？"</td><td>中长期</td><td>✅ 第1优先</td></tr>
+<tr><td>技术面</td><td>价格走势的脚印</td><td>"趋势往哪走？"</td><td>短中期</td><td>✅ 第2优先</td></tr>
+<tr><td>资金面</td><td>钱多还是少</td><td>"谁在买？"</td><td>短中期</td><td>✅ 第3优先</td></tr>
+<tr><td>情绪面</td><td>群体的心理温度</td><td>"怕还是贪？"</td><td>短期（极端区）</td><td>✅ 第4优先</td></tr>
+<tr><td>宏观/政策面</td><td>经济体温计+方向盘</td><td>"大环境+政策？"</td><td>中长期</td><td>后学</td></tr>
+<tr><td>消息面</td><td>事件驱动的脉冲</td><td>"出了什么事？"</td><td>短期脉冲</td><td>后学</td></tr>
+<tr><td>筹码面</td><td>股票在谁手里</td><td>"谁在车上？"</td><td>中短期</td><td>后学</td></tr>
+<tr><td>量化/行为面</td><td>数学代替直觉</td><td>"统计+弱点？"</td><td>全周期</td><td>后学</td></tr>
+</table></div>
+
+<h3>2.2 核心术语速释</h3>
+<div class="table-wrapper"><table class="term-table">
+<tr><th>术语</th><th>一句话解释</th><th>详细章节</th></tr>
+<tr><td>GDP</td><td>经济体总产出，衡量"大环境好不好"</td><td>第5章</td></tr>
+<tr><td>CPI</td><td>居民物价指数，衡量"物价涨了还是跌了"</td><td>第5章</td></tr>
+<tr><td>PMI</td><td>采购经理指数，50=荣枯线，"宏观经济第一个体温计"</td><td>第5章</td></tr>
+<tr><td>M1/M2</td><td>现金+活期 vs 总货币，看"资金活不活"</td><td>第6章</td></tr>
+<tr><td>社融</td><td>社会融资规模，"实体经济从金融体系借了多少钱"</td><td>第6章</td></tr>
+<tr><td>PE</td><td>市盈率，股价÷利润，"回本年数"</td><td>第4章</td></tr>
+<tr><td>PB</td><td>市净率，股价÷净资产，"为家底付多少"</td><td>第4章</td></tr>
+<tr><td>ROE</td><td>净资产收益率，净利润÷净资产，"股东回报水平"</td><td>第4章</td></tr>
+<tr><td>EPS</td><td>每股收益，净利润÷总股本</td><td>第3章</td></tr>
+<tr><td>MACD</td><td>移动平均收敛/发散指标，看趋势和拐点</td><td>第9章</td></tr>
+<tr><td>K线</td><td>记录开盘/收盘/最高/最低的价格图形</td><td>第8章</td></tr>
+<tr><td>均线</td><td>N日收盘价均值，趋势工具</td><td>第8章</td></tr>
+<tr><td>北向资金</td><td>外资通过沪深港通买入A股</td><td>第11章</td></tr>
+<tr><td>龙虎榜</td><td>异动股前5买卖席位披露</td><td>第12章</td></tr>
+<tr><td>VIX</td><td>期权隐含波动率，"恐慌指数"</td><td>第14章</td></tr>
+<tr><td>换手率</td><td>当日成交股数÷流通股数，"交易活跃度"</td><td>第14章</td></tr>
+<tr><td>美林时钟</td><td>经济周期四阶段资产配置框架</td><td>第6章</td></tr>
+<tr><td>护城河</td><td>企业竞争优势，防止对手抢走利润</td><td>第4章</td></tr>
+<tr><td>自由现金流</td><td>经营现金流-资本支出，"真正可自由支配的钱"</td><td>第4章</td></tr>
+<tr><td>筹码分布</td><td>各价位持仓量分布，看密集成交区</td><td>第13章</td></tr>
+<tr><td>夏普比率</td><td>（收益-无风险收益）/波动率，"性价比"</td><td>第17章</td></tr>
+<tr><td>杜邦分析</td><td>拆解ROE的三个引擎：利润率×周转×杠杆</td><td>第4章</td></tr>
+<tr><td>支撑/阻力</td><td>下跌容易反弹/上涨容易回落的价位，"地板与天花板"</td><td>第8章</td></tr>
+<tr><td>融资融券</td><td>借钱买/借券卖，杠杆工具</td><td>第11章</td></tr>
+<tr><td>筹码分布</td><td>各价位持仓量分布，看密集成交区</td><td>第13章</td></tr>
+<tr><td>夏普比率</td><td>（收益-无风险收益）/波动率，"性价比"</td><td>第17章</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>遇到不认识的术语→先查本表→再跳到对应章节深入学习。术语速释是"认脸"阶段，不是"深入了解"阶段。</p></div>
+
+<h3>2.3 时间维度对应图</h3>
+<div class="table-wrapper"><table>
+<tr><th>投资周期</th><th>主要分析面</th><th>辅助面</th><th>核心决策</th></tr>
+<tr><td>超短线（日内~3天）</td><td>技术面+情绪面</td><td>资金面+消息面</td><td>何时买卖</td></tr>
+<tr><td>短线（1~4周）</td><td>技术面+资金面</td><td>消息面+情绪面</td><td>波段节奏</td></tr>
+<tr><td>中线（1~6月）</td><td>基本面+宏观面</td><td>资金面+技术面</td><td>选股+方向</td></tr>
+<tr><td>长线（1年+）</td><td>基本面</td><td>宏观面</td><td>买入什么</td></tr>
+</table></div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>时间维度匹配原则：宏观/基本面→周/月频（中长期信号）；技术/资金/情绪→日频（短期信号）；消息→小时频（脉冲信号）。匹配你的投资周期选对应的分析面。</p></div>
+
+<h3>2.4 各流派常见偏见对照表</h3>
+<div class="table-wrapper"><table>
+<tr><th>流派</th><th>常见偏见</th><th>后果</th></tr>
+<tr><td>基本面派</td><td>"只要公司好，什么时候买都行"</td><td>忽视择时→好公司买在高点→跌3年</td></tr>
+<tr><td>技术面派</td><td>"图形完美就该买"</td><td>忽视基本面突变→财务造假=图形失效</td></tr>
+<tr><td>宏观派</td><td>"大方向对了就行"</td><td>忽视个股差异→宏观好≠个股好</td></tr>
+<tr><td>消息派</td><td>"这个消息一定涨"</td><td>忽视"买预期卖事实"→利好兑现=下跌</td></tr>
+<tr><td>量化派</td><td>"回测年化50%"</td><td>忽视过拟合→回测完美实盘亏损</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>流派偏见=亏损源头。每个流派都有自己的盲区→九面交叉验证的目的就是弥补单一面的盲区。</p></div>
+</section>
+
+
+<!-- ===== 第二篇：基本面 ===== -->
+<h1>第二篇：基本面——公司值多少钱</h1>
+
+<section id="ch3" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-blue">第3章</span><h2>基本面入门：三张报表与核心指标</h2></div>
+
+<h3>3.1 为什么先看基本面</h3>
+<p>基本面是"称重机"——告诉你公司值多少钱。中长期投资，基本面是选股的第一道门。用1块钱买值2块钱的东西，哪怕不知道什么时候市场会发现它值2块，你至少不会亏到1块以下。</p>
+<p>💡 类比：基本面是房子的地基→地基牢固（财务健康）→房价短期波动不用怕→地基裂缝（财务恶化）→再漂亮的装修也住不了。</p>
+
+<h3>3.2 三张报表一图读懂</h3>
+<div class="table-wrapper"><table>
+<tr><th>报表</th><th>核心问题</th><th>关键词</th><th>典型异常信号</th></tr>
+<tr><td><strong>利润表</strong></td><td>赚了多少钱？利润可持续吗？</td><td>营收→成本→毛利→费用→净利润</td><td>营收增但利润减→费用吞噬利润</td></tr>
+<tr><td><strong>资产负债表</strong></td><td>有什么？欠什么？剩什么？</td><td>资产=负债+净资产</td><td>商誉>净资产30%→资产含水分</td></tr>
+<tr><td><strong>现金流量表</strong></td><td>现金从哪来、到哪去？</td><td>经营+投资+筹资现金流</td><td>经营现金流<净利润50%→利润没变成钱</td></tr>
+</table></div>
+
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>三表联动验证口诀：利润表说赚了10亿→现金流量表说经营现金流只有3亿→7亿利润没变成钱→利润含金量存疑。三表必须交叉看，单看一张表=盲人摸象。</p></div>
+
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>看基本面先看三张报表→利润表看盈利→资产负债表看家底→现金流量表看真金白银→三表交叉验证→利润表说赚了10亿但现金流只有3亿→7亿是"纸面富贵"→单看一张表=盲人摸象。</p></div>
+<h3>3.3 核心指标速查表</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>一句话</th><th>正常范围</th><th>异常信号</th></tr>
+<tr><td>营收增速</td><td>公司卖得更多还是更少</td><td>10-20%（成熟公司）</td><td><0→萎缩；>50%→可能不可持续</td></tr>
+<tr><td>净利润增速</td><td>公司赚得更多还是更少</td><td>与营收增速匹配</td><td>增速远低于营收→费用吞噬利润</td></tr>
+<tr><td>毛利率</td><td>产品本身赚钱的能力</td><td>行业差异大：软件70%+，零售20%</td><td>连续下滑→竞争力下降</td></tr>
+<tr><td>净利率</td><td>综合赚钱的水平</td><td>5-15%（制造业）</td><td><3%→赚钱很辛苦</td></tr>
+<tr><td>ROE</td><td>股东每投1块钱赚多少</td><td>15%+（优秀公司）</td><td><8%→不如买债券</td></tr>
+<tr><td>资产负债率</td><td>借钱多还是少</td><td>40-60%（适中）</td><td>>70%→财务风险高；<20%→杠杆不足</td></tr>
+</table></div>
+
+<h3>3.4 财报阅读避坑</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text">只看净利润不看扣非净利润→一次性收益（卖资产/政府补贴）虚增利润→扣非PE才是真实估值</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text">只看利润不看现金流→利润10亿但经营现金流3亿→7亿是"纸面富贵"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text">商誉占比过大→并购溢价→商誉减值=利润瞬间蒸发</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text">应收账款增速>营收增速→收入增长靠"欠条"而非真金白银</div></div>
+<div class="pitfall-item"><div class="pitfall-num">5</div><div class="pitfall-text">存货增速异常→可能滞销→未来计提跌价准备=利润缩水</div></div>
+<div class="pitfall-item"><div class="pitfall-num">6</div><div class="pitfall-text">财报发布时间滞后→一季报4月底、半年报8月底→信息非实时</div></div>
+<div class="pitfall-item"><div class="pitfall-num">7</div><div class="pitfall-text">非标准审计意见→保留意见=有问题→否定意见=严重问题→直接排除</div></div>
+</div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>财报调节手法清单：①提前确认收入→②推迟确认费用→③关联交易输送利润→④资产减值选择时机→⑤研发费用资本化而非费用化→⑥存货计价方法切换。遇到这些→利润表数据需要打折看。</p></div>
+</section>
+
+<section id="ch4" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-green">第4章</span><h2>基本面进阶：护城河、估值与行业选股</h2></div>
+
+<h3>4.1 五种护城河</h3>
+<div class="table-wrapper"><table>
+<tr><th>护城河类型</th><th>含义</th><th>典型案例</th><th>识别信号</th></tr>
+<tr><td>品牌</td><td>消费者愿意多付钱</td><td>茅台、可口可乐</td><td>毛利率远高于同行</td></tr>
+<tr><td>规模</td><td>量大→成本更低→对手打不过</td><td>沃尔玛、宁德时代</td><td>市占率>30%+成本领先</td></tr>
+<tr><td>网络效应</td><td>用的人越多→产品越好→越难离开</td><td>微信、淘宝</td><td>用户数增速>收入增速</td></tr>
+<tr><td>技术/专利</td><td>别人做不了或做不好</td><td>台积电、ASML</td><td>研发投入>营收5%+专利壁垒</td></tr>
+<tr><td>转换成本</td><td>换到别家很麻烦或很贵</td><td>SAP、Oracle</td><td>客户留存率>90%</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>护城河识别口诀：毛利率远高于同行=品牌/技术；市占率>30%=规模；用户越多越好=网络效应；客户留存率>90%=转换成本。没有护城河的公司→利润随时被对手抢走。</p></div>
+
+<h3>4.2 估值指标入门</h3>
+<div class="interactive-panel">
+<h4>PE/PB/PS口径对比器</h4>
+<div class="calc-row"><label>当前股价（元）</label><input id="val-price" type="number" value="50" placeholder="股价"></div>
+<div class="calc-row"><label>EPS（TTM）</label><input id="val-eps" type="number" value="3" placeholder="EPS"></div>
+<div class="calc-row"><label>每股净资产</label><input id="val-bps" type="number" value="15" placeholder="净资产"></div>
+<div class="calc-row"><label>每股营收</label><input id="val-sps" type="number" value="20" placeholder="营收"></div>
+<div class="calc-row"><button class="calc-btn" onclick="calcVal()">计算估值</button></div>
+<div class="result-box" id="val-results">
+<div class="result-row"><span class="result-label">PE（TTM）</span><span class="result-val" id="val-pe">—</span></div>
+<div class="result-row"><span class="result-label">PB</span><span class="result-val" id="val-pb">—</span></div>
+<div class="result-row"><span class="result-label">PS</span><span class="result-val" id="val-ps">—</span></div>
+</div>
+</div>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>一句话</th><th>适用行业</th><th>不适用行业</th></tr>
+<tr><td>PE</td><td>回本年数</td><td>稳定盈利公司</td><td>周期股（PE反着看）、亏损公司</td></tr>
+<tr><td>PB</td><td>为家底付多少</td><td>银行、地产、周期股</td><td>轻资产公司（互联网/SaaS）</td></tr>
+<tr><td>PS</td><td>为规模付多少</td><td>亏损/高增长公司（互联网/SaaS）</td><td>利润率很高的公司（PS严重高估）</td></tr>
+<tr><td>PEG</td><td>增速修正版PE</td><td>高增长公司</td><td>增速<10%的公司（PEG失真）</td></tr>
+<tr><td>EV/EBITDA</td><td>周期股更靠谱的PE</td><td>周期股、并购</td><td>利息/税影响大的行业</td></tr>
+<tr><td>股息率</td><td>每年分红回报</td><td>成熟稳定公司</td><td>高增长不分红公司</td></tr>
+</table></div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>行业×估值指标对应表：银行看PB、消费看PE、互联网看PS、周期看PB/EV/EBITDA——跨行业比较PE/PB/PS是估值最常见的大错。</p></div>
+
+<h3>4.3 杜邦分析：拆解ROE的三个引擎</h3>
+<div class="interactive-panel">
+<h4>杜邦分析拆解器</h4>
+<div class="calc-row"><label>净利率（%）</label><input id="db-margin" type="number" value="15"></div>
+<div class="calc-row"><label>周转率（次）</label><input id="db-turnover" type="number" value="1.2"></div>
+<div class="calc-row"><label>杠杆率（倍）</label><input id="db-leverage" type="number" value="2"></div>
+<div class="calc-row"><button class="calc-btn" onclick="calcDupont()">计算ROE</button></div>
+<div class="result-box"><div class="result-row"><span class="result-label">ROE</span><span class="result-val" id="db-roe">—</span></div></div>
+</div>
+<p>ROE = 净利率 × 周转率 × 杠杆率。三个引擎各有含义：</p>
+<ul>
+<li><strong>净利率</strong>（产品竞争力）：卖1块钱赚多少→茅台净利率50%→产品极赚钱</li>
+<li><strong>周转率</strong>（运营效率）：1块钱资产能卖几次→沃尔玛周转率高→薄利多销</li>
+<li><strong>杠杆率</strong>（加杠杆=风险也在增）：借了多少钱→银行杠杆高→赚钱靠借钱</li>
+</ul>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>ROE提升来源辨别：净利率提升=好事→周转率提升=好事→杠杆率提升=危险信号→"用杠杆推高的ROE不持久"。优秀公司的ROE应该靠净利率+周转率驱动，而非靠杠杆。</p></div>
+
+<h3>4.4 行业选股框架</h3>
+<div class="table-wrapper"><table>
+<tr><th>行业阶段</th><th>特征</th><th>看什么指标</th><th>典型行业</th></tr>
+<tr><td>导入期</td><td>增长快、不确定高</td><td>PS+营收增速</td><td>AI、元宇宙</td></tr>
+<tr><td>成长期</td><td>增速30%+、格局初定</td><td>PEG+营收增速</td><td>新能源、半导体</td></tr>
+<tr><td>成熟期</td><td>增速<10%、格局稳定</td><td>PE+分红+ROE</td><td>消费龙头、银行</td></tr>
+<tr><td>衰退期</td><td>负增长、出清中</td><td>PB+现金流</td><td>传统煤钢、地产</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>行业景气度是选股的第一信号→景气上行→整个板块都受益→选龙头；景气下行→只有最优秀的公司能撑住→选最强者。景气度看：行业营收增速+龙头企业订单/产能利用率。</p></div>
+
+<h3>4.5 公司治理与股东</h3>
+<p>大股东持股比例过低→控制权不稳→被收购风险；过高→独断→中小股东利益可能受损。关联交易频繁→利润可能被"输送"。管理层股权激励→利益绑定=好事→但激励条件过低=变相送钱。</p>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>PB<1≠便宜（资产可能含水分），PE低≠好公司（可能是周期顶部利润虚高）。估值指标必须结合行业特征和财务质量交叉验证→详见估值手册。</p></div>
+</section>
+
+
+<!-- ===== 第三篇：宏观/政策面 ===== -->
+<h1>第三篇：宏观/政策面——大环境好不好，政策往哪推</h1>
+
+<section id="ch5" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-yellow">第5章</span><h2>宏观入门：经济体温计与核心指标</h2></div>
+
+<h3>5.1 为什么看宏观</h3>
+<p>宏观是顺风还是逆风→决定你该顺风骑行还是逆风防守。宏观好≠个股好，但<strong>宏观差→大部分个股都差</strong>。看宏观的目的是判断"大方向"，不是选具体股票。</p>
+<p>💡 类比：宏观面是天气预报→晴天（宏观好）=适合出门但不保证不被车撞→暴雨（宏观差）=最好不要出门。</p>
+
+<h3>5.2 六大核心指标速查表</h3>
+<div class="interactive-panel">
+<h4>宏观六指标速查</h4>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>一句话</th><th>发布频率</th><th>看好信号</th><th>看差信号</th><th>查询渠道</th></tr>
+<tr><td>PMI</td><td>宏观经济第一个体温计</td><td>月度</td><td>>50且连续上升</td><td><50且连续下滑</td><td>国家统计局</td></tr>
+<tr><td>社融</td><td>A股最重要的前瞻指标</td><td>月度</td><td>增速连续上升</td><td>增速连续下滑</td><td>央行</td></tr>
+<tr><td>M1-M2剪刀差</td><td>资金活不活</td><td>月度</td><td>M1增速>M2（资金活化）</td><td>M1增速<M2（资金沉淀）</td><td>央行</td></tr>
+<tr><td>CPI</td><td>央行会不会收紧</td><td>月度</td><td>温和通胀2-3%</td><td>通缩<1%或高通胀>5%</td><td>国家统计局</td></tr>
+<tr><td>利率</td><td>估值中枢移动方向</td><td>实时/季度</td><td>利率下行→估值上移</td><td>利率上行→估值下移</td><td>央行/Shibor</td></tr>
+<tr><td>美联储决议</td><td>全球资产定价总开关</td><td>季度会议</td><td>降息→新兴市场受益</td><td>加息→资金回流美元</td><td>美联储官网</td></tr>
+</table></div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>看宏观只需盯6个指标：PMI+社融+M1-M2+CPI+利率+美联储→多了看不过来→少了判断不足。这6个指标覆盖增长+流动性+通胀+外部四维。</p></div>
+</div>
+
+<h3>5.3 经济增长指标详解</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>与股市的关系</th><th>注意点</th></tr>
+<tr><td>GDP</td><td>经济体总产出。同比=和去年比，环比=和上季度比</td><td>GDP增速上升→企业盈利改善→股市偏暖；但过高→可能引发调控</td><td>季度发布→滞后；同比更稳定，环比更前瞻</td></tr>
+<tr><td>工业增加值</td><td>工业部门产出增量</td><td>制造业景气度的先行指标</td><td>月度发布→连续3月下滑→警惕经济下行</td></tr>
+<tr><td>固定资产投资</td><td>基建+地产+制造业三大支柱</td><td>地产下滑→地产链受压；基建加速→基建链受益</td><td>分行业看→不要只看总量</td></tr>
+<tr><td>社消零</td><td>消费景气度指标</td><td>增速持续<5%→消费股承压</td><td>线上+线下合计→结构分化</td></tr>
+</table></div>
+
+<h3>5.4 通胀指标详解</h3>
+<p><strong>CPI</strong>（居民物价指数）：CPI>3%→通胀升温→央行可能收紧→利空股市；CPI<1%→通缩风险→央行可能宽松→利好股市。</p>
+<p><strong>PPI</strong>（工业出厂价）：PPI领先CPI约2-3个月→PPI上行→工业企业利润改善→周期股受益。</p>
+<p><strong>剪刀差</strong>（CPI-PPI）：差值扩大→下游消费企业利润改善（原材料降价+消费品不降）；差值缩小→上游周期企业利润改善。</p>
+<p>💡 类比：CPI是菜市场的价格标签（居民端），PPI是工厂出厂价标签（工业端），剪刀差告诉你利润在谁手里。</p>
+
+<h3>5.5 财政与就业</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>与股市关系</th></tr>
+<tr><td>财政收支</td><td>税收+土地出让 vs 支出→赤字率上升=财政发力</td><td>赤字率上升→基建受益</td></tr>
+<tr><td>土地出让收入</td><td>占地方财政30-50%→财政与地产的纽带</td><td>下滑→地方财政承压→地产链拖累</td></tr>
+<tr><td>就业数据</td><td>城镇调查失业率/新增就业</td><td>失业率上升→消费疲软→政策可能加码宽松</td></tr>
+<tr><td>居民收入增速</td><td>可支配收入同比→低于GDP增速=获得感差</td><td>增速低→消费意愿降低→消费股承压</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>宏观指标滞后性：GDP季度发布→CPI月度发布→你看到的是"过去的数据"而非"现在的情况"。必须结合前瞻指标（PMI+社融）而非只看滞后指标（GDP）。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>宏观好≠个股好：GDP增速6%但新能源暴涨地产暴跌→行业分化严重→宏观好只告诉你"大方向"，不告诉你"买哪个"。宏观面的陷阱：①宏观好≠个股好；②宏观指标滞后；③宏观共识≠市场方向（预期差才是定价核心）。</p></div>
+</section>
+
+<section id="ch6" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-yellow">第6章</span><h2>宏观进阶：货币、汇率与传导机制</h2></div>
+
+<h3>6.1 货币与流动性指标详解</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>与股市关系</th><th>一句话记忆</th></tr>
+<tr><td>M1/M2</td><td>M1=现金+活期（交易活跃），M2=M1+定期+理财（总货币）</td><td>M1增速>M2→资金活化→股市偏暖</td><td>水库总水量是M2，流出来的水是M1</td></tr>
+<tr><td>社融</td><td>实体经济从金融体系获得的总资金量</td><td>社融大幅放量→"放水了"→股市可能反弹</td><td>社融是A股最重要的前瞻指标之一</td></tr>
+<tr><td>新增贷款</td><td>社融的核心组成→居民=房贷/消费，企业=经营/投资</td><td>企业中长期贷款上升→投资意愿增强</td><td>看结构比看总量更重要</td></tr>
+<tr><td>利率体系</td><td>Shibor=短期流动性，LPR=实体融资成本，国债收益率=长期利率锚</td><td>利率上行→估值中枢下移→PE理应下降；利率下行→估值中枢上移</td><td>利率是估值的天敌→利率升=PE降</td></tr>
+<tr><td>央行公开市场操作</td><td>逆回购=短期调节，MLF=中期信号</td><td>逆回购缩量→偏紧；MLF利率下调→偏松</td><td>逆回购看短期，MLF看方向</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>M1-M2剪刀差看资金活力：差值上行→企业投资意愿增强→股市资金增多→"水流动起来了"；差值下行→资金从活期转定期→经济变冷→"水沉淀了"。</p></div>
+
+<h3>6.2 汇率与外部环境</h3>
+<p><strong>汇率</strong>（USD/CNY）：人民币贬值→出口企业受益→进口企业受损→外资可能流出A股；人民币升值→反之。汇率是外资配置A股的重要考量。</p>
+<p><strong>美联储决议</strong>：加息→全球资金回流美元→新兴市场（含A股/港股）承压；降息→反之。美联储决议是全球资产定价的"总开关"。</p>
+<p><strong>地缘政治</strong>：战争/制裁/贸易战→供应链中断→通胀上行→风险偏好下降→股市承压。地缘事件"突发"→无法预测但必须有应对预案。</p>
+
+<h3>6.3 宏观→行业→个股传导链</h3>
+<div class="interactive-panel" id="macro-transmission">
+<h4>宏观传导路径图</h4>
+<div class="table-wrapper"><table>
+<tr><th>宏观信号</th><th>第一受益行业</th><th>滞后受益行业</th><th>受损行业</th></tr>
+<tr><td>利率下行</td><td>成长股（估值弹性大）</td><td>消费股（滞后3-6月）</td><td>银行（息差缩小）</td></tr>
+<tr><td>社融放量</td><td>基建链（水泥/钢铁）</td><td>消费链（滞后6-12月）</td><td>—</td></tr>
+<tr><td>人民币贬值</td><td>出口链（纺织/电子）</td><td>—</td><td>进口链（航空/纸业）</td></tr>
+<tr><td>地产政策放松</td><td>地产+建材</td><td>家电/家具（滞后6月）</td><td>—</td></tr>
+<tr><td>PPI上行</td><td>上游周期（煤炭/有色）</td><td>—</td><td>下游制造（成本上升）</td></tr>
+</table></div>
+</div>
+
+<h3>6.4 美林时钟与中国特色周期</h3>
+<div class="interactive-panel">
+<h4>美林时钟四阶段</h4>
+<div id="chart-merrill" class="chart-container"></div>
+</div>
+<div class="table-wrapper"><table>
+<tr><th>阶段</th><th>经济特征</th><th>最优资产</th><th>股市特征</th></tr>
+<tr><td>复苏期</td><td>GDP↑ + CPI↓</td><td>股票最优</td><td>估值修复+盈利改善→牛市起点</td></tr>
+<tr><td>过热期</td><td>GDP↑ + CPI↑</td><td>商品最优</td><td>估值偏高→加息压力→顶部风险</td></tr>
+<tr><td>滞胀期</td><td>GDP↓ + CPI↑</td><td>现金最优</td><td>盈利下滑+估值承压→熊市</td></tr>
+<tr><td>衰退期</td><td>GDP↓ + CPI↓</td><td>债券最优</td><td>估值底部区域→但盈利还没恢复</td></tr>
+</table></div>
+<p>💡 <strong>中国特色周期</strong>：地产周期+基建周期+政策周期三轮驱动→地产是中国宏观的"底层发动机"→与西方消费周期不同。</p>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>美林时钟实战中不会精确转→有时跳阶段→有时停在某个阶段很久→提供框架而非精确预测。时钟是"地图"而非"GPS"。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>地产下行→拖累全链条：地产投资下滑→建材/家电/银行/地方政府收入→地产是中国宏观的底层发动机→发动机坏了→所有靠它驱动的部件都受影响。</p></div>
+</section>
+
+<section id="ch7" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-red">第7章</span><h2>政策面：方向盘与中国特色</h2></div>
+
+<h3>7.1 货币政策工具箱</h3>
+<div class="table-wrapper"><table>
+<tr><th>工具</th><th>一句话</th><th>对股市影响</th><th>类比</th></tr>
+<tr><td>降息</td><td>LPR下调→企业融资成本降低</td><td>利好→但可能反映经济疲软</td><td>水价打折→用水成本降低</td></tr>
+<tr><td>降准</td><td>降低存款准备金率→银行可贷资金增多</td><td>利好→流动性宽松</td><td>开闸放水→水量增加</td></tr>
+<tr><td>逆回购</td><td>短期流动性调节（7天/14天）</td><td>缩量→偏紧；放量→偏松</td><td>拧水龙头→短期水量调节</td></tr>
+<tr><td>MLF</td><td>中期借贷便利（1年）→中长期利率信号</td><td>利率下调→偏松</td><td>调节水管→中期水量方向</td></tr>
+<tr><td>存量房贷利率调整</td><td>降低居民利息支出→消费意愿提升</td><td>间接利好消费链</td><td>给房贷减负→手里钱多了</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>降准是"开闸放水"，降息是"水价打折"→降准影响更大（直接增加可贷资金）→但降息信号更强（反映央行决心）。</p></div>
+
+<h3>7.2 财政政策工具箱</h3>
+<div class="table-wrapper"><table>
+<tr><th>工具</th><th>一句话</th><th>受益行业</th></tr>
+<tr><td>减税降费</td><td>让企业多留钱→利润直接改善</td><td>减税对应行业</td></tr>
+<tr><td>基建投资</td><td>专项债放量→基建加速→稳增长快变量</td><td>水泥/钢铁/机械/建材</td></tr>
+<tr><td>消费补贴</td><td>汽车补贴/家电补贴→短期刺激消费</td><td>汽车/家电/消费链</td></tr>
+<tr><td>专项债</td><td>地方政府专项债→基建资金来源</td><td>基建链</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>消费补贴是"脉冲"→脉冲结束后可能回落→不要把短期刺激等同于长期趋势。</p></div>
+
+<h3>7.3 行业政策与资本市场政策</h3>
+<div class="table-wrapper"><table>
+<tr><th>政策类型</th><th>影响</th><th>典型案例</th></tr>
+<tr><td>产业扶持</td><td>起跑助推器→相关行业加速发展</td><td>新能源补贴/半导体扶持/国产替代</td></tr>
+<tr><td>监管收紧</td><td>踩刹车→冲击快但恢复慢</td><td>反垄断/数据安全/双减</td></tr>
+<tr><td>IPO注册制</td><td>上市门槛降低→供给增加→壳价值下降</td><td>全面注册制2023年落地</td></tr>
+<tr><td>退市制度</td><td>劣质公司退出加速→市场质量提升</td><td>退市标准收紧</td></tr>
+<tr><td>减持规则</td><td>短期流动性减少→但中长期保护中小投资者</td><td>减持规则松紧直接影响信心</td></tr>
+</table></div>
+
+<h3>7.4 中国特色政策要点</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">①</div><div class="pitfall-text"><strong>"政策市"特征</strong>：一纸文件可让行业涨停或跌停→2021双减=教培归零；2020碳中和=新能源暴涨；2024新质生产力=AI概念。</div></div>
+<div class="pitfall-item"><div class="pitfall-num">②</div><div class="pitfall-text"><strong>关注高层定调</strong>：中央经济工作会议、政治局会议措辞变化→"稳健"→"适度宽松"=方向性信号→措辞变化比数据更重要。</div></div>
+<div class="pitfall-item"><div class="pitfall-num">③</div><div class="pitfall-text"><strong>政策底≠市场底</strong>：政策先出手→市场滞后1-3月见底→经济滞后3-6月见底→不要政策一出就抄底。</div></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>政策底→市场底→经济底→三者顺序固定→政策底≠市场底→通常滞后1-3个月→等市场底确认再入场更安全。</p></div>
+
+<h3>7.5 政策面实操</h3>
+<div class="table-wrapper"><table>
+<tr><th>渠道</th><th>内容</th><th>频率</th></tr>
+<tr><td>国常会</td><td>最高级别政策信号</td><td>每周</td></tr>
+<tr><td>央行货币政策委员会</td><td>货币政策方向</td><td>季度</td></tr>
+<tr><td>各部委官网</td><td>行业细则</td><td>不定时</td></tr>
+<tr><td>交易所规则公告</td><td>交易制度变化</td><td>不定时</td></tr>
+</table></div>
+<p>🔴 <strong>政策预期差</strong>：市场预期政策A→实际出政策B→预期差→价格剧烈波动。政策面最大的机会和风险都在"预期差"。</p>
+<p>🔴 <strong>政策信号等级</strong>：国常会=最高级别→央行执行→部委细则→地方落地→信号越高级→影响越确定。</p>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>政策天花板效应：第三次降准效果远弱于第一次→边际效应递减→不要因为"连续降准"就认为市场会连续涨。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>监管收紧=踩刹车：冲击快但恢复慢→双减一出→教培股归零→恢复遥遥无期。遇到监管收紧→第一时间评估影响范围→不要"等反转"。</p></div>
+</section>
+
+
+<!-- ===== 第四篇：技术面 ===== -->
+<h1>第四篇：技术面——图形在说什么</h1>
+
+<section id="ch8" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-purple">第8章</span><h2>技术面入门：K线、均线与量价</h2></div>
+
+<h3>8.1 为什么看技术面</h3>
+<p>技术面是"帆"——告诉你何时买、何时卖。基本面是锚，技术面是帆→有锚无帆=停在原地，有帆无锚=随风漂。技术面解决的是"择时"问题——即使基本面选对了公司，买在山顶卖在谷底也会亏钱。</p>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>基本面告诉你"买什么"，技术面告诉你"何时买"→两者配合=有锚有帆=方向正确+节奏准确。</p></div>
+
+<h3>8.2 K线基础</h3>
+<div class="table-wrapper"><table>
+<tr><th>K线形态</th><th>含义</th><th>出现位置</th><th>信号强度</th></tr>
+<tr><td>长阳线</td><td>大涨→买方主导</td><td>底部或突破位</td><td>强看涨</td></tr>
+<tr><td>长阴线</td><td>大跌→卖方主导</td><td>顶部或破位处</td><td>强看跌</td></tr>
+<tr><td>十字星</td><td>犹豫→多空平衡</td><td>顶部或底部</td><td>趋势可能反转</td></tr>
+<tr><td>锤子线</td><td>下影线长→下方有支撑</td><td>下跌末期</td><td>可能见底</td></tr>
+<tr><td>吞没形态</td><td>大阳吞小阴/大阴吞小阳</td><td>关键转折位</td><td>强反转信号</td></tr>
+</table></div>
+
+<h3>8.3 均线系统</h3>
+<div class="table-wrapper"><table>
+<tr><th>均线</th><th>含义</th><th>用途</th><th>注意</th></tr>
+<tr><td>MA5</td><td>5日均价→超短线参考</td><td>短线节奏</td><td>太敏感→噪音大</td></tr>
+<tr><td>MA20</td><td>20日均价→月线→中短线参考</td><td>波段趋势</td><td>最常用均线</td></tr>
+<tr><td>MA60</td><td>60日均价→季线→中线参考</td><td>中期趋势</td><td>金叉/死叉重要</td></tr>
+<tr><td>MA120</td><td>半年线→中长期趋势</td><td>牛熊判断</td><td>站上=偏牛；跌破=偏熊</td></tr>
+<tr><td>MA250</td><td>年线→牛熊分界线</td><td>长期趋势</td><td>"年线之上=牛市区域"</td></tr>
+</table></div>
+<ul>
+<li><strong>金叉</strong>：短均线上穿长均线→看涨信号</li>
+<li><strong>死叉</strong>：短均线下穿长均线→看跌信号</li>
+<li><strong>多头排列</strong>：MA5>MA20>MA60>MA120→趋势向上</li>
+<li><strong>空头排列</strong>：MA5<MA20<MA60<MA120→趋势向下</li>
+</ul>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>均线滞后：金叉出现时已涨了一段→死叉出现时已跌了一段→均线是"确认信号"而非"提前信号"→配合其他指标提前预判。</p></div>
+
+<h3>8.4 量价关系</h3>
+<div class="table-wrapper"><table>
+<tr><th>量价组合</th><th>含义</th><th>判断</th></tr>
+<tr><td>放量上涨</td><td>量增+价升→买方积极入场</td><td>健康上涨✅</td></tr>
+<tr><td>缩量上涨</td><td>量减+价升→买方犹豫</td><td>上涨动力不足⚠️</td></tr>
+<tr><td>放量下跌</td><td>量增+价跌→卖方积极出逃</td><td>恐慌抛售❌</td></tr>
+<tr><td>缩量下跌</td><td>量减+价跌→卖方减少但买方也少</td><td>可能接近底部🤔</td></tr>
+<tr><td>量价背离</td><td>价创新高但量不创新高</td><td>上涨动力衰竭→可能反转⚠️</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>量价配合口诀：成交量是油门→油门踩到底（放量）但速度没上去→发动机有问题→放量滞涨=危险信号。</p></div>
+
+<h3>8.5 技术面三大假设</h3>
+<ol>
+<li><strong>市场行为包容消化一切</strong>：所有信息（基本面/消息/情绪）已反映在价格中→不需要额外研究→价格本身就够了</li>
+<li><strong>价格以趋势方式运动</strong>：趋势一旦形成倾向于延续→"趋势是你的朋友"</li>
+<li><strong>历史会重演</strong>：人性不变→图形模式会重复→但"相似≠相同"</li>
+</ol>
+</section>
+
+<section id="ch9" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-purple">第9章</span><h2>技术面进阶：MACD、形态与买卖信号</h2></div>
+
+<h3>9.1 MACD详解</h3>
+<div class="interactive-panel">
+<h4>MACD核心要素</h4>
+<div class="table-wrapper"><table>
+<tr><th>要素</th><th>含义</th><th>信号</th></tr>
+<tr><td>DIFF线</td><td>短期均线-长期均线→快线</td><td>上升=多头力量增强</td></tr>
+<tr><td>DEA线</td><td>DIFF的均线→慢线</td><td>DIFF上穿DEA=金叉✅</td></tr>
+<tr><td>MACD柱</td><td>DIFF-DEA→红柱=多头，绿柱=空头</td><td>红柱缩短=多头减弱</td></tr>
+<tr><td>零轴</td><td>DIFF/DEA的分界线</td><td>零轴上方=中期偏多；下方=偏空</td></tr>
+<tr><td>背离</td><td>价创新高但MACD不创新高</td><td>最有价值信号→可能反转</td></tr>
+</table></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>MACD背离口诀：顶背离=价新高但MACD不新高→上涨动力衰竭→可能见顶；底背离=价新低但MACD不新低→下跌动力衰竭→可能见底。背离是MACD最有价值的信号。</p></div>
+
+<h3>9.2 RSI与KDJ</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>超买超卖</th><th>特点</th></tr>
+<tr><td>RSI</td><td>相对强弱指标→0-100</td><td>>70超买；<30超卖</td><td>稳定但滞后→结合趋势判断</td></tr>
+<tr><td>KDJ</td><td>随机指标→更敏感</td><td>>80超买；<20超卖</td><td>灵敏但噪音大→短线参考</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>KDJ噪音大→频繁发出超买超卖信号→震荡市中反复触发→单纯靠KDJ交易=频繁亏损→必须结合趋势方向判断。</p></div>
+
+<h3>9.3 K线组合与形态学</h3>
+<div class="table-wrapper"><table>
+<tr><th>形态</th><th>含义</th><th>可靠性</th></tr>
+<tr><td>红三兵</td><td>连续3根阳线→上涨信号</td><td>中等</td></tr>
+<tr><td>三只乌鸦</td><td>连续3根阴线→下跌信号</td><td>中等</td></tr>
+<tr><td>头肩顶</td><td>左肩+头+右肩→顶部反转</td><td>高</td></tr>
+<tr><td>头肩底</td><td>左肩+头+右肩→底部反转</td><td>高</td></tr>
+<tr><td>双顶（M头）</td><td>两次冲击同一高点→顶部确认</td><td>中高</td></tr>
+<tr><td>双底（W底）</td><td>两次跌到同一低点→底部确认</td><td>中高</td></tr>
+<tr><td>三角形</td><td>收敛→即将选择方向</td><td>中等</td></tr>
+<tr><td>旗形</td><td>短暂回调后继续原趋势</td><td>中高</td></tr>
+</table></div>
+
+<h3>9.4 支撑位与阻力位</h3>
+<p><strong>支撑位</strong>：下跌到某个价位容易反弹→"地板"。原因：前期密集成交区→投资者心理锚定→均线支撑。</p>
+<p><strong>阻力位</strong>：上涨到某个价位容易回落→"天花板"。原因：前期高点→套牢盘解套抛售→心理压力。</p>
+<p>💡 支撑破了变阻力→阻力破了变支撑→角色转换是技术面的重要规律。</p>
+
+<h3>9.5 波浪理论简要</h3>
+<p>艾略特波浪：5浪上升+3浪调整→1浪启动→2浪回调→3浪主升→4浪调整→5浪冲刺→A浪下跌→B浪反弹→C浪杀跌。实战辨识困难→参考价值而非机械套用。</p>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>波浪理论不能机械套用→同一走势不同人画出不同浪→事后解释完美→事前判断模糊→波浪提供参考而非精确预测。</p></div>
+
+<h3>9.6 布林带</h3>
+<p>布林带=中轨（20日均线）+上轨（+2倍标准差）+下轨（-2倍标准差）→收口=即将选择方向→开口=趋势加速→触及上轨=可能超买→触及下轨=可能超卖。</p>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>布林带收口→等待方向选择→开口向上=做多→开口向下=做空→不预判方向→等开口确认再行动。</p></div>
+</section>
+
+<section id="ch10" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-purple">第10章</span><h2>技术面实操：买卖信号与止损纪律</h2></div>
+
+<h3>10.1 多指标共振原则</h3>
+<p>单一指标=噪音→三重共振=信号。共振条件：</p>
+<ul>
+<li>MACD金叉 ✅ + 均线金叉 ✅ + 放量突破 ✅ = 三重共振→入场信心高</li>
+<li>MACD金叉 ✅ + 均线死叉 ❌ + 缩量横盘 ❌ = 混乱→观望</li>
+<li>MACD死叉 ❌ + 均线死叉 ❌ + 放量下跌 ❌ = 三重共振→离场信号</li>
+</ul>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>三重共振口诀：MACD看方向，均线看趋势，量价看确认→三者同方向=信号可靠→三者矛盾=观望等待。</p></div>
+
+<h3>10.2 周线定方向+日线找买点</h3>
+<p>大方向看周线→小节奏看日线→周线MACD金叉+周线站上MA20=中期偏多→日线MACD金叉+放量突破支撑位=短线入场点→周线确认方向→日线选择时机。</p>
+
+<h3>10.3 止损纪律</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text">破支撑位→止损（支撑破了说明下方没有"地板"了）</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text">破趋势线→止损（趋势变了=方向变了）</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text">MACD死叉确认→止损（中期偏空信号）</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text">固定比例止损→亏损5-8%强制卖出（机械执行→不犹豫）</div></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>止损四规则：①止损必须事先设→不能等破位后犹豫；②止损价格写在纸上→到了就执行→不思考；③止损后不马上再买→等新信号；④止损是成本而非亏损→"买保险的钱"。</p></div>
+
+<h3>10.4 技术面陷阱总览</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text">假突破→突破阻力位后回落→放量假突破=主力诱多</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text">指标滞后→金叉已涨一段→死叉已跌一段→均线是确认而非预判</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text">横盘无效→横盘期技术面全部失效→等方向选择再操作</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text">画线主观→同一走势10个人画出10条趋势线→技术面有主观成分</div></div>
+</div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>横盘期技术面全部失效→均线缠绕→MACD零轴附近→量价不明显→信号混乱→此时做交易=随机赌博→等横盘结束+方向明确再入场。</p></div>
+
+<h3>10.5 技术面与基本面交叉</h3>
+<div class="table-wrapper"><table>
+<tr><th>组合</th><th>判断</th><th>操作</th></tr>
+<tr><td>基本面好 + 技术面突破</td><td>强确认→方向正确+时机恰当</td><td>可入场✅</td></tr>
+<tr><td>基本面好 + 技术面破位</td><td>基本面优先→等企稳再入</td><td>观望等右侧信号⚠️</td></tr>
+<tr><td>基本面差 + 技术面突破</td><td>假突破概率高→基本面是锚</td><td>不追高❌</td></tr>
+<tr><td>基本面差 + 技术面破位</td><td>双重确认→离场</td><td>卖出❌</td></tr>
+</table></div>
+
+<h3>10.6 分时图与集合竞价</h3>
+<p><strong>分时图</strong>：白线=实时价格→黄线=均价线→白线在黄线上=偏强→白线在黄线下=偏弱。分时量看盘中资金进出节奏。</p>
+<p><strong>集合竞价</strong>：9:15-9:25→决定开盘价→集合竞价量大+价格高=看好→量小+价格低=看淡。</p>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>分时图噪音极大→不适合做决策→只适合看盘中节奏→真正的买卖决策应该基于日线或周线级别信号。</p></div>
+</section>
+
+
+<!-- ===== 第五篇：资金面+筹码面 ===== -->
+<h1>第五篇：资金面与筹码面——钱往哪去、谁在车上</h1>
+
+<section id="ch11" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-blue">第11章</span><h2>资金面入门：市场里的钱多还是少</h2></div>
+
+<h3>11.1 为什么看资金面</h3>
+<p>股价短期=资金供需→再好的公司没有资金流入也涨不动→再差的公司资金疯狂涌入也能暴涨。资金面解决的是"有没有人跟你一起买"的问题。</p>
+<p>💡 类比：股价像水面→水位高（资金多）=所有船都浮起来→水位低（资金少）=好船也搁浅。</p>
+
+<h3>11.2 市场流动性五指标</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>牛市信号</th><th>熊市信号</th></tr>
+<tr><td>市场成交额</td><td>A股每日总成交额→万亿=活跃</td><td>>1万亿→资金充沛</td><td><5000亿→资金枯竭</td></tr>
+<tr><td>融资余额</td><td>借钱买股票的总量→杠杆资金方向</td><td>持续上升→杠杆加码→偏多</td><td>持续下降→杠杆撤退→偏空</td></tr>
+<tr><td>北向资金</td><td>外资通过沪深港通买入A股→"聪明钱"</td><td>连续净买入→外资看好</td><td>连续净卖出→外资撤离</td></tr>
+<tr><td>产业资本增减持</td><td>大股东/管理层买卖→最了解公司的人</td><td>增持→内部人看好</td><td>减持→内部人看淡</td></tr>
+<tr><td>IPO/增发/回购</td><td>股票供给与需求→IPO多=抽水</td><td>回购多→公司认为低估</td><td>IPO多→资金被抽走</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>资金面水位类比：成交额=水库水位→融资余额=加压泵→北向=外来水→产业资本=水厂员工→IPO=排水口→水位高=所有船浮起来→水位低=好船也搁浅。</p></div>
+
+<h3>11.3 主力资金与龙虎榜</h3>
+<div class="table-wrapper"><table>
+<tr><th>工具</th><th>含义</th><th>使用注意</th></tr>
+<tr><td>超大单/大单净流入</td><td>主力资金方向的量化指标</td><td>主力可能拆单伪装→数据有噪音</td></tr>
+<tr><td>龙虎榜</td><td>异动股前5买卖席位→看谁在买谁在卖</td><td>游资席位≠机构→游资赚的是散户追的钱</td></tr>
+<tr><td>融资融券明细</td><td>借钱买/借券卖→杠杆方向</td><td>融资余额飙升=过热信号⚠️</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>主力数据噪音：①"主力资金"定义不统一→软件算法各异→数据口径不一致；②主力可能拆单伪装→大单拆成小单→伪装散户→数据失真。</p></div>
+
+<h3>11.4 板块资金与轮动</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>用途</th></tr>
+<tr><td>板块资金净流入</td><td>哪个板块资金在涌入</td><td>找热点方向</td></tr>
+<tr><td>ETF份额变化</td><td>行业ETF申赎→资金进出</td><td>机构配置方向</td></tr>
+<tr><td>北向行业偏好</td><td>外资买哪些行业</td><td>跟踪"聪明钱"偏好</td></tr>
+</table></div>
+<p>🔑 <strong>资金轮动顺序</strong>：金融→周期→消费→成长→概念→回到金融→轮动是规律但节奏不固定。</p>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>轮动顺序口诀：金融先行（牛市启动）→周期跟上（经济回暖）→消费接力（收入改善）→成长冲刺（风险偏好高涨）→概念狂欢（最后疯狂）→回到金融（下一轮起点）。</p></div>
+</section>
+
+<section id="ch12" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-blue">第12章</span><h2>资金面进阶：个股资金与机构行为</h2></div>
+
+<h3>12.1 个股资金四指标</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>看涨信号</th><th>看跌信号</th></tr>
+<tr><td>主力净流入</td><td>大单买入-卖出→主力方向</td><td>连续3日净买入</td><td>连续3日净卖出</td></tr>
+<tr><td>融资买入占比</td><td>借钱买占总成交比→杠杆情绪</td><td>适度10-15%</td><td>>20%→过热⚠️</td></tr>
+<tr><td>大宗交易</td><td>大额私下成交→折价/溢价</td><td>溢价成交→看好</td><td>折价成交→看淡</td></tr>
+<tr><td>股东人数变化</td><td>减少=筹码集中；增加=筹码分散</td><td>人数减少→主力收集</td><td>人数增加→主力出货</td></tr>
+</table></div>
+
+<h3>12.2 外部资金</h3>
+<div class="table-wrapper"><table>
+<tr><th>资金类型</th><th>含义</th><th>影响</th></tr>
+<tr><td>QFII/RQFII</td><td>合格境外机构投资者→外资正规渠道</td><td>长期配置→偏价值</td></tr>
+<tr><td>MSCI纳入</td><td>国际指数纳入A股→被动配置资金</td><td>纳入时→资金流入→利好</td></tr>
+<tr><td>公募发行</td><td>新基金发行规模→爆款=顶部信号</td><td>爆款基金频出→过热⚠️</td></tr>
+<tr><td>险资权益比例</td><td>保险资金配置A股比例→长期资金</td><td>比例上调→增量资金</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>爆款基金=顶部信号→发行冰点=底部信号→这是情绪面与资金面的交叉验证→公募爆款（2021年初消费基金）=顶部→发行冰点（2018年底）=底部。</p></div>
+
+<h3>12.3 机构行为</h3>
+<div class="table-wrapper"><table>
+<tr><th>机构类型</th><th>行为特征</th><th>散户应对</th></tr>
+<tr><td>公募基金</td><td>季度调仓→抱团→追涨杀跌</td><td>看持仓重合度→抱团解散=踩踏</td></tr>
+<tr><td>游资</td><td>拉板→吸睛→出货→赚散户追的钱</td><td>识别游资席位→不追→避免成为博弈牺牲品</td></tr>
+<tr><td>险资/社保</td><td>长期配置→偏价值→稳健</td><td>跟踪配置方向→长期参考</td></tr>
+<tr><td>外资</td><td>偏价值→长线→但也会短期撤离</td><td>北向连续卖出→短期风险</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>机构信号滞后15-60天：基金季报滞后1个月→社保数据滞后更长→你看到的数据是"过去"→必须结合实时资金流向（北向/融资）而非只看滞后数据。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>游资拉板→散户追→出货暴跌：游资的核心策略=拉涨停板→吸引散户眼球→散户追高→游资出货→散户被套→游资赚的就是散户追的钱→看到龙虎榜游资席位=远离。</p></div>
+
+<h3>12.4 资金面实操</h3>
+<div class="table-wrapper"><table>
+<tr><th>渠道</th><th>内容</th><th>频率</th></tr>
+<tr><td>东财数据中心</td><td>主力/北向/融资数据</td><td>日度</td></tr>
+<tr><td>龙虎榜</td><td>异动股席位</td><td>日度</td></tr>
+<tr><td>基金季报</td><td>持仓/调仓</td><td>季度（滞后1月）</td></tr>
+<tr><td>期权/期货持仓</td><td>Put/Call Ratio/多空比</td><td>日度</td></tr>
+</table></div>
+</section>
+
+<section id="ch13" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-green">第13章</span><h2>筹码面：谁在车上、谁在车下</h2></div>
+
+<h3>13.1 为什么单独看筹码</h3>
+<p>筹码面是技术面的"补充镜头"→看图形看不出谁在持仓→筹码分布告诉你。筹码面解决的是"谁在车上、谁在车下"的问题→套牢盘多=上涨抛压大→获利盘多=随时可能下车。</p>
+<p>💡 类比：筹码分布是剧场的座位图→哪个区坐满了（密集成交区）→哪个区空着（筹码谷）→坐满了的区域=观众可能要走（抛压）→空着的区域=新观众容易进来（支撑）。</p>
+
+<h3>13.2 筹码分布四要素</h3>
+<div class="table-wrapper"><table>
+<tr><th>要素</th><th>含义</th><th>判断</th></tr>
+<tr><td>筹码分布图</td><td>各价位持仓量分布→看密集成交区</td><td>密集区=重要价格区域</td></tr>
+<tr><td>套牢盘/获利盘比例</td><td>当前价格上方/下方持仓占比</td><td>套牢盘>70%→上涨抛压大</td></tr>
+<tr><td>筹码集中度</td><td>筹码从分散→集中=蓄力→从集中→分散=出货</td><td>集中度提高→看涨信号</td></tr>
+<tr><td>筹码峰与筹码谷</td><td>峰=密集成交区→谷=稀疏区域</td><td>峰=阻力或支撑→谷=快速穿越区</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>筹码集中度从分散到集中=蓄力阶段→主力悄悄收集→一旦集中度极高+放量突破=爆发信号。</p></div>
+
+<h3>13.3 持仓结构</h3>
+<div class="table-wrapper"><table>
+<tr><th>工具</th><th>含义</th><th>信号</th></tr>
+<tr><td>股东人数变化</td><td>减少=筹码集中（主力收集）；增加=筹码分散（出货）</td><td>人数连续2季减少→蓄力</td></tr>
+<tr><td>十大流通股东</td><td>机构/游资/散户的持仓变化</td><td>机构增持→看好；游资进入→短线</td></tr>
+<tr><td>解禁时间表</td><td>限售股解禁→潜在抛压</td><td>大额解禁前→风险⚠️</td></tr>
+<tr><td>大宗交易</td><td>折价=看淡；溢价=看好</td><td>连续折价大宗→机构撤离</td></tr>
+</table></div>
+
+<h3>13.4 筹码面实操与陷阱</h3>
+<ul>
+<li><strong>筹码数据查询</strong>：通达信筹码分布→同花顺股东人数→东财龙虎榜</li>
+<li><strong>筹码面与资金面交叉</strong>：筹码集中+资金流入=强信号→筹码分散+资金流出=弱信号</li>
+</ul>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>套牢盘>70%=上涨抛压大→每当股价涨到套牢区→套牢的人想卖→大量抛压→需要更大资金才能突破→所以套牢区是"阻力区"。</p></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>筹码分布是估算模型而非精确数据→同一价位可能有不同持有者→无法区分"谁打算卖谁打算持有"→筹码面是参考而非依据。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>次新股筹码参考有限→上市时间短→筹码分布尚未充分交换→数据失真→量化/高频交易使传统筹码分析有效性下降。</p></div>
+</section>
+
+
+<!-- ===== 第六篇：情绪+消息+量化 ===== -->
+<h1>第六篇：情绪面、消息面与量化行为面——人心、事件与统计规律</h1>
+
+<section id="ch14" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-red">第14章</span><h2>情绪面入门：市场在想什么</h2></div>
+
+<h3>14.1 为什么看情绪面</h3>
+<p>市场短期是"投票机"（情绪驱动），长期是"称重机"（价值驱动）。情绪极端时往往意味着反转→"别人贪婪我恐惧，别人恐惧我贪婪"。</p>
+<p>情绪面的价值不在日常判断→而在<strong>识别极端区域</strong>→市场极度恐慌=底部特征→市场极度贪婪=顶部特征。</p>
+
+<h3>14.2 经典框架三句话</h3>
+<div class="table-wrapper"><table>
+<tr><th>大师</th><th>名言</th><th>含义</th></tr>
+<tr><td>巴菲特</td><td>"别人贪婪我恐惧，别人恐惧我贪婪"</td><td>极端情绪→逆向操作</td></tr>
+<tr><td>霍华德·马克斯</td><td>"钟摆理论——情绪永远在极端之间摆动"</td><td>情绪很少停在中间→极端是常态</td></tr>
+<tr><td>邓普顿</td><td>"牛市在悲观中诞生，在怀疑中成长，在乐观中成熟，在狂热中死亡"</td><td>情绪四阶段→对应市场四阶段</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>三大经典名言速记：巴菲特=逆向操作→马克斯=钟摆永摆→邓普顿=四阶段循环→核心都是"情绪极端=反转信号"。</p></div>
+
+<h3>14.3 情绪指标速查表</h3>
+<div class="interactive-panel">
+<h4>情绪面九指标速查</h4>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>恐慌/冰点</th><th>贪婪/过热</th><th>查询渠道</th></tr>
+<tr><td>VIX恐慌指数</td><td>期权隐含波动率→>30恐慌，<15自满</td><td>>30→恐慌→可能见底</td><td><15→自满→可能见顶</td><td>CBOE官网</td></tr>
+<tr><td>换手率极值</td><td>极高=亢奋→极低=冰点</td><td><0.5%→冰点</td><td>>8%→亢奋</td><td>券商APP</td></tr>
+<tr><td>涨跌停家数比</td><td>涨停>100家=过热→跌停>100家=恐慌</td><td>跌停>100→恐慌</td><td>涨停>100→过热</td><td>东财/同花顺</td></tr>
+<tr><td>融资买入占比</td><td>杠杆资金情绪→占比越高=越亢奋</td><td><8%→低迷</td><td>>15%→亢奋</td><td>东财数据中心</td></tr>
+<tr><td>新基金发行</td><td>爆款频出=顶部→冰点=底部</td><td>发行冰点→底部</td><td>爆款频出→顶部</td><td>基金业协会</td></tr>
+<tr><td>股债收益差</td><td>股票收益率-债券收益率→极端值预示反转</td><td>差值极高→股票低估</td><td>差值极低→股票高估</td><td>理杏仁</td></tr>
+<tr><td>新开户数</td><td>大妈入市=顶部→无人问津=底部</td><td>开户冰点→底部</td><td>开户飙升→顶部</td><td>证监会月报</td></tr>
+<tr><td>Put/Call Ratio</td><td>看跌/看涨期权比→极端值反向指标</td><td>>1.5→恐慌→看涨</td><td><0.5→贪婪→看跌</td><td>期权数据</td></tr>
+<tr><td>成交额</td><td>A股万亿=活跃→5000亿以下=冷清</td><td><5000亿→冷清</td><td>>1.5万亿→亢奋</td><td>东财</td></tr>
+</table></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>新开户数飙升=散户蜂拥=顶部信号（2015年4-5月新开户数创新高→6月暴跌）→开户冰点=无人问津=底部特征→情绪面最可靠的反向指标之一。</p></div>
+
+<h3>14.4 情绪面局限</h3>
+<ul>
+<li>情绪可以"极端之后更极端"→2015年A股杠杆牛市→6月暴跌→7月继续暴跌→恐慌叠加恐慌</li>
+<li>难以量化"什么时候反转"→只有事后才知道"那是顶部"</li>
+<li>牛市中"恐高"会错过主升浪→2019-2020年消费牛市→中途多次"恐高"→但继续涨</li>
+<li>熊市中"抄底"可能抄在半山腰→2008年A股→多次"见底"→但继续跌</li>
+</ul>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>新开户数飙升=散户蜂拥=顶部信号→这是A股最可靠的情绪反向指标→2015年4-5月新开户数创新高→6月暴跌→每次开户数飙升后的6个月内→市场大概率回调。</p></div>
+</section>
+
+<section id="ch15" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-red">第15章</span><h2>情绪面进阶：行为金融与人性弱点</h2></div>
+
+<h3>15.1 八种行为偏差详解</h3>
+<p>行为金融告诉你"你自己最大的敌人是谁"。每种偏差→人设还原→约束推导→案例验证→规则改写→用"当____时，我将____"句式变为可操作规则。</p>
+
+<div class="bias-grid">
+<div class="bias-card">
+<h4>1. 损失厌恶</h4>
+<div class="bias-name">亏损死扛不卖，盈利急于兑现</div>
+<p>🧠 原理：亏损的心理痛苦是盈利快乐的2倍→"截断利润，让亏损奔跑"。案例：买了100元→跌到60元死扛→"它总会回来的"→结果跌到30元。</p>
+<p>✅ 规则：当亏损达到8%时，我将强制卖出→不思考→不犹豫→不"等它回来"。</p>
+</div>
+<div class="bias-card">
+<h4>2. 确认偏误</h4>
+<div class="bias-name">只看支持自己观点的信息</div>
+<p>🧠 原理：人倾向于确认而非否定→买了某股票→只找利好→忽视利空→"越看越觉得它是好公司"。案例：持有乐视→只看利好→忽视现金流恶化。</p>
+<p>✅ 规则：当我持有某股时，我将每周强制找3条利空→如果找不到→说明我陷入了确认偏误。</p>
+</div>
+<div class="bias-card">
+<h4>3. 锚定效应</h4>
+<div class="bias-name">"它曾经100块，现在50块好便宜"</div>
+<p>🧠 原理：人被第一个看到的价格"锚定"→100块是锚→50块感觉便宜→但基本面可能已恶化→50块可能还是贵的。案例：2021年消费股→"茅台曾经2600→现在1500好便宜"→但PE还是40倍。</p>
+<p>✅ 规则：当我想因为"比以前便宜"而买入时，我将先问：基本面变了吗？估值合理吗？→不考虑历史价格。</p>
+</div>
+<div class="bias-card">
+<h4>4. 羊群效应</h4>
+<div class="bias-name">追涨杀跌、抱团</div>
+<p>🧠 原理：人倾向于跟随群体→"大家都在买→一定是对的"→但群体行为=泡沫与崩盘。案例：2021年消费抱团→"公募都在买→我也买"→抱团解散→踩踏。</p>
+<p>✅ 规则：当某个板块被所有人推荐时，我将检查：估值是否已过热？情绪是否已极端？→如果两项都过热→远离。</p>
+</div>
+<div class="bias-card">
+<h4>5. 过度自信</h4>
+<div class="bias-name">频繁交易、重仓单票</div>
+<p>🧠 原理：人高估自己的判断力→"我比别人更懂"→频繁交易→重仓→结果散户亏损主因。案例：散户年均交易50次→每次交易亏损概率60%→总亏损巨大。</p>
+<p>✅ 规则：当我想重仓单票时，我将强制分散到至少3个行业→当我想频繁交易时，我将限制每月最多2次操作。</p>
+</div>
+<div class="bias-card">
+<h4>6. 处置效应</h4>
+<div class="bias-name">卖盈留亏→组合越来越差</div>
+<p>🧠 原理：盈利时急于兑现→亏损时不愿卖出→组合里越来越多是亏钱的股票→赚钱的早就卖了。案例：持仓5只→3只盈利卖了→2只亏损死扛→组合只剩烂股。</p>
+<p>✅ 规则：当我想卖盈利股时，我将先检查亏损股→优先卖亏损股而非盈利股→"截断亏损，让利润奔跑"。</p>
+</div>
+<div class="bias-card">
+<h4>7. 近因偏差</h4>
+<div class="bias-name">最近涨就觉得会一直涨</div>
+<p>🧠 原理：人受最近发生的事影响最大→最近涨了→觉得会一直涨→顶部追高。案例：2021年初消费股连涨3月→"牛市继续"→结果顶部。</p>
+<p>✅ 规则：当连续赚钱3天后，我将强制减仓20%而非加仓→当连续亏钱3天后，我将不加仓→等冷静后再操作。</p>
+</div>
+<div class="bias-card">
+<h4>8. 禀赋效应</h4>
+<div class="bias-name">持有就高估其价值→不愿换股</div>
+<p>🧠 原理：人对自己拥有的东西评价更高→"我买的股票一定比别人的好"→不愿换股→错过更好机会。案例：持有A公司→B公司明显更好→但不愿换→"我的也不错"。</p>
+<p>✅ 规则：当我犹豫是否换股时，我将问自己："如果我今天没持有这只股票，我会在当前价格买入吗？"→如果答案为否→卖出。</p>
+</div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>八种偏差→八条规则→全部用"当____时，我将____"句式→不做废话建议→可操作可执行→打印贴在电脑旁。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>羊群效应=泡沫与崩盘的发动机→所有人推荐同一板块→估值过热→情绪极端→泡沫→崩盘→识别羊群→远离泡沫→"别人都在买的→大概率是顶部"。</p></div>
+
+<h3>15.2 情绪周期四阶段</h3>
+<p>绝望→怀疑→乐观→狂热→崩盘→回到绝望→循环往复。</p>
+<p>💡 类比：情绪像四季→绝望=冬天（冰点→无人问津→底部特征）→怀疑=初春（开始有人关注→但仍谨慎）→乐观=夏天（普遍看好→赚钱效应）→狂热=盛夏（全民炒股→顶部特征）→崩盘=秋天（泡沫破裂→踩踏）。</p>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>牛市中"恐高"会错过主升浪→情绪面是判断"极端区域"而非"精确点位"→不要因为情绪偏高就不买→只有情绪极端偏高才需要警惕。</p></div>
+
+<h3>15.3 情绪面实操</h3>
+<ul>
+<li><strong>情绪面查询渠道</strong>：恐惧贪婪指数→雪球讨论热度→新开户数→换手率极值</li>
+<li><strong>情绪对冲</strong>：情绪极端时→设定逆向操作计划→贪婪=减仓→恐惧=加仓→但要留安全边际</li>
+<li><strong>情绪日记</strong>：记录每天情绪状态→贪婪/恐惧/平静→3个月后回顾→发现情绪与收益的关系</li>
+<li><strong>情绪面与技术面交叉</strong>：情绪极端+技术面背离=强反转信号</li>
+</ul>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>情绪日记模板：每日记录①市场情绪（1-10分）②我的情绪（1-10分）③操作（买入/卖出/观望）④结果（盈/亏/无）→3个月后复盘→发现"我在情绪>7分时操作→90%亏损"→制定规则。</p></div>
+</section>
+
+<section id="ch16" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-yellow">第16章</span><h2>消息/事件面：发生了什么、影响多大</h2></div>
+
+<h3>16.1 为什么看消息面</h3>
+<p>消息面是"脉冲信号"——突然来、影响大、消退快。⚠️ 散户看到消息时，机构早已布局→信息差=机构赚的钱→散户追消息=大概率亏损。</p>
+
+<h3>16.2 事件分类五类</h3>
+<div class="table-wrapper"><table>
+<tr><th>类型</th><th>举例</th><th>影响特点</th></tr>
+<tr><td>公司层面</td><td>财报超预期/不及预期、并购重组、高管变动、诉讼</td><td>影响单股→持续性看性质</td></tr>
+<tr><td>行业层面</td><td>技术突破、安全事故、政策出台、供需突变</td><td>影响板块→持续性较强</td></tr>
+<tr><td>宏观层面</td><td>战争、疫情、自然灾害、金融危机、选举</td><td>影响全市场→短期恐慌</td></tr>
+<tr><td>市场层面</td><td>指数纳入/剔除、大宗交易、解禁、IPO</td><td>影响流动性→一次性</td></tr>
+<tr><td>日历效应</td><td>年报季、季报季、节假日、期权到期日</td><td>可预期→提前布局</td></tr>
+</table></div>
+
+<h3>16.3 消息面交易四原则</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text"><strong>买预期卖现实</strong>：利好兑现=利空→利空兑现=利好→财报超预期但股价跌=市场早已预期超预期</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text"><strong>预期差交易</strong>：市场预期政策A→实际出政策B→预期差→价格剧烈波动→最大的机会和风险都在预期差</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text"><strong>时效性分级</strong>：0-2h=黄金窗口→2-24h=白银窗口→24h后=青铜窗口→散户看到的消息通常已过了黄金窗口</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text"><strong>利好出尽=利空→利空出尽=利好</strong>：连续利好后最后一个利好=顶部信号→连续利空后最后一个利空=底部信号</div></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>利好出尽=利空→这是消息面最核心的原则→连续利好后市场已充分预期→最后一个利好落地=没有更多利好=失望→下跌。</p></div>
+
+<h3>16.4 信息渠道与分级</h3>
+<div class="table-wrapper"><table>
+<tr><th>级别</th><th>渠道</th><th>权重</th><th>处理方式</th></tr>
+<tr><td>一级（必读）</td><td>交易所公告/财报/央行决议</td><td>最高</td><td>仔细阅读原文→不看二手解读</td></tr>
+<tr><td>二级（参考）</td><td>券商研报/行业数据</td><td>中等</td><td>选择性阅读→看逻辑不看结论</td></tr>
+<tr><td>三级（过滤）</td><td>财经媒体/自媒体</td><td>低</td><td>只看事实→不看观点→过滤噪音</td></tr>
+<tr><td>四级（噪音）</td><td>股吧/微信群/短视频</td><td>极低</td><td>不看→90%是噪音和情绪</td></tr>
+</table></div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>90%的消息对股价无实质影响→看消息前先问：①这是预期内还是预期外？②影响是一次性还是持续？③影响情绪还是实质？→三个问题答不上来→这条消息不值得关注。</p></div>
+
+<h3>16.5 消息面陷阱</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text">谣言驱动→小道消息→未经证实→追入→发现是假→亏损</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text">利好兑现陷阱→利好落地→股价反而下跌→"买预期卖事实"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text">媒体噪音→同一消息被不同媒体解读出不同结论→不知该信谁</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text">过度反应→短期暴跌后可能反弹→短期暴涨后可能回调→"冷静3天再操作"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">5</div><div class="pitfall-text">信息不对称→散户看到消息时机构早已布局→散户追=机构出货</div></div>
+</div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>内幕交易=违法→散户永远不要试图"打探内幕消息"→①违法→②你得到的"内幕"大概率是别人故意放给你的→③真正的内幕你永远得不到。</p></div>
+</section>
+
+<section id="ch17" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-purple">第17章</span><h2>量化/行为面入门：统计规律与系统化思维</h2></div>
+
+<h3>17.1 为什么看量化面</h3>
+<p>量化是用数学代替直觉→消除行为偏差→纪律化交易。⚠️ 但量化也有偏差→过拟合/数据窥探/幸存者偏差→"越完美的回测越危险"。</p>
+
+<h3>17.2 四大因子</h3>
+<div class="table-wrapper"><table>
+<tr><th>因子</th><th>含义</th><th>典型指标</th><th>实战意义</th></tr>
+<tr><td>价值因子</td><td>低估值公司长期跑赢高估值</td><td>PE/PB低+股息率高</td><td>买入低估→长期持有→跑赢</td></tr>
+<tr><td>成长因子</td><td>高增速公司短期弹性大</td><td>营收增速>20%+利润增速高</td><td>短期爆发力强→但波动也大</td></tr>
+<tr><td>质量因子</td><td>财务健康的公司更抗跌</td><td>ROE>15%+现金流好+负债低</td><td>防御性强→熊市跌幅小</td></tr>
+<tr><td>动量因子</td><td>近期涨的股票继续涨的概率大</td><td>近6个月涨幅排名</td><td>趋势跟踪→但反转时亏损大</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>因子投资=用可量化的特征筛选股票→而非靠感觉→价值+质量=稳健→成长+动量=弹性→根据自己的风险偏好选择因子组合。</p></div>
+
+<h3>17.3 量化指标四件套</h3>
+<div class="table-wrapper"><table>
+<tr><th>指标</th><th>含义</th><th>类比</th><th>判断标准</th></tr>
+<tr><td>夏普比率</td><td>（收益-无风险收益）/波动率</td><td>性价比→每承担1单位风险赚多少</td><td>>1=不错；>2=优秀；<0.5=不值</td></tr>
+<tr><td>最大回撤</td><td>从最高点到最低点的最大跌幅</td><td>最坏情况→可能亏多少</td><td><20%可接受；>40%高风险</td></tr>
+<tr><td>信息比率</td><td>超额收益/超额风险</td><td>比基准多赚多少→每单位超额风险</td><td>>0.5=好；>1=优秀</td></tr>
+<tr><td>Beta/Alpha</td><td>Beta=跟随市场的程度→Alpha=超越市场的部分</td><td>Beta=顺风→Alpha=自己的努力</td><td>Alpha>0=有价值</td></tr>
+</table></div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>夏普比率>1=不错→这是量化最基本的判断标准→夏普比率高的策略=性价比高→但历史夏普不代表未来夏普。</p></div>
+
+<h3>17.4 量化策略四类型</h3>
+<div class="table-wrapper"><table>
+<tr><th>类型</th><th>含义</th><th>个人可用性</th></tr>
+<tr><td>指数增强</td><td>在指数基础上用因子选股→轻微超越指数</td><td>✅ 个人可用→选因子+选ETF</td></tr>
+<tr><td>统计套利</td><td>配对交易→找两个相关股票的价差→价差回归时获利</td><td>⚠️ 需要编程能力</td></tr>
+<tr><td>CTA/趋势跟踪</td><td>用动量信号做期货→趋势是你的朋友</td><td>⚠️ 需要期货账户</td></tr>
+<tr><td>高频交易</td><td>毫秒级交易→利用微观结构获利</td><td>❌ 个人不可用→需要机房级设备和资金</td></tr>
+</table></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>高频交易个人不可用→不要被"量化=高频"误导→个人可用的量化=因子筛选+指数增强+趋势跟踪→高频=机构专属→个人做高频=必然亏损。</p></div>
+
+<h3>17.5 回测四大陷阱</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text">过拟合→调参数让回测完美→但实盘参数不适用→"越完美的回测越危险"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text">数据窥探→在1000个策略中挑最好的→看似夏普2→实盘夏普0.5</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text">幸存者偏差→只看存活的公司→忽略已退市的→数据不完整</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text">实盘滑点→回测假设可以精确买卖→实盘有价格滑动→成交价不同</div></div>
+</div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>回测≠实盘→历史表现不代表未来→策略拥挤后失效（alpha衰减）→同一策略100个人做→策略就失效了→量化策略的生命周期有限。</p></div>
+</section>
+
+<section id="ch18" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-purple">第18章</span><h2>量化与基本面的交叉</h2></div>
+
+<h3>18.1 量化筛选+基本面验证</h3>
+<p>专业量化的常用做法：用量化工具筛选候选池→再用基本面排除陷阱→两步结合=高效+安全。</p>
+<div class="table-wrapper"><table>
+<tr><th>步骤</th><th>内容</th><th>工具</th></tr>
+<tr><td>第一步：量化筛选</td><td>用因子模型选出候选池→价值+质量+动量→初步过滤</td><td>聚宽/Wind筛选器</td></tr>
+<tr><td>第二步：基本面验证</td><td>排除财报陷阱→确认护城河→检查管理层→人工复核</td><td>巨潮资讯/东财</td></tr>
+<tr><td>第三步：技术面择时</td><td>等待技术面买入信号→共振确认→入场</td><td>通达信/同花顺</td></tr>
+</table></div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>量化筛选+基本面验证流程：量化筛50只→基本面验证留下10只→技术面等信号→最终可能只买2-3只→层层过滤→减少犯错概率。</p></div>
+
+<h3>18.2 量化工具入门</h3>
+<div class="table-wrapper"><table>
+<tr><th>工具</th><th>适用人群</th><th>特点</th></tr>
+<tr><td>Python（pandas/numpy）</td><td>有编程基础的</td><td>灵活→可自定义策略→但需要学习编程</td></tr>
+<tr><td>聚宽/米筐回测平台</td><td>初学者</td><td>在线回测→无需编程→但策略库有限</td></tr>
+<tr><td>Wind/Choice终端</td><td>专业研究员</td><td>数据全面→但有使用门槛</td></tr>
+</table></div>
+<p>💡 个人入门建议：先用聚宽模拟→学会回测→再学Python→最后用Wind→逐步升级。</p>
+
+<h3>18.3 行为金融偏差与实战规则</h3>
+<p>八种偏差→每种转化为"当____时，我将____"句式→8条规则清单：</p>
+<div class="table-wrapper"><table>
+<tr><th>偏差</th><th>实战规则</th></tr>
+<tr><td>损失厌恶</td><td>当亏损达到8%时，我将强制卖出→不思考→不犹豫</td></tr>
+<tr><td>确认偏误</td><td>当持有某股时，我将每周强制找3条利空</td></tr>
+<tr><td>锚定效应</td><td>当想因为"比以前便宜"而买入时，我将先问基本面变了吗</td></tr>
+<tr><td>羊群效应</td><td>当某板块被所有人推荐时，我将检查估值和情绪是否过热</td></tr>
+<tr><td>过度自信</td><td>当想重仓单票时，我将强制分散到至少3个行业</td></tr>
+<tr><td>处置效应</td><td>当想卖盈利股时，我将优先卖亏损股而非盈利股</td></tr>
+<tr><td>近因偏差</td><td>当连续赚钱3天后，我将强制减仓20%而非加仓</td></tr>
+<tr><td>禀赋效应</td><td>当犹豫是否换股时，我将问："如果我没持有它，我会在当前价买入吗？"→否则卖出</td></tr>
+</table></div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>行为偏差→实战规则8条→打印贴在电脑旁→每次操作前过一遍→"当____时，我将____"→不做废话建议→可操作可执行。</p></div>
+
+<h3>18.4 量化面局限性</h3>
+<ul>
+<li>历史规律不保证未来重复→regime change→市场结构变了→旧规律失效</li>
+<li>黑天鹅事件无法建模→2020年疫情→所有量化模型都失效</li>
+<li>量化策略拥挤后失效→alpha衰减→同一策略100个人做→策略就失效了</li>
+<li>量化无法替代判断→数据不能告诉你"这家公司有没有护城河"</li>
+</ul>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>过拟合=越完美越危险→回测年化50%→实盘亏损→原因：①调参数让回测完美②历史不代表未来③实盘有滑点→真正的量化高手追求的是"回测中等但实盘稳健"而非"回测完美"。</p></div>
+</section>
+
+
+<!-- ===== 第七篇：综合实战 ===== -->
+<h1>第七篇：综合实战——九面交叉验证与自检体系</h1>
+
+<section id="ch19" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-blue">第19章</span><h2>九面交叉验证框架</h2></div>
+
+<h3>19.1 交叉验证原则</h3>
+<p>最强信号=多个面指向同一方向→"九面共振"。五面共振案例：</p>
+<ul>
+<li>基本面：公司ROE连续5年>20%，估值处于历史低位 ✅</li>
+<li>技术面：周线级别突破长期下降趋势线 ✅</li>
+<li>资金面：北向资金连续2周大幅净买入 ✅</li>
+<li>情绪面：市场极度悲观，无人讨论该板块 ✅</li>
+<li>政策面：行业利好政策刚出台 ✅</li>
+<li>→ 五面共振，胜率极高</li>
+</ul>
+<p>反面：基本面很好，但技术面破位、资金持续流出、政策转向打压→不要"逆势抄底"，等右侧信号。</p>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>九面共振案例：当基本面好+技术面突破+资金流入+情绪恐惧+政策利好=五面共振→此时入场胜率极高→"基本面是锚→技术面是帆→资金面是风→情绪面是浪→政策面是方向"。</p></div>
+
+<h3>19.2 优先级与进阶路径</h3>
+<div class="table-wrapper"><table>
+<tr><th>阶段</th><th>侧重</th><th>配比</th></tr>
+<tr><td>新手</td><td>基本面为主+技术面辅助</td><td>基本面70%+技术面30%</td></tr>
+<tr><td>中级</td><td>基本面+技术面+资金面+情绪面</td><td>基本面50%+技术面20%+资金面15%+情绪面15%</td></tr>
+<tr><td>高级</td><td>九面全看→不同场景侧重不同</td><td>按市场环境动态调整</td></tr>
+</table></div>
+
+<h3>19.3 冲突处理原则</h3>
+<div class="table-wrapper"><table>
+<tr><th>冲突组合</th><th>处理原则</th><th>操作</th></tr>
+<tr><td>基本面好+技术面破位</td><td>基本面优先→等企稳再入</td><td>观望等右侧信号</td></tr>
+<tr><td>消息面利好+情绪面过热</td><td>利好出尽→不追</td><td>远离→可能见顶</td></tr>
+<tr><td>基本面好+资金面流出</td><td>资金面确认方向→等资金回流</td><td>观望</td></tr>
+<tr><td>技术面好+宏观面逆风</td><td>宏观面定大方向→逆风谨慎</td><td>轻仓试探</td></tr>
+</table></div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>冲突处理三原则：①基本面是锚→基本面好但技术面差→等企稳→②多面矛盾=轻仓观望→③永远不逆势抄底→"基本面是锚，技术面是帆"。</p></div>
+
+<h3>19.4 信息权重原则</h3>
+<div class="table-wrapper"><table>
+<tr><th>信息类型</th><th>权重</th><th>处理方式</th></tr>
+<tr><td>交易所公告/财报</td><td>最高</td><td>仔细看原文→不看二手解读</td></tr>
+<tr><td>央行决议/高层定调</td><td>极高</td><td>关注措辞变化→方向性信号</td></tr>
+<tr><td>券商研报</td><td>中等</td><td>看逻辑不看结论</td></tr>
+<tr><td>财经媒体</td><td>低</td><td>只看事实不看观点</td></tr>
+<tr><td>股吧/自媒体</td><td>极低</td><td>不看→噪音</td></tr>
+</table></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>逆势抄底=单一面确信=亏损开始→基本面好但技术面破位+资金流出+政策打压→不要"逆势抄底"→等右侧信号→"基本面是锚→但锚不会自己浮起来→需要风和帆配合"。</p></div>
+</section>
+
+<section id="ch20" class="section reveal">
+<div class="chapter-header"><span class="ch-num cn-green">第20章</span><h2>自检体系与投资纪律</h2></div>
+
+<h3>20.1 九条铁律</h3>
+<div class="pitfall-list">
+<div class="pitfall-item"><div class="pitfall-num">1</div><div class="pitfall-text">永远不用单一面做决策→永远交叉验证→"单一维度的确信，往往是亏损的开始"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">2</div><div class="pitfall-text">永远交叉验证→基本面选股→技术面择时→资金面确认→情绪面防极端→九面联合才能完整</div></div>
+<div class="pitfall-item"><div class="pitfall-num">3</div><div class="pitfall-text">永远区分事实与观点→公告=事实→媒体=观点→"不是所有信息同等重要"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">4</div><div class="pitfall-text">永远设置止损→亏损8%强制卖出→不思考→不犹豫→止损是成本而非亏损</div></div>
+<div class="pitfall-item"><div class="pitfall-num">5</div><div class="pitfall-text">估值为锚→趋势为帆→资金为风→情绪为浪→九面各有角色→不可替代</div></div>
+<div class="pitfall-item"><div class="pitfall-num">6</div><div class="pitfall-text">信息分级→只看原始事实→不看二手解读→"事实>观点>噪音"</div></div>
+<div class="pitfall-item"><div class="pitfall-num">7</div><div class="pitfall-text">时间维度匹配→宏观信号看月频→技术信号看日频→消息信号看小时频→匹配你的投资周期</div></div>
+<div class="pitfall-item"><div class="pitfall-num">8</div><div class="pitfall-text">不同风格侧重不同面→价值投资=基本面为主→趋势交易=技术面为主→量化=量化面为主</div></div>
+<div class="pitfall-item"><div class="pitfall-num">9</div><div class="pitfall-text">多面矛盾=轻仓观望→一致信号=可入场→"不确定时不做→确定时才做"</div></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>九条铁律是手册的"红线"——犯任何一条，投资决策可能完全错误。建议打印贴在电脑旁→每次操作前过一遍。</p></div>
+
+<h3>20.2 九面自检清单（13问）</h3>
+<div class="checklist">
+<div class="checklist-item"><span class="checklist-q">❓</span><span>我用的是哪种PE/PB？（静态/TTM/动态？MRQ/LYR？）→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>我在同行业内对比吗？→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>扣非PE和原始PE差距大吗？（>30%要警惕）→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>经营现金流/净利润>1吗？（<0.7要警惕）→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>PB结合了ROE吗？（脱离ROE的PB无意义）→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>净资产中商誉占比大吗？（>30%扣商誉再看）→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>PS结合了利润率吗？（不看利润率的PS=空中楼阁）→ <strong>基本面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>这家公司是周期股吗？（周期股PE反着看！）→ <strong>基本面+宏观面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>利率环境变化了吗？（利率变了PE中枢移动）→ <strong>宏观/政策面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>北向资金方向是什么？（连续买入/卖出？）→ <strong>资金面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>市场情绪极端了吗？（恐惧贪婪指数？）→ <strong>情绪面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>有重大消息我遗漏了吗？（财报/政策/事件？）→ <strong>消息面</strong></span></div>
+<div class="checklist-item"><span class="checklist-q">❓</span><span>筹码集中还是分散？（股东人数变化？）→ <strong>筹码面</strong></span></div>
+</div>
+<div class="callout warn-box"><h5>⚠️ 风险提醒</h5><p>自检清单13个问题→答不上来就别下结论→每个问题对应一个分析面→如果某个面的问题全部答不上来→说明你在这个面上完全没有分析→"盲区=亏损源头"。</p></div>
+
+<h3>20.3 各面实操渠道汇总表</h3>
+<div class="table-wrapper"><table>
+<tr><th>分析面</th><th>主要渠道</th><th>特色功能</th></tr>
+<tr><td>基本面</td><td>巨潮资讯/东方财富/理杏仁</td><td>财报/估值/百分位</td></tr>
+<tr><td>宏观面</td><td>国家统计局/央行/Wind</td><td>经济数据/货币政策</td></tr>
+<tr><td>技术面</td><td>通达信/同花顺/东财APP</td><td>K线/指标/自定义</td></tr>
+<tr><td>资金面</td><td>东财数据中心/龙虎榜</td><td>资金流向/北向/融资</td></tr>
+<tr><td>情绪面</td><td>恐惧贪婪指数/雪球/新开户数</td><td>市场情绪/舆论热度</td></tr>
+<tr><td>消息面</td><td>巨潮资讯/东财快讯/路透</td><td>公告/快讯/全球</td></tr>
+<tr><td>筹码面</td><td>通达信筹码分布/龙虎榜</td><td>筹码分布/席位</td></tr>
+<tr><td>量化面</td><td>聚宽/米筐/Wind API</td><td>回测/因子筛选</td></tr>
+</table></div>
+
+<h3>20.4 从新手到进阶的学习路径</h3>
+<div class="timeline">
+<div class="timeline-item"><div class="timeline-time">第一阶段（1-3月）</div><div class="timeline-content">基本面+技术面→第3-4章+第8-10章→建立选股+择时基础框架</div></div>
+<div class="timeline-item"><div class="timeline-time">第二阶段（3-6月）</div><div class="timeline-content">资金面+情绪面→第11-12章+第14-15章→加入资金确认+情绪防极端</div></div>
+<div class="timeline-item"><div class="timeline-time">第三阶段（6-12月）</div><div class="timeline-content">宏观面+筹码面+消息面+量化面→第5-7章+第13章+第16-18章→全方位视角</div></div>
+<div class="timeline-item"><div class="timeline-time">第四阶段（持续）</div><div class="timeline-content">综合实战→第19-20章→九面交叉验证+自检体系→形成自己的分析体系</div></div>
+</div>
+<div class="callout tip-box"><h5>💡 实操建议</h5><p>学习路径四阶段→第一阶段最重要→基本面+技术面是骨架→其余是肌肉→骨架不稳→肌肉越多越容易走偏→先做好基本面+技术面→再逐步加入其他面。</p></div>
+<div class="callout danger-box"><h5>🚨 致命陷阱</h5><p>单一面确信=亏损开始→每次操作前过13问自检清单→答不上来就别下结论→"不确定时不做→确定时才做"→这是投资纪律的底线。</p></div>
+</section>
+
+<!-- ===== 附录 ===== -->
+<h1>附录</h1>
+
+<section id="appA" class="section reveal">
+<h2>附录A：术语速查表（24个核心术语）</h2>
+<div class="table-wrapper"><table class="term-table">
+<tr><th>术语</th><th>一句话解释</th><th>详细章节</th></tr>
+<tr><td>GDP</td><td>经济体总产出，衡量"大环境好不好"</td><td>第5章</td></tr>
+<tr><td>CPI</td><td>居民物价指数，衡量"物价涨了还是跌了"</td><td>第5章</td></tr>
+<tr><td>PMI</td><td>采购经理指数，50=荣枯线</td><td>第5章</td></tr>
+<tr><td>M1/M2</td><td>现金+活期 vs 总货币，看"资金活不活"</td><td>第6章</td></tr>
+<tr><td>社融</td><td>社会融资规模，"实体经济借了多少钱"</td><td>第6章</td></tr>
+<tr><td>PE</td><td>市盈率，股价÷利润，"回本年数"</td><td>第4章</td></tr>
+<tr><td>PB</td><td>市净率，股价÷净资产，"为家底付多少"</td><td>第4章</td></tr>
+<tr><td>ROE</td><td>净资产收益率，净利润÷净资产</td><td>第4章</td></tr>
+<tr><td>EPS</td><td>每股收益，净利润÷总股本</td><td>第3章</td></tr>
+<tr><td>自由现金流</td><td>经营现金流-资本支出，"真正可自由支配的钱"</td><td>第4章</td></tr>
+<tr><td>MACD</td><td>移动平均收敛/发散指标</td><td>第9章</td></tr>
+<tr><td>K线</td><td>记录开盘/收盘/最高/最低的价格图形</td><td>第8章</td></tr>
+<tr><td>均线</td><td>N日收盘价均值，趋势工具</td><td>第8章</td></tr>
+<tr><td>支撑/阻力</td><td>下跌容易反弹/上涨容易回落的价位</td><td>第8章</td></tr>
+<tr><td>北向资金</td><td>外资通过沪深港通买入A股</td><td>第11章</td></tr>
+<tr><td>融资融券</td><td>借钱买/借券卖，杠杆工具</td><td>第11章</td></tr>
+<tr><td>龙虎榜</td><td>异动股前5买卖席位披露</td><td>第12章</td></tr>
+<tr><td>VIX</td><td>期权隐含波动率，"恐慌指数"</td><td>第14章</td></tr>
+<tr><td>换手率</td><td>当日成交股数÷流通股数</td><td>第14章</td></tr>
+<tr><td>美林时钟</td><td>经济周期四阶段资产配置框架</td><td>第6章</td></tr>
+<tr><td>护城河</td><td>企业竞争优势，防止对手抢走利润</td><td>第4章</td></tr>
+<tr><td>杜邦分析</td><td>拆解ROE：利润率×周转×杠杆</td><td>第4章</td></tr>
+<tr><td>支撑/阻力</td><td>下跌容易反弹/上涨容易回落的价位，"地板与天花板"</td><td>第8章</td></tr>
+<tr><td>融资融券</td><td>借钱买/借券卖，杠杆工具</td><td>第11章</td></tr>
+<tr><td>筹码分布</td><td>各价位持仓量分布，看密集成交区</td><td>第13章</td></tr>
+<tr><td>夏普比率</td><td>（收益-无风险收益）/波动率，"性价比"</td><td>第17章</td></tr>
+</table></div>
+</section>
+
+<section id="appB" class="section reveal">
+<h2>附录B：指标查询渠道汇总</h2>
+<div class="table-wrapper"><table>
+<tr><th>分析面</th><th>主要渠道</th><th>特色功能</th></tr>
+<tr><td>基本面</td><td>巨潮资讯/东方财富/理杏仁</td><td>财报/估值/百分位</td></tr>
+<tr><td>宏观面</td><td>国家统计局/央行/Wind</td><td>经济数据/货币政策</td></tr>
+<tr><td>技术面</td><td>通达信/同花顺/东财APP</td><td>K线/指标/自定义</td></tr>
+<tr><td>资金面</td><td>东财数据中心/龙虎榜</td><td>资金流向/北向/融资</td></tr>
+<tr><td>情绪面</td><td>恐惧贪婪指数/雪球/新开户数</td><td>市场情绪/舆论</td></tr>
+<tr><td>消息面</td><td>巨潮资讯/东财快讯/路透</td><td>公告/快讯/全球</td></tr>
+<tr><td>筹码面</td><td>通达信筹码分布/龙虎榜</td><td>筹码/席位</td></tr>
+<tr><td>量化面</td><td>聚宽/米筐/Wind API</td><td>回测/因子</td></tr>
+</table></div>
+</section>
+
+<section id="appC" class="section reveal">
+<h2>附录C：宏观日历</h2>
+<div class="table-wrapper"><table>
+<tr><th>时间</th><th>数据</th><th>发布机构</th></tr>
+<tr><td>每月10-15日</td><td>CPI/PPI</td><td>国家统计局</td></tr>
+<tr><td>每月中旬</td><td>PMI</td><td>国家统计局</td></tr>
+<tr><td>每月下旬</td><td>M1/M2/社融</td><td>央行</td></tr>
+<tr><td>每季度</td><td>GDP</td><td>国家统计局</td></tr>
+<tr><td>每月中下旬</td><td>美联储决议</td><td>美联储</td></tr>
+<tr><td>每周四</td><td>国常会</td><td>国务院</td></tr>
+<tr><td>每季度</td><td>央行货币政策报告</td><td>央行</td></tr>
+<tr><td>每季度末</td><td>基金季报</td><td>基金公司</td></tr>
+</table></div>
+</section>
+
+<section id="appD" class="section reveal">
+<h2>附录D：各面局限性速查</h2>
+<div class="table-wrapper"><table>
+<tr><th>分析面</th><th>最大局限性</th><th>应对方式</th></tr>
+<tr><td>基本面</td><td>价值回归时间不确定（可能等3-5年）</td><td>结合技术面择时→不要"好公司随时买"</td></tr>
+<tr><td>宏观/政策面</td><td>指标滞后+政策底≠市场底</td><td>用前瞻指标（PMI+社融）+等市场底确认</td></tr>
+<tr><td>技术面</td><td>震荡市假信号+图形主观</td><td>多指标共振+结合基本面确认</td></tr>
+<tr><td>资金面</td><td>主力数据噪音+北向≠聪明钱</td><td>看趋势不看单日+多指标交叉验证</td></tr>
+<tr><td>情绪面</td><td>极端后可能更极端+难以量化反转时点</td><td>只判断极端区域→不判断精确点位</td></tr>
+<tr><td>消息面</td><td>信息不对称+利好出尽=利空</td><td>看原始公告+买预期卖事实</td></tr>
+<tr><td>筹码面</td><td>估算模型非精确+次新股参考有限</td><td>作为辅助而非主要依据</td></tr>
+<tr><td>量化面</td><td>过拟合+黑天鹅无法建模+alpha衰减</td><td>追求稳健而非完美+实盘验证</td></tr>
+</table></div>
+</section>
+
+<section id="appE" class="section reveal">
+<h2>附录E：九面自检清单（13问）</h2>
+<div class="checklist">
+<div class="checklist-item"><span class="checklist-q">1</span><span>我用的是哪种PE/PB？（静态/TTM/动态？MRQ/LYR？）→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">2</span><span>我在同行业内对比吗？→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">3</span><span>扣非PE和原始PE差距大吗？（>30%要警惕）→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">4</span><span>经营现金流/净利润>1吗？（<0.7要警惕）→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">5</span><span>PB结合了ROE吗？→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">6</span><span>净资产商誉占比大吗？→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">7</span><span>PS结合了利润率吗？→ 基本面</span></div>
+<div class="checklist-item"><span class="checklist-q">8</span><span>这家公司是周期股吗？→ 基本面+宏观面</span></div>
+<div class="checklist-item"><span class="checklist-q">9</span><span>利率环境变化了吗？→ 宏观/政策面</span></div>
+<div class="checklist-item"><span class="checklist-q">10</span><span>北向资金方向是什么？→ 资金面</span></div>
+<div class="checklist-item"><span class="checklist-q">11</span><span>市场情绪极端了吗？→ 情绪面</span></div>
+<div class="checklist-item"><span class="checklist-q">12</span><span>有重大消息我遗漏了吗？→ 消息面</span></div>
+<div class="checklist-item"><span class="checklist-q">13</span><span>筹码集中还是分散？→ 筹码面</span></div>
+</div>
+<div class="callout key-box"><h5>🔑 核心要点</h5><p>13问覆盖九面→每个问题对应一个分析面→答不上来=该面没有分析=盲区=亏损源头→每次操作前过一遍→"不确定时不做→确定时才做"。</p></div>
+</section>
+
+</div><!-- end main -->
+
+
+<script>
+// ===== Scroll To =====
+function scrollToId(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+
+// ===== PE/PB/PS口径对比器 =====
+function calcVal(){
+  const price=parseFloat(document.getElementById('val-price').value)||0;
+  const eps=parseFloat(document.getElementById('val-eps').value)||0;
+  const bps=parseFloat(document.getElementById('val-bps').value)||0;
+  const sps=parseFloat(document.getElementById('val-sps').value)||0;
+  const pe=eps>0?(price/eps).toFixed(1):'亏损';
+  const pb=bps>0?(price/bps).toFixed(1):'负净资产';
+  const ps=sps>0?(price/sps).toFixed(1):'零营收';
+  document.getElementById('val-pe').textContent=pe;
+  document.getElementById('val-pb').textContent=pb;
+  document.getElementById('val-ps').textContent=ps;
+}
+
+// ===== 杜邦分析拆解器 =====
+function calcDupont(){
+  const m=parseFloat(document.getElementById('db-margin').value)||0;
+  const t=parseFloat(document.getElementById('db-turnover').value)||0;
+  const l=parseFloat(document.getElementById('db-leverage').value)||0;
+  const roe=(m*t*l/100).toFixed(1);
+  document.getElementById('db-roe').textContent=roe+'%';
+  document.getElementById('db-roe').textContent+=' (净利率'+m+'% × 周转率'+t+'次 × 杠杆率'+l+'倍)';
+}
+
+// ===== Hero Canvas 粒子动画 =====
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let w,h,particles=[];
+  function resize(){w=canvas.width=canvas.offsetWidth;h=canvas.height=canvas.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  const colors=['#3B82F6','#10B981','#F59E0B','#EF4444','#8B5CF6','#60A5FA'];
+  for(let i=0;i<50;i++){particles.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+1,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,c:colors[Math.floor(Math.random()*colors.length)]})}
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    particles.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.globalAlpha=0.5;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== ECharts: 美林时钟 =====
+function initMerrillChart(){
+  const el=document.getElementById('chart-merrill');
+  if(!el||!echarts)return;
+  const chart=echarts.init(el);
+  chart.setOption({
+    tooltip:{trigger:'item',formatter:function(p){return p.name+'<br/>最优资产：'+p.data.asset}},
+    series:[{
+      type:'pie',radius:['30%','70%'],center:['50%','50%'],
+      roseType:'area',
+      data:[
+        {name:'复苏期 (GDP↑ CPI↓)',value:35,asset:'股票最优',itemStyle:{color:'#10B981'}},
+        {name:'过热期 (GDP↑ CPI↑)',value:30,asset:'商品最优',itemStyle:{color:'#F59E0B'}},
+        {name:'滞胀期 (GDP↓ CPI↑)',value:20,asset:'现金最优',itemStyle:{color:'#EF4444'}},
+        {name:'衰退期 (GDP↓ CPI↓)',value:15,asset:'债券最优',itemStyle:{color:'#3B82F6'}}
+      ],
+      label:{color:'#E2E8F0',fontSize:12,formatter:function(p){return p.name+'\n最优：'+p.data.asset}},
+      labelLine:{lineStyle:{color:'#64748B'}}
+    }],
+    graphic:[
+      {type:'text',left:'center',top:'center',style:{text:'美林时钟',fill:'#94A3B8',fontSize:14}}
+    ]
+  });
+  window.addEventListener('resize',()=>chart.resize());
+}
+
+// ===== Scroll Reveal =====
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ===== Nav Highlight =====
+const sections=document.querySelectorAll('.section');
+const navItems=document.querySelectorAll('.nav-item');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{
+    const top=s.offsetTop-80;
+    if(window.scrollY>=top)current=s.id;
+  });
+  navItems.forEach(n=>{
+    n.classList.remove('active');
+    if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes(current))n.classList.add('active');
+  });
+});
+
+// ===== Init Charts =====
+window.addEventListener('load',()=>{
+  initMerrillChart();
+});
+</script>
+</body>
+</html>
