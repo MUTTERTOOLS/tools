@@ -1665,22 +1665,29 @@ tbody tr:nth-child(even){background:rgba(255,255,255,.015)}
 // ===== Navigation & UI =====
 function toggleSidebar(){
   const sb=document.getElementById('sidebar'),btn=document.getElementById('toggleBtn');
-  sb.classList.toggle('hidden');btn.classList.toggle('shifted');
+  if(window.innerWidth<900){
+    sb.classList.toggle('show');
+  }else{
+    sb.classList.toggle('hidden');btn.classList.toggle('shifted');
+  }
 }
 function scrollToId(id){
   document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
-  if(window.innerWidth<900){document.getElementById('sidebar').classList.add('hidden');document.getElementById('toggleBtn').classList.add('shifted');}
+  if(window.innerWidth<900){document.getElementById('sidebar').classList.remove('show');}
 }
 window.addEventListener('scroll',()=>{
   const btn=document.getElementById('backTop');
   btn.classList.toggle('show',window.scrollY>600);
   // Active nav
   const items=document.querySelectorAll('.nav-item');
+  const targets=Array.from(items,it=>it.getAttribute('onclick')?.match(/scrollToId\('([^']+)'\)/)?.[1]);
   let current='';
-  document.querySelectorAll('[id]').forEach(el=>{
+  targets.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
     if(el.getBoundingClientRect().top<200) current=el.id;
   });
-  items.forEach(it=>{it.classList.remove('active');if(it.getAttribute('onclick')?.includes(current))it.classList.add('active');});
+  items.forEach((it,index)=>it.classList.toggle('active',targets[index]===current));
 });
 // Reveal on scroll
 const obs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.08});
@@ -1833,7 +1840,7 @@ initChart('chart-percentile',{
 // ===== CHART: Anchor (Ch7) =====
 initChart('chart-anchor',{
   tooltip:{trigger:'item'},
-  series:[{type:'gauge',startAngle:180,endAngle:0,min:8,max:18,splitNumber:5,axisLine:{lineStyle:{width:20,color:[[0.3,'#10B981'],[0.6,'#F59E0B'],[1,'#EF4444']]}},pointer:{itemStyle:{color:'#E2E8F0'},width:4},axisTick:{show:false},splitLine:{length:12,lineStyle:{color:'#94A3B8',width:2}},axisLabel:{distance:18,color:'#94A3B8',fontSize:11,formatter:function(v){return v+'x';}},detail:{valueAnimation:true,formatter:'{value}x',color:'#E2E8F0',fontSize:20,offsetCenter:[0,'40%']},data:[{value:12.5,name:'沪深300 当前PE'}],title:{show:true,offsetCenter:[0,'65%'],color:'#94A3B8',fontSize:13}}}]
+  series:[{type:'gauge',startAngle:180,endAngle:0,min:8,max:18,splitNumber:5,axisLine:{lineStyle:{width:20,color:[[0.3,'#10B981'],[0.6,'#F59E0B'],[1,'#EF4444']]}},pointer:{itemStyle:{color:'#E2E8F0'},width:4},axisTick:{show:false},splitLine:{length:12,lineStyle:{color:'#94A3B8',width:2}},axisLabel:{distance:18,color:'#94A3B8',fontSize:11,formatter:function(v){return v+'x';}},detail:{valueAnimation:true,formatter:'{value}x',color:'#E2E8F0',fontSize:20,offsetCenter:[0,'40%']},data:[{value:12.5,name:'沪深300 当前PE'}],title:{show:true,offsetCenter:[0,'65%'],color:'#94A3B8',fontSize:13}}]
 });
 
 // ===== CHART: MACD (Ch8) =====
