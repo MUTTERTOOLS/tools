@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="从投资基础、财报与宏观研究，到价格行为、风险心理与交易系统，选择适合你的投资阅读手册。" />
+  <meta name="description" content="先打好投资基础，再按裸 K、财报、宏观、交易系统与风控心理的顺序完成五册投资训练系列。" />
   <title>Invest · 投资阅读</title>
   <style>
     :root {
@@ -322,6 +322,124 @@
     .beginner .card-action { color: var(--gold); }
     .advanced .card-action { color: var(--green); }
 
+    .series-library {
+      margin-top: 72px;
+      padding-top: 38px;
+      border-top: 1px solid var(--line);
+    }
+
+    .series-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 34px;
+    }
+
+    .series-kicker {
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .series-heading h2 {
+      margin-top: 8px;
+      font-family: "Iowan Old Style", "Songti SC", STSong, Georgia, serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .series-heading > p {
+      max-width: 390px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: right;
+    }
+
+    .series-path {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: handbook-series;
+    }
+
+    .series-step {
+      position: relative;
+      padding-left: 66px;
+      counter-increment: handbook-series;
+    }
+
+    .series-step + .series-step { margin-top: 16px; }
+
+    .series-step::before {
+      position: absolute;
+      top: 30px;
+      left: 0;
+      z-index: 1;
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      content: counter(handbook-series, decimal-leading-zero);
+      border: 1px solid currentColor;
+      border-radius: 50%;
+      background: var(--canvas);
+      color: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .series-step:not(:last-child)::after {
+      position: absolute;
+      top: 68px;
+      bottom: -46px;
+      left: 18px;
+      width: 1px;
+      content: "";
+      background: linear-gradient(currentColor, rgba(180, 202, 218, 0.14));
+    }
+
+    .series-card {
+      display: grid;
+      min-height: 210px;
+      grid-template-columns: minmax(230px, 0.82fr) minmax(0, 1.18fr);
+      gap: 34px;
+      padding: 28px 32px;
+    }
+
+    .series-card::after {
+      right: 22px;
+      bottom: -30px;
+      font-size: 8rem;
+    }
+
+    .series-card .card-title {
+      margin-top: 34px;
+      font-size: clamp(1.75rem, 3vw, 2.45rem);
+    }
+
+    .series-details {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-self: stretch;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: 28px;
+    }
+
+    .series-details .card-description { margin-top: 0; }
+
+    .series-card .card-meta {
+      margin-top: 28px;
+      padding-top: 18px;
+      font-size: 0.78rem;
+    }
+
     .topic-library {
       margin-top: 72px;
       padding-top: 38px;
@@ -393,9 +511,9 @@
     .channel { color: #56cfc2; }
     .institution { color: #7eabef; }
     .know-do { color: #a8a5f4; }
-    .channel::after { content: "账户"; }
-    .institution::after { content: "机构"; }
-    .know-do::after { content: "心理"; }
+    .handbook-card.channel::after { content: "账户"; }
+    .handbook-card.institution::after { content: "机构"; }
+    .handbook-card.know-do::after { content: "心理"; }
     .channel .card-action { color: #56cfc2; }
     .institution .card-action { color: #7eabef; }
     .know-do .card-action { color: #a8a5f4; }
@@ -463,10 +581,10 @@
     .fundamentals { color: #62c6a6; }
     .macro { color: #73b8e5; }
     .valuation { color: #f58ea2; }
-    .analysis::after { content: "九面"; }
-    .fundamentals::after { content: "财报"; }
-    .macro::after { content: "宏观"; }
-    .valuation::after { content: "PE"; }
+    .handbook-card.analysis::after { content: "九面"; }
+    .handbook-card.fundamentals::after { content: "财报"; }
+    .handbook-card.macro::after { content: "宏观"; }
+    .handbook-card.valuation::after { content: "PE"; }
     .analysis .card-action { color: #79aefe; }
     .fundamentals .card-action { color: #62c6a6; }
     .macro .card-action { color: #73b8e5; }
@@ -475,9 +593,9 @@
     .price-action { color: #f4ae64; }
     .risk-mind { color: #ef8291; }
     .trading-system { color: #a99af6; }
-    .price-action::after { content: "K"; }
-    .risk-mind::after { content: "风险"; }
-    .trading-system::after { content: "系统"; }
+    .handbook-card.price-action::after { content: "K"; }
+    .handbook-card.risk-mind::after { content: "风险"; }
+    .handbook-card.trading-system::after { content: "系统"; }
     .price-action .card-action { color: #f4ae64; }
     .risk-mind .card-action { color: #ef8291; }
     .trading-system .card-action { color: #a99af6; }
@@ -507,13 +625,22 @@
       .topic-heading > p { margin-top: 10px; text-align: left; }
       .research-heading { display: block; }
       .research-heading > p { margin-top: 10px; text-align: left; }
+      .series-heading { display: block; }
+      .series-heading > p { margin-top: 10px; text-align: left; }
       .route { grid-template-columns: 1fr; }
       .route::before { top: 48%; left: -10px; width: 1px; height: 18%; background: linear-gradient(var(--gold), var(--green)); }
       .topic-library { margin-top: 56px; }
       .research-library { margin-top: 56px; }
+      .series-library { margin-top: 56px; }
       .topic-grid { grid-template-columns: 1fr; }
       .research-grid { grid-template-columns: 1fr; }
       .handbook-card { min-height: 300px; padding: 26px; }
+      .series-step { padding-left: 48px; }
+      .series-step::before { top: 24px; width: 32px; height: 32px; font-size: 0.64rem; }
+      .series-step:not(:last-child)::after { top: 56px; bottom: -40px; left: 15px; }
+      .series-card { min-height: 0; grid-template-columns: 1fr; gap: 0; }
+      .series-card .card-title { margin-top: 30px; }
+      .series-details { padding-top: 20px; }
       .card-title { margin-top: 40px; }
       .topic-card .card-title { margin-top: 40px; }
       .research-card .card-title { margin-top: 40px; }
@@ -541,11 +668,11 @@
         <div>
           <p class="eyebrow">Investment library</p>
           <h1 id="page-title">从理解市场开始，逐步建立自己的判断。</h1>
-          <p class="hero-copy">这里收录面向不同阶段与问题的投资阅读手册。先选择你的当前阶段或正在解决的问题，再进入对应的学习路径。</p>
+          <p class="hero-copy">这里收录基础读物、连续训练系列与按需专题。先完成基础，再沿着五册系列逐步建立从分析到执行的完整体系。</p>
         </div>
         <aside class="hero-aside" aria-label="阅读建议">
           <span class="hero-aside-label">推荐阅读顺序</span>
-          <p>先打好基础，再把方法带进真实决策。</p>
+          <p>基础之后，按第 1 册到第 5 册依次阅读。</p>
         </aside>
       </section>
 
@@ -582,6 +709,113 @@
             </div>
           </a>
         </div>
+
+        <section class="series-library" aria-labelledby="series-title">
+          <div class="series-heading">
+            <div>
+              <p class="series-kicker">连续阅读 · 五册系列</p>
+              <h2 id="series-title">从读懂价格到守住长期纪律</h2>
+            </div>
+            <p>这五本手册前后衔接，后一册会调用前面建立的概念与方法。请从第 1 册开始，按顺序完成。</p>
+          </div>
+
+          <ol class="series-path" aria-label="五册投资训练系列推荐阅读顺序">
+            <li class="series-step price-action">
+              <a class="handbook-card series-card price-action" href="./price-action-handbook.html" aria-label="阅读系列第 1 册：裸 K 与价格行为">
+                <div>
+                  <div class="card-topline">
+                    <span class="card-stage">第 1 册 · 价格语言</span>
+                    <span>Price Action 101</span>
+                  </div>
+                  <h3 class="card-title">裸 K 与<br />价格行为</h3>
+                </div>
+                <div class="series-details">
+                  <p class="card-description">先建立对趋势、结构、K 线与入场信号的共同语言，学会直接读懂价格本身。</p>
+                  <div class="card-meta">
+                    <span>起点 · 建立价格语言</span>
+                    <span class="card-action">从第一册开始 →</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <li class="series-step fundamentals">
+              <a class="handbook-card series-card fundamentals" href="./fundamentals-handbook.html" aria-label="阅读系列第 2 册：财报与基本面投资手册">
+                <div>
+                  <div class="card-topline">
+                    <span class="card-stage">第 2 册 · 公司质量</span>
+                    <span>Fundamentals 101</span>
+                  </div>
+                  <h3 class="card-title">财报与基本面<br />投资手册</h3>
+                </div>
+                <div class="series-details">
+                  <p class="card-description">再用三大报表、财务指标与商业模式验证公司质量，把价格背后的生意看清楚。</p>
+                  <div class="card-meta">
+                    <span>承接 · 验证公司质量</span>
+                    <span class="card-action">继续第二册 →</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <li class="series-step macro">
+              <a class="handbook-card series-card macro" href="./macro-handbook.html" aria-label="阅读系列第 3 册：宏观经济分析手册">
+                <div>
+                  <div class="card-topline">
+                    <span class="card-stage">第 3 册 · 经济环境</span>
+                    <span>Macro 101</span>
+                  </div>
+                  <h3 class="card-title">宏观经济<br />分析手册</h3>
+                </div>
+                <div class="series-details">
+                  <p class="card-description">把公司放回经济周期、通胀、利率与政策环境中，理解资产和行业为何轮动。</p>
+                  <div class="card-meta">
+                    <span>拓展 · 理解宏观环境</span>
+                    <span class="card-action">继续第三册 →</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <li class="series-step trading-system">
+              <a class="handbook-card series-card trading-system" href="./trading-system-handbook.html" aria-label="阅读系列第 4 册：交易系统与实战投资手册">
+                <div>
+                  <div class="card-topline">
+                    <span class="card-stage">第 4 册 · 系统构建</span>
+                    <span>System 101</span>
+                  </div>
+                  <h3 class="card-title">交易系统<br />与实战</h3>
+                </div>
+                <div class="series-details">
+                  <p class="card-description">将选股、入场、仓位、退出与复盘组装成一套可执行、可回测、可迭代的规则。</p>
+                  <div class="card-meta">
+                    <span>整合 · 把方法组成系统</span>
+                    <span class="card-action">继续第四册 →</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            <li class="series-step risk-mind">
+              <a class="handbook-card series-card risk-mind" href="./risk-psychology-handbook.html" aria-label="阅读系列第 5 册：风险管理与交易心理手册">
+                <div>
+                  <div class="card-topline">
+                    <span class="card-stage">第 5 册 · 风控纪律</span>
+                    <span>Risk &amp; Mind 101</span>
+                  </div>
+                  <h3 class="card-title">风险管理<br />与交易心理</h3>
+                </div>
+                <div class="series-details">
+                  <p class="card-description">最后用风险预算、回撤控制与心理纪律守住系统，让正确方法能够被长期执行。</p>
+                  <div class="card-meta">
+                    <span>终点 · 守住风险与纪律</span>
+                    <span class="card-action">完成第五册 →</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ol>
+        </section>
 
         <section class="topic-library" aria-labelledby="topic-title">
           <div class="topic-heading">
@@ -657,32 +891,6 @@
               </div>
             </a>
 
-            <a class="handbook-card research-card fundamentals" href="./fundamentals-handbook.html" aria-label="打开财报与基本面投资手册">
-              <div class="card-topline">
-                <span class="card-stage">财报分析</span>
-                <span>Fundamentals 101</span>
-              </div>
-              <h3 class="card-title">财报与基本面<br />投资手册</h3>
-              <p class="card-description">从三大报表、财务指标到企业质量，用数字读懂生意并验证投资判断。</p>
-              <div class="card-meta">
-                <span>用财报验证公司</span>
-                <span class="card-action">查看手册 →</span>
-              </div>
-            </a>
-
-            <a class="handbook-card research-card macro" href="./macro-handbook.html" aria-label="打开宏观经济分析投资手册">
-              <div class="card-topline">
-                <span class="card-stage">宏观分析</span>
-                <span>Macro 101</span>
-              </div>
-              <h3 class="card-title">宏观经济<br />分析手册</h3>
-              <p class="card-description">从经济周期、增长、通胀、利率与政策出发，把大环境变化连接到资产与行业。</p>
-              <div class="card-meta">
-                <span>理解经济环境</span>
-                <span class="card-action">查看手册 →</span>
-              </div>
-            </a>
-
             <a class="handbook-card research-card valuation" href="./valuation-handbook.html" aria-label="打开估值指标投资手册">
               <div class="card-topline">
                 <span class="card-stage">估值方法</span>
@@ -698,56 +906,6 @@
           </div>
         </section>
 
-        <section class="topic-library" aria-labelledby="practice-title">
-          <div class="topic-heading">
-            <div>
-              <p class="topic-kicker">实战体系</p>
-              <h2 id="practice-title">从读懂价格到执行规则</h2>
-            </div>
-            <p>依次理解价格行为、风险与心理，再把方法组装成一套能执行、能复盘的交易系统。</p>
-          </div>
-
-          <div class="topic-grid">
-            <a class="handbook-card topic-card price-action" href="./price-action-handbook.html" aria-label="打开裸 K 与价格行为手册">
-              <div class="card-topline">
-                <span class="card-stage">价格行为</span>
-                <span>Price Action 101</span>
-              </div>
-              <h3 class="card-title">裸 K 与<br />价格行为</h3>
-              <p class="card-description">抛开指标，从市场结构、K 线语言与多空博弈中直接读懂价格本身。</p>
-              <div class="card-meta">
-                <span>读懂市场结构</span>
-                <span class="card-action">查看手册 →</span>
-              </div>
-            </a>
-
-            <a class="handbook-card topic-card risk-mind" href="./risk-psychology-handbook.html" aria-label="打开风险管理与交易心理手册">
-              <div class="card-topline">
-                <span class="card-stage">风险与心理</span>
-                <span>Risk &amp; Mind 101</span>
-              </div>
-              <h3 class="card-title">风险管理<br />与交易心理</h3>
-              <p class="card-description">从单笔风险、组合回撤到情绪纪律，先建立防护网，再追求收益。</p>
-              <div class="card-meta">
-                <span>先控制风险与回撤</span>
-                <span class="card-action">查看手册 →</span>
-              </div>
-            </a>
-
-            <a class="handbook-card topic-card trading-system" href="./trading-system-handbook.html" aria-label="打开交易系统与实战投资手册">
-              <div class="card-topline">
-                <span class="card-stage">系统构建</span>
-                <span>System 101</span>
-              </div>
-              <h3 class="card-title">交易系统<br />与实战</h3>
-              <p class="card-description">把选股、入场、仓位、退出与复盘规则连接成可运行、可迭代的完整闭环。</p>
-              <div class="card-meta">
-                <span>把规则组成闭环</span>
-                <span class="card-action">查看手册 →</span>
-              </div>
-            </a>
-          </div>
-        </section>
       </section>
     </main>
 
