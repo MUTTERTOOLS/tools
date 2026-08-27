@@ -1,0 +1,2438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>风险管理与交易心理 · Risk & Mind 101</title>
+<style>
+:root {
+  --bg: #0B0E14;
+  --bg2: #0F1218;
+  --card: #141820;
+  --card2: #1A1F28;
+  --card3: #20262F;
+  --border: #2A313C;
+  --border-light: #353D4A;
+  --text: #E8ECF1;
+  --text-secondary: #A8B0BC;
+  --text-muted: #6B7280;
+  --accent: #DC2626;
+  --accent-light: #EF4444;
+  --accent-dim: rgba(220,38,38,0.12);
+  --accent-glow: rgba(220,38,38,0.25);
+  --green: #10B981;
+  --green-dim: rgba(16,185,129,0.12);
+  --yellow: #F59E0B;
+  --yellow-dim: rgba(245,158,11,0.12);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --cyan: #06B6D4;
+  --cyan-dim: rgba(6,182,212,0.12);
+  --orange: #F97316;
+  --orange-dim: rgba(249,115,22,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;
+  line-height: 1.85;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+#sidebar {
+  position: fixed; left:0; top:0; width:280px; height:100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  overflow-y: auto; z-index: 100; transition: transform 0.3s;
+}
+#sidebar .side-header {
+  padding: 24px 20px 16px; border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--accent-dim), transparent);
+}
+#sidebar .side-header h2 { font-size: 16px; color: var(--accent-light); margin-bottom: 4px; }
+#sidebar .side-header p { font-size: 11px; color: var(--text-muted); }
+#sidebar { padding: 12px 0; }
+#sidebar a {
+  display: block; padding: 7px 20px 7px 24px;
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 13px; border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+#sidebar a:hover { color: var(--text); background: var(--card); }
+#sidebar a.active { color: var(--accent-light); border-left-color: var(--accent); background: var(--accent-dim); }
+#sidebar .nav-part { padding: 14px 20px 6px; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+#main { margin-left: 280px; padding: 0; min-height: 100vh; }
+#mobile-toggle {
+  display: none; position: fixed; top: 16px; right: 16px; z-index: 200;
+  width: 40px; height: 40px; border-radius: 8px;
+  background: var(--accent); color: white; border: none;
+  font-size: 18px; cursor: pointer;
+}
+.container { max-width: 820px; margin: 0 auto; padding: 0 32px; }
+.hero {
+  text-align: center; padding: 80px 32px 60px;
+  background: radial-gradient(ellipse at center top, var(--accent-dim), transparent 70%), var(--bg);
+}
+.hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+.hero h1 span { color: var(--accent-light); }
+.hero .subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 8px; }
+.hero .en-title { font-size: 13px; color: var(--text-muted); letter-spacing: 2px; }
+.hero .badge-row { display: flex; justify-content: center; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+.hero .badge {
+  padding: 6px 16px; border-radius: 20px; font-size: 12px;
+  border: 1px solid var(--border-light); color: var(--text-secondary);
+  background: var(--card);
+}
+.hero .badge.red { border-color: var(--accent); color: var(--accent-light); background: var(--accent-dim); }
+.part-header {
+  text-align: center; padding: 56px 32px 32px;
+  border-top: 1px solid var(--border); margin-top: 40px;
+}
+.part-header .part-tag {
+  display: inline-block; padding: 4px 18px; border-radius: 4px;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  color: var(--accent-light); background: var(--accent-dim);
+  border: 1px solid var(--accent); margin-bottom: 16px;
+}
+.part-header h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.part-header .part-goal { font-size: 14px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+.chapter { padding: 20px 0 40px; border-bottom: 1px solid var(--border); }
+.chapter:last-child { border-bottom: none; }
+.chapter-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--accent-dim); }
+.chapter-title .ch-num {
+  display: inline-block; padding: 2px 10px; border-radius: 4px;
+  font-size: 13px; color: var(--accent-light); background: var(--accent-dim);
+  margin-right: 8px; vertical-align: middle;
+}
+.section h3 { font-size: 17px; font-weight: 600; color: var(--accent-light); margin: 24px 0 10px; }
+.section h4 { font-size: 15px; font-weight: 600; color: var(--text); margin: 16px 0 8px; }
+.section p { margin-bottom: 12px; color: var(--text-secondary); }
+.section ul, .section ol { margin: 8px 0 14px 20px; color: var(--text-secondary); }
+.section li { margin-bottom: 4px; }
+.section strong { color: var(--text); }
+.section .highlight { color: var(--accent-light); font-weight: 600; }
+.section .red { color: var(--accent-light); }
+table.data-table {
+  width: 100%; border-collapse: collapse; margin: 14px 0;
+  font-size: 13px; border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+}
+table.data-table th {
+  background: var(--card2); color: var(--text);
+  padding: 10px 12px; text-align: left; font-weight: 600;
+  border-bottom: 1px solid var(--border-light);
+}
+table.data-table td {
+  padding: 8px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+table.data-table td.highlight { color: var(--accent-light); font-weight: 600; }
+table.data-table tr:hover td { background: var(--card); }
+table.data-table tr:last-child td { border-bottom: none; }
+.callout {
+  border-radius: 10px; padding: 16px 18px; margin: 16px 0;
+  border-left: 4px solid; position: relative;
+}
+.callout-title { font-weight: 700; margin-bottom: 8px; font-size: 14px; }
+.callout p { margin-bottom: 6px; color: var(--text-secondary); }
+.callout p:last-child { margin-bottom: 0; }
+.callout-tip { background: var(--green-dim); border-left-color: var(--green); }
+.callout-tip .callout-title { color: var(--green); }
+.callout-key { background: var(--orange-dim); border-left-color: var(--orange); }
+.callout-key .callout-title { color: var(--orange); }
+.callout-warn { background: var(--yellow-dim); border-left-color: var(--yellow); }
+.callout-warn .callout-title { color: var(--yellow); }
+.callout-danger { background: var(--accent-dim); border-left-color: var(--accent); }
+.callout-danger .callout-title { color: var(--accent-light); }
+.rule-box {
+  background: var(--card2); border: 1px solid var(--border-light);
+  border-radius: 10px; padding: 18px 20px; margin: 24px 0;
+}
+.rule-title {
+  font-size: 14px; font-weight: 700; color: var(--accent-light);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.rule-item {
+  padding: 8px 0; font-size: 13px; color: var(--text-secondary);
+  border-bottom: 1px dashed var(--border); line-height: 1.7;
+}
+.rule-item:last-child { border-bottom: none; }
+.rule-trigger { color: var(--blue); font-weight: 600; }
+.practice-box {
+  background: var(--cyan-dim); border: 1px solid var(--cyan);
+  border-radius: 10px; padding: 16px 18px; margin: 16px 0;
+}
+.practice-box h4 { color: var(--cyan); font-size: 14px; margin-bottom: 8px; }
+.calc-widget {
+  background: var(--card2); border: 1px solid var(--accent);
+  border-radius: 12px; padding: 20px; margin: 20px 0;
+}
+.calc-widget h4 { color: var(--accent-light); margin-bottom: 12px; font-size: 15px; }
+.calc-widget label { display: block; font-size: 12px; color: var(--text-muted); margin: 8px 0 3px; }
+.calc-widget input {
+  width: 100%; padding: 8px 12px; border-radius: 6px;
+  border: 1px solid var(--border-light); background: var(--bg);
+  color: var(--text); font-size: 14px;
+}
+.calc-widget button {
+  margin-top: 12px; padding: 8px 20px; border-radius: 6px;
+  border: none; background: var(--accent); color: white;
+  font-size: 14px; cursor: pointer; font-weight: 600;
+}
+.calc-widget button:hover { background: var(--accent-light); }
+.calc-widget .result { margin-top: 14px; padding: 12px; border-radius: 8px; background: var(--bg); display: none; }
+.calc-widget .result .big-number { font-size: 28px; font-weight: 800; color: var(--accent-light); }
+.calc-widget .result .label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.emotion-gauge {
+  display: flex; gap: 0; margin: 16px 0; border-radius: 8px; overflow: hidden;
+}
+.emotion-gauge .seg {
+  flex: 1; padding: 14px 8px; text-align: center; font-size: 12px; font-weight: 600;
+}
+.emotion-gauge .seg.green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.emotion-gauge .seg.yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid var(--yellow); }
+.emotion-gauge .seg.orange { background: var(--orange-dim); color: var(--orange); border: 1px solid var(--orange); }
+.emotion-gauge .seg.red { background: var(--accent-dim); color: var(--accent-light); border: 1px solid var(--accent); }
+.reading-path {
+  background: var(--card); border: 1px solid var(--border-light);
+  border-radius: 12px; padding: 28px; margin: 24px 0;
+}
+.reading-path h3 { color: var(--accent-light); margin-bottom: 16px; }
+.reading-path .path-item {
+  padding: 12px 0; border-bottom: 1px dashed var(--border);
+}
+.reading-path .path-item:last-child { border-bottom: none; }
+.reading-path .path-label {
+  display: inline-block; padding: 2px 10px; border-radius: 4px;
+  font-size: 11px; font-weight: 700; margin-right: 8px;
+}
+.reading-path .path-label.urgent { background: var(--accent-dim); color: var(--accent-light); border: 1px solid var(--accent); }
+.reading-path .path-label.system { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue); }
+.reading-path .path-label.experienced { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+.reading-path .path-label.psych { background: var(--orange-dim); color: var(--orange); border: 1px solid var(--orange); }
+ul.red li::marker { color: var(--accent); }
+@media (max-width: 900px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  #mobile-toggle { display: block; }
+  .container { padding: 0 16px; }
+  .hero h1 { font-size: 28px; }
+  table.data-table { font-size: 12px; }
+  table.data-table th, table.data-table td { padding: 6px 8px; }
+  table.data-table { display: block; max-width: 100%; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<button id="mobile-toggle" type="button" aria-label="打开章节导航" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+<nav id="sidebar">
+<div class="side-header">
+<h2>风险管理与交易心理</h2>
+<p>Risk & Mind 101</p>
+</div>
+<div class="nav-part">封面与导读</div>
+<a href="#hero">封面</a>
+<a href="#reading-path">阅读路径</a>
+<div class="nav-part">第一篇 风险认知</div>
+<a href="#part1">第一篇导读</a>
+<a href="#ch1">第1章 风险管理第一优先</a>
+<a href="#ch2">第2章 风险全景地图</a>
+<div class="nav-part">第二篇 资金管理</div>
+<a href="#part2">第二篇导读</a>
+<a href="#ch3">第3章 单笔风险管理</a>
+<a href="#ch4">第4章 组合风险管理</a>
+<a href="#ch5">第5章 时间维度风险</a>
+<div class="nav-part">第三篇 账户级风控</div>
+<a href="#part3">第三篇导读</a>
+<a href="#ch6">第6章 三条资金红线</a>
+<a href="#ch7">第7章 熔断与回撤控制</a>
+<a href="#ch8">第8章 止损止盈系统化</a>
+<a href="#ch9">第9章 压力测试</a>
+<div class="nav-part">第四篇 心理基础</div>
+<a href="#part4">第四篇导读</a>
+<a href="#ch10">第10章 交易心理本质</a>
+<a href="#ch11">第11章 认知偏误</a>
+<a href="#ch12">第12章 情绪四触发器</a>
+<a href="#ch13">第13章 五大心理陷阱</a>
+<div class="nav-part">第五篇 情绪管理</div>
+<a href="#part5">第五篇导读</a>
+<a href="#ch14">第14章 情绪标记日记</a>
+<a href="#ch15">第15章 情绪暂停阻断</a>
+<a href="#ch16">第16章 心理预演</a>
+<a href="#ch17">第17章 正念与认知重构</a>
+<div class="nav-part">第六篇 长期成长</div>
+<a href="#part6">第六篇导读</a>
+<a href="#ch18">第18章 过程导向</a>
+<a href="#ch19">第19章 耐心与空仓</a>
+<a href="#ch20">第20章 成长路线图</a>
+<a href="#ch21">第21章 长期生存法则</a>
+<div class="nav-part">附录</div>
+<a href="#appa">附录A 风险速查表</a>
+<a href="#appb">附录B 情绪工具箱</a>
+<a href="#appc">附录C 交易日记模板</a>
+<a href="#appd">附录D 自检清单</a>
+<a href="#appe">附录E 术语速查</a>
+<a href="#appf">附录F 财务规划</a>
+</nav>
+
+<div id="main">
+
+<!-- ========== HERO ========== -->
+<div class="hero" id="hero">
+<h1>风险管理与<span>交易心理</span></h1>
+<p class="subtitle">先学会不亏钱，再学怎么赚钱</p>
+<p class="en-title">RISK & MIND 101</p>
+<div class="badge-row">
+<span class="badge red">5本进阶手册 · 第5本</span>
+<span class="badge">6篇 21章 6附录</span>
+<span class="badge">4个交互组件</span>
+<span class="badge">深红 #DC2626</span>
+</div>
+</div>
+
+<!-- ========== READING PATH ========== -->
+<div class="container">
+<div class="reading-path" id="reading-path">
+<h3>阅读路径与学习地图</h3>
+<p style="color:var(--text-muted);font-size:13px;margin-bottom:16px;">
+你在整体学习地图中的位置：
+</p>
+<p style="font-family:monospace;font-size:13px;color:var(--text-secondary);background:var(--bg);padding:12px;border-radius:8px;margin-bottom:16px;">
+裸K(P0-P3) → 财报 → 宏观 → 交易系统 → <span style="color:var(--accent-light);font-weight:700;">[风控心理 ←你在这里]</span>
+</p>
+<p style="color:var(--text-muted);font-size:13px;margin-bottom:16px;">
+本手册是"暗线"——理论上应在开始第一本手册时就阅读第6章（三条资金红线），在学习过程中反复回读第10-17章（心理管理）。
+</p>
+
+<div class="path-item">
+<span class="path-label urgent">紧急上手</span>
+<span style="color:var(--text-secondary);font-size:13px;">第1章（风险管理第一优先）→ 第2章（风险全景）→ 第6章（三条资金红线）→ 第14章（情绪标记）→ 附录D自检清单</span>
+</div>
+<div class="path-item">
+<span class="path-label system">系统学习</span>
+<span style="color:var(--text-secondary);font-size:13px;">从第1章顺序读到第21章 → 附录A-F完整查漏补缺</span>
+</div>
+<div class="path-item">
+<span class="path-label experienced">已有风控基础</span>
+<span style="color:var(--text-secondary);font-size:13px;">第3-5章（资金管理三维度）→ 第7章（账户级风控）→ 第11-13章（心理基础）→ 第15-17章（情绪管理）→ 第19-20章</span>
+</div>
+<div class="path-item">
+<span class="path-label psych">专门补心理</span>
+<span style="color:var(--text-secondary);font-size:13px;">第10-11章（心理基础）→ 第12-14章（偏误与陷阱）→ 第15-17章（情绪管理）→ 第18-21章（心理建设与长期）</span>
+</div>
+
+<div style="margin-top:20px;padding:16px;background:var(--accent-dim);border-radius:8px;border:1px solid var(--accent);">
+<p style="font-size:13px;color:var(--text);"><strong>本手册的定位：</strong>风险管理的系统工程 + 交易心理的深层建设。与《知行鸿沟手册》（执行瞬间的防线）互补——知行鸿沟是"安全带"，本手册是"刹车系统+安全气囊+驾驶培训"。</p>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第一篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part1">
+<div class="part-tag">第一篇</div>
+<h2>风险是什么——交易的终极命题</h2>
+<p class="part-goal">核心目标：建立"风险管理是交易第一优先级"的认知框架。在学任何赚钱方法之前，先学"不会死"。</p>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<div class="chapter" id="ch1">
+<h2 class="chapter-title"><span class="ch-num">第1章</span>为什么风险管理是交易的第一优先级</h2>
+<div class="section">
+<h3>交易的两个维度</h3>
+<p>交易能力可以拆成两个维度：<strong>赚钱能力</strong>（选股、入场、止盈）和<strong>不亏钱能力</strong>（仓位、止损、风控）。新手几乎100%的注意力都在前者——"哪只股票能涨？"——而忽视了后者。但长期来看，<strong>不亏钱能力比赚钱能力重要10倍</strong>。</p>
+<p>原因很简单：赚钱是加法，亏钱是乘法。赚20%再亏20%，结果不是回本，而是亏4%。赚50%再亏50%，结果亏25%。亏损的数学不对称性决定了——<strong>控制亏损比追求盈利更重要</strong>。</p>
+
+<h3>巴菲特的两条规则</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 巴菲特的两条规则</div>
+<p>第一条规则：<strong>不要亏钱</strong>。</p>
+<p>第二条规则：<strong>记住第一条</strong>。</p>
+<p>这不是笑话。巴菲特的核心竞争力不是"选股精准"，而是"不犯大错"。他的年化收益率约20%——不算最高，但坚持了60年。60年20%复利=5400倍。而那些年化50%但3年爆仓的人，收益是-100%。</p>
+</div>
+
+<h3>亏损的数学不对称性——本手册第一超级符号</h3>
+<p>这是风控手册最重要的一个表格。你需要把它印在脑子里。</p>
+<table class="data-table">
+<thead><tr><th>亏损幅度</th><th>回本需要的涨幅</th><th>倍数关系</th><th>启示</th></tr></thead>
+<tbody>
+<tr><td class="highlight">亏5%</td><td>需涨5.3%</td><td>1.05×</td><td>几乎无感</td></tr>
+<tr><td class="highlight">亏10%</td><td>需涨11.1%</td><td>1.11×</td><td>还好</td></tr>
+<tr><td class="highlight">亏20%</td><td>需涨25%</td><td>1.25×</td><td>开始吃力</td></tr>
+<tr><td class="highlight">亏30%</td><td>需涨42.9%</td><td>1.43×</td><td>很吃力</td></tr>
+<tr><td class="highlight">亏40%</td><td>需涨66.7%</td><td>1.67×</td><td>非常吃力</td></tr>
+<tr><td class="highlight">亏50%</td><td>需涨100%</td><td>2.00×</td><td style="color:var(--accent-light);">要翻倍才能回本</td></tr>
+<tr><td class="highlight">亏60%</td><td>需涨150%</td><td>2.50×</td><td style="color:var(--accent-light);">极度困难</td></tr>
+<tr><td class="highlight">亏70%</td><td>需涨233%</td><td>3.33×</td><td style="color:var(--accent-light);">几乎不可能</td></tr>
+<tr><td class="highlight">亏80%</td><td>需涨400%</td><td>5.00×</td><td style="color:var(--accent-light);">灾难</td></tr>
+<tr><td class="highlight">亏90%</td><td>需涨900%</td><td>10.00×</td><td style="color:var(--accent-light);">毁灭</td></tr>
+</tbody>
+</table>
+<p><strong>核心启示</strong>：亏损越大，回本难度呈指数级增长。亏10%回本只需涨11.1%（倍数1.11），亏50%回本需涨100%（倍数2.0），亏90%回本需涨900%（倍数10.0）。<strong>这就是为什么"不要大亏"比"要多赚"重要得多</strong>。</p>
+
+<div class="calc-widget">
+<h4>🧮 亏损回本不对称计算器</h4>
+<p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">输入你的亏损比例，看看回本需要涨多少。</p>
+<label>亏损百分比 (%)</label>
+<input type="number" id="loss-pct" value="30" step="5">
+<button onclick="calcRecovery()">计算回本所需涨幅</button>
+<div class="result" id="loss-result">
+<div class="big-number" id="recovery-pct">42.9%</div>
+<div class="label" id="recovery-label">亏30%需要涨42.9%才能回本（倍数1.43×）</div>
+</div>
+</div>
+
+<h3>风险不是敌人，失控的风险才是</h3>
+<p>很多人听到"风险管理"就以为要"避免风险"——这是误解。<strong>零风险=零收益</strong>（银行存款）。适度风险=适度收益（债券/蓝筹股）。高风险=高收益或高亏损（成长股/期货）。风险管理的目标不是消除风险，是<strong>让风险可量化、可控制、在承受范围内</strong>。</p>
+<table class="data-table">
+<thead><tr><th>风险态度</th><th>行为</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td class="highlight">极度保守</td><td>只存银行/货币基金</td><td>跑不赢通胀，钱慢慢变薄</td></tr>
+<tr><td class="highlight">适度承担</td><td>指数基金+蓝筹+分散</td><td>长期年化8-12%，可接受</td></tr>
+<tr><td class="highlight">系统化承担</td><td>有系统有止损地交易</td><td>风险可控，有正期望值</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">失控承担</td><td>满仓+杠杆+不止损</td><td>一次大亏=毁灭</td></tr>
+</tbody>
+</table>
+
+<h3>为什么"先学赚钱"是新手最大的错</h3>
+<p>赌场里活最久的人不是赢最多的，而是输最少的。交易也一样——<strong>新手的第一课不应该是"怎么选牛股"，而是"怎么不亏死"</strong>。因为：</p>
+<ul>
+<li>选牛股的能力需要数年积累，但亏死只需要一次满仓+不止损</li>
+<li>赚钱能力可以慢慢学，但本金亏光了就没有学习的机会了</li>
+<li>风险管理可以立刻见效——设置止损今天就能做</li>
+</ul>
+
+<h3>风险管理的三层目标</h3>
+<table class="data-table">
+<thead><tr><th>层级</th><th>目标</th><th>对应内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">第一层：生存</td><td>不亏死——本金不被一次大亏清零</td><td>第6章三条红线+第7章熔断</td></tr>
+<tr><td class="highlight">第二层：稳定</td><td>不大亏——回撤控制在20%以内</td><td>第3-5章资金管理+第8章止损</td></tr>
+<tr><td class="highlight">第三层：盈利</td><td>长期正期望值——赚钱是风控做对的副产品</td><td>第18-21章心理+成长</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 风险管理的三个层次不是"选一个"</div>
+<p>它们是递进的：先做到生存（不亏死），再追求稳定（不大亏），最后才有资格谈盈利。大多数新手直接跳到第三层——"怎么赚钱"——跳过了前两层，结果在第一层就被淘汰了。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 一句话总结</div>
+<p>风险管理不是"让你少赚钱"——它是"让你留在牌桌上"。留在牌桌上，才有机会赚钱。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第1章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我刚开始学习交易时，</span>我将<strong>先学风险管理再学赚钱方法</strong>——先读第6章三条红线，再学选股</div>
+<div class="rule-item"><span class="rule-trigger">当我的单笔亏损超过总资金5%时，</span>我将<strong>立即暂停交易1周并重新评估风险规则</strong>——5%是危险信号</div>
+<div class="rule-item"><span class="rule-trigger">当我听到"高风险高收益"时，</span>我将<strong>提醒自己"高风险也可能高亏损"</strong>——风险管理的目标是让风险可控而非消除</div>
+<div class="rule-item"><span class="rule-trigger">当我想跳过风险管理直接学选股时，</span>我将<strong>回看亏损不对称表</strong>——亏50%需涨100%回本</div>
+</div>
+</div>
+
+<!-- ===== 第2章 ===== -->
+<div class="chapter" id="ch2">
+<h2 class="chapter-title"><span class="ch-num">第2章</span>风险全景地图——理解你面对的敌人</h2>
+<div class="section">
+<h3>风险 vs 不确定性</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>风险（Risk）</th><th>不确定性（Uncertainty）</th></tr></thead>
+<tbody>
+<tr><td class="highlight">定义</td><td>可量化的概率分布</td><td>无法量化的未知</td></tr>
+<tr><td class="highlight">特征</td><td>已知概率（如掷骰子）</td><td>未知概率（如黑天鹅）</td></tr>
+<tr><td class="highlight">交易映射</td><td>止损被触发（概率已知）</td><td>交易所突然停牌（无法预知）</td></tr>
+<tr><td class="highlight">应对</td><td>量化管理（仓位+止损）</td><td>压力测试+应急预案</td></tr>
+</tbody>
+</table>
+<p>交易中大部分亏损属于"风险"——有概率、可量化、可管理。但真正致命的往往来自"不确定性"——你根本没想到的事。<strong>风险管理管的是"风险"，压力测试管的是"不确定性"</strong>（第9章）。</p>
+
+<h3>系统性风险——整个市场的风险</h3>
+<p>系统性风险是影响整个市场的风险——政策变化、战争、金融危机、 pandemics。它<strong>不可分散</strong>：你买10只不同行业的股票，系统性暴跌时全部一起跌。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 系统性风险 = 调用宏观手册</div>
+<p>判断系统性风险需要宏观分析能力——利率走向、PMI趋势、政策方向。<strong>详见《宏观分析手册》</strong>。本手册只讲"识别到系统性风险后怎么做"：</p>
+<ul>
+<li>系统性风险升高→降低总仓位至30%以下</li>
+<li>系统性风险爆发→空仓或只持有防御性资产</li>
+<li>系统性风险消退→逐步恢复仓位</li>
+</ul>
+</div>
+
+<h3>非系统性风险——个股或行业特有的风险</h3>
+<p>非系统性风险是个股或行业特有的风险——公司暴雷、高管出事、行业政策变化。它<strong>可以分散</strong>：买不同行业的多只股票，单个暴雷不影响整体。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 非系统性风险 = 调用财报手册</div>
+<p>识别非系统性风险需要基本面分析能力——财务排雷、公司治理、行业竞争。<strong>详见《财报分析手册》</strong>。本手册只讲"识别到非系统性风险后怎么做"：</p>
+<ul>
+<li>分散持仓：不同行业、不同风格、不同市值</li>
+<li>单票仓位≤15%：即使暴雷也只亏1.5%</li>
+<li>止损保护：基本面逻辑变了不论亏盈都出</li>
+</ul>
+</div>
+
+<h3>尾部风险与黑天鹅</h3>
+<p>尾部风险是指概率极小但损失极大的事件——2008年金融危机、2015年股灾、2020年疫情暴跌。常规模型（正态分布）在极端时刻失效——<strong>"百年一遇"的事件似乎每十年就来一次</strong>。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 黑天鹅的特征</div>
+<ul>
+<li><strong>意外性</strong>：在常识范围之外，没人预见到</li>
+<li><strong>冲击性</strong>：产生极端影响</li>
+<li><strong>事后合理化</strong>：发生后人人都说"其实早有征兆"——但事前没人行动</li>
+</ul>
+<p>应对黑天鹅的唯一方法：<strong>不假设它不会发生</strong>。永远保留现金缓冲，永远不满仓，永远有止损——这些都是"黑天鹅保险"。</p>
+</div>
+
+<h3>左尾风险——大多数散户的真实收益分布</h3>
+<p>左尾风险是指收益分布左偏——亏损比盈利大且频繁。大多数散户的真实收益分布就是左尾：<strong>很多次小赚+少数几次大亏=最终亏损</strong>。控制住那几次大亏，就解决了80%的问题。</p>
+
+<h3>风险预算与风险容量</h3>
+<table class="data-table">
+<thead><tr><th>概念</th><th>定义</th><th>举例</th></tr></thead>
+<tbody>
+<tr><td class="highlight">风险预算</td><td>你<strong>愿意</strong>为每笔/每天/每月承受的最大亏损</td><td>单笔风险1%=我愿意每笔最多亏1%</td></tr>
+<tr><td class="highlight">风险容量</td><td>你<strong>能承受</strong>的最大总亏损——超过就心态崩了</td><td>总亏损20%=超过这个我就睡不着觉</td></tr>
+<tr><td class="highlight">关系</td><td colspan="2">风险预算应远小于风险容量——单笔1%×连亏10笔=10%，在20%容量内还有余量</td></tr>
+</tbody>
+</table>
+
+<h3>核心术语速释</h3>
+<table class="data-table">
+<thead><tr><th>术语</th><th>一句话定义</th><th>详见</th></tr></thead>
+<tbody>
+<tr><td class="highlight">回撤</td><td>账户从历史峰值到谷底的跌幅</td><td>第7章</td></tr>
+<tr><td class="highlight">最大回撤</td><td>历史上最严重的一次回撤</td><td>第7章</td></tr>
+<tr><td class="highlight">风险预算</td><td>你愿意承受的最大亏损额度</td><td>第3章</td></tr>
+<tr><td class="highlight">风险容量</td><td>你能承受的最大总亏损</td><td>第6章</td></tr>
+<tr><td class="highlight">熔断</td><td>触及风险上限后强制停止交易</td><td>第7章</td></tr>
+<tr><td class="highlight">清盘线</td><td>回撤达20%→全面停止交易</td><td>第7章</td></tr>
+<tr><td class="highlight">VaR</td><td>在95%置信度下明天最多亏多少</td><td>第9章</td></tr>
+<tr><td class="highlight">期望值</td><td>每笔交易的平均预期收益</td><td>第10章</td></tr>
+<tr><td class="highlight">R倍数</td><td>以初始风险R为单位的盈亏衡量</td><td>第8章</td></tr>
+<tr><td class="highlight">情绪温度计</td><td>用颜色标记情绪状态的可视化工具</td><td>第11章</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：画出你的风险全景</h4>
+<ol>
+<li>列出你目前面临的系统性风险（当前宏观环境有哪些威胁？）</li>
+<li>列出你持仓的非系统性风险（每只股票有什么特有风险？）</li>
+<li>写下你的风险预算：单笔___% | 单日___% | 单周___%</li>
+<li>写下你的风险容量：总亏损超过___%我会心态崩溃</li>
+<li>确认风险预算远小于风险容量（差距至少3倍）</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第2章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的风险预算（单笔1%）×最大连亏（10笔）=10%时，</span>我将<strong>确保10%远小于风险容量20%</strong>——差距至少3倍</div>
+<div class="rule-item"><span class="rule-trigger">当我识别到系统性风险升高时，</span>我将<strong>降低总仓位至30%以下并调用宏观手册判断趋势</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我持仓的个股出现非系统性风险信号时，</span>我将<strong>调用财报手册排查并严格执行基本面止损</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我听到"百年一遇"时，</span>我将<strong>假设它明天就会发生并保留至少30%现金缓冲</strong></div>
+</div>
+</div>
+</div>
+
+
+<!-- ==================== 第二篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part2">
+<div class="part-tag">第二篇</div>
+<h2>资金管理——从单笔到账户的防护网</h2>
+<p class="part-goal">核心目标：建立分层资金管理体系。单笔风险→单日/单周风险→总仓位→账户级熔断，五层递进。</p>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div class="chapter" id="ch3">
+<h2 class="chapter-title"><span class="ch-num">第3章</span>单笔风险管理——每笔交易的"保险费"</h2>
+<div class="section">
+<h3>单笔风险的概念</h3>
+<p>单笔风险 = 每笔交易最多亏总资金的1-2%。<strong>这是整个风险管理的基石</strong>——所有更高层级的风控（单日/单周/账户级）都建立在单笔风险可控的基础上。</p>
+<table class="data-table">
+<thead><tr><th>总资金</th><th>单笔风险1%</th><th>单笔风险2%</th><th>连亏10笔最大亏损(1%)</th></tr></thead>
+<tbody>
+<tr><td class="highlight">10万</td><td>1,000元</td><td>2,000元</td><td>约9.6%（实际递减）</td></tr>
+<tr><td class="highlight">50万</td><td>5,000元</td><td>10,000元</td><td>约9.6%</td></tr>
+<tr><td class="highlight">100万</td><td>10,000元</td><td>20,000元</td><td>约9.6%</td></tr>
+</tbody>
+</table>
+<p>连亏10笔只亏约9.6%（不是10%）是因为每亏一笔总资金在减少，下一笔的1%也在减少——这是复利的双刃剑的另一面。</p>
+
+<h3>仓位反推法</h3>
+<p>仓位不是"我有多少钱就买多少"——仓位应该由<strong>风险倒推</strong>：</p>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+买入股数 = (总资金 × 风险比例) ÷ (入场价 - 止损价)
+
+例：10万资金，风险1%=1000元
+    入场价10元，止损价9元，每股风险1元
+    买入股数 = 1000 ÷ 1 = 1000股
+    仓位金额 = 1000股 × 10元 = 10000元（占总资金10%）
+</pre>
+<div class="callout callout-key">
+<div class="callout-title">🔑 仓位反推法的核心逻辑</div>
+<p>仓位大小不是由"你有多少钱"决定的，是由<strong>"你愿意亏多少"和"每股风险多大"</strong>共同决定的。止损越宽→每股风险越大→买入股数越少。止损越紧→每股风险越小→买入股数越多。<strong>仓位和止损是一对联动变量</strong>。</p>
+</div>
+
+<h3>三种仓位算法对比</h3>
+<table class="data-table">
+<thead><tr><th>算法</th><th>逻辑</th><th>优点</th><th>缺点</th><th>适合</th></tr></thead>
+<tbody>
+<tr><td class="highlight">固定分数法</td><td>每笔冒固定比例风险（如1%）</td><td>简单易行</td><td>不考虑波动率差异</td><td>新手入门</td></tr>
+<tr><td class="highlight">波动率法(ATR)</td><td>根据ATR调整仓位——波动大的少买</td><td>适应不同个股</td><td>需要计算ATR</td><td>有一定经验</td></tr>
+<tr><td class="highlight">凯利法</td><td>f*=(bp-q)/b，理论最优</td><td>长期增长率最高</td><td>过于激进，需半凯利</td><td>成熟交易者</td></tr>
+</tbody>
+</table>
+
+<h3>半凯利原则</h3>
+<p>凯利公式给出的是<strong>理论最优</strong>仓位，但它假设你精确知道胜率和盈亏比——现实中你只能估计。估计偏差+全凯利=过度下注=爆仓风险。所以永远用<strong>半凯利</strong>（凯利值÷2）——保守比激进活得久。</p>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+凯利公式：f* = (b×p - q) / b
+  b = 盈亏比（如2:1→b=2）
+  p = 胜率（如40%→p=0.4）
+  q = 败率（1-p=0.6）
+
+例：b=2, p=0.4 → f*=(2×0.4-0.6)/2=0.1=10%
+半凯利 = 10%÷2 = 5%（实际用这个）
+</pre>
+
+<h3>马丁格尔 vs 反马丁格尔</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 马丁格尔 = 致命危险</div>
+<p>马丁格尔：亏损后加倍下注——"亏了1万，下笔下2万，赢了就回本"。问题：连续亏损5-6次后，下注金额指数膨胀，很快就会触及资金上限。赌场用了几百年证明：<strong>马丁格尔在有限资金下必然爆仓</strong>。</p>
+</div>
+<div class="callout callout-tip">
+<div class="callout-title">💡 反马丁格尔 = 趋势跟踪</div>
+<p>反马丁格尔：盈利后加仓——"赚了才加，亏了就缩"。这是趋势跟踪策略的核心逻辑：<strong>赢的时候多赚，输的时候少亏</strong>。新手永远用反马丁格尔。</p>
+</div>
+
+<h3>金字塔加仓</h3>
+<p>盈利后分批加仓，每次加仓量<strong>递减</strong>：</p>
+<table class="data-table">
+<thead><tr><th>加仓批次</th><th>加仓量</th><th>累计仓位</th><th>均价变化</th></tr></thead>
+<tbody>
+<tr><td class="highlight">第1批（初始）</td><td>1000股</td><td>1000股</td><td>入场价</td></tr>
+<tr><td class="highlight">第2批（盈利后）</td><td>500股</td><td>1500股</td><td>均价上移</td></tr>
+<tr><td class="highlight">第3批（继续盈利）</td><td>250股</td><td>1750股</td><td>均价进一步上移</td></tr>
+<tr><td class="highlight">第4批</td><td>125股</td><td>1875股</td><td>均价接近最新价</td></tr>
+</tbody>
+</table>
+<p><strong>每次加仓量递减</strong>，保证均价不会因加仓而大幅上移——成本结构安全。加仓的前提是<strong>已有盈利</strong>（反马丁格尔），且每次加仓后必须上移止损至保本位。</p>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：写你的单笔风险规则</h4>
+<ol>
+<li>确定你的总资金和单笔风险比例（新手1%，有经验2%）</li>
+<li>计算单笔最大亏损额 = 总资金 × 风险比例</li>
+<li>选定仓位算法（新手用固定分数法）</li>
+<li>写出仓位反推公式并填入你的数据</li>
+<li>确定加仓规则（如有）：用金字塔法，每次递减，加仓后移止损至保本</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第3章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我计算每笔仓位时，</span>我将<strong>用仓位反推法而非凭感觉</strong>——买入股数=风险金额÷每股风险</div>
+<div class="rule-item"><span class="rule-trigger">当我想用凯利公式时，</span>我将<strong>只用半凯利</strong>——凯利值÷2，保守比激进活得久</div>
+<div class="rule-item"><span class="rule-trigger">当我亏损后想加倍下注时，</span>我将<strong>立刻停止——马丁格尔必然爆仓</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我盈利后想加仓时，</span>我将<strong>用金字塔法每次递减并将止损上移至保本位</strong></div>
+</div>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div class="chapter" id="ch4">
+<h2 class="chapter-title"><span class="ch-num">第4章</span>组合风险管理——分散的正确姿势</h2>
+<div class="section">
+<h3>为什么要分散</h3>
+<p>分散的核心目的是降低<strong>非系统性风险</strong>——个股暴雷、行业政策变化。如果你只买一只股票，暴雷就是毁灭性的；如果分散到5个行业的10只股票，单只暴雷只影响总资金的1-2%。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 分散降低的是非系统性风险，不降低系统性风险</div>
+<p>系统性风险（全市场暴跌）无法通过分散降低——所有股票一起跌。分散只能降低"这只股票自己的问题"。<strong>系统性风险靠仓位控制+空仓应对，非系统性风险靠分散应对</strong>。</p>
+</div>
+
+<h3>分散的正确方式</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>正确做法</th><th>错误做法</th></tr></thead>
+<tbody>
+<tr><td class="highlight">行业</td><td>不同行业（消费+科技+医药+金融）</td><td>5只都是新能源</td></tr>
+<tr><td class="highlight">风格</td><td>价值+成长+红利混搭</td><td>全部是高PE成长股</td></tr>
+<tr><td class="highlight">周期</td><td>不同周期标的（短线+中线）</td><td>全部是短线投机</td></tr>
+<tr><td class="highlight">相关性</td><td>选择低相关或负相关的标的</td><td>买10只都跟踪沪深300</td></tr>
+</tbody>
+</table>
+
+<h3>分散的误区</h3>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 分散≠买10只同一板块</div>
+<p>买10只新能源股票不叫"分散"——它们高度相关，行业政策一变全部下跌。真正的分散是<strong>跨行业、跨风格、跨周期</strong>。</p>
+</div>
+
+<h3>过度分散的陷阱</h3>
+<p>持仓20只以上=自己变成了指数基金+交了更多手续费。<strong>散户持仓3-8只最佳</strong>——既能分散非系统性风险，又能集中精力跟踪每只股票。</p>
+<table class="data-table">
+<thead><tr><th>持仓数量</th><th>分散效果</th><th>管理难度</th><th>适合</th></tr></thead>
+<tbody>
+<tr><td class="highlight">1-2只</td><td>几乎没有</td><td>低</td><td>不推荐</td></tr>
+<tr><td class="highlight">3-5只</td><td>适度分散</td><td>中</td><td>新手推荐</td></tr>
+<tr><td class="highlight">6-8只</td><td>良好分散</td><td>中高</td><td>有经验</td></tr>
+<tr><td class="highlight">9-15只</td><td>充分分散</td><td>高</td><td>资金量大</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">20只以上</td><td>过度分散=指数基金</td><td>极高</td><td>不如买ETF</td></tr>
+</tbody>
+</table>
+
+<h3>总仓位控制</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>上限</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td class="highlight">总仓位</td><td>≤50%</td><td>永远保留至少50%现金（新手）→ 有经验后可至70%</td></tr>
+<tr><td class="highlight">单板块</td><td>≤20%</td><td>单一行业仓位不超过20%</td></tr>
+<tr><td class="highlight">单票</td><td>≤10-15%</td><td>单只股票仓位不超过15%</td></tr>
+<tr><td class="highlight">现金</td><td>≥30%</td><td>现金是"期权"，不是"没投资"</td></tr>
+</tbody>
+</table>
+
+<h3>现金缓冲——现金是期权</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 现金不是"没投资"，是"在等待更好的机会"</div>
+<p>现金是期权——它给了你<strong>在暴跌时抄底的选择权</strong>。满仓的人遇到暴跌只能眼睁睁看着，持有现金的人可以在暴跌后买到便宜的好股票。这个"选择权"的价值，在牛市中看不出，在熊市中价值连城。</p>
+</div>
+
+<h3>核心+卫星策略</h3>
+<table class="data-table">
+<thead><tr><th>层级</th><th>占比</th><th>内容</th><th>风险</th></tr></thead>
+<tbody>
+<tr><td class="highlight">核心层</td><td>60-70%</td><td>指数基金/低估值蓝筹/债券</td><td>低</td></tr>
+<tr><td class="highlight">卫星层</td><td>30-40%</td><td>个股交易/行业轮动</td><td>中高</td></tr>
+</tbody>
+</table>
+<p>核心层提供稳定的基础收益，卫星层追求超额收益。即使卫星层全部亏完，核心层仍在——这就是分层的意义。</p>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：写你的组合风险规则</h4>
+<ol>
+<li>写出你的总仓位上限（新手≤50%）</li>
+<li>写出单票上限（≤15%）和单板块上限（≤20%）</li>
+<li>检查当前持仓是否符合——不符合的调整</li>
+<li>确定现金最低比例（≥30%）</li>
+<li>如果资金量够大，设计核心+卫星的分配比例</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第4章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我建仓时，</span>我将<strong>确保跨行业跨风格分散</strong>——不买5只同板块股票</div>
+<div class="rule-item"><span class="rule-trigger">当我的总仓位超过50%时，</span>我将<strong>不再开新仓</strong>——新手保留至少50%现金</div>
+<div class="rule-item"><span class="rule-trigger">当我的单票仓位超过15%时，</span>我将<strong>减仓至15%以内</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我的持仓超过8只时，</span>我将<strong>考虑精简或改买ETF</strong>——过度分散=自建指数基金</div>
+</div>
+</div>
+
+<!-- ===== 第5章 ===== -->
+<div class="chapter" id="ch5">
+<h2 class="chapter-title"><span class="ch-num">第5章</span>时间维度风险——单日、单周、单月的防线</h2>
+<div class="section">
+<h3>分层风控的时间维度</h3>
+<p>单笔风险管的是"一笔交易亏多少"，时间维度风险管的是<strong>"一段时间内累计亏多少"</strong>。即使每笔只亏1%，一天连亏5笔就是5%——超过了单日风险上限。</p>
+<table class="data-table">
+<thead><tr><th>层级</th><th>风险上限</th><th>触发后果</th></tr></thead>
+<tbody>
+<tr><td class="highlight">单笔</td><td>1-2%</td><td>止损出场</td></tr>
+<tr><td class="highlight">单日</td><td>3-5%</td><td>当日停止交易</td></tr>
+<tr><td class="highlight">单周</td><td>8-10%</td><td>暂停1-3天+复盘</td></tr>
+<tr><td class="highlight">单月</td><td>10-15%</td><td>降仓至30%以下+全面评估</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">总账户</td><td>回撤20%</td><td>清盘线→全面停止</td></tr>
+</tbody>
+</table>
+
+<h3>单日风险上限</h3>
+<p>一天最多亏总资金的3-5%。达到后<strong>当日必须停止交易</strong>——不是"等一下再看看"，是<strong>关闭软件，离开电脑</strong>。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 为什么单日3-5%就要停？</div>
+<p>因为单日亏5%意味着<strong>连续亏了3-5笔</strong>——这已经不是"正常波动"了，是系统出了问题或市场状态变了。此时继续交易，大概率是情绪驱动（报复性交易），只会亏更多。<strong>停止=止损=保护</strong>。</p>
+</div>
+
+<h3>单周风险上限</h3>
+<p>一周最多亏8-10%。达到后<strong>暂停交易1-3天</strong>+做全面复盘——是系统问题还是市场状态变了？是执行不到位还是运气不好？</p>
+
+<h3>单月风险上限</h3>
+<p>一个月最多亏10-15%。达到后<strong>降仓至30%以下</strong>+全面评估系统——可能需要暂停系统、回测验证、修改参数。</p>
+
+<h3>连亏管理</h3>
+<table class="data-table">
+<thead><tr><th>连续亏损笔数</th><th>行动</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td class="highlight">3笔</td><td>仓位降至一半</td><td>可能是系统短期不适</td></tr>
+<tr><td class="highlight">5笔</td><td>暂停交易1-3天</td><td>需要复盘排查原因</td></tr>
+<tr><td class="highlight">7笔</td><td>暂停交易1周</td><td>可能是系统失效信号</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">10笔</td><td>全面停止+系统评估</td><td>系统大概率已失效</td></tr>
+</tbody>
+</table>
+
+<h3>时间止损</h3>
+<p>到了预定时间仍未按预期走→出场。资金有<strong>时间成本</strong>——一只股票买了3周没动，这3周的资金本可以用于其他机会。</p>
+<table class="data-table">
+<thead><tr><th>交易风格</th><th>时间止损</th></tr></thead>
+<tbody>
+<tr><td class="highlight">短线（2-10天）</td><td>3天未达目标→评估</td></tr>
+<tr><td class="highlight">中线（2-8周）</td><td>2周未启动→减仓或退出</td></tr>
+<tr><td class="highlight">长线（3个月+）</td><td>1个月逻辑未验证→重新评估</td></tr>
+</tbody>
+</table>
+
+<h3>"赚钱的交易不应该变成亏钱的交易"</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 盈利保护规则</div>
+<p>当一笔交易已经盈利5%以上时，<strong>止损线必须上移至保本位或更高</strong>。绝不允许"赚了10%的股票最后变成亏10%"——这是最让人崩溃的经历之一。</p>
+<ul>
+<li>盈利3%→止损上移至保本位（入场价）</li>
+<li>盈利5%→止损上移至+2%</li>
+<li>盈利10%→止损上移至+5%</li>
+<li>盈利20%+→移动止盈（跟随价格上移）</li>
+</ul>
+</div>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：写你的时间维度风险规则</h4>
+<ol>
+<li>写出单日风险上限（3-5%）和触发后行动（关软件离开）</li>
+<li>写出单周风险上限（8-10%）和触发后行动（暂停1-3天）</li>
+<li>写出连亏管理规则（3笔降仓→5笔暂停→10笔停系统）</li>
+<li>写出盈利保护规则（盈利3%移保本→5%移+2%→10%移+5%）</li>
+<li>写出时间止损规则（你的风格对应的天数）</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第5章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的单日亏损达到3%时，</span>我将<strong>立即关闭交易软件离开电脑至少30分钟</strong>——回来后只复盘不交易</div>
+<div class="rule-item"><span class="rule-trigger">当我的单周亏损达到8%时，</span>我将<strong>暂停交易1-3天并做全面复盘</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我连续亏损3笔时，</span>我将<strong>仓位降至一半</strong>——可能是系统短期不适</div>
+<div class="rule-item"><span class="rule-trigger">当我的交易已盈利3%时，</span>我将<strong>立即将止损上移至保本位</strong>——赚钱的交易不能变亏钱</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第三篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part3">
+<div class="part-tag">第三篇</div>
+<h2>账户级风控——整个账户的安全网</h2>
+<p class="part-goal">核心目标：从单笔和组合层面升级到账户整体。建立熔断机制、回撤控制、压力测试——这是"不死"的最后一道防线。</p>
+</div>
+
+<!-- ===== 第6章 ===== -->
+<div class="chapter" id="ch6">
+<h2 class="chapter-title"><span class="ch-num">第6章</span>三条资金红线——绝对不可违反</h2>
+<div class="section">
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 本章是全手册最重要的一章</div>
+<p>如果你只读一章，就读这一章。三条资金红线不是"建议"，是<strong>铁律</strong>——违反任何一条都可能导致毁灭性后果。</p>
+</div>
+
+<h3>红线一：永远不借钱炒股</h3>
+<p>借钱炒股=杠杆交易。杠杆放大盈利的同时放大亏损——但亏损的放大比盈利更致命，因为亏损有<strong>不对称性</strong>。</p>
+<table class="data-table">
+<thead><tr><th>场景</th><th>无杠杆</th><th>2倍杠杆</th><th>5倍杠杆</th></tr></thead>
+<tbody>
+<tr><td class="highlight">本金</td><td>10万</td><td>10万(借10万)</td><td>10万(借40万)</td></tr>
+<tr><td class="highlight">总资金</td><td>10万</td><td>20万</td><td>50万</td></tr>
+<tr><td class="highlight">跌10%</td><td>亏1万(10%)</td><td>亏2万(20%)</td><td>亏5万(50%)</td></tr>
+<tr><td class="highlight">跌20%</td><td>亏2万(20%)</td><td>亏4万(40%)</td><td style="color:var(--accent-light);">亏10万(100%清零)</td></tr>
+<tr><td class="highlight">跌50%</td><td>亏5万(50%)</td><td style="color:var(--accent-light);">亏10万(100%清零)</td><td style="color:var(--accent-light);">爆仓+倒欠20万</td></tr>
+</tbody>
+</table>
+<p><strong>杠杆不创造价值，只重新分配财富</strong>——而且通常从你这里拿走。杠杆交易的对手方是机构，他们的信息、技术、资金量都碾压散户——你用什么赢？</p>
+
+<h3>红线二：永远不用生活必需资金炒股</h3>
+<p>股市资金必须是<strong>"亏完了不影响生活的钱"</strong>。如果你用了下个月的房租、孩子的学费、父母的养老金——你的心理压力会让你做出最糟糕的决策。</p>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 生活资金交易的心理后果</div>
+<p>用生活必需资金交易→每笔波动都关系生计→极度焦虑→无法执行系统→该止损时不止损（"亏了房租怎么办"）→死扛→大亏→更焦虑→崩溃。</p>
+<p>这是一个<strong>心理恶性循环</strong>——起点就是"用了不该用的钱"。</p>
+</div>
+
+<h3>红线三：亏损超过月收入10%必须暂停</h3>
+<p>当月亏损超过你月收入的10%→<strong>心态已经崩了</strong>（即使你嘴上不承认）。心态崩了比账户崩了更危险——因为心态崩了会做出不理性的操作（加倍/报复/满仓），导致账户也崩。</p>
+<table class="data-table">
+<thead><tr><th>月收入</th><th>10%阈值</th><th>触发行动</th></tr></thead>
+<tbody>
+<tr><td class="highlight">5,000元</td><td>亏500元</td><td>暂停交易</td></tr>
+<tr><td class="highlight">10,000元</td><td>亏1,000元</td><td>暂停交易</td></tr>
+<tr><td class="highlight">20,000元</td><td>亏2,000元</td><td>暂停交易</td></tr>
+<tr><td class="highlight">50,000元</td><td>亏5,000元</td><td>暂停交易</td></tr>
+</tbody>
+</table>
+
+<h3>杠杆的真相</h3>
+<p>杠杆不创造价值，只重新分配财富——而且通常从你这里拿走。券商借钱给你赚利息，不管你赚还是亏。你的杠杆收益=无杠杆收益-利息成本-爆仓风险溢价。<strong>数学上，杠杆交易者的期望值低于无杠杆交易者</strong>。</p>
+
+<h3>摊亏的危险</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 摊亏 = 从投资变成赌博的转折点</div>
+<p>"再买一点拉低成本"——这是散户最常见也最危险的行为。摊亏的逻辑是"均价下降了，回本更容易"——但问题在于<strong>如果逻辑已经错了，加仓只是加大了错误</strong>。</p>
+<p>正确的做法：止损出场→重新评估→如果逻辑仍然成立可以重新入场（但这是"新交易"不是"摊亏"）。</p>
+</div>
+
+<h3>满仓的危险</h3>
+<p>满仓=失去所有选择权=被市场绑架。满仓时遇到暴跌，你<strong>没有子弹抄底</strong>，只能被动承受。满仓时发现更好的机会，你<strong>没有资金参与</strong>。满仓=把命运完全交给市场。</p>
+
+<h3>三条红线的规则化</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 三条资金红线</div>
+<ul>
+<li><strong>红线一</strong>：当我有借钱冲动时，我将立刻停止所有交易活动并审视自己的风险状态</li>
+<li><strong>红线二</strong>：当我准备入金时，我将确认这笔钱亏完了不影响生活——否则不入金</li>
+<li><strong>红线三</strong>：当月亏损达到月收入10%时，我将暂停交易至下月并做全面复盘</li>
+</ul>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第6章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我有任何借钱炒股的念头时，</span>我将<strong>立即停止交易并重新审视风险状态</strong>——杠杆=数学上必输</div>
+<div class="rule-item"><span class="rule-trigger">当我准备入金时，</span>我将<strong>确认这笔钱亏完不影响生活</strong>——否则不入金</div>
+<div class="rule-item"><span class="rule-trigger">当月亏损达到月收入10%时，</span>我将<strong>暂停交易至下月</strong>——心态崩了比账户崩了更危险</div>
+<div class="rule-item"><span class="rule-trigger">当我想摊低亏损成本时，</span>我将<strong>先止损出场重新评估逻辑</strong>——逻辑对了再入场是新交易不是摊亏</div>
+<div class="rule-item"><span class="rule-trigger">当我的仓位接近满仓时，</span>我将<strong>立即减仓至70%以下</strong>——满仓=失去选择权</div>
+</div>
+</div>
+
+<!-- ===== 第7章 ===== -->
+<div class="chapter" id="ch7">
+<h2 class="chapter-title"><span class="ch-num">第7章</span>熔断与回撤控制——系统的安全阀</h2>
+<div class="section">
+<h3>分层风控全景</h3>
+<table class="data-table">
+<thead><tr><th>层级</th><th>触发条件</th><th>行动</th><th>恢复条件</th></tr></thead>
+<tbody>
+<tr><td class="highlight">单笔层</td><td>单笔亏损达1-2%</td><td>止损出场</td><td>下一笔正常</td></tr>
+<tr><td class="highlight">单日层</td><td>当日累计亏损3-5%</td><td>停止交易→离开</td><td>次日冷静后恢复</td></tr>
+<tr><td class="highlight">单周层</td><td>当周累计亏损8-10%</td><td>暂停1-3天+复盘</td><td>复盘后恢复</td></tr>
+<tr><td class="highlight">单月层</td><td>当月累计亏损10-15%</td><td>降仓至30%以下</td><td>下月评估后恢复</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">账户级-预警</td><td>回撤达10%</td><td>减仓至50%以下+重新评估</td><td>系统评估通过</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">账户级-清盘</td><td>回撤达20%</td><td>全面停止交易</td><td>系统性复盘后决定</td></tr>
+</tbody>
+</table>
+
+<h3>熔断机制</h3>
+<p>熔断=像电路保险丝一样，触及风险上限后自动"断电"。熔断的核心价值是<strong>在情绪最激烈时强制停止</strong>——不靠意志力，靠规则。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 熔断的本质：用规则代替意志力</div>
+<p>单日亏5%时，你的杏仁核在尖叫"赚回来！"——此时靠"冷静"是没用的。熔断规则说"必须离开电脑30分钟"——<strong>规则替你做了意志力做不到的事</strong>。</p>
+</div>
+
+<h3>回撤预警线（10%）</h3>
+<p>账户从峰值回撤10%→<strong>减仓至50%以下</strong>→重新评估系统。10%回撤意味着系统可能开始失效或市场状态变了——需要减速而不是加速。</p>
+
+<h3>清盘线（20%）</h3>
+<p>账户从峰值回撤20%→<strong>全面停止交易</strong>→系统性复盘→决定是否继续。20%回撤意味着系统大概率已经失效或你的执行出了严重问题——需要停下来彻底排查。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 清盘线不是"放弃"</div>
+<p>清盘线是"暂停"——停下来排查问题，修改系统，重新验证，然后再恢复。不是"退出交易"。但如果清盘后复盘发现系统根本不适合自己，<strong>退出交易也是合理的选择</strong>——不是每个人都要做交易。</p>
+</div>
+
+<h3>盈利回吐控制</h3>
+<p>从峰值回撤超过5%→减仓→保护已得利润。赚钱比不亏钱更难——不亏钱只需要止损，赚钱后保住利润需要<strong>主动减仓</strong>。</p>
+
+<h3>资金曲线管理</h3>
+<table class="data-table">
+<thead><tr><th>曲线形态</th><th>特征</th><th>评价</th></tr></thead>
+<tbody>
+<tr><td class="highlight">健康曲线</td><td>稳步上升+小回撤+恢复快</td><td style="color:var(--green);">优秀</td></tr>
+<tr><td class="highlight">震荡曲线</td><td>上下波动大+无明显趋势</td><td style="color:var(--yellow);">需优化</td></tr>
+<tr><td class="highlight">阶梯下降</td><td>每次回撤后未能恢复前高</td><td style="color:var(--accent-light);">系统失效</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">断崖式</td><td>某次暴跌后一蹶不振</td><td style="color:var(--accent-light);">灾难</td></tr>
+</tbody>
+</table>
+
+<h3>最大回撤作为生存指标</h3>
+<p>最大回撤决定<strong>"你最惨会到什么地步"</strong>。一个年化20%但最大回撤50%的系统，不如一个年化10%但最大回撤10%的系统——前者你可能扛不住，后者你一定能活下来。</p>
+
+<div class="calc-widget">
+<h4>🧮 最大回撤模拟器</h4>
+<p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">输入连亏笔数和单笔风险，模拟资金曲线。</p>
+<label>初始资金（元）</label>
+<input type="number" id="dd-capital" value="100000">
+<label>单笔风险（%）</label>
+<input type="number" id="dd-risk" value="1" step="0.5">
+<label>连续亏损笔数</label>
+<input type="number" id="dd-streak" value="5">
+<button onclick="calcDrawdown()">模拟资金曲线</button>
+<div class="result" id="dd-result">
+<div class="big-number" id="dd-value">-4.9%</div>
+<div class="label" id="dd-label">连亏5笔(1%风险)：资金从100000降至95100，回撤4.9%</div>
+</div>
+</div>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：画你的资金曲线目标图</h4>
+<ol>
+<li>画出过去3个月的资金曲线（每日收盘总资产）</li>
+<li>标注最大回撤点位和恢复时间</li>
+<li>判断曲线形态（健康/震荡/阶梯下降/断崖）</li>
+<li>设置你的熔断参数：单日___% 单周___% 回撤预警___% 清盘___%</li>
+<li>如果当前回撤>10%，制定恢复计划（降仓→评估→逐步恢复）</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第7章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的账户回撤达10%时，</span>我将<strong>减仓至50%以下并重新评估系统</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我的账户回撤达20%时，</span>我将<strong>全面停止交易并做系统性复盘</strong>——清盘线</div>
+<div class="rule-item"><span class="rule-trigger">当我的盈利从峰值回撤超5%时，</span>我将<strong>主动减仓保护利润</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我的资金曲线呈阶梯下降时，</span>我将<strong>暂停系统并排查是否已失效</strong></div>
+</div>
+</div>
+
+<!-- ===== 第8章 ===== -->
+<div class="chapter" id="ch8">
+<h2 class="chapter-title"><span class="ch-num">第8章</span>止损止盈的系统化设计——每笔交易的风险工程</h2>
+<div class="section">
+<h3>止损的本质：不是"认输"，是"保险费"</h3>
+<p>止损不是承认错误——止损是<strong>为每笔交易买的保险</strong>。你买车险不是因为"打算出事故"，而是因为"万一出事故不至于破产"。止损同理：设止损不是因为"打算亏"，而是因为"万一判断错了不至于大亏"。</p>
+
+<h3>止损的四种类型</h3>
+<table class="data-table">
+<thead><tr><th>类型</th><th>逻辑</th><th>适用场景</th><th>详见</th></tr></thead>
+<tbody>
+<tr><td class="highlight">结构止损</td><td>设在逻辑失效位（趋势结构破坏）</td><td>技术分析交易</td><td>裸K手册第17章</td></tr>
+<tr><td class="highlight">ATR止损</td><td>入场价-N×ATR，适应波动率</td><td>不同波动率的个股</td><td>交易系统手册第7章</td></tr>
+<tr><td class="highlight">时间止损</td><td>到了预定时间未按预期走→出场</td><td>所有风格</td><td>第5章</td></tr>
+<tr><td class="highlight">基本面止损</td><td>基本面逻辑变了→不论亏盈都出</td><td>基本面交易</td><td>财报手册</td></tr>
+</tbody>
+</table>
+
+<h3>止损的三个敌人</h3>
+<table class="data-table">
+<thead><tr><th>敌人</th><th>表现</th><th>后果</th><th>对策</th></tr></thead>
+<tbody>
+<tr><td class="highlight">太紧</td><td>止损设在正常波动范围内</td><td>频繁被震出→交易成本累积</td><td>用ATR设置止损宽度</td></tr>
+<tr><td class="highlight">太松</td><td>止损设得太远"给它空间"</td><td>单笔亏损过大</td><td>单笔风险≤2%反推止损宽度</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">没有</td><td>"我不设止损，价值投资"</td><td>一次大亏=毁灭</td><td>每笔必须有止损，无例外</td></tr>
+</tbody>
+</table>
+
+<h3>算法猎杀止损</h3>
+<p>量化机构会故意制造假突破，触发散户设在<strong>整数关口/前高低点精确位/影线尖端</strong>的止损，然后反向运动。应对方法：</p>
+<ul>
+<li>不把止损设在精确的整数位（如10.00元）——设在9.87元</li>
+<li>不把止损设在前低点的精确位置——设在略下方</li>
+<li>用ATR止损代替固定价位止损——更难被精确猎杀</li>
+</ul>
+
+<h3>移动止盈（Trailing Stop）</h3>
+<p>盈利后止损线随价格上移——锁定利润的同时给趋势空间。详见交易系统手册第7章。</p>
+
+<h3>分批止盈</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 永远不要一次性全出</div>
+<p>分批止盈=锁定部分利润+让剩余仓位继续奔跑。例如：</p>
+<ul>
+<li>盈利达目标1（+10%）→卖出50%锁定利润</li>
+<li>盈利达目标2（+20%）→卖出25%再锁定</li>
+<li>剩余25%用移动止盈，跟随趋势直到反转</li>
+</ul>
+</div>
+
+<h3>止损被震出后的处理</h3>
+<table class="data-table">
+<thead><tr><th>情况</th><th>判断</th><th>行动</th></tr></thead>
+<tbody>
+<tr><td class="highlight">假突破止损</td><td>价格触发止损后立即回到原方向</td><td>可再入场（但要重新评估）</td></tr>
+<tr><td class="highlight">趋势反转止损</td><td>价格触发止损后持续反向运动</td><td>放弃，不要追</td></tr>
+</tbody>
+</table>
+
+<h3>止损止盈与交易系统的衔接</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 止损是系统组件，不是临时决定</div>
+<p>止损和止盈在<strong>入场前</strong>就要写好——入场价、止损价、目标价全部提前确定。入场后只执行，不修改。<strong>详见交易系统手册第7章</strong>。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：写你的止损止盈规则清单</h4>
+<ol>
+<li>选定你的止损类型（结构/ATR/时间/基本面——可组合）</li>
+<li>写出ATR倍数选择规则（如2×ATR）</li>
+<li>写出盈亏比要求（≥2:1才入场）</li>
+<li>写出分批止盈计划（目标1卖__%→目标2卖__%→剩余移动止盈）</li>
+<li>写出止损被震出后的处理规则</li>
+<li>确认：每笔交易入场前止损止盈已写好，入场后只执行不修改</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第8章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我入场前没有写好止损价时，</span>我将<strong>不入场</strong>——止损是系统组件不是临时决定</div>
+<div class="rule-item"><span class="rule-trigger">当我的止损被触发时，</span>我将<strong>立即执行不犹豫</strong>——或用条件单自动执行</div>
+<div class="rule-item"><span class="rule-trigger">当我想在盘中修改止损价时，</span>我将<strong>拒绝——规则只能在盘后修改</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我的盈亏比低于2:1时，</span>我将<strong>放弃这笔交易</strong>——不值得冒险</div>
+<div class="rule-item"><span class="rule-trigger">当我的盈利达目标1时，</span>我将<strong>分批止盈卖出50%并上移止损</strong></div>
+</div>
+</div>
+
+<!-- ===== 第9章 ===== -->
+<div class="chapter" id="ch9">
+<h2 class="chapter-title"><span class="ch-num">第9章</span>压力测试与极端场景——"如果最坏情况同时发生"</h2>
+<div class="section">
+<h3>什么是压力测试</h3>
+<p>压力测试=模拟极端场景下账户的最大亏损。它回答的问题是：<strong>"如果最坏情况同时发生，我会亏多少？"</strong></p>
+
+<h3>三种压力测试场景</h3>
+<table class="data-table">
+<thead><tr><th>场景</th><th>描述</th><th>历史参照</th><th>回撤幅度</th></tr></thead>
+<tbody>
+<tr><td class="highlight">系统性暴跌</td><td>全市场突然暴跌，所有股票同向下跌</td><td>2008/2015/2020</td><td>30-50%</td></tr>
+<tr><td class="highlight">个股黑天鹅</td><td>持仓个股突然停牌+复牌暴跌</td><td>乐视网/长生生物</td><td>50-90%</td></tr>
+<tr><td class="highlight">流动性枯竭</td><td>想卖卖不掉——跌停封单</td><td>2015千股跌停</td><td>无法止损</td></tr>
+</tbody>
+</table>
+
+<h3>相关性崩溃——分散在极端时刻失效</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 分散的致命盲点</div>
+<p>正常情况下，不同行业的股票相关性低——消费跌时医药可能涨。但在<strong>极端暴跌时，所有股票相关性趋向1</strong>——全部一起跌。这意味着你精心设计的"分散"在极端时刻<strong>完全失效</strong>。</p>
+<p>应对：①永远不满仓（现金是极端时刻唯一的保护）②降低总仓位③接受分散有极限——它降低常规风险，不降低尾部风险。</p>
+</div>
+
+<h3>VaR（风险价值）</h3>
+<p>VaR回答：<strong>"在95%置信度下，明天最多亏多少？"</strong></p>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+简化VaR计算：
+  日均波动率 × 持仓总市值 × 1.65(95%置信度) = 明天95%概率的最大亏损
+
+例：持仓30万，日均波动率1.5%
+    VaR = 300000 × 0.015 × 1.65 = 7,425元
+    含义：明天有95%的概率亏损不超过7,425元（即2.5%）
+    剩余5%的概率：可能亏更多——这就是尾部风险
+</pre>
+
+<h3>压力测试的行动结论</h3>
+<p>如果最坏场景会亏超过20%→<strong>需要降低仓位或增加对冲</strong>。</p>
+<table class="data-table">
+<thead><tr><th>压力测试结果</th><th>行动</th></tr></thead>
+<tbody>
+<tr><td class="highlight">最坏亏损<10%</td><td>仓位合理，继续</td></tr>
+<tr><td class="highlight">最坏亏损10-15%</td><td>轻微偏高，考虑减仓</td></tr>
+<tr><td class="highlight">最坏亏损15-20%</td><td>偏高，必须减仓</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">最坏亏损>20%</td><td>危险，立即减仓或对冲</td></tr>
+</tbody>
+</table>
+
+<div class="calc-widget">
+<h4>🧮 压力测试器</h4>
+<p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">输入持仓信息，模拟三种极端场景的最大亏损。</p>
+<label>持仓总市值（元）</label>
+<input type="number" id="st-position" value="50000">
+<label>持仓数量（只）</label>
+<input type="number" id="st-count" value="5">
+<button onclick="calcStress()">运行压力测试</button>
+<div class="result" id="st-result">
+<div class="big-number" id="st-value">-7,500元</div>
+<div class="label" id="st-label">系统性暴跌(-15%): 亏7,500元 | 个股黑天鹅(-50%×1只): 亏5,000元 | 流动性枯竭: 无法止损</div>
+</div>
+</div>
+
+<h3>散户可用的风险对冲工具简介</h3>
+<table class="data-table">
+<thead><tr><th>工具</th><th>原理</th><th>门槛</th><th>新手建议</th></tr></thead>
+<tbody>
+<tr><td class="highlight">ETF期权</td><td>买认沽期权=买保险，最大亏损=权利金</td><td>较低</td><td>资金量够后学习</td></tr>
+<tr><td class="highlight">股指期货</td><td>做空沪深300/中证500对冲系统性风险</td><td>50万+</td><td>新手不碰</td></tr>
+<tr><td class="highlight">融券</td><td>做空个股对冲</td><td>较高</td><td>新手不碰</td></tr>
+</tbody>
+</table>
+<div class="callout callout-tip">
+<div class="callout-title">💡 对冲的本质</div>
+<p>对冲不是"赚更多的钱"，是"花小钱买保险"。对冲会降低收益但降低更大亏损的风险。新手先用<strong>仓位控制+分散+止损</strong>降低风险，对冲工具在资金量和经验足够后再学。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：对你的组合做一次压力测试</h4>
+<ol>
+<li>列出当前持仓的市值和数量</li>
+<li>模拟系统性暴跌（-15%）：总亏损=___</li>
+<li>模拟个股黑天鹅（1只-50%）：总亏损=___</li>
+<li>模拟流动性枯竭（跌停无法卖出）：最坏情况=___</li>
+<li>如果最坏亏损>20%→制定减仓计划</li>
+<li>确认：是否保留足够现金应对极端场景？</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第9章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的压力测试最坏亏损>20%时，</span>我将<strong>立即减仓或增加对冲</strong></div>
+<div class="rule-item"><span class="rule-trigger">当市场出现极端暴跌时，</span>我将<strong>接受分散会失效</strong>——现金是极端时刻唯一的保护</div>
+<div class="rule-item"><span class="rule-trigger">当我无法判断黑天鹅是否会发生时，</span>我将<strong>不假设它不会发生</strong>——永远保留现金缓冲</div>
+<div class="rule-item"><span class="rule-trigger">当我考虑使用对冲工具时，</span>我将<strong>先确认资金量和经验是否足够</strong>——新手用仓位控制代替对冲</div>
+</div>
+</div>
+</div>
+
+
+<!-- ==================== 第四篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part4">
+<div class="part-tag">第四篇</div>
+<h2>交易心理基础——理解你的大脑在交易时怎么工作</h2>
+<p class="part-goal">核心目标：建立"交易是与自己博弈"的认知。理解大脑在不确定环境下的系统性偏差——认知先于改变。</p>
+</div>
+
+<!-- ===== 第10章 ===== -->
+<div class="chapter" id="ch10">
+<h2 class="chapter-title"><span class="ch-num">第10章</span>交易心理的本质——最大的对手是自己</h2>
+<div class="section">
+<h3>交易是与自己博弈，不是与市场博弈</h3>
+<p>市场不在乎你。市场不知道你买了什么、亏了多少、有多焦虑。你所有的不安、恐惧、贪婪——市场完全无感。<strong>你的对手不是市场，是你自己</strong>。你自己的恐惧让你该买时不买，你自己的贪婪让你该卖时不卖，你自己的侥幸让你该止损时不止损。</p>
+
+<h3>概率思维</h3>
+<p>每笔交易是<strong>独立概率事件</strong>——不因上一笔亏了就改变下一笔的概率。抛硬币连续出现5次正面，第6次正面的概率仍是50%。同理，连续亏损5笔后，第6笔的胜率不会因为"该轮到赢了"而提高。</p>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 赌徒谬误</div>
+<p>"我已经亏了5笔了，下一笔该赢了吧"——这是赌徒谬误。如果你的系统胜率是40%，那么每一笔的胜率都是40%，不管之前亏了几笔。连续亏损不代表"该赢了"，只代表<strong>当前处于概率分布的不利区间</strong>。</p>
+</div>
+
+<h3>期望值思维</h3>
+<p>不追求"每笔都赚"，追求<strong>"长期正期望值"</strong>——接受短期亏损是获取长期盈利的<strong>成本</strong>。就像开餐厅——不是每天每桌都赚钱，但只要月度算下来是赚的，就是好生意。</p>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+期望值 = 胜率 × 平均盈利 - 败率 × 平均亏损
+
+例：胜率40%，平均盈利3R，平均亏损1R
+    期望值 = 0.4×3 - 0.6×1 = 1.2 - 0.6 = +0.6R/笔
+    含义：每笔交易平均赚0.6R——长期正期望值
+
+    100笔后期望盈利 = 100 × 0.6R = 60R
+    如果1R=1000元，则100笔后期望盈利=60,000元
+</pre>
+
+<h3>交易者的自我认同</h3>
+<table class="data-table">
+<thead><tr><th>认同</th><th>行为模式</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td class="highlight">"我是要赚钱的人"</td><td>每笔都必须赚→该止损时不止损→过度交易</td><td style="color:var(--accent-light);">亏损</td></tr>
+<tr><td class="highlight">"我是按系统执行的人"</td><td>执行规则→接受亏损是成本→长期正期望值</td><td style="color:var(--green);">盈利</td></tr>
+</tbody>
+</table>
+<p>认同决定行为。当你把自己定义为"按系统执行的人"而非"要赚钱的人"时，你的关注点从"这笔赚不赚"转移到"我有没有按规则做"——这个转变是交易心理成熟的标志。</p>
+
+<h3>胜负的重新定义</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 重新定义胜负</div>
+<p><strong>按规则执行 = 赢</strong>（不论这笔盈亏）</p>
+<p><strong>违反规则 = 输</strong>（不论这笔盈亏）</p>
+<p>原因：单笔盈亏是概率决定的，你控制不了。但"是否按规则执行"是你100%能控制的。用你能控制的衡量胜负，不用你不能控制的——这就是过程导向（第18章深入讲解）。</p>
+</div>
+
+<h3>"知道"和"做到"之间的鸿沟</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 衔接《知行鸿沟手册》</div>
+<p>知道"该止损"和"真的止损"之间隔着一个0.3秒的杏仁核劫持——你的大脑在恐惧瞬间会绕过前额叶皮层（理性），直接激活杏仁核（恐惧）驱动行动。这就是"知道但做不到"的神经科学基础。<strong>详见《知行鸿沟手册》</strong>。本手册聚焦"全周期的风险与心理操作系统"，知行鸿沟聚焦"执行瞬间的防线"——两者互补。</p>
+</div>
+
+<h3>大脑不是为交易设计的</h3>
+<p>进化赋予我们的本能恰恰是交易的敌人：</p>
+<ul>
+<li><strong>损失厌恶</strong>：原始人丢了食物会死→进化让我们对"失去"极度敏感→交易中变成"不敢止损"</li>
+<li><strong>从众本能</strong>：原始人脱离群体会死→进化让我们跟随群体→交易中变成"FOMO追高"</li>
+<li><strong>确定性偏好</strong>：原始人需要确定环境是否安全→进化让我们厌恶不确定→交易中变成"无法接受亏损是成本"</li>
+</ul>
+<p>这些本能用了几百万年刻进基因——交易只有几百年历史。你的大脑<strong>不是为交易设计的</strong>，所以"凭直觉交易"=用原始人的大脑做现代金融决策=必输。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第10章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我连续亏损后想"该赢了吧"时，</span>我将<strong>回到概率思维</strong>——每笔是独立事件，胜率不变</div>
+<div class="rule-item"><span class="rule-trigger">当我定义自己时，</span>我将<strong>说"我是按系统执行的人"而非"我要赚钱"</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我评估一笔交易好坏时，</span>我将<strong>看"是否按规则执行"而非"赚没赚"</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我凭直觉想操作时，</span>我将<strong>提醒自己"大脑不是为交易设计的"</strong>——回到规则</div>
+</div>
+</div>
+
+<!-- ===== 第11章 ===== -->
+<div class="chapter" id="ch11">
+<h2 class="chapter-title"><span class="ch-num">第11章</span>认知偏误——你的大脑在骗你</h2>
+<div class="section">
+<p>本章重点：每种偏误的<strong>交易场景表现</strong>和<strong>系统化阻断规则</strong>。偏误的心理机制（0.3秒杏仁核劫持等）详见《知行鸿沟手册》，本章不重复。</p>
+
+<h3>损失厌恶——不敢止损的心理根源</h3>
+<p><strong>原理</strong>：亏100元的痛苦 ≈ 赚200元的快乐（前景理论）。亏损的心理痛苦是盈利快乐的2倍——所以人会拼命避免"确认亏损"。</p>
+<p><strong>交易场景</strong>：小王买了某股票，从100跌到50。他想"没卖就没亏，等回本再卖"——结果跌到30。如果他在50止损，亏50%；死扛到30，亏70%。<strong>损失厌恶让他从"亏50%"变成了"亏70%"</strong>。</p>
+<p><strong>阻断规则</strong>：入场前写好止损价→条件单自动执行→切断"临场犹豫"的路径。</p>
+
+<h3>确认偏误——只看支持自己的信息</h3>
+<p><strong>原理</strong>：人会主动寻找支持自己观点的信息，忽略反对证据。"我买的股票一定会涨"→只看利好消息→忽略利空→持仓到暴跌。</p>
+<p><strong>交易场景</strong>：买了某股票后，只关注看多的研报和评论，对看空的分析视而不见——确认偏误让你对风险视而不见。</p>
+<p><strong>阻断规则</strong>：持仓后主动寻找"看空理由"——如果找不到强有力的看空逻辑才继续持有。</p>
+
+<h3>锚定效应——被第一个数字锚定</h3>
+<p><strong>原理</strong>：人会被第一个看到的数字锚定，后续判断围绕这个数字调整。"它曾经100元，现在50元很便宜"——但"曾经100"和"现在值多少"没有必然关系。</p>
+<p><strong>交易场景</strong>：某股票从100跌到50，你觉得"便宜了50%"→买入→继续跌到30。你被"100"锚定，没有评估"它现在到底值多少"。</p>
+<p><strong>阻断规则</strong>：评估股票时用当前基本面估值，不用历史价格做参照。</p>
+
+<h3>沉没成本谬误——因为已经亏了所以不愿止损</h3>
+<p><strong>原理</strong>：已经投入的（沉没）成本不应影响未来决策——但人很难做到。"已经亏了3万了，现在卖太亏了"——但3万已经亏了，卖不卖都改变不了。关键是<strong>未来</strong>它会不会涨。</p>
+<p><strong>交易场景</strong>："等回本再卖"是最典型的沉没成本谬误。你可能等一辈子都回不了本——乐视网从最高点到退市从来没"回本"过。</p>
+<p><strong>阻断规则</strong>：每天问自己"如果我现在没有持仓，我今天会买入这只股票吗？"——如果不会，就该卖。</p>
+
+<h3>过度自信——连续盈利后放大仓位</h3>
+<p><strong>原理</strong>：连续盈利后，人会高估自己的能力——"我很厉害"→放大仓位→放松纪律→一次大亏清零所有盈利。</p>
+<p><strong>交易场景</strong>：连赢5笔后觉得"找到了感觉"→仓位从1%加到5%→第6笔亏损→亏5%×5倍=之前5笔白赚。</p>
+<p><strong>阻断规则</strong>：仓位大小由系统决定不由信心决定——不管你多有信心，单笔风险≤2%。</p>
+
+<h3>自我归因偏差——赚了归能力，亏了归运气</h3>
+<p><strong>原理</strong>：赚钱时觉得"我选股准"，亏钱时觉得"市场不配合"。这种偏差让你无法从亏损中学习——因为你不认为亏损是你的问题。</p>
+<p><strong>阻断规则</strong>：每笔交易后记录"我的决策 vs 市场的结果"——区分"我做对了"和"我碰巧赚了"。</p>
+
+<h3>控制错觉——以为自己能控制不可控的市场</h3>
+<p><strong>原理</strong>：人倾向于高估自己对不可控事件的控制力——交易者最大的幻觉是"我能预测市场"。</p>
+<p><strong>阻断规则</strong>：每天对自己说"我不知道明天涨还是跌，但我知道我的规则是什么"。</p>
+
+<h3>情绪温度计——本手册第二超级符号</h3>
+<p>情绪温度计是风控手册的可视化工具——用颜色标记你当前的情绪状态，每个颜色对应不同的行动规则。</p>
+<div class="emotion-gauge">
+<div class="seg green"><strong>绿色</strong><br>冷静<br><span style="font-size:10px;opacity:0.7;">正常执行</span></div>
+<div class="seg yellow"><strong>黄色</strong><br>不安<br><span style="font-size:10px;opacity:0.7;">减半操作</span></div>
+<div class="seg orange"><strong>橙色</strong><br>冲动<br><span style="font-size:10px;opacity:0.7;">禁止开新仓</span></div>
+<div class="seg red"><strong>红色</strong><br>失控<br><span style="font-size:10px;opacity:0.7;">立即离开</span></div>
+</div>
+<table class="data-table">
+<thead><tr><th>颜色</th><th>情绪状态</th><th>识别信号</th><th>行动规则</th></tr></thead>
+<tbody>
+<tr><td class="highlight" style="color:var(--green);">绿色</td><td>冷静</td><td>能清晰复述交易规则</td><td>正常执行系统</td></tr>
+<tr><td class="highlight" style="color:var(--yellow);">黄色</td><td>不安</td><td>反复看盘/犹豫不决</td><td>减半仓位/只平仓不开仓</td></tr>
+<tr><td class="highlight" style="color:var(--orange);">橙色</td><td>冲动</td><td>"我要赚回来"/"再不买来不及"</td><td>禁止开新仓/只执行止损</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">红色</td><td>失控</td><td>手抖/心跳加速/无法思考</td><td>立即离开电脑/关闭软件</td></tr>
+</tbody>
+</table>
+<div class="callout callout-key">
+<div class="callout-title">🔑 情绪温度计的使用方法</div>
+<p>每笔交易前、中、后各打一次色标。如果交易前是黄色及以上→<strong>该笔交易不允许执行</strong>。用情绪标记法记录（第14章详解）。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第11章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的情绪温度计是黄色及以上时，</span>我将<strong>不允许执行新交易</strong>——只允许平仓和止损</div>
+<div class="rule-item"><span class="rule-trigger">当我想"等回本再卖"时，</span>我将<strong>问自己"如果现在空仓会买入吗"</strong>——不会就立刻卖</div>
+<div class="rule-item"><span class="rule-trigger">当我连续盈利后想加仓时，</span>我将<strong>回到仓位规则</strong>——信心不改变单笔风险上限</div>
+<div class="rule-item"><span class="rule-trigger">当我持仓后只看利好时，</span>我将<strong>主动寻找看空理由</strong>——找不到才继续持有</div>
+<div class="rule-item"><span class="rule-trigger">当我觉得"这只股票曾经100元现在50很便宜"时，</span>我将<strong>用当前基本面重新估值</strong>——不用历史价格做参照</div>
+</div>
+</div>
+
+<!-- ===== 第12章 ===== -->
+<div class="chapter" id="ch12">
+<h2 class="chapter-title"><span class="ch-num">第12章</span>情绪的四个触发器——亏损、盈利、错过、不确定</h2>
+<div class="section">
+<h3>亏损的情绪反应链</h3>
+<p>库伯勒-罗斯模型（否认→愤怒→讨价还价→抑郁→接受）在交易中的映射：</p>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>情绪</th><th>交易表现</th><th>危险行为</th></tr></thead>
+<tbody>
+<tr><td class="highlight">1.否认</td><td>"不可能跌这么多"</td><td>不看不查账户</td><td>不止损</td></tr>
+<tr><td class="highlight">2.愤怒</td><td>"这市场有病"</td><td>抱怨政策/主力</td><td>迁怒他人</td></tr>
+<tr><td class="highlight">3.讨价还价</td><td>"再给我一次机会"</td><td>祈祷反弹</td><td>摊亏加仓</td></tr>
+<tr><td class="highlight">4.抑郁</td><td>"我完了"</td><td>彻底放弃</td><td>关闭账户</td></tr>
+<tr><td class="highlight">5.接受</td><td>"亏损是成本"</td><td>重新出发</td><td>—（正确终点）</td></tr>
+</tbody>
+</table>
+<p><strong>关键</strong>：前4个阶段都会导致更糟糕的决策——不止损→摊亏→放弃。目标是<strong>尽快从阶段1跳到阶段5</strong>。最快的方法：入场前就接受"这笔可能亏X%"→亏损时已在阶段5。</p>
+
+<h3>盈利的情绪反应链</h3>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>情绪</th><th>交易表现</th><th>危险行为</th></tr></thead>
+<tbody>
+<tr><td class="highlight">1.兴奋</td><td>"我赚了！"</td><td>频繁看盈亏</td><td>—（正常）</td></tr>
+<tr><td class="highlight">2.过度自信</td><td>"我很厉害"</td><td>放松纪律</td><td>放大仓位</td></tr>
+<tr><td class="highlight">3.放大风险</td><td>"再多买点"</td><td>开新仓</td><td>满仓</td></tr>
+<tr><td class="highlight">4.回吐利润</td><td>"怎么又亏了"</td><td>不止盈</td><td>赚变亏</td></tr>
+<tr><td class="highlight">5.自责</td><td>"为什么不卖"</td><td>情绪低落</td><td>报复性交易</td></tr>
+</tbody>
+</table>
+
+<h3>错过（FOMO）的情绪链</h3>
+<p>FOMO = Fear Of Missing Out（害怕错过）。</p>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>情绪</th><th>交易表现</th></tr></thead>
+<tbody>
+<tr><td class="highlight">1.看到别人赚钱</td><td>焦虑</td><td>"为什么我没有"</td></tr>
+<tr><td class="highlight">2.追高</td><td>冲动</td><td>"再不买就来不及了"</td></tr>
+<tr><td class="highlight">3.被套</td><td>后悔</td><td>"又追在山顶了"</td></tr>
+<tr><td class="highlight">4.更焦虑</td><td>恐慌</td><td>"怎么办"</td></tr>
+</tbody>
+</table>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 踏空不亏钱，追高才亏钱</div>
+<p>踏空（错过了机会）的心理痛苦很大，但<strong>实际亏损为零</strong>。追高（因FOMO在高位买入）的心理痛苦小（"至少我买了"），但<strong>实际亏损可能很大</strong>。宁可踏空不要追高——这是反本能的，但正确。</p>
+</div>
+
+<h3>不确定的情绪链</h3>
+<p>面对模糊信息→焦虑→冲动决策→后悔。不确定是交易的常态——你永远无法100%确定涨跌。<strong>应对不确定的方法不是"追求确定性"，而是"在不确定中执行确定的规则"</strong>。</p>
+
+<h3>四种情绪的共通规律</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 情绪强度与决策质量负相关</div>
+<p>越强烈越不该动手。情绪强度是决策质量的<strong>反向指标</strong>——情绪越强，决策越差。当你感到"必须马上操作"时，那恰恰是你最不该操作的时候。</p>
+</div>
+
+<h3>情绪不是敌人，是信号</h3>
+<p>"我注意到自己在焦虑"≠"我必须马上操作"。情绪是信号——焦虑提醒你回到规则，兴奋提醒你检查仓位，恐惧提醒你确认止损。<strong>觉察情绪而不被情绪驱动</strong>——这是正念的核心（第17章深入）。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第12章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我感到"必须马上操作"时，</span>我将<strong>立即停止——这是最不该操作的时候</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我因FOMO想追高时，</span>我将<strong>回到观察池规则</strong>——不在盘中临时选股</div>
+<div class="rule-item"><span class="rule-trigger">当我的盈利开始回吐时，</span>我将<strong>执行分批止盈而非"再等等"</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我面对不确定想"再看看"时，</span>我将<strong>回到规则清单</strong>——规则说了算不是感觉说了算</div>
+</div>
+</div>
+
+<!-- ===== 第13章 ===== -->
+<div class="chapter" id="ch13">
+<h2 class="chapter-title"><span class="ch-num">第13章</span>五大心理陷阱的系统化阻断——用规则对抗本能</h2>
+<div class="section">
+<p>本章重点：每个陷阱的<strong>触发条件→识别信号→系统级阻断规则→替代行为</strong>。陷阱的心理机制详解见《知行鸿沟手册》，本章不重复。</p>
+
+<h3>陷阱一：报复性交易</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">触发条件</td><td>连续亏损后，尤其是单日亏损超3%后</td></tr>
+<tr><td class="highlight">识别信号</td><td>"我要赚回来" / 加大仓位 / 频繁交易 / 放弃止损</td></tr>
+<tr><td class="highlight">阻断规则</td><td>连续亏损3笔→仓位降至一半；单日亏3%→关闭软件离开30分钟</td></tr>
+<tr><td class="highlight">替代行为</td><td>离开电脑→冷水洗脸→复盘亏损原因→写下"报复性交易会让我亏更多"</td></tr>
+</tbody>
+</table>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 报复性交易是最危险的陷阱</div>
+<p>报复性交易=从"系统化交易"变成"赌博"。它的特点是：加大仓位+频繁交易+放弃纪律。后果：<strong>原本可控的亏损变成灾难</strong>。大多数"一次亏光"的故事，起点都是报复性交易。</p>
+</div>
+
+<h3>陷阱二：沉没成本死扛</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">触发条件</td><td>亏损超过预期止损位</td></tr>
+<tr><td class="highlight">识别信号</td><td>"等回本再卖" / "没卖就没亏"</td></tr>
+<tr><td class="highlight">阻断规则</td><td>止损前移至保本位 / 条件单自动止损 / 每天问"如果空仓会买入吗"</td></tr>
+<tr><td class="highlight">替代行为</td><td>立即执行止损→接受亏损是成本→重新评估逻辑</td></tr>
+</tbody>
+</table>
+
+<h3>陷阱三：FOMO追高</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">触发条件</td><td>看到别人赚钱 / 股票大涨 / 错过信号</td></tr>
+<tr><td class="highlight">识别信号</td><td>"再不买就来不及了" / 盘中临时选股</td></tr>
+<tr><td class="highlight">阻断规则</td><td>只买自选池中的标的 / 不在盘中临时选股 / 错过信号后不允许追入</td></tr>
+<tr><td class="highlight">替代行为</td><td>将标的加入观察池→等下一次符合规则的信号→错过比亏钱好</td></tr>
+</tbody>
+</table>
+
+<h3>陷阱四：过度交易</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">触发条件</td><td>无聊 / 震荡市 / 看到波动就想操作</td></tr>
+<tr><td class="highlight">识别信号</td><td>"闲着也是闲着" / 每天都想交易</td></tr>
+<tr><td class="highlight">阻断规则</td><td>每日交易次数上限（如1笔）/ 无信号不操作 / 每周交易上限（如3笔）</td></tr>
+<tr><td class="highlight">替代行为</td><td>不交易时做复盘/学习/研究→"不交易也是交易"（第19章）</td></tr>
+</tbody>
+</table>
+
+<h3>陷阱五：分析瘫痪</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">触发条件</td><td>信息过多 / 矛盾信号 / 害怕犯错</td></tr>
+<tr><td class="highlight">识别信号</td><td>"再看看"循环 / 反复打开关闭交易软件</td></tr>
+<tr><td class="highlight">阻断规则</td><td>决策时限（如5分钟内决定）/ "信息够了"标准（入场条件满足≥3项即可）</td></tr>
+<tr><td class="highlight">替代行为</td><td>回到入场四问清单→满足就做不满足就不做→不纠结</td></tr>
+</tbody>
+</table>
+
+<h3>五大陷阱的统一阻断框架</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 识别→暂停→规则→替代行为</div>
+<p>无论哪个陷阱，阻断流程都一样：</p>
+<ol>
+<li><strong>识别</strong>：检测到情绪信号（情绪温度计黄色以上）</li>
+<li><strong>暂停</strong>：离开屏幕15分钟，用冷水洗脸</li>
+<li><strong>规则</strong>：回到规则清单——规则说了算</li>
+<li><strong>替代行为</strong>：做规则允许的事（复盘/学习/休息），不做情绪驱动的事</li>
+</ol>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第13章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我连续亏损3笔后想加大仓位时，</span>我将<strong>识别为报复性交易→仓位降至一半</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我想"等回本再卖"时，</span>我将<strong>识别为沉没成本→立即执行止损</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我想追入盘中临时发现的股票时，</span>我将<strong>识别为FOMO→只买自选池标的</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我在无信号时想交易时，</span>我将<strong>识别为过度交易→无信号不操作</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我陷入"再看看"循环时，</span>我将<strong>设5分钟决策时限→满足条件就做不满足就不做</strong></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第五篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part5">
+<div class="part-tag">第五篇</div>
+<h2>情绪管理实操——从"知道"到"做到"</h2>
+<p class="part-goal">核心目标：把心理认知转化为可执行的情绪管理工具。不是"要冷静"这种废话建议——是具体怎么做。</p>
+</div>
+
+<!-- ===== 第14章 ===== -->
+<div class="chapter" id="ch14">
+<h2 class="chapter-title"><span class="ch-num">第14章</span>情绪标记与交易日记——发现自己的情绪模式</h2>
+<div class="section">
+<h3>情绪标记法</h3>
+<p>每笔交易记录情绪状态——冷静/犹豫/冲动/恐慌/贪婪。用情绪温度计的颜色标记（绿色/黄色/橙色/红色）。</p>
+<table class="data-table">
+<thead><tr><th>交易阶段</th><th>标记内容</th><th>色标</th></tr></thead>
+<tbody>
+<tr><td class="highlight">入场前</td><td>"我现在是什么情绪？能清晰复述规则吗？"</td><td>绿/黄/橙/红</td></tr>
+<tr><td class="highlight">持仓中</td><td>"我的情绪有变化吗？在盯盘吗？"</td><td>绿/黄/橙/红</td></tr>
+<tr><td class="highlight">出场后</td><td>"出场时是什么情绪？按规则还是情绪？"</td><td>绿/黄/橙/红</td></tr>
+</tbody>
+</table>
+
+<h3>交易日记的情绪维度</h3>
+<p>不只记录交易数据（价格/仓位/盈亏），还记录<strong>"为什么买/为什么卖/当时什么感觉"</strong>。</p>
+<table class="data-table">
+<thead><tr><th>字段类别</th><th>具体字段</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易数据</td><td>日期/标的/方向/入场价/出场价/仓位/盈亏/R倍数</td></tr>
+<tr><td class="highlight">情绪标记</td><td>入场情绪/持仓情绪变化/出场情绪（色标）</td></tr>
+<tr><td class="highlight">决策记录</td><td>入场理由（对照规则清单）/出场理由/是否按规则执行</td></tr>
+<tr><td class="highlight">复盘字段</td><td>做对了什么/做错了什么/情绪是否影响了决策</td></tr>
+</tbody>
+</table>
+
+<h3>情绪模式发现——数据会让你震惊</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 统计"冲动交易"vs"冷静交易"的盈亏差异</div>
+<p>记录50笔交易后，统计：</p>
+<ul>
+<li>绿色（冷静）时的交易：胜率___% | 平均盈亏___R</li>
+<li>橙色+红色（冲动/失控）时的交易：胜率___% | 平均盈亏___R</li>
+</ul>
+<p>几乎所有人的数据都会显示：<strong>冲动交易的盈亏远差于冷静交易</strong>。这个数据比任何道理都有效——当你亲眼看到"冲动时做的交易亏了3倍"时，你自然不会再冲动。</p>
+</div>
+
+<h3>情绪触发器的时间规律</h3>
+<table class="data-table">
+<thead><tr><th>高风险时段</th><th>原因</th><th>应对</th></tr></thead>
+<tbody>
+<tr><td class="highlight">开盘15分钟</td><td>情绪最激动/跳空最大</td><td>不在前15分钟交易</td></tr>
+<tr><td class="highlight">收盘前30分钟</td><td>"今天必须操作"的压力</td><td>收盘前不改仓位</td></tr>
+<tr><td class="highlight">重大数据公布时</td><td>波动最大/情绪最不稳</td><td>数据公布后等15分钟</td></tr>
+<tr><td class="highlight">连续亏损后</td><td>报复心理最强</td><td>强制暂停</td></tr>
+</tbody>
+</table>
+
+<h3>周复盘中的情绪回顾</h3>
+<p>每周日复盘时增加情绪维度：<strong>"本周哪几次操作被情绪驱动了？"</strong>→找出模式→制定下周的情绪管理重点。</p>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：建立你的情绪标记交易日记</h4>
+<ol>
+<li>在现有交易日记中增加"情绪标记"字段（绿/黄/橙/红）</li>
+<li>记录入场前、持仓中、出场时的情绪色标</li>
+<li>记录"入场理由是否对照规则清单"</li>
+<li>记录"出场时是按规则还是按情绪"</li>
+<li>50笔后统计：冷静交易vs冲动交易的盈亏差异</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第14章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我记录每笔交易时，</span>我将<strong>同时记录入场/持仓/出场的情绪色标</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我到高风险时段（开盘15分钟/收盘前30分钟）时，</span>我将<strong>不交易</strong>——等情绪稳定</div>
+<div class="rule-item"><span class="rule-trigger">当我每周复盘时，</span>我将<strong>增加情绪维度</strong>——本周哪几次被情绪驱动</div>
+<div class="rule-item"><span class="rule-trigger">当我积累50笔情绪标记数据后，</span>我将<strong>统计冷静vs冲动的盈亏差异</strong>——用数据说服自己</div>
+</div>
+</div>
+
+<!-- ===== 第15章 ===== -->
+<div class="chapter" id="ch15">
+<h2 class="chapter-title"><span class="ch-num">第15章</span>情绪暂停与阻断规则——管住手的工具箱</h2>
+<div class="section">
+<h3>情绪暂停规则</h3>
+<table class="data-table">
+<thead><tr><th>检测信号</th><th>暂停行动</th><th>恢复条件</th></tr></thead>
+<tbody>
+<tr><td class="highlight">情绪温度计黄色</td><td>减半操作/只平仓不开仓</td><td>15分钟后回到绿色</td></tr>
+<tr><td class="highlight">情绪温度计橙色</td><td>禁止开新仓/只执行止损</td><td>30分钟后回到绿色</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">情绪温度计红色</td><td>立即离开电脑/关闭软件</td><td>次日重新评估</td></tr>
+</tbody>
+</table>
+
+<h3>物理隔离——具体怎么做</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 衔接知行鸿沟手册的"交易中物理隔离"</div>
+<p>知行鸿沟手册讲了"物理隔离"的原理——在0.3秒杏仁核劫持时，物理动作比意志力更有效。本手册给出具体操作：</p>
+<ul>
+<li><strong>站起来</strong>：身体从坐姿变为站姿——打破"盯盘"的物理状态</li>
+<li><strong>离开屏幕</strong>：走到另一个房间——切断视觉刺激</li>
+<li><strong>冷水洗脸</strong>：激活哺乳动物潜水反射→心率降低→杏仁核平静</li>
+<li><strong>喝一杯水</strong>：吞咽动作激活副交感神经→放松</li>
+<li><strong>回到规则清单</strong>：不是"回到盘面"，是"回到规则"——读一遍你的入场条件清单</li>
+</ul>
+</div>
+
+<h3>条件单代替手动执行</h3>
+<p>用条件单预设止损止盈→切断"临场改主意"的路径。这是<strong>最有效的情绪阻断工具</strong>——因为条件单不会恐惧、不会犹豫、不会"再等等"。</p>
+<table class="data-table">
+<thead><tr><th>条件单类型</th><th>设置时机</th><th>效果</th></tr></thead>
+<tbody>
+<tr><td class="highlight">止损单</td><td>入场后立即设</td><td>自动止损，不靠意志力</td></tr>
+<tr><td class="highlight">止盈单</td><td>入场后立即设</td><td>自动止盈，不贪心</td></tr>
+<tr><td class="highlight">触发买入单</td><td>盘前设</td><td>到价自动买，不犹豫</td></tr>
+</tbody>
+</table>
+
+<h3>报复性交易的阻断</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 报复性交易阻断铁律</div>
+<p>连续亏损3笔后→<strong>强制暂停1-3天</strong>。不是"建议暂停"——是<strong>铁律</strong>。报复性交易的核心是"我要赚回来"——这个念头出现时，你已经不适合交易了。暂停不是认输，是保护。</p>
+</div>
+
+<h3>FOMO的阻断</h3>
+<p>错过信号后不允许追入——<strong>"错过比亏钱好"</strong>。机会永远有，本金只有一份。把错过的标的加入观察池，等下一次符合规则的信号。</p>
+
+<h3>盈利后的阻断</h3>
+<p>盈利后30分钟内不做新决策——让兴奋消退。盈利时的多巴胺分泌会让你过度自信→开新仓→把赚的钱亏回去。</p>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：写你的情绪阻断规则清单</h4>
+<ol>
+<li>写出你的情绪暂停规则（黄→减半/橙→禁开仓/红→离开）</li>
+<li>写出物理隔离步骤（站起→离开→冷水→喝水→回规则）</li>
+<li>确认：每笔交易入场后立即设条件单（止损+止盈）</li>
+<li>写出报复性交易阻断规则（连亏3笔→暂停1-3天）</li>
+<li>写出盈利后阻断规则（30分钟内不做新决策）</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第15章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的情绪温度计亮红色时，</span>我将<strong>立即关闭软件离开电脑</strong>——次日再评估</div>
+<div class="rule-item"><span class="rule-trigger">当我入场后，</span>我将<strong>立即设置条件单止损止盈</strong>——切断临场改主意路径</div>
+<div class="rule-item"><span class="rule-trigger">当我连续亏损3笔后，</span>我将<strong>强制暂停1-3天</strong>——报复性交易是最大的危险</div>
+<div class="rule-item"><span class="rule-trigger">当我盈利后想做新交易时，</span>我将<strong>等待30分钟</strong>——让兴奋消退再做决策</div>
+<div class="rule-item"><span class="rule-trigger">当我错过一个信号后想追入时，</span>我将<strong>不允许追入</strong>——加入观察池等下一次</div>
+</div>
+</div>
+
+<!-- ===== 第16章 ===== -->
+<div class="chapter" id="ch16">
+<h2 class="chapter-title"><span class="ch-num">第16章</span>心理预演与情景规划——开盘前就做好决定</h2>
+<div class="section">
+<h3>心理预演</h3>
+<p>开盘前预演三种场景的应对方案——<strong>临场只执行，不决策</strong>。</p>
+<table class="data-table">
+<thead><tr><th>场景</th><th>预演内容</th><th>应对方案</th></tr></thead>
+<tbody>
+<tr><td class="highlight">如果涨了</td><td>涨到多少止盈？分批还是一次性？</td><td>到目标1卖50%→到目标2卖25%→剩余移动止盈</td></tr>
+<tr><td class="highlight">如果跌了</td><td>跌到多少止损？会不会犹豫？</td><td>到止损价无条件执行（条件单已设）</td></tr>
+<tr><td class="highlight">如果横盘</td><td>多久没动算时间止损？</td><td>3天未达目标→评估→减仓或退出</td></tr>
+</tbody>
+</table>
+
+<h3>If-Then计划</h3>
+<p>把每个可能场景的应对方案<strong>写下来</strong>——白纸黑字。临场打开这张纸，只执行不思考。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 心理预演的核心价值</div>
+<p>人在平静时做出的决策远优于在波动时做出的决策。心理预演的本质是<strong>把决策提前到平静时做</strong>——开盘后你只需要执行，不需要在情绪波动中做判断。</p>
+</div>
+
+<h3>最坏场景预演</h3>
+<p>"如果今天亏了2%我什么感觉？我会不会想追回？"——<strong>提前面对</strong>。当你已经预演过最坏场景并写好应对方案时，真正发生时就不会慌——因为这不是"意外"，是"预案启动"。</p>
+
+<h3>收盘后的心理收尾</h3>
+<p>今天的交易结束了——盈亏已成定局，<strong>放下情绪</strong>。不管今天赚了还是亏了，收盘后做的第一件事：关闭软件，不看了。明天的盘是明天的——今天的情绪不要带到明天。</p>
+
+<h3>周末的心理重置</h3>
+<div class="callout callout-tip">
+<div class="callout-title">💡 周末不看盘、不研究、不想交易</div>
+<p>给大脑休息。交易是高强度的认知活动——你的前额叶皮层需要恢复。周末做与交易完全无关的事：运动、陪伴家人、看电影。<strong>休息是为了下周更好地执行</strong>。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：写你的每日心理预演模板</h4>
+<ol>
+<li>盘前5分钟写If-Then计划：涨了怎么做/跌了怎么做/横盘怎么做</li>
+<li>预演最坏场景：今天亏2%我什么感觉？我会怎么应对？</li>
+<li>确认条件单已设（止损+止盈）</li>
+<li>收盘后：关闭软件，盈亏放下</li>
+<li>周末：不看盘不研究，给大脑休息</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第16章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我每天开盘前，</span>我将<strong>花5分钟做心理预演</strong>——涨/跌/横盘三种场景的应对方案</div>
+<div class="rule-item"><span class="rule-trigger">当我预演最坏场景时，</span>我将<strong>写下应对方案</strong>——真正发生时执行预案不慌</div>
+<div class="rule-item"><span class="rule-trigger">当收盘后，</span>我将<strong>关闭软件放下盈亏</strong>——今天的情绪不带到明天</div>
+<div class="rule-item"><span class="rule-trigger">当周末到来时，</span>我将<strong>不看盘不研究</strong>——给大脑休息恢复</div>
+</div>
+</div>
+
+<!-- ===== 第17章 ===== -->
+<div class="chapter" id="ch17">
+<h2 class="chapter-title"><span class="ch-num">第17章</span>正念与认知重构——长期的心理训练</h2>
+<div class="section">
+<h3>正念在交易中的应用</h3>
+<p>正念=觉察情绪而不被情绪驱动。"我注意到自己在焦虑"≠"我必须马上操作"。正念不是玄学，是<strong>注意力训练</strong>——科学证据支持的有效性。</p>
+<table class="data-table">
+<thead><tr><th>正念前</th><th>正念后</th></tr></thead>
+<tbody>
+<tr><td class="highlight">"我焦虑了→必须操作"</td><td>"我注意到自己在焦虑→回到规则"</td></tr>
+<tr><td class="highlight">情绪→行动（0.3秒）</td><td>情绪→觉察→选择→行动（3秒+）</td></tr>
+<tr><td class="highlight">杏仁核劫持前额叶</td><td>前额叶重新掌控</td></tr>
+</tbody>
+</table>
+
+<h3>认知重构</h3>
+<table class="data-table">
+<thead><tr><th>旧认知</th><th>重构为</th></tr></thead>
+<tbody>
+<tr><td class="highlight">"我又亏了"</td><td>"这笔交易的止损被触发了，这是系统的一部分"</td></tr>
+<tr><td class="highlight">"我必须赚回来"</td><td>"亏损是成本，赚回来需要时间和正期望值"</td></tr>
+<tr><td class="highlight">"这只股票一定会涨"</td><td>"这笔交易有40%的概率亏损，我已经设好了止损"</td></tr>
+<tr><td class="highlight">"我控制不了就焦虑"</td><td>"我不能控制涨跌，但我能控制仓位和止损"</td></tr>
+</tbody>
+</table>
+
+<h3>从情绪驱动到规则驱动</h3>
+<p>训练大脑从"我感觉应该…"切换到"规则告诉我应该…"。这需要<strong>反复练习</strong>——每一次你在情绪冲动时回到规则，都在强化这条神经通路。</p>
+
+<h3>接纳不确定性的练习</h3>
+<p>每天对自己说："我不知道明天涨还是跌，但我知道我的规则是什么。"——接受不确定性，专注于可控的（规则）而非不可控的（涨跌）。</p>
+
+<h3>交易冥想——5分钟练习</h3>
+<ol>
+<li>坐直，闭上眼睛，深呼吸3次</li>
+<li>感受呼吸——空气进入鼻腔→胸腔扩张→腹部隆起</li>
+<li>觉察身体感受——肩膀紧张？心跳快？手心出汗？</li>
+<li>不评判，只觉察——"我注意到肩膀紧张"≠"我不该紧张"</li>
+<li>回到当下——打开交易软件，先看规则清单再看行情</li>
+</ol>
+
+<h3>身体与精力管理——交易心理不只是"大脑"的事</h3>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 睡眠不足对决策的影响</div>
+<p>研究显示：睡眠<6小时的交易者，亏损概率增加40%。睡眠不足→前额叶功能下降→杏仁核更活跃→更容易冲动决策。<strong>保证7小时睡眠是最简单的风控措施</strong>。</p>
+</div>
+<table class="data-table">
+<thead><tr><th>维度</th><th>建议</th><th>原因</th></tr></thead>
+<tbody>
+<tr><td class="highlight">睡眠</td><td>7小时以上</td><td>前额叶恢复→决策质量保障</td></tr>
+<tr><td class="highlight">久坐</td><td>每45分钟起身5分钟</td><td>颈椎/眼睛/腰椎→身体不适→决策下降</td></tr>
+<tr><td class="highlight">饮食</td><td>避免高糖/保持水分</td><td>血糖波动→情绪波动</td></tr>
+<tr><td class="highlight">疲劳时决策</td><td>不在疲劳时做重大决策</td><td>疲劳=前额叶功能降低</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="practice-box">
+<h4>✍️ 动手做：建立每日正念+身体管理清单</h4>
+<ol>
+<li>盘前5分钟正念练习（呼吸→觉察→回到当下）</li>
+<li>每天对自己说"我不知道明天涨跌，但我知道我的规则"</li>
+<li>记录3次认知重构（旧认知→新认知）</li>
+<li>确保7小时睡眠</li>
+<li>每盯盘45分钟起身5分钟</li>
+<li>避免高糖饮食，保持水分摄入</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第17章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我每天开盘前，</span>我将<strong>做5分钟正念练习</strong>——呼吸→觉察→回到规则</div>
+<div class="rule-item"><span class="rule-trigger">当我想"我又亏了"时，</span>我将<strong>重构为"止损被触发了，这是系统的一部分"</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我不确定明天涨跌时，</span>我将<strong>对自己说"我不知道涨跌，但我知道我的规则"</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我睡眠不足6小时时，</span>我将<strong>降低仓位至一半或不交易</strong>——睡眠不足亏损概率+40%</div>
+</div>
+</div>
+</div>
+
+
+<!-- ==================== 第六篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part6">
+<div class="part-tag">第六篇</div>
+<h2>心理建设与长期成长——从生存到自由</h2>
+<p class="part-goal">核心目标：从"管住手"升级到"不需要管"——让纪律变成习惯，让习惯变成自然。</p>
+</div>
+
+<!-- ===== 第18章 ===== -->
+<div class="chapter" id="ch18">
+<h2 class="chapter-title"><span class="ch-num">第18章</span>过程导向——执行率>胜率的心法</h2>
+<div class="section">
+<h3>过程导向 vs 结果导向</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>结果导向</th><th>过程导向</th></tr></thead>
+<tbody>
+<tr><td class="highlight">关注点</td><td>"这笔赚没赚"</td><td>"是否按规则执行"</td></tr>
+<tr><td class="highlight">评价标准</td><td>盈亏</td><td>执行率</td></tr>
+<tr><td class="highlight">情绪</td><td>赚了兴奋/亏了沮丧</td><td>按规则=满意/违反规则=反思</td></tr>
+<tr><td class="highlight">长期效果</td><td>情绪波动大/容易改规则</td><td>情绪稳定/纪律一致</td></tr>
+</tbody>
+</table>
+
+<h3>执行率作为核心指标</h3>
+<p>执行率 = 按规则做的交易笔数 ÷ 总交易笔数。目标>80%。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 为什么执行率>胜率？</div>
+<p>因为胜率受概率影响（你控制不了），执行率完全由你决定（你100%能控制）。一个胜率40%但执行率90%的交易者，长期一定比一个胜率60%但执行率50%的交易者赚得多——因为后者在"该做的没做"，错过了正期望值的复利效应。</p>
+</div>
+
+<h3>"按规则做了即使亏了也是对的"</h3>
+<p>这不是自我安慰，是<strong>概率思维的正确体现</strong>。如果你系统的期望值是+0.6R/笔，那么每一笔按规则执行的交易，不管盈亏，都在为你贡献+0.6R的期望值。亏的那笔是"成本"，赚的那笔是"收入"——两者都是系统正常运转的一部分。</p>
+
+<h3>"没按规则做了即使赚了也是错的"</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 坏习惯赚钱比好习惯亏钱更危险</div>
+<p>如果你违反规则（比如没设止损）却赚了钱——这比按规则亏钱危险10倍。因为这次"赚钱"会强化你的坏习惯："原来不设止损也能赚钱"→下次继续不设→直到一次大亏清零。<strong>运气≠能力</strong>。坏习惯赚钱只是在积累未来的灾难。</p>
+</div>
+
+<h3>月度评估的正确维度</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>指标</th><th>目标</th></tr></thead>
+<tbody>
+<tr><td class="highlight">盈亏</td><td>月度盈亏/R倍数</td><td>正期望值</td></tr>
+<tr><td class="highlight">执行率</td><td>按规则交易比例</td><td>>80%</td></tr>
+<tr><td class="highlight">情绪稳定性</td><td>情绪干扰交易占比</td><td><20%</td></tr>
+<tr><td class="highlight">纪律一致性</td><td>止损执行率</td><td>100%</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第18章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我按规则执行但亏损时，</span>我将<strong>视为"系统正常运转的成本"</strong>——这不是错</div>
+<div class="rule-item"><span class="rule-trigger">当我违反规则但盈利时，</span>我将<strong>视为"危险的坏习惯强化"</strong>——这才是错</div>
+<div class="rule-item"><span class="rule-trigger">当我评估月度绩效时，</span>我将<strong>看执行率而非只看盈亏</strong>——执行率>80%是核心目标</div>
+<div class="rule-item"><span class="rule-trigger">当我的止损执行率<100%时，</span>我将<strong>回到模拟盘</strong>——止损执行率必须100%</div>
+</div>
+</div>
+
+<!-- ===== 第19章 ===== -->
+<div class="chapter" id="ch19">
+<h2 class="chapter-title"><span class="ch-num">第19章</span>耐心与空仓——不交易也是交易</h2>
+<div class="section">
+<h3>耐心作为策略</h3>
+<p>"不交易"也是一种交易——<strong>空仓等待是最高级的交易行为</strong>。大多数散户亏损不是因为"做了什么"，而是因为"做了太多"。耐心等待符合规则的信号，比抓住每个机会更重要。</p>
+
+<h3>为什么空仓这么难</h3>
+<p>大脑厌恶无聊→"闲着也是闲着"→过度交易。原始人需要不断活动才能生存——"什么都不做"在进化中意味着死亡。但交易中，"什么都不做"往往是最好的决策。</p>
+
+<h3>"踏空比亏钱更难受"的心理根源</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 踏空不亏钱，追高才亏钱</div>
+<p>踏空的心理痛苦很大（"我本来可以赚的！"），但<strong>实际亏损为零</strong>。追高的心理痛苦小（"至少我买了"），但<strong>实际亏损可能很大</strong>。你的大脑骗你——它让你觉得踏空比亏钱更难受，但数学上恰恰相反。</p>
+</div>
+
+<h3>空仓的条件</h3>
+<table class="data-table">
+<thead><tr><th>条件</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td class="highlight">没有符合条件的标的</td><td>观察池中无股票满足入场条件</td></tr>
+<tr><td class="highlight">大盘环境不允许</td><td>系统性风险高/趋势不明</td></tr>
+<tr><td class="highlight">自己情绪不稳定</td><td>情绪温度计黄色以上</td></tr>
+<tr><td class="highlight">已达到仓位上限</td><td>总仓位已达50%/单板块已达20%</td></tr>
+</tbody>
+</table>
+
+<h3>"错过机会不可怕，抓住每个机会才可怕"</h3>
+<p>机会永远有，本金只有一份。试图抓住每个机会=过度交易=亏损概率暴增。<strong>空仓是保留弹药</strong>——等待最好的机会才开枪。</p>
+
+<h3>现金是头寸</h3>
+<p>持有现金不是"没投资"，是<strong>"在等待更好的机会"</strong>。现金是期权——暴跌时的抄底权。满仓的人遇到暴跌只能看着，持有现金的人可以抄底。这个"选择权"在牛市不值钱，在熊市价值连城。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第19章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当没有符合规则的信号时，</span>我将<strong>空仓等待</strong>——不交易也是交易</div>
+<div class="rule-item"><span class="rule-trigger">当我因"闲着也是闲着"想交易时，</span>我将<strong>识别为过度交易</strong>→去做复盘或学习</div>
+<div class="rule-item"><span class="rule-trigger">当我因踏空而焦虑时，</span>我将<strong>提醒自己"踏空不亏钱，追高才亏钱"</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我的现金比例低于30%时，</span>我将<strong>不再开新仓</strong>——现金是期权</div>
+</div>
+</div>
+
+<!-- ===== 第20章 ===== -->
+<div class="chapter" id="ch20">
+<h2 class="chapter-title"><span class="ch-num">第20章</span>交易者的成长路线图——四阶段模型</h2>
+<div class="section">
+<h3>四阶段模型</h3>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>名称</th><th>特征</th><th>危险</th></tr></thead>
+<tbody>
+<tr><td class="highlight">第一阶段</td><td>无意识无能力</td><td>不知道自己不懂</td><td style="color:var(--accent-light);">最危险——满仓+杠杆+不止损</td></tr>
+<tr><td class="highlight">第二阶段</td><td>有意识无能力</td><td>知道自己不懂但做不到</td><td>容易放弃——"太难了"</td></tr>
+<tr><td class="highlight">第三阶段</td><td>有意识有能力</td><td>知道且能做到但要刻意控制</td><td>疲劳——执行纪律很耗精力</td></tr>
+<tr><td class="highlight">第四阶段</td><td>无意识有能力</td><td>纪律已成为本能</td><td>过度自信——忘记市场敬畏</td></tr>
+</tbody>
+</table>
+
+<h3>第一阶段：无意识无能力——新手最危险期</h3>
+<p>不知道自己不懂——以为交易很简单。满仓、追涨、不止损、听消息。这个阶段的人<strong>亏得最快</strong>——通常在6个月内亏掉50%以上然后退出。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 第一阶段的典型行为</div>
+<ul>
+<li>满仓单票——"看准了就重仓"</li>
+<li>不止损——"价值投资长期持有"</li>
+<li>听消息——"我朋友说这只股票要涨"</li>
+<li>追涨杀跌——"涨了追涨跌了割肉"</li>
+</ul>
+</div>
+
+<h3>第二阶段：有意识无能力——学习期</h3>
+<p>知道自己不懂——开始学习。但"知道"和"做到"之间有鸿沟。模拟为主，小仓位尝试。这个阶段最容易放弃——"学了这么多还是亏"。</p>
+
+<h3>第三阶段：有意识有能力——小仓位实盘期</h3>
+<p>知道且能做到——但需要<strong>刻意控制</strong>。每次执行规则都消耗精力。这个阶段的交易者开始稳定，但容易疲劳——因为每笔交易都在"对抗本能"。</p>
+
+<h3>第四阶段：无意识有能力——成熟交易者</h3>
+<p>纪律已成为本能——不需要刻意控制就能执行规则。看到止损被触发→条件反射般执行→不犹豫。这是交易者的终极目标——<strong>"从心所欲不逾矩"</strong>。</p>
+
+<h3>心态进阶路线图</h3>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>心态</th><th>特征</th><th>毕业标准</th></tr></thead>
+<tbody>
+<tr><td class="highlight">生存期</td><td>不亏死</td><td>学会止损+仓位控制</td><td>3个月不触及清盘线</td></tr>
+<tr><td class="highlight">稳定期</td><td>小亏小赚</td><td>系统稳定+执行率>80%</td><td>6个月期望值>0</td></tr>
+<tr><td class="highlight">盈利期</td><td>稳定正期望值</td><td>系统成熟+心理稳定</td><td>12个月正收益</td></tr>
+<tr><td class="highlight">自由期</td><td>靠系统吃饭</td><td>纪律=本能</td><td>持续3年正收益</td></tr>
+</tbody>
+</table>
+
+<h3>"大多数人在第二阶段就放弃了"</h3>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 坚持到第三阶段的人不到10%</div>
+<p>第二阶段最痛苦——"知道但做不到"。每次"知道该止损但没止损"都是一次自我否定。大多数人在这个阶段放弃，回到第一阶段（凭感觉），或者退出交易。<strong>坚持到第三阶段的人不到10%</strong>——但这10%的人最终能稳定盈利。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第20章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我在第二阶段想放弃时，</span>我将<strong>提醒自己"大多数人死在这里"</strong>——坚持就是超越90%的人</div>
+<div class="rule-item"><span class="rule-trigger">当我在第三阶段感到执行疲劳时，</span>我将<strong>减少交易频率</strong>——质量优先于数量</div>
+<div class="rule-item"><span class="rule-trigger">当我的执行率达到80%时，</span>我将<strong>视为进入第三阶段的标志</strong>——继续保持</div>
+<div class="rule-item"><span class="rule-trigger">当我进入第四阶段时，</span>我将<strong>保持对市场的敬畏</strong>——避免过度自信</div>
+</div>
+</div>
+
+<!-- ===== 第21章 ===== -->
+<div class="chapter" id="ch21">
+<h2 class="chapter-title"><span class="ch-num">第21章</span>长期生存的终极法则——写给每个交易者的信</h2>
+<div class="section">
+<h3>生存优先原则</h3>
+<p>交易是一场<strong>无限游戏</strong>——没有终点，目标是"继续留在牌桌上"。有限游戏的目标是"赢"，无限游戏的目标是"不被淘汰"。交易是无限游戏——你不需要在某一天赚最多，你需要的是<strong>每一天都还在</strong>。</p>
+
+<h3>复利的力量</h3>
+<table class="data-table">
+<thead><tr><th>年化收益</th><th>5年</th><th>10年</th><th>20年</th></tr></thead>
+<tbody>
+<tr><td class="highlight">5%</td><td>1.28倍</td><td>1.63倍</td><td>2.65倍</td></tr>
+<tr><td class="highlight">10%</td><td>1.61倍</td><td>2.59倍</td><td>6.73倍</td></tr>
+<tr><td class="highlight">15%</td><td>2.01倍</td><td>4.05倍</td><td>16.37倍</td></tr>
+<tr><td class="highlight">20%</td><td>2.49倍</td><td>6.19倍</td><td>38.34倍</td></tr>
+</tbody>
+</table>
+<p>年化15%坚持20年=16.37倍。不亏大钱比赚大钱更重要——因为一次-50%的亏损需要+100%才能回本，这会严重拖累复利。</p>
+
+<h3>系统的"防腐蚀"设计</h3>
+<p>用规则对抗人性——<strong>不信任自己的意志力，信任系统</strong>。条件单自动止损、连续亏损自动暂停、仓位公式自动计算——这些"防腐蚀"设计确保即使你状态不好，系统也能保护你。</p>
+
+<h3>交易与生活的平衡</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 交易是为了更好的生活，不要本末倒置</div>
+<p>如果你因为交易而失眠、焦虑、影响了工作和家庭关系——你已经本末倒置了。交易是手段，不是目的。如果交易让你的生活变差，<strong>减少仓位或暂停交易</strong>是正确的选择。</p>
+</div>
+
+<h3>接受不完美</h3>
+<p>永远买不到最低、卖不到最高——追求"够好"而非"完美"。<strong>完美主义是交易者的敌人</strong>——它让你该买时犹豫（"等更低"），该卖时贪婪（"等更高"）。</p>
+
+<h3>持续学习的正确姿势</h3>
+<p>学逻辑而非学参数，学框架而非学技巧——避免"不断寻找圣杯"的陷阱。没有"必胜公式"——只有"适合你的正期望值系统"。</p>
+
+<h3>交易成瘾的识别与干预</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 交易成瘾信号</div>
+<ul>
+<li>无法停止交易——即使想停也停不下来</li>
+<li>隐瞒家人亏损——不敢告诉家人真实情况</li>
+<li>借钱交易——用不该用的钱交易</li>
+<li>交易影响了工作和关系——工作表现下降/家庭关系恶化</li>
+<li>亏损后加大投入而非减少——"越亏越加大"</li>
+</ul>
+<p>如果出现以上任何2个信号→<strong>立即暂停交易→寻求专业心理咨询</strong>。交易成瘾是赌博成瘾的变种，需要专业干预，不是靠"意志力"能解决的。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 热爱交易 vs 交易成瘾</div>
+<p>热爱=交易让生活更好（赚钱+心态好+家庭好）。成瘾=交易让生活更差但停不下来（亏钱+焦虑+家庭受影响）。<strong>如果交易让生活变差→你不是在热爱交易，你是在被交易控制</strong>。</p>
+</div>
+
+<h3>写给每个交易者的最后一句话</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 市场会一直在，但你的本金只有一份</div>
+<p>机会永远有。明天有、下周有、明年有。但你的本金亏光了就没有了。<strong>保护本金比抓住机会重要100倍</strong>。当你不确定该不该交易时，选择不交易——因为"不交易"的损失是零，"乱交易"的损失可能是灾难。</p>
+<p>风险管理不是让你少赚钱——它让你<strong>留在牌桌上</strong>。留在牌桌上，你才有机会看到下一个牛市、抓住下一个机会、实现复利的奇迹。</p>
+<p><strong>祝你交易顺利，长期生存。</strong></p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第21章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我想追求"完美买卖点"时，</span>我将<strong>提醒自己"永远买不到最低卖不到最高"</strong>——追求够好</div>
+<div class="rule-item"><span class="rule-trigger">当我交易影响了生活时，</span>我将<strong>减少仓位或暂停</strong>——交易是手段不是目的</div>
+<div class="rule-item"><span class="rule-trigger">当我出现交易成瘾信号时，</span>我将<strong>立即暂停并寻求专业帮助</strong></div>
+<div class="rule-item"><span class="rule-trigger">当我不确定该不该交易时，</span>我将<strong>选择不交易</strong>——不交易的损失是零</div>
+<div class="rule-item"><span class="rule-trigger">当我想到"市场会一直在"时，</span>我将<strong>先保护本金</strong>——本金只有一份</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>速查·工具·自检·模板</h2>
+  <p class="part-goal">从知识到行动的最后一公里——可打印的速查表、工具箱、自检清单和术语速查。</p>
+</div>
+
+<!-- ===== 附录A ===== -->
+<div class="chapter" id="appa">
+<h2 class="chapter-title"><span class="ch-num">附录A</span>风险管理速查表</h2>
+<div class="section">
+<h3>单笔风险计算表</h3>
+<table class="data-table">
+<thead><tr><th>总资金</th><th>风险1%</th><th>风险2%</th><th>连亏10笔(1%)</th></tr></thead>
+<tbody>
+<tr><td class="highlight">5万</td><td>500元</td><td>1,000元</td><td>约4.9%</td></tr>
+<tr><td class="highlight">10万</td><td>1,000元</td><td>2,000元</td><td>约9.6%</td></tr>
+<tr><td class="highlight">50万</td><td>5,000元</td><td>10,000元</td><td>约9.6%</td></tr>
+<tr><td class="highlight">100万</td><td>10,000元</td><td>20,000元</td><td>约9.6%</td></tr>
+</tbody>
+</table>
+
+<h3>仓位反推公式</h3>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+买入股数 = (总资金 × 风险比例) ÷ (入场价 - 止损价)
+</pre>
+
+<h3>分层风控参数速查</h3>
+<table class="data-table">
+<thead><tr><th>层级</th><th>参数</th><th>触发行动</th></tr></thead>
+<tbody>
+<tr><td class="highlight">单笔</td><td>1-2%</td><td>止损出场</td></tr>
+<tr><td class="highlight">单日</td><td>3-5%</td><td>当日停止交易</td></tr>
+<tr><td class="highlight">单周</td><td>8-10%</td><td>暂停1-3天+复盘</td></tr>
+<tr><td class="highlight">单月</td><td>10-15%</td><td>降仓至30%以下</td></tr>
+<tr><td class="highlight">回撤预警</td><td>10%</td><td>减仓至50%以下</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">清盘线</td><td>20%</td><td>全面停止交易</td></tr>
+</tbody>
+</table>
+
+<h3>亏损回本不对称表</h3>
+<table class="data-table">
+<thead><tr><th>亏损</th><th>回本需涨</th><th>倍数</th></tr></thead>
+<tbody>
+<tr><td class="highlight">10%</td><td>11.1%</td><td>1.11×</td></tr>
+<tr><td class="highlight">20%</td><td>25%</td><td>1.25×</td></tr>
+<tr><td class="highlight">30%</td><td>42.9%</td><td>1.43×</td></tr>
+<tr><td class="highlight">50%</td><td>100%</td><td>2.00×</td></tr>
+<tr><td class="highlight">70%</td><td>233%</td><td>3.33×</td></tr>
+<tr><td class="highlight">90%</td><td>900%</td><td>10.00×</td></tr>
+</tbody>
+</table>
+
+<h3>盈亏比计算模板</h3>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+盈亏比 = 潜在盈利 ÷ 潜在亏损
+  入场价: 10元 | 止损价: 9元 | 目标价: 12元
+  潜在盈利 = 12-10 = 2元
+  潜在亏损 = 10-9 = 1元
+  盈亏比 = 2÷1 = 2:1（≥2:1才入场）
+
+期望值 = 胜率 × 平均盈利 - 败率 × 平均亏损
+  胜率40% | 平均盈利3R | 平均亏损1R
+  期望值 = 0.4×3 - 0.6×1 = +0.6R/笔
+</pre>
+</div>
+</div>
+
+<!-- ===== 附录B ===== -->
+<div class="chapter" id="appb">
+<h2 class="chapter-title"><span class="ch-num">附录B</span>情绪管理工具箱</h2>
+<div class="section">
+<h3>情绪标记表</h3>
+<table class="data-table">
+<thead><tr><th>情绪</th><th>色标</th><th>交易前</th><th>交易中</th><th>交易后</th></tr></thead>
+<tbody>
+<tr><td class="highlight" style="color:var(--green);">冷静</td><td>绿色</td><td>正常执行</td><td>正常持有</td><td>正常复盘</td></tr>
+<tr><td class="highlight" style="color:var(--yellow);">不安</td><td>黄色</td><td>减半操作</td><td>只平仓不开仓</td><td>重点复盘情绪</td></tr>
+<tr><td class="highlight" style="color:var(--orange);">冲动</td><td>橙色</td><td>禁止开新仓</td><td>只执行止损</td><td>暂停1天</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">失控</td><td>红色</td><td>不交易</td><td>立即离开</td><td>暂停3天</td></tr>
+</tbody>
+</table>
+
+<h3>情绪暂停规则速查</h3>
+<table class="data-table">
+<thead><tr><th>检测信号</th><th>行动步骤</th><th>恢复条件</th></tr></thead>
+<tbody>
+<tr><td class="highlight">黄色（不安）</td><td>减半操作→15分钟→回到绿色</td><td>15分钟后情绪回到绿色</td></tr>
+<tr><td class="highlight">橙色（冲动）</td><td>禁止开新仓→离开30分钟→冷水洗脸</td><td>30分钟后回到绿色</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">红色（失控）</td><td>关闭软件→离开电脑→次日再评估</td><td>次日重新打分</td></tr>
+</tbody>
+</table>
+
+<h3>心理预演模板</h3>
+<table class="data-table">
+<thead><tr><th>场景</th><th>应对方案</th></tr></thead>
+<tbody>
+<tr><td class="highlight">如果涨了</td><td>到目标1卖50%→到目标2卖25%→剩余移动止盈</td></tr>
+<tr><td class="highlight">如果跌了</td><td>到止损价条件单自动执行</td></tr>
+<tr><td class="highlight">如果横盘</td><td>3天未达目标→评估→减仓或退出</td></tr>
+<tr><td class="highlight">如果亏了2%</td><td>关闭软件离开30分钟→复盘→不做新交易</td></tr>
+</tbody>
+</table>
+
+<h3>每日5分钟正念引导词</h3>
+<ol>
+<li>坐直，闭眼，深呼吸3次（4秒吸-7秒屏-8秒呼）</li>
+<li>感受呼吸——鼻腔→胸腔→腹部</li>
+<li>觉察身体——肩膀紧张？心跳快？手心出汗？</li>
+<li>不评判，只觉察——"我注意到___"</li>
+<li>对自己说："我不知道明天涨跌，但我知道我的规则"</li>
+<li>回到当下，打开规则清单</li>
+</ol>
+
+<h3>条件单设置清单</h3>
+<ul>
+<li>☐ 止损单已设（入场后立即设）</li>
+<li>☐ 止盈单已设（目标1和目标2）</li>
+<li>☐ 触发条件确认（价格条件正确）</li>
+<li>☐ 有效期确认（当日有效或长期有效）</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录C ===== -->
+<div class="chapter" id="appc">
+<h2 class="chapter-title"><span class="ch-num">附录C</span>交易日记模板（含情绪维度）</h2>
+<div class="section">
+<h3>每笔交易记录表</h3>
+<table class="data-table">
+<thead><tr><th>类别</th><th>字段</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易数据</td><td>日期/标的/方向/入场价/出场价/仓位/盈亏金额/盈亏比/R倍数</td></tr>
+<tr><td class="highlight">情绪标记</td><td>入场情绪(色标)/持仓情绪变化/出场情绪(色标)</td></tr>
+<tr><td class="highlight">决策记录</td><td>入场理由(对照规则清单)/出场理由/是否按规则执行</td></tr>
+<tr><td class="highlight">复盘字段</td><td>做对了什么/做错了什么/情绪是否影响了决策/下一步修正</td></tr>
+</tbody>
+</table>
+
+<h3>周统计汇总</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>本周</th><th>上周</th><th>月均</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易笔数</td><td>____</td><td>____</td><td>____</td></tr>
+<tr><td class="highlight">胜率</td><td>____%</td><td>____%</td><td>____%</td></tr>
+<tr><td class="highlight">盈亏比</td><td>____:1</td><td>____:1</td><td>____:1</td></tr>
+<tr><td class="highlight">期望值</td><td>____R</td><td>____R</td><td>____R</td></tr>
+<tr><td class="highlight">执行率</td><td>____%</td><td>____%</td><td>____%</td></tr>
+<tr><td class="highlight">情绪干扰交易占比</td><td>____%</td><td>____%</td><td>____%</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录D ===== -->
+<div class="chapter" id="appd">
+<h2 class="chapter-title"><span class="ch-num">附录D</span>风险与心理自检清单</h2>
+<div class="section">
+<h3>资金安全自检（5项）</h3>
+<ul>
+<li>☐ 当我入金时，我将确认没有借钱炒股</li>
+<li>☐ 当我入金时，我将确认没用生活必需资金</li>
+<li>☐ 当我建仓时，我将确保总仓位≤50%</li>
+<li>☐ 当我建仓时，我将确保单票≤15%</li>
+<li>☐ 当我建仓时，我将确保现金≥30%</li>
+</ul>
+
+<h3>止损纪律自检（4项）</h3>
+<ul>
+<li>☐ 当我入场时，我将确保每笔都有止损</li>
+<li>☐ 当我设止损时，我将确认止损位合理（ATR或结构位）</li>
+<li>☐ 当我被触发止损时，我将立即执行不犹豫</li>
+<li>☐ 当我在盘中时，我将不修改止损价</li>
+</ul>
+
+<h3>情绪管理自检（5项）</h3>
+<ul>
+<li>☐ 当我交易时，我将每笔记录情绪色标</li>
+<li>☐ 当我情绪黄色以上时，我将执行暂停规则</li>
+<li>☐ 当我开盘前，我将做心理预演</li>
+<li>☐ 当我入场后，我将设条件单自动执行</li>
+<li>☐ 当我连续亏损3笔时，我将强制暂停1-3天</li>
+</ul>
+
+<h3>心态建设自检（3项）</h3>
+<ul>
+<li>☐ 当我评估绩效时，我将看执行率而非只看盈亏</li>
+<li>☐ 当我没有信号时，我将能空仓等待</li>
+<li>☐ 当我追求完美时，我将提醒自己"够好就行"</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录E ===== -->
+<div class="chapter" id="appe">
+<h2 class="chapter-title"><span class="ch-num">附录E</span>术语速查表</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>章节</th></tr></thead>
+<tbody>
+<tr><td class="highlight">风险</td><td>Risk</td><td>可量化的未来损失不确定性</td><td>第2章</td></tr>
+<tr><td class="highlight">系统性风险</td><td>Systematic Risk</td><td>影响整个市场的风险，不可分散</td><td>第2章</td></tr>
+<tr><td class="highlight">非系统性风险</td><td>Unsystematic Risk</td><td>个股/行业特有风险，可分散</td><td>第2章</td></tr>
+<tr><td class="highlight">尾部风险</td><td>Tail Risk</td><td>概率极小但损失极大的事件</td><td>第2章</td></tr>
+<tr><td class="highlight">左尾风险</td><td>Left Tail Risk</td><td>亏损比盈利大且频繁的分布形态</td><td>第2章</td></tr>
+<tr><td class="highlight">回撤</td><td>Drawdown</td><td>账户从峰值到谷底的跌幅</td><td>第7章</td></tr>
+<tr><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>历史上最严重的一次回撤</td><td>第7章</td></tr>
+<tr><td class="highlight">风险预算</td><td>Risk Budget</td><td>愿意承受的最大亏损额度</td><td>第2章</td></tr>
+<tr><td class="highlight">风险容量</td><td>Risk Capacity</td><td>能承受的最大总亏损</td><td>第2章</td></tr>
+<tr><td class="highlight">单笔风险</td><td>Per-Trade Risk</td><td>每笔交易最大亏损=总资金×1-2%</td><td>第3章</td></tr>
+<tr><td class="highlight">固定分数法</td><td>Fixed Fractional</td><td>每笔冒固定比例的风险</td><td>第3章</td></tr>
+<tr><td class="highlight">波动率仓位法</td><td>Volatility Sizing</td><td>根据ATR调整仓位大小</td><td>第3章</td></tr>
+<tr><td class="highlight">凯利公式</td><td>Kelly Criterion</td><td>f*=(bp-q)/b，最优仓位比例</td><td>第3章</td></tr>
+<tr><td class="highlight">半凯利</td><td>Half Kelly</td><td>凯利值÷2，保守版</td><td>第3章</td></tr>
+<tr><td class="highlight">反马丁格尔</td><td>Anti-Martingale</td><td>盈利后加仓，趋势跟踪策略</td><td>第3章</td></tr>
+<tr><td class="highlight">金字塔加仓</td><td>Pyramiding</td><td>盈利后分批加仓，每次递减</td><td>第3章</td></tr>
+<tr><td class="highlight">熔断机制</td><td>Circuit Breaker</td><td>触及风险上限后强制停止交易</td><td>第7章</td></tr>
+<tr><td class="highlight">清盘线</td><td>Stop-Loss Line</td><td>回撤20%→全面停止交易</td><td>第7章</td></tr>
+<tr><td class="highlight">压力测试</td><td>Stress Test</td><td>模拟极端场景下最大亏损</td><td>第9章</td></tr>
+<tr><td class="highlight">VaR</td><td>Value at Risk</td><td>95%置信度下明天最多亏多少</td><td>第9章</td></tr>
+<tr><td class="highlight">相关性崩溃</td><td>Correlation Breakdown</td><td>暴跌时所有资产同向下跌</td><td>第9章</td></tr>
+<tr><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益</td><td>第10章</td></tr>
+<tr><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险R为单位的盈亏</td><td>第8章</td></tr>
+<tr><td class="highlight">损失厌恶</td><td>Loss Aversion</td><td>亏100的痛苦≈赚200的快乐</td><td>第11章</td></tr>
+<tr><td class="highlight">确认偏误</td><td>Confirmation Bias</td><td>只看支持自己观点的信息</td><td>第11章</td></tr>
+<tr><td class="highlight">锚定效应</td><td>Anchoring</td><td>被第一个看到的数字锚定</td><td>第11章</td></tr>
+<tr><td class="highlight">沉没成本</td><td>Sunk Cost</td><td>已投入的成本不应影响未来决策</td><td>第11章</td></tr>
+<tr><td class="highlight">报复性交易</td><td>Revenge Trading</td><td>亏损后"赚回来"的心态</td><td>第13章</td></tr>
+<tr><td class="highlight">FOMO</td><td>Fear of Missing Out</td><td>害怕错过→追高</td><td>第12章</td></tr>
+<tr><td class="highlight">情绪温度计</td><td>Emotion Gauge</td><td>用颜色标记情绪状态的可视化工具</td><td>第11章</td></tr>
+<tr><td class="highlight">心理预演</td><td>Mental Rehearsal</td><td>开盘前预演各场景应对方案</td><td>第16章</td></tr>
+<tr><td class="highlight">正念</td><td>Mindfulness</td><td>觉察情绪而不被情绪驱动</td><td>第17章</td></tr>
+<tr><td class="highlight">过程导向</td><td>Process-Oriented</td><td>关注执行率而非盈亏</td><td>第18章</td></tr>
+<tr><td class="highlight">执行率</td><td>Execution Rate</td><td>按规则执行的交易占比</td><td>第18章</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录F ===== -->
+<div class="chapter" id="appf">
+<h2 class="chapter-title"><span class="ch-num">附录F</span>家庭财务与交易资金规划</h2>
+<div class="section">
+<h3>交易资金在家庭财务中的位置</h3>
+<table class="data-table">
+<thead><tr><th>层级</th><th>内容</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td class="highlight">第1层</td><td>应急基金</td><td>3-6个月生活费，货币基金/活期</td></tr>
+<tr><td class="highlight">第2层</td><td>保险保障</td><td>医疗/意外/重疾险</td></tr>
+<tr><td class="highlight">第3层</td><td>投资资金</td><td>指数基金/债券/理财</td></tr>
+<tr><td class="highlight">第4层</td><td>交易资金</td><td>股票/基金交易——最后一层</td></tr>
+</tbody>
+</table>
+
+<h3>"可投入股市的资金量"计算公式</h3>
+<pre style="background:var(--card2);padding:12px;border-radius:8px;font-size:13px;color:var(--text-secondary);overflow-x:auto;">
+可投资金额 = 总资产 - 应急基金 - 保险费用 - 未来1-2年大额支出
+
+例：总资产50万
+    应急基金：6万（3个月×2万）
+    保险费用：1万/年
+    未来大额支出：10万（装修）
+    可投资金额 = 50-6-1-10 = 33万
+
+    交易资金（第4层）= 33万 × 30-40% = 10-13万
+    （其余放第3层低风险投资）
+</pre>
+
+<h3>交易资金分级管理</h3>
+<table class="data-table">
+<thead><tr><th>层级</th><th>占比</th><th>内容</th><th>风险</th></tr></thead>
+<tbody>
+<tr><td class="highlight">核心层</td><td>60-70%</td><td>指数基金/债券/理财</td><td>低</td></tr>
+<tr><td class="highlight">卫星层</td><td>30-40%</td><td>股票/基金交易</td><td>中高</td></tr>
+<tr><td class="highlight" style="color:var(--accent-light);">激进层</td><td>&lt;10%</td><td>短线/期货/期权——新手不建议</td><td>极高</td></tr>
+</tbody>
+</table>
+
+<h3>家庭交易协议模板</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 与家人约定的规则</div>
+<ul>
+<li>可投资金额：双方确认___万元</li>
+<li>最大亏损容忍度：亏损达___%必须暂停</li>
+<li>亏损后向家人坦白的规则：单月亏损超___元必须告知</li>
+<li>不向家人隐瞒亏损——隐瞒=欺骗=关系破裂的开始</li>
+<li>亏损不超过家庭月收入的10%</li>
+</ul>
+</div>
+
+<h3>交易资金规划表模板（可打印填写）</h3>
+<table class="data-table">
+<thead><tr><th>项目</th><th>金额</th></tr></thead>
+<tbody>
+<tr><td class="highlight">家庭总资产</td><td>____万元</td></tr>
+<tr><td class="highlight">应急基金（3-6个月）</td><td>____万元</td></tr>
+<tr><td class="highlight">保险费用</td><td>____万元/年</td></tr>
+<tr><td class="highlight">未来1-2年大额支出</td><td>____万元</td></tr>
+<tr><td class="highlight">可投资金额</td><td>____万元</td></tr>
+<tr><td class="highlight">交易资金（30-40%）</td><td>____万元</td></tr>
+<tr><td class="highlight">单笔风险1%</td><td>____元</td></tr>
+<tr><td class="highlight">月收入10%暂停阈值</td><td>____元</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div><!-- end container appendix -->
+
+<!-- ==================== FOOTER ==================== -->
+<div class="container" style="text-align:center;padding:60px 0 40px;border-top:1px solid var(--border);">
+<p style="color:var(--text-muted);font-size:12px;">风险管理与交易心理 · Risk & Mind 101 · 投资者教育手册系列</p>
+<p style="color:var(--text-muted);font-size:11px;margin-top:8px;">本手册仅供学习参考，不构成投资建议。投资有风险，入市需谨慎。</p>
+</div>
+
+</div><!-- end #main -->
+
+<script>
+// ===== Sidebar Active State =====
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('mobile-toggle');
+  const navLinks = document.querySelectorAll('#sidebar a');
+  const sections = [];
+  sidebarToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+    sidebarToggle.setAttribute('aria-label', isOpen ? '关闭章节导航' : '打开章节导航');
+  });
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const el = document.querySelector(href);
+      if (el) sections.push({ el, link });
+    }
+  });
+  function updateActive() {
+    const scrollY = window.scrollY + 100;
+    let current = sections[0];
+    sections.forEach(s => { if (s.el.offsetTop <= scrollY) current = s; });
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open');
+        sidebarToggle.setAttribute('aria-expanded', 'false');
+        sidebarToggle.setAttribute('aria-label', '打开章节导航');
+      }
+    });
+  });
+  // Initial calcs
+  setTimeout(function() { calcRecovery(); calcDrawdown(); calcStress(); }, 300);
+});
+
+// ===== Loss Recovery Calculator =====
+function calcRecovery() {
+  const lossPct = parseFloat(document.getElementById('loss-pct').value);
+  if (isNaN(lossPct) || lossPct <= 0 || lossPct >= 100) return;
+  const recoveryPct = (lossPct / (100 - lossPct) * 100);
+  const multiple = recoveryPct / lossPct;
+  const result = document.getElementById('loss-result');
+  const big = document.getElementById('recovery-pct');
+  const label = document.getElementById('recovery-label');
+  result.style.display = 'block';
+  big.textContent = recoveryPct.toFixed(1) + '%';
+  big.style.color = recoveryPct > lossPct * 1.5 ? 'var(--accent-light)' : 'var(--yellow)';
+  label.innerHTML = '亏' + lossPct + '%需要涨' + recoveryPct.toFixed(1) + '%才能回本（倍数' + multiple.toFixed(2) + '×）' +
+    (lossPct >= 50 ? '<br><span style="color:var(--accent-light);">⚠️ 亏损超过50%→回本需要翻倍以上→灾难性亏损</span>' : '');
+}
+
+// ===== Drawdown Simulator =====
+function calcDrawdown() {
+  const capital = parseFloat(document.getElementById('dd-capital').value);
+  const riskPct = parseFloat(document.getElementById('dd-risk').value) / 100;
+  const streak = parseInt(document.getElementById('dd-streak').value);
+  if (isNaN(capital) || isNaN(riskPct) || isNaN(streak)) return;
+  let balance = capital;
+  for (let i = 0; i < streak; i++) {
+    balance -= balance * riskPct;
+  }
+  const drawdownPct = ((capital - balance) / capital * 100);
+  const result = document.getElementById('dd-result');
+  const big = document.getElementById('dd-value');
+  const label = document.getElementById('dd-label');
+  result.style.display = 'block';
+  big.textContent = '-' + drawdownPct.toFixed(1) + '%';
+  big.style.color = drawdownPct > 10 ? 'var(--accent-light)' : (drawdownPct > 5 ? 'var(--yellow)' : 'var(--green)');
+  label.innerHTML = '连亏' + streak + '笔(' + (riskPct*100).toFixed(1) + '%风险)：资金从' + capital.toLocaleString() + '降至' + balance.toLocaleString(undefined,{maximumFractionDigits:0}) + '，回撤' + drawdownPct.toFixed(1) + '%' +
+    (drawdownPct > 20 ? '<br><span style="color:var(--accent-light);">⚠️ 超过清盘线20%→全面停止交易</span>' :
+     drawdownPct > 10 ? '<br><span style="color:var(--yellow);">⚠️ 超过回撤预警10%→减仓至50%以下</span>' : '');
+}
+
+// ===== Stress Test =====
+function calcStress() {
+  const position = parseFloat(document.getElementById('st-position').value);
+  const count = parseInt(document.getElementById('st-count').value);
+  if (isNaN(position) || isNaN(count) || count <= 0) return;
+  const perStock = position / count;
+  const sysCrash = position * 0.15;
+  const blackSwan = perStock * 0.50;
+  const total = sysCrash + blackSwan;
+  const totalPct = total / (position / 0.5) * 100; // assume 50% of total capital is deployed
+  const result = document.getElementById('st-result');
+  const big = document.getElementById('st-value');
+  const label = document.getElementById('st-label');
+  result.style.display = 'block';
+  big.textContent = '-' + total.toLocaleString(undefined,{maximumFractionDigits:0}) + '元';
+  big.style.color = total > position * 0.2 ? 'var(--accent-light)' : (total > position * 0.1 ? 'var(--yellow)' : 'var(--green)');
+  label.innerHTML = '系统性暴跌(-15%): 亏' + sysCrash.toLocaleString(undefined,{maximumFractionDigits:0}) + '元 | ' +
+    '个股黑天鹅(1只-50%): 亏' + blackSwan.toLocaleString(undefined,{maximumFractionDigits:0}) + '元 | ' +
+    '合计极端亏损: ' + total.toLocaleString(undefined,{maximumFractionDigits:0}) + '元 (' + (total/position*100).toFixed(1) + '% of持仓)' +
+    (total > position * 0.2 ? '<br><span style="color:var(--accent-light);">⚠️ 极端亏损超20%→需减仓或对冲</span>' : '');
+}
+</script>
+</body>
+</html>
