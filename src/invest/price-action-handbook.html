@@ -1,0 +1,3083 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>裸K与价格行为 — Price Action 101</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js" defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0B0E14;
+  --bg-card: #141820;
+  --bg-card-alt: #1A1F2B;
+  --bg-sidebar: #0F1219;
+  --text-primary: #E8ECF1;
+  --text-secondary: #8B95A5;
+  --text-muted: #5A6478;
+  --accent: #F97316;
+  --accent-dim: rgba(249,115,22,0.15);
+  --accent-glow: rgba(249,115,22,0.3);
+  --green: #22C55E;
+  --green-dim: rgba(34,197,94,0.15);
+  --red: #EF4444;
+  --red-dim: rgba(239,68,68,0.15);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.15);
+  --purple: #A855F7;
+  --purple-dim: rgba(168,85,247,0.15);
+  --yellow: #EAB308;
+  --yellow-dim: rgba(234,179,8,0.15);
+  --border: rgba(255,255,255,0.06);
+  --border-accent: rgba(249,115,22,0.3);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 4px;
+  --font-body: 'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --sidebar-w: 280px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); background: var(--bg-deep); color: var(--text-primary); line-height: 1.8; overflow-x: hidden; }
+::selection { background: var(--accent); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* === SIDEBAR === */
+#sidebar {
+  position: fixed; top:0; left:0; width: var(--sidebar-w); height:100vh;
+  background: var(--bg-sidebar); border-right:1px solid var(--border);
+  overflow-y:auto; z-index:100; transition: transform 0.3s ease;
+}
+#sidebar .logo {
+  padding: 24px 20px 16px; border-bottom: 1px solid var(--border);
+  font-size: 14px; font-weight: 700; color: var(--accent);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+#sidebar .logo span { color: var(--text-secondary); font-weight: 400; display:block; font-size:12px; margin-top:4px; }
+#sidebar nav a {
+  display: block; padding: 8px 20px; color: var(--text-secondary);
+  text-decoration:none; font-size:13px; border-left:2px solid transparent;
+  transition: all 0.2s;
+}
+#sidebar nav a:hover { color: var(--text-primary); background: rgba(249,115,22,0.05); }
+#sidebar nav a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-dim); }
+#sidebar nav .part-label {
+  padding: 16px 20px 6px; font-size:11px; font-weight:700;
+  color: var(--accent); letter-spacing:2px; text-transform:uppercase;
+}
+#sidebar nav .chapter-group a { padding-left: 28px; font-size:12.5px; }
+#sidebar nav .appendix-group a { padding-left: 28px; font-size:12.5px; color: var(--text-muted); }
+
+/* === MAIN CONTENT === */
+#main { margin-left: var(--sidebar-w); min-height:100vh; }
+.container { max-width:880px; margin:0 auto; padding:40px 48px 120px; }
+
+/* === COVER === */
+.cover {
+  min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.cover::before {
+  content:''; position:absolute; top:-50%; right:-30%; width:800px; height:800px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  filter: blur(80px); pointer-events:none;
+}
+.cover::after {
+  content:''; position:absolute; bottom:-30%; left:-20%; width:600px; height:600px;
+  background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+  filter: blur(60px); pointer-events:none;
+}
+.cover-inner { position:relative; z-index:1; }
+.cover .badge {
+  display:inline-block; padding:6px 16px; border-radius:20px;
+  background: var(--accent-dim); color: var(--accent); font-size:12px;
+  font-weight:600; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:24px;
+  border:1px solid var(--border-accent);
+}
+.cover h1 {
+  font-size: 56px; font-weight:900; line-height:1.1; margin-bottom:16px;
+  background: linear-gradient(135deg, #F97316, #FB923C, #FDBA74);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+.cover .subtitle {
+  font-size:22px; color: var(--text-secondary); font-weight:300; margin-bottom:40px;
+}
+.cover .meta-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:40px;
+}
+.cover .meta-card {
+  background: var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:20px; text-align:center;
+}
+.cover .meta-card .label { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.cover .meta-card .value { font-size:20px; font-weight:700; color:var(--accent); }
+.cover .learning-map {
+  background: var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px; margin-top:32px;
+}
+.cover .learning-map h3 { font-size:14px; color:var(--accent); margin-bottom:16px; font-weight:600; }
+.cover .map-path {
+  display:flex; align-items:center; gap:0; flex-wrap:wrap; justify-content:center;
+}
+.cover .map-node {
+  padding:8px 16px; border-radius:var(--radius-sm); font-size:13px; font-weight:500;
+  border:1px solid var(--border); background:var(--bg-card-alt); color:var(--text-secondary);
+  white-space:nowrap;
+}
+.cover .map-node.current {
+  border-color: var(--accent); color:var(--accent); background:var(--accent-dim);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.cover .map-arrow { color:var(--text-muted); font-size:18px; margin:0 4px; }
+
+/* === READING PATH === */
+.reading-path {
+  background: var(--bg-card); border:1px solid var(--border-accent); border-radius:var(--radius);
+  padding:32px; margin:40px 0; position:relative; overflow:hidden;
+}
+.reading-path::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--accent), #FB923C, #FDBA74);
+}
+.reading-path h2 { font-size:20px; font-weight:700; margin-bottom:20px; color:var(--accent); }
+.reading-path .path-step {
+  display:flex; gap:16px; margin-bottom:16px; align-items:flex-start;
+}
+.reading-path .step-num {
+  min-width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:700; flex-shrink:0;
+}
+.reading-path .step-num.p0 { background:var(--accent-dim); color:var(--accent); border:1px solid var(--accent); }
+.reading-path .step-num.p1 { background:var(--blue-dim); color:var(--blue); border:1px solid var(--blue); }
+.reading-path .step-num.p2 { background:var(--purple-dim); color:var(--purple); border:1px solid var(--purple); }
+.reading-path .step-num.p3 { background:var(--green-dim); color:var(--green); border:1px solid var(--green); }
+.reading-path .step-text { font-size:14px; color:var(--text-secondary); line-height:1.6; }
+.reading-path .step-text strong { color:var(--text-primary); }
+.reading-path .survival-notice {
+  margin-top:20px; padding:16px 20px; border-radius:var(--radius-sm);
+  background:var(--red-dim); border:1px solid rgba(239,68,68,0.3);
+  font-size:13px; color:var(--red); line-height:1.7;
+}
+
+/* === SECTION HEADERS === */
+.part-header {
+  margin: 64px 0 40px; padding:40px; border-radius:var(--radius);
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-alt) 100%);
+  border:1px solid var(--border); position:relative; overflow:hidden;
+}
+.part-header::before {
+  content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:var(--accent);
+}
+.part-header .part-tag {
+  font-size:11px; font-weight:700; color:var(--accent); letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:8px;
+}
+.part-header h2 { font-size:28px; font-weight:800; line-height:1.3; margin-bottom:12px; }
+.part-header .part-goal { font-size:14px; color:var(--text-secondary); line-height:1.7; }
+
+/* === CHAPTERS === */
+.chapter { margin:48px 0; scroll-margin-top:40px; }
+.chapter-title {
+  font-size:24px; font-weight:800; margin-bottom:24px; padding-bottom:12px;
+  border-bottom:2px solid var(--border); display:flex; align-items:center; gap:12px;
+}
+.chapter-title .ch-num {
+  font-size:13px; font-weight:700; color:var(--accent); background:var(--accent-dim);
+  padding:4px 12px; border-radius:var(--radius-xs); white-space:nowrap;
+}
+.section { margin:28px 0; }
+.section h3 {
+  font-size:18px; font-weight:700; margin-bottom:12px; color:var(--text-primary);
+  display:flex; align-items:center; gap:8px;
+}
+.section h3::before { content:''; width:3px; height:20px; background:var(--accent); border-radius:2px; flex-shrink:0; }
+.section p { font-size:15px; color:var(--text-secondary); line-height:1.9; margin-bottom:14px; }
+.section ul, .section ol { margin:12px 0; padding-left:24px; }
+.section li { font-size:14.5px; color:var(--text-secondary); line-height:1.8; margin-bottom:6px; }
+.section li strong { color:var(--text-primary); }
+
+/* === CALLOUTS === */
+.callout {
+  border-radius:var(--radius-sm); padding:20px 24px; margin:24px 0;
+  border-left:4px solid; position:relative;
+}
+.callout .callout-title {
+  font-size:13px; font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:8px;
+}
+.callout-tip { background:var(--blue-dim); border-color:var(--blue); }
+.callout-tip .callout-title { color:var(--blue); }
+.callout-key { background:var(--accent-dim); border-color:var(--accent); }
+.callout-key .callout-title { color:var(--accent); }
+.callout-warn { background:var(--yellow-dim); border-color:var(--yellow); }
+.callout-warn .callout-title { color:var(--yellow); }
+.callout-danger { background:var(--red-dim); border-color:var(--red); }
+.callout-danger .callout-title { color:var(--red); }
+.callout p, .callout ul, .callout ol { font-size:13.5px; color:var(--text-secondary); line-height:1.7; margin-bottom:6px; }
+.callout p:last-child { margin-bottom:0; }
+
+/* === RULE BOX === */
+.rule-box {
+  background: var(--bg-card); border:1px solid var(--border-accent); border-radius:var(--radius-sm);
+  padding:20px 24px; margin:24px 0;
+}
+.rule-box .rule-title { font-size:12px; font-weight:700; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
+.rule-box .rule-item {
+  font-size:14px; color:var(--text-secondary); padding:8px 0;
+  border-bottom:1px solid var(--border); line-height:1.7;
+}
+.rule-box .rule-item:last-child { border-bottom:none; }
+.rule-box .rule-item .trigger { color:var(--accent); font-weight:600; }
+.rule-box .rule-item .action { color:var(--text-primary); font-weight:500; }
+
+/* === CHART CONTAINERS === */
+.chart-box {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px; margin:28px 0; position:relative;
+}
+.chart-box .chart-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:12px; text-align:center; }
+.chart-box .chart-container { width:100%; height:360px; }
+
+/* === INTERACTIVE WIDGETS === */
+.calc-widget {
+  background: var(--bg-card); border:1px solid var(--border-accent); border-radius:var(--radius);
+  padding:28px; margin:28px 0;
+}
+.calc-widget .widget-title { font-size:16px; font-weight:700; color:var(--accent); margin-bottom:16px; }
+.calc-widget .input-group { margin-bottom:16px; }
+.calc-widget label { display:block; font-size:12px; color:var(--text-muted); margin-bottom:4px; font-weight:600; }
+.calc-widget input, .calc-widget select {
+  width:100%; padding:10px 14px; border-radius:var(--radius-xs);
+  border:1px solid var(--border); background:var(--bg-card-alt); color:var(--text-primary);
+  font-family:var(--font-mono); font-size:14px;
+}
+.calc-widget input:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim); }
+.calc-widget .result-box {
+  background:var(--accent-dim); border:1px solid var(--border-accent); border-radius:var(--radius-sm);
+  padding:16px; margin-top:16px; text-align:center;
+}
+.calc-widget .result-box .result-value { font-size:28px; font-weight:900; color:var(--accent); font-family:var(--font-mono); }
+.calc-widget .result-box .result-label { font-size:12px; color:var(--text-muted); margin-top:4px; }
+.calc-widget button {
+  width:100%; padding:12px; border:none; border-radius:var(--radius-sm);
+  background:var(--accent); color:#fff; font-weight:700; font-size:14px; cursor:pointer;
+  transition: opacity 0.2s;
+}
+.calc-widget button:hover { opacity:0.9; }
+
+/* === TABLES === */
+.data-table { width:100%; border-collapse:collapse; margin:20px 0; font-size:13.5px; }
+.data-table th {
+  text-align:left; padding:12px 16px; background:var(--bg-card-alt);
+  color:var(--accent); font-weight:600; border-bottom:2px solid var(--border);
+  font-size:12px; letter-spacing:0.5px;
+}
+.data-table td {
+  padding:10px 16px; border-bottom:1px solid var(--border); color:var(--text-secondary);
+}
+.data-table tr:hover td { background:rgba(249,115,22,0.03); }
+.data-table .highlight { color:var(--accent); font-weight:600; }
+
+/* === PRACTICE BOX === */
+.practice-box {
+  background:var(--bg-card); border:1px dashed var(--border-accent); border-radius:var(--radius);
+  padding:24px; margin:32px 0;
+}
+.practice-box .practice-header {
+  display:flex; align-items:center; gap:8px; margin-bottom:12px;
+  font-size:14px; font-weight:700; color:var(--accent);
+}
+.practice-box p { font-size:13.5px; color:var(--text-secondary); margin-bottom:8px; }
+.practice-box .checklist li { font-size:13px; }
+
+/* === MOBILE TOGGLE === */
+#mobile-toggle {
+  display:none; position:fixed; top:16px; left:16px; z-index:200;
+  width:40px; height:40px; border-radius:var(--radius-sm);
+  background:var(--bg-card); border:1px solid var(--border);
+  color:var(--accent); font-size:20px; cursor:pointer; align-items:center; justify-content:center;
+}
+@media (max-width:900px) {
+  #sidebar { transform:translateX(-100%); }
+  #sidebar.open { transform:translateX(0); }
+  #main { margin-left:0; }
+  .container { padding:24px 20px 80px; }
+  #mobile-toggle { display:flex; }
+  .cover h1 { font-size:36px; }
+  .cover .meta-grid { grid-template-columns:1fr; }
+  .cover .map-path { flex-direction:column; gap:8px; }
+  .cover .map-arrow { transform:rotate(90deg); }
+  .data-table { display:block; max-width:100%; overflow-x:auto; }
+}
+</style>
+</head>
+<body>
+<button id="mobile-toggle" type="button" aria-label="打开章节导航" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+<aside id="sidebar">
+  <div class="logo">Price Action 101<span>裸K与价格行为投资手册</span></div>
+  <nav id="nav">
+    <a href="#cover" class="active">封面</a>
+    <a href="#reading-path">阅读路径</a>
+    <div class="part-label">第一篇 · 认知重塑</div>
+    <div class="chapter-group">
+      <a href="#ch1">第1章 抛开指标</a>
+      <a href="#ch2">第2章 底层逻辑</a>
+    </div>
+    <div class="part-label">第二篇 · P0筑基</div>
+    <div class="chapter-group">
+      <a href="#ch3">第3章 市场结构</a>
+      <a href="#ch4">第4章 单根K线</a>
+      <a href="#ch5">第5章 Pin Bar</a>
+      <a href="#ch6">第6章 组合K线</a>
+      <a href="#ch7">第7章 势位形</a>
+    </div>
+    <div class="part-label">第三篇 · P1进阶</div>
+    <div class="chapter-group">
+      <a href="#ch8">第8章 缺口理论</a>
+      <a href="#ch9">第9章 推动与回调</a>
+      <a href="#ch10">第10章 势</a>
+      <a href="#ch11">第11章 位</a>
+      <a href="#ch12">第12章 形</a>
+    </div>
+    <div class="part-label">第四篇 · 交易决策</div>
+    <div class="chapter-group">
+      <a href="#ch13">第13章 入场</a>
+      <a href="#ch14">第14章 趋势跟随</a>
+      <a href="#ch15">第15章 区间交易</a>
+      <a href="#ch16">第16章 突破交易</a>
+      <a href="#ch17">第17章 止损</a>
+      <a href="#ch18">第18章 止盈仓位</a>
+    </div>
+    <div class="part-label">第五篇 · P2高阶</div>
+    <div class="chapter-group">
+      <a href="#ch19">第19章 假突破深度</a>
+      <a href="#ch20">第20章 SMC深度</a>
+      <a href="#ch21">第21章 斐波那契</a>
+      <a href="#ch22">第22章 威科夫</a>
+      <a href="#ch23">第23章 Volume Profile</a>
+      <a href="#ch24">第24章 算法时代</a>
+    </div>
+    <div class="part-label">第六篇 · P3整合</div>
+    <div class="chapter-group">
+      <a href="#ch25">第25章 MTFA</a>
+      <a href="#ch26">第26章 指数与个股</a>
+      <a href="#ch27">第27章 全链路</a>
+      <a href="#ch28">第28章 复盘精进</a>
+    </div>
+    <div class="part-label">附录</div>
+    <div class="appendix-group">
+      <a href="#appa">A 全局术语表</a>
+      <a href="#appb">B K线速查</a>
+      <a href="#appc">C 关键位速查</a>
+      <a href="#appd">D 止损仓位工具</a>
+      <a href="#appe">E 术语速查</a>
+      <a href="#appf">F 自检清单</a>
+      <a href="#appg">G 图表练习</a>
+    </div>
+  </nav>
+</aside>
+
+<div id="main">
+<!-- ==================== COVER ==================== -->
+<div class="cover" id="cover">
+<div class="container cover-inner">
+  <div class="badge">Price Action 101 · 投资者教育手册系列</div>
+  <h1>裸K与价格行为</h1>
+  <p class="subtitle">扔掉指标，读懂价格本身——从P0筑基到P3系统整合的完整裸K知识体系</p>
+  <div class="meta-grid">
+    <div class="meta-card"><div class="label">篇章</div><div class="value">6 篇</div></div>
+    <div class="meta-card"><div class="label">章节</div><div class="value">28 章</div></div>
+    <div class="meta-card"><div class="label">附录</div><div class="value">A-G</div></div>
+  </div>
+  <div class="learning-map">
+    <h3>📍 8轮学习地图中的位置</h3>
+    <div class="map-path">
+      <div class="map-node current">裸K<br><small>轮次1-2,5-6</small></div>
+      <span class="map-arrow">→</span>
+      <div class="map-node">财报<br><small>轮次3</small></div>
+      <span class="map-arrow">→</span>
+      <div class="map-node">宏观<br><small>轮次4</small></div>
+      <span class="map-arrow">→</span>
+      <div class="map-node">交易系统<br><small>轮次6</small></div>
+      <span class="map-arrow">→</span>
+      <div class="map-node">风控心理<br><small>轮次7</small></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== READING PATH ==================== -->
+<div class="container" id="reading-path">
+<div class="reading-path">
+  <h2>📖 阅读路径</h2>
+  <div class="path-step">
+    <div class="step-num p0">P0</div>
+    <div class="step-text"><strong>第1-2章</strong>：理解裸K本质与底层逻辑 → <strong>第3章</strong>：市场结构骨架 → <strong>第4-6章</strong>：K线语言 → <strong>第7章</strong>：势位形三步法</div>
+  </div>
+  <div class="path-step">
+    <div class="step-num p1">P1</div>
+    <div class="step-text"><strong>第8-12章</strong>：缺口理论→推动回调→势位形深入（量价/关键位/信号确认）</div>
+  </div>
+  <div class="path-step">
+    <div class="step-num p1">P1</div>
+    <div class="step-text"><strong>第13-18章</strong>：入场→趋势跟随→区间→突破→止损→止盈仓位（裸K视角的交易决策，仓位算法详见风控手册）</div>
+  </div>
+  <div class="path-step">
+    <div class="step-num p2">P2</div>
+    <div class="step-text"><strong>第19-24章</strong>：假突破深度→SMC→斐波那契→威科夫→Volume Profile→算法时代</div>
+  </div>
+  <div class="path-step">
+    <div class="step-num p3">P3</div>
+    <div class="step-text"><strong>第25-28章</strong>：MTFA→指数vs个股→全链路交易计划→复盘体系</div>
+  </div>
+  <div class="survival-notice">
+    ⚠️ <strong>生存契约（Day 0 必读）</strong>：在开始学习本手册之前，请先阅读《风险管理与交易心理》第6章：三条资金红线。这不是建议，是前提。没有红线的交易，是赌博。
+  </div>
+</div>
+</div>
+
+<!-- ==================== 第一篇：裸K是什么 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part1">
+  <div class="part-tag">第一篇</div>
+  <h2>裸K是什么——扔掉指标，看价格本身</h2>
+  <p class="part-goal">回答"为什么裸K值得学"，建立正确认知，破除"形态崇拜"和"指标依赖"两个执念。引入流动性和机构视角的底层逻辑。</p>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<div class="chapter" id="ch1">
+<h2 class="chapter-title"><span class="ch-num">第1章</span>抛开指标——裸K交易的本质与逻辑</h2>
+
+<div class="section">
+<h3>1.1 什么是裸K交易：只看价格，不靠指标</h3>
+<p>你已经知道什么是K线，也知道MACD金叉、RSI超卖这些经典信号。问题是：<strong>你靠这些信号赚到钱了吗？</strong></p>
+<p>裸K交易（Price Action Trading）的起点，不是教你一种新指标，而是把所有指标从你的图表上拿掉——只留裸露的K线和成交量。然后问一个更本质的问题：<strong>价格本身在告诉你什么？</strong></p>
+<p>这就像一个医生，不再依赖验血报告上的箭头（指标），而是直接看病人的气色、脉搏、呼吸（价格行为本身）。验血报告是滞后的——它告诉你"三天前你生病了"。但气色和脉搏是实时的。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 核心认知</div>
+<p>裸K不是"更高级的技术分析"，而是一种<strong>完全不同的思维方式</strong>：从"指标告诉我买卖"转向"价格告诉我多空力量的真实状态"。指标是价格的影子，裸K直接看本体。</p>
+</div>
+
+<div class="section">
+<h3>1.2 为什么指标会"骗人"——滞后的本质</h3>
+<p>所有指标的数学本质都一样：<strong>对历史价格做数学变换</strong>。MACD是均线的均线，RSI是涨跌幅的平滑平均，布林带是标准差的投影。它们共同的致命缺陷：</p>
+<ul>
+<li><strong>滞后性</strong>：指标永远比价格慢半拍。当MACD金叉时，价格已经涨了3天；当RSI超卖时，价格可能还在加速下跌。</li>
+<li><strong>钝化</strong>：趋势行情中RSI可以80以上持续数周，震荡市中金叉死叉反复出现。指标在需要它的时候恰恰失效。</li>
+<li><strong>自参考</strong>：指标指向的信号，取决于参数设置。同一只股票，(12,26,9)的MACD和(8,21,5)的MACD可能给出完全相反的信号。</li>
+</ul>
+<p>这不是说指标无用，而是说<strong>指标不是答案，价格才是</strong>。指标是辅助工具，不应该成为决策主体。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 陷阱：指标崇拜</div>
+<p>有基础者最容易掉入的坑不是"不懂指标"，而是<strong>"太相信指标"</strong>。你在指标上花的时间越多，离价格真相越远。如果MACD和KDJ同时发出信号但价格结构不支持，你信哪个？裸K的回答：永远信价格。</p>
+</div>
+
+<div class="section">
+<h3>1.3 价格行为的核心假设：价格包含一切信息</h3>
+<p>这是裸K的哲学基础，继承自道氏理论：<strong>所有已知信息——基本面、政策面、资金面、情绪面——都已经反映在价格中</strong>。你不需要知道"为什么涨"，你只需要读懂"价格在做什么"。</p>
+<p>这不是假设，这是市场的客观规律。2024年某消费股突发利空，开盘暴跌8%——这个"8%"本身就是所有参与者用真金白银投出的票。你在K线上看到的一切，都是真实成交的结果，不是模型推算。</p>
+</div>
+
+<div class="section">
+<h3>1.4 裸K不是"猜涨跌"，是"读多空"</h3>
+<p>"猜涨跌"是预测，"读多空"是解读。区别在于：</p>
+<ul>
+<li><strong>预测思维</strong>："明天一定涨"——你在赌一个方向，错了不认。</li>
+<li><strong>解读思维</strong>："当前多方主导，结构向上，如果关键位不破就持有多头"——你跟随现实，现实变了你就变。</li>
+</ul>
+<p>裸K交易者从不说"一定会涨"或"一定会跌"。他们说的是：<strong>"如果价格维持HH/HL结构，我持多头；如果结构反转，我离场或翻空。"</strong>这不是预测，是条件应对。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 视角切换</div>
+<p>从今天起，把"会涨还是会跌"这个问题从脑中删除。替换为："当前谁在主导？关键位在哪？如果XXX被破坏，我怎么做？"——这三个问题就是裸K的全部。</p>
+</div>
+
+<div class="section">
+<h3>1.5 裸K的三大优势：纯粹、普适、直接</h3>
+<p><strong>纯粹</strong>：没有参数可以调，没有指标可以怪。你的判断只基于价格，对了是你的能力，错了也是你的责任。这逼你真正理解价格，而不是躲在"指标没给信号"后面。</p>
+<p><strong>普适</strong>：裸K适用于任何市场、任何时间框架。沪深300日线、纳斯达克5分钟、原油期货周线——高低点排列的规律是相同的，因为人类交易行为的底层模式相同。</p>
+<p><strong>直接</strong>：当你去掉所有指标，图表上只剩价格时，你的眼睛会开始"看到"以前被指标遮挡的东西——关键位的反应、量能的变化、结构的转折。这就像把一扇脏窗户擦干净。</p>
+</div>
+
+<div class="section">
+<h3>1.6 裸K不能做什么——正确期待</h3>
+<p>裸K不能预测黑天鹅，不能保证每笔交易盈利，不能替代基本面分析，不能替代仓位管理。裸K只做一件事：<strong>帮你读懂价格当前在做什么，然后做出条件化的应对</strong>。</p>
+<p>如果你期待"学完裸K就能稳定盈利"——这是执念。裸K是武器，不是魔法。打赢仗还需要弹药管理（仓位）、战场判断（宏观）、情报验证（财报），以及最重要的——<strong>扣扳机的手不发抖（风控与心理）</strong>。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第1章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>你发现自己说"MACD金叉了所以该买"时，<span class="action">我将先问：价格结构支持这个方向吗？关键位在哪？如果结构不支持，金叉无效。</span></div>
+<div class="rule-item"><span class="trigger">当</span>图表上超过3个指标时，<span class="action">我将关闭所有指标，只留K线和成交量，练习"读裸图"至少2周。</span></div>
+<div class="rule-item"><span class="trigger">当</span>你忍不住想预测"明天一定涨"时，<span class="action">我将改写为"如果明日收盘维持HH/HL结构且量能配合，我将持有多头；否则离场"。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本周练习</div>
+<p><strong>任务</strong>：打开你常用的看盘软件，关闭所有技术指标，只留K线和成交量。用纯裸图观察5只你熟悉的股票，记录你的观察和以前有什么不同。</p>
+<p><strong>预期产出</strong>：5只股票的裸图观察笔记（每只3条新发现）</p>
+<p><strong>自检</strong>：是否发现了以前被指标遮挡的价格结构特征？是否不再依赖"指标没信号"作为不行动的借口？</p>
+</div>
+</div>
+
+<!-- ===== 第2章 ===== -->
+<div class="chapter" id="ch2">
+<h2 class="chapter-title"><span class="ch-num">第2章</span>裸K的底层逻辑——多空博弈与流动性</h2>
+
+<div class="section">
+<h3>2.1 每一根K线都是一笔笔真实成交</h3>
+<p>你看到的那根红色K线，不是"空方占优"这么抽象。它的每一分每一秒，都是有人按下"卖出"按钮、有人按下"买入"按钮，成交后留下的痕迹。<strong>K线是战场上的弹坑</strong>——它不告诉你谁会赢，但它精确记录了交火在哪里发生、火力有多猛。</p>
+<p>这是裸K分析的物理基础：你看到的一切都是真实的资金流动结果，不是数学模型。</p>
+</div>
+
+<div class="section">
+<h3>2.2 多空博弈：谁在出价，谁在成交</h3>
+<p>每一笔成交都同时有一个买方和一个卖方。这意味着<strong>每一刻都有人看多、有人看空</strong>。K线的方向告诉你谁出的价格更高（或更低），K线的实体告诉你谁压倒了谁，K线的影线告诉你谁曾经领先但被打回来了。</p>
+<p>关键洞察：<strong>价格运动的方向，就是愿意出更高价（或更低价）的一方更急迫的方向</strong>。不是"多空谁多"，而是"谁更急"。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 核心原理</div>
+<p>价格运动的驱动力不是"多头比空头多"，而是<strong>"愿意以更优价格成交的一方更急迫"</strong>。涨停板不是买方人数多，而是买方愿意以最高价立即成交——这叫"急迫性"。</p>
+</div>
+
+<div class="section">
+<h3>2.3 流动性：支撑阻力的真实身份</h3>
+<p>传统教程告诉你"支撑是买方聚集的地方，阻力是卖方聚集的地方"。这话没错，但太浅了。裸K从流动性视角重新定义：</p>
+<p><strong>支撑位=大量未成交买单聚集的价格区域</strong>。当价格跌到这里，这些买单被触发，提供买盘支撑。</p>
+<p><strong>阻力位=大量未成交卖单聚集的价格区域</strong>。当价格涨到这里，这些卖单被触发，提供卖盘压力。</p>
+<p>但更重要的洞察是：<strong>散户的止损单也是"流动性"</strong>。大量散户把止损设在前期低点下方——这些止损单本质上是<strong>卖出指令的集中地</strong>。机构知道这一点，所以他们会故意把价格推到那里，触发你的止损，然后反手买入。这就是<strong>流动性猎取</strong>。</p>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 你的止损正在被猎杀</div>
+<p>当你的止损精确地设在"前低下方一点点"，你就是在告诉算法："我在这里，请来吃我。"这不是阴谋论，这是订单流的客观现实。第17章会详细讲如何应对。</p>
+</div>
+
+<div class="section">
+<h3>2.4 为什么关键位会有"磁性"——订单聚集效应</h3>
+<p>你一定注意过：价格接近前期高点时，像被磁铁吸住一样——要么一触即发（真突破），要么碰一下就弹回来（假突破）。这不是巧合。</p>
+<p>原因：前期高点附近聚集着三类订单：</p>
+<ol>
+<li><strong>突破买单</strong>："如果突破前高我就买"——挂在突破位的止损买单</li>
+<li><strong>止损卖单</strong>："如果突破前高我就止损离场"——前期做空者的止损</li>
+<li><strong>获利了结卖单</strong>："到前高附近我就卖"——前期多头的止盈单</li>
+</ol>
+<p>这三类订单在同一个价格区域叠加，形成巨大的流动性池。价格被"吸引"过去，因为那里有大量待成交的订单。到了之后，是第1类+第2类推动价格突破，还是第3类把价格压回来？<strong>这才是你需要观察的博弈</strong>。</p>
+</div>
+
+<div class="section">
+<h3>2.5 机构视角：吸筹、出货与假突破的动机</h3>
+<p>散户看支撑阻力是为了找入场点。机构看支撑阻力是为了<strong>猎杀散户的止损</strong>。</p>
+<p>这不是耸人听闻。机构的单子太大，不可能像散户一样一次性买入。他们需要"流动性"来完成建仓。流动性在哪里？在散户的止损单里。所以：</p>
+<ul>
+<li><strong>吸筹阶段</strong>：机构要买大量股票，但直接买会推高价格。所以他们会制造恐慌（假跌破），触发散户的止损卖出，然后他们在下方大量接盘。</li>
+<li><strong>出货阶段</strong>：机构要卖大量股票，但直接卖会砸崩价格。所以他们会制造兴奋（假突破），吸引散户追涨买入，然后他们在上方大量出货。</li>
+</ul>
+<p>这就是为什么<strong>假突破和假跌破是最重要的信号</strong>——它们暴露了机构的真实意图。第19章会深度拆解。</p>
+</div>
+
+<div class="section">
+<h3>2.6 A股特殊机制对裸K分析的系统性影响</h3>
+
+<p><strong>T+1制度</strong>：你今天买入，今天卖不掉。这意味着：</p>
+<ul>
+<li>早盘冲入的风险远大于尾盘决策——如果盘中判断错误，你无法当日纠错。</li>
+<li>收盘前15分钟的K线比早盘第一根K线更有决策价值——它是经过全天博弈后的"最终结论"。</li>
+<li>裸K信号中的"收盘价确认"在A股尤其关键——盘中突破可能全天无效，收盘站上才算数。</li>
+</ul>
+
+<p><strong>涨跌停板</strong>：涨停=极端需求区但无法成交，跌停=极端供应区但流动性枯竭。这导致：</p>
+<ul>
+<li>涨停板造成的跳空不等于正常缺口——它反映了被压抑的流动性，次日可能释放也可能回吐。</li>
+<li>连续涨停的股票，其供需区域会发生偏移——正常的回测逻辑可能失效。</li>
+</ul>
+
+<p><strong>集合竞价</strong>：9:15-9:25形成的开盘价本身就是一种"微型威科夫"——大量订单在短时间内撮合，形成的跳空（高开/低开）反映了隔夜信息的定价。</p>
+
+<p><strong>T+1下的止损困境</strong>：当日买入后跌破止损位，你只能次日处理。这意味着：</p>
+<ul>
+<li>止损位必须留有余量——不是"前低下方0.5%"，而是"前低下方1个ATR"。</li>
+<li>仓位必须更保守——因为你承担的"不可退出风险"比T+0市场大。</li>
+</ul>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ A股不是美股</div>
+<p>很多裸K教程基于美股（T+0、无涨跌停）。在A股直接照搬会导致系统性偏差。本手册所有规则都会标注A股调整方案。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第2章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>你看到价格接近前期高点时，<span class="action">我将不预设"会突破"或"不会突破"，而是观察到达后的量能和K线形态——放量突破还是缩量假突破？</span></div>
+<div class="rule-item"><span class="trigger">当</span>你把止损设在"前低下方0.5%"时，<span class="action">我将改为设在"前低下方1个ATR"，因为精确止损=被猎杀。</span></div>
+<div class="rule-item"><span class="trigger">当</span>在A股做日内级别入场判断时，<span class="action">我将优先看收盘前15分钟的K线而非早盘K线，因为T+1下当日不可纠错。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本周练习</div>
+<p><strong>任务</strong>：找3只近一个月内出现"假突破"的A股，记录突破当天的量能、K线形态和后续走势。对比3只"真突破"的案例，总结两者的量能差异。</p>
+<p><strong>预期产出</strong>：6个案例的对比表格（假突破3个+真突破3个），每个含：日期/量比/收盘位置/次日走势</p>
+<p><strong>自检</strong>：是否能通过量能差异提前区分真假突破？假突破的量比是否普遍<1.2？</p>
+</div>
+</div>
+
+</div><!-- end container for Part 1 -->
+
+<!-- ==================== 第二篇：P0筑基 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part2">
+  <div class="part-tag">第二篇 · P0筑基</div>
+  <h2>读懂价格——市场结构与K线语言</h2>
+  <p class="part-goal">建立"势-位-形"三层的认知底座，先会看趋势结构，再学K线信号。结构在先，形态在后。引入威科夫初步概念。</p>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div class="chapter" id="ch3">
+<h2 class="chapter-title"><span class="ch-num">第3章</span>市场结构——价格运行的骨架</h2>
+
+<div class="section">
+<h3>3.1 什么是市场结构：高低点排列的规律</h3>
+<p>去掉所有指标后，裸图上最显眼的东西是什么？是价格的<strong>波峰和波谷</strong>——那些拐点。市场结构就是这些拐点的排列方式。</p>
+<p>想象海面上的波浪：涨潮时，一浪比一浪高，每浪的谷底也比上一浪高；退潮时，一浪比一浪低，每浪的浪尖也比上一浪低。市场结构就是这"潮汐"的规律。</p>
+<p>这不是抽象理论——<strong>它是你判断方向的唯一可靠依据</strong>。所有指标都可能钝化，但HH/HL结构破了就是破了，没有参数可以调。</p>
+</div>
+
+<div class="section">
+<h3>3.2 上升趋势：更高的高点（HH）+ 更高的低点（HL）</h3>
+<p>上升趋势的定义极其简单：<strong>每一浪的高点比上一浪高（HH），每一浪的低点也比上一浪高（HL）</strong>。就这么朴素，没有任何参数。</p>
+<p>在上升趋势中，你的操作逻辑只有一个：<strong>找回调低点做多</strong>。不是"猜顶"，不是"等反转"，就是顺势做多次。直到结构被打破。</p>
+</div>
+
+<div class="section">
+<h3>3.3 下降趋势：更低的高点（LH）+ 更低的低点（LL）</h3>
+<p>下降趋势：<strong>每一浪的高点比上一浪低（LH），每一浪的低点也比上一浪低（LL）</strong>。</p>
+<p>在下降趋势中，你的操作逻辑也只有一个：<strong>找反弹高点做空（或空仓）</strong>。散户最容易犯的错就是在下降趋势中抄底——"已经跌这么多了，该涨了吧"。这不是分析，是愿望。</p>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 铁律</div>
+<p>当价格处于LH/LL下降结构时，<strong>我绝不抄底</strong>。我要等结构从LH/LL转为HH/HL才能考虑做多。不是"跌多了就该涨"，是"结构变了才能转"。</p>
+</div>
+
+<div class="section">
+<h3>3.4 震荡结构：无延续的高低点</h3>
+<p>既不是HH/HL，也不是LH/LL——高低点在一个区间内反复。这就是震荡市（区间市）。</p>
+<p>震荡市的操作逻辑完全不同：<strong>区间下沿做多，区间上沿做空，中段不动</strong>。A股约60%时间处于震荡——这是你的主战场，不是例外。</p>
+</div>
+
+<div class="section">
+<h3>3.5 结构破位（BOS）与结构反转（CHOCH）的初步概念</h3>
+<p><strong>BOS（Break of Structure，结构破位）</strong>：在上升趋势中，价格突破了上一个高点（HH继续创新高）——这确认趋势延续。在下降趋势中同理。</p>
+<p><strong>CHOCH（Change of Character，结构反转）</strong>：在上升趋势中，价格跌破了上一个低点（HL被破坏）——这是趋势可能反转的第一个信号。在下降趋势中，价格突破了上一个高点（LH被突破）。</p>
+<p>关键区别：<strong>BOS=趋势继续，CHOCH=趋势可能转向</strong>。CHOCH不是确认反转，只是"第一个警告"。第20章SMC深度会讲如何精确识别。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 记忆口诀</div>
+<p>BOS = 趋势的"续命符"——方向没变，继续走。<br>CHOCH = 趋势的"病危通知"——方向可能变，但还不确定。</p>
+</div>
+
+<div class="section">
+<h3>3.6 为什么"结构是骨架，K线是火花"</h3>
+<p>一根Pin Bar在上升趋势的回调低点出现=看涨信号。同一根Pin Bar在下降趋势中出现=噪音。同样的形态，因为结构不同，意义完全不同。</p>
+<p><strong>结构决定方向，K线决定入场时机</strong>。先定骨架，再看火花。如果你不看结构就根据K线形态入场，就像不看天气就出门——可能没事，也可能淋成落汤鸡。</p>
+</div>
+
+<div class="section">
+<h3>3.7 市场阶段的初步认识：吸筹、趋势、派发——威科夫三阶段概览</h3>
+<p>威科夫（Wyckoff）在100年前就发现：市场不是随机运动的，它在大周期上遵循三个阶段的循环：</p>
+<ol>
+<li><strong>吸筹（Accumulation）</strong>：机构在底部大量买入，散户绝望离场。价格横盘，量能萎缩，偶尔出现假跌破。</li>
+<li><strong>趋势（Markup/Markdown）</strong>：吸筹完成后，价格突破横盘区，进入上升/下降趋势。这是散户最容易识别的阶段，但通常已经走了一半。</li>
+<li><strong>派发（Distribution）</strong>：机构在顶部大量卖出，散户兴奋入场。价格横盘，量能萎缩，偶尔出现假突破。</li>
+</ol>
+<p>这只是概览。P2第22章会讲完整的6阶段微观结构和精确识别方法。现在你只需要知道：<strong>市场有阶段，不同阶段的操作逻辑完全不同</strong>。</p>
+</div>
+
+<!-- ECharts: 市场结构示意图 -->
+<div class="chart-box">
+<div class="chart-title">图3-1 市场结构：上升趋势（HH/HL）vs 下降趋势（LH/LL）vs 震荡</div>
+<div class="chart-container" id="chart-market-structure"></div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第3章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我打开任何一只股票的图表时，<span class="action">我将首先标注最近5个波峰和波谷，判断当前是HH/HL、LH/LL还是震荡结构，再决定操作方向。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格处于LH/LL下降结构时，<span class="action">我将绝不抄底做多。我要等CHOCH出现（LH被突破）后才能考虑。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格处于震荡结构时，<span class="action">我将只在区间边界操作，中段不动。上沿做空、下沿做多。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本周练习</div>
+<p><strong>任务</strong>：找5只沪深300成分股，在日线图上标注HH/HL/LH/LL和市场结构（趋势/震荡），记录BOS和CHOCH位置。</p>
+<p><strong>预期产出</strong>：5只股票的结构判断表（代码|波峰1|波谷1|波峰2|波谷2|结构类型|BOS位置|方向）</p>
+<p><strong>自检</strong>：5只股票的结构判断是否与周线方向一致？</p>
+</div>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div class="chapter" id="ch4">
+<h2 class="chapter-title"><span class="ch-num">第4章</span>单根K线的语言——读懂每一根蜡烛</h2>
+
+<div class="section">
+<h3>4.1 K线四要素：开、收、高、低</h3>
+<p>你已经知道K线由开盘价、收盘价、最高价、最低价构成。但你知道<strong>这四个数字的排列方式本身就是信息</strong>吗？</p>
+<p>收盘价高于开盘价=阳线=该时段内买方最终出价更高。收盘价低于开盘价=阴线=卖方最终出价更低。这不是"涨和跌"这么简单——它告诉你<strong>在该时段结束时，谁站在了更高处</strong>。</p>
+</div>
+
+<div class="section">
+<h3>4.2 实体的长短：多空力量对比</h3>
+<p>实体长=一方明显压倒另一方。实体短=双方力量接近。这不是废话——它是你判断"这根K线是信号还是噪音"的第一把尺子。</p>
+<p><strong>实战规则</strong>：在关键位出现的大实体K线（实体>近期平均实体2倍），比小实体K线的信号强得多。小实体在关键位=犹豫，大实体在关键位=决断。</p>
+</div>
+
+<div class="section">
+<h3>4.3 极值K线（Marubozu）：无影线的大实体，力量最纯粹的宣示</h3>
+<p>光头光脚的大阳线（开盘=最低，收盘=最高）：买方从头到尾碾压，没有任何犹豫。光头光脚的大阴线反之。</p>
+<p>Marubozu在关键位出现时，信号极强——它说明该方向的力量是"不犹豫的"。但注意：<strong>在趋势末端出现的Marubozu可能是最后的狂欢</strong>（耗竭式运动），不是启动信号。</p>
+</div>
+
+<div class="section">
+<h3>4.4 锤子线与倒锤子线</h3>
+<p>锤子线（小实体在上方+长下影线）：空方曾经大幅打压，但多方收回了大部分阵地。在下降趋势的回调低点出现=潜在反转信号。</p>
+<p>倒锤子线（小实体在下方+长上影线）：多方曾经大幅推升，但空方收回了大部分阵地。在上升趋势的反弹高点出现=潜在反转信号。</p>
+<p>记住：<strong>形态本身不是信号，形态+位置才是信号</strong>。锤子线在上升趋势的中途出现=无意义。锤子线在下降趋势的关键支撑位出现=重要信号。</p>
+</div>
+
+<div class="section">
+<h3>4.5 十字星：犹豫与平衡</h3>
+<p>开盘≈收盘，实体极小。多空打了一仗，谁也没赢。十字星出现在趋势中=可能的转折点，因为"犹豫"往往是变盘的前兆。</p>
+<p>但十字星在震荡市中随处可见=噪音。只有在<strong>趋势+关键位+十字星</strong>三者重合时，才是有效信号。</p>
+</div>
+
+<div class="section">
+<h3>4.6 纺锤线（Spinning Top）：小实体短影线，市场无方向</h3>
+<p>和十字星类似，但实体稍大。含义相同：犹豫、平衡、无方向。纺锤线连成一片=横盘区间。纺锤线出现在单边趋势末端=趋势可能要歇了。</p>
+</div>
+
+<div class="section">
+<h3>4.7 长上影与长下影：试攻与试守</h3>
+<p>长上影=多方曾经攻到很高，但被打了回来。<strong>试攻失败</strong>。长下影=空方曾经打压到很低，但被推了回来。<strong>试守成功</strong>。</p>
+<p>博弈论视角：长上影线在阻力位=卖方在该价位布置了足够的火力，买方的冲锋被打退。长下影线在支撑位=买方在该价位布置了足够的火力，卖方的攻击被击退。</p>
+</div>
+
+<div class="section">
+<h3>4.8 放量长阳与放量长阴：力量宣示</h3>
+<p>放量长阳=大量资金在买入。放量长阴=大量资金在卖出。这是市场中最清晰的"力量宣示"。但注意：</p>
+<ul>
+<li>放量长阳在底部=机构吸筹完成，开始拉升</li>
+<li>放量长阳在顶部=可能是最后一波买入高潮（派发的标志）</li>
+<li>放量长阴在顶部=机构出货完成，开始砸盘</li>
+<li>放量长阴在底部=可能是最后一波恐慌抛售（吸筹的标志）</li>
+</ul>
+<p><strong>同样的K线形态，在不同位置含义完全相反</strong>。位置永远优先于形态。</p>
+</div>
+
+<div class="section">
+<h3>4.9 单K的局限：一根K线不能定方向</h3>
+<p>这是裸K交易者最重要的认知：<strong>永远不要根据一根K线做交易决策</strong>。一根K线只能告诉你"这根K线发生了什么"，不能告诉你"接下来会发生什么"。</p>
+<p>你需要的是：结构（方向）→ 位置（盈亏比）→ 形态（触发）→ <strong>确认</strong>（下一根K线）。单K只是第一步，不是最后一步。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 新手高频错误</div>
+<p>看到锤子线就冲进去——结果锤子线后面还有锤子线，越锤越低。一根K线不能定方向，一组合格的信号至少需要2-3根K线确认+位置正确+结构支持。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第4章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>你看到一根"完美锤子线"时，<span class="action">我将先检查：结构是上升还是下降？位置是关键支撑还是无人区？如果没有结构+位置支持，锤子线无效。</span></div>
+<div class="rule-item"><span class="trigger">当</span>K线在关键位出现长上影/长下影时，<span class="action">我将等待下一根K线确认——如果下一根继续沿影线方向运动，信号有效；如果反包影线，信号作废。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本周练习</div>
+<p><strong>任务</strong>：在5只股票的日线图上，各找3根"大实体K线出现在关键位"的案例和3根"大实体K线出现在无人区"的案例，对比后续走势差异。</p>
+<p><strong>预期产出</strong>：30个案例的分类记录（关键位15个+无人区15个），每个含后续3天涨跌</p>
+<p><strong>自检</strong>：关键位出现的大实体K线成功率是否明显高于无人区？</p>
+</div>
+</div>
+
+<!-- ===== 第5章 ===== -->
+<div class="chapter" id="ch5">
+<h2 class="chapter-title"><span class="ch-num">第5章</span>Pin Bar——价格最强烈的拒绝信号</h2>
+
+<div class="section">
+<h3>5.1 Pin Bar长什么样：小实体+长影线</h3>
+<p>Pin Bar（Pinocchio Bar，"匹诺曹线"）是裸K交易中最经典的信号。它的特征：<strong>实体很小（占整根K线的1/3以内），影线很长（≥2-3倍实体）</strong>。影线像一根鼻子，"说谎"后伸长了——价格曾试图去某个方向，但被"打回来"了。</p>
+<p>这不是普通的"有影线的K线"。Pin Bar的关键在于<strong>影线与实体的比例</strong>和<strong>出现的位置</strong>。</p>
+</div>
+
+<div class="section">
+<h3>5.2 看涨Pin Bar与看跌Pin Bar</h3>
+<p><strong>看涨Pin Bar</strong>（在支撑位出现）：长下影线+小实体在上方。价格曾大幅下探，但买方强烈拒绝——"这个价位我不卖，你也不许再往下"。</p>
+<p><strong>看跌Pin Bar</strong>（在阻力位出现）：长上影线+小实体在下方。价格曾大幅上攻，但卖方强烈拒绝——"这个价位我不买，你也不许再往上"。</p>
+<p>博弈论视角：Pin Bar的本质是<strong>一方"试探性进攻"被另一方"坚决打回"</strong>。影线越长，拒绝越坚决。</p>
+</div>
+
+<div class="section">
+<h3>5.3 完美Pin Bar的5个标准</h3>
+<ol>
+<li><strong>影线长度≥2倍实体</strong>（≥3倍=极强信号）</li>
+<li><strong>影线突出于近期K线之外</strong>——如果影线被包裹在前几根K线范围内，它不是Pin Bar</li>
+<li><strong>实体在K线的一端</strong>——实体在中部是纺锤线，不是Pin Bar</li>
+<li><strong>收盘价接近实体</strong>——如果收盘在影线中间，说明拒绝不够坚决</li>
+<li><strong>出现在关键位</strong>——没有位置支持的Pin Bar只是"一根有影线的K线"</li>
+</ol>
+<p>满足5个标准=高质量信号。满足3-4个=可用但需更多确认。满足<3个=忽略。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 位置决定一切</div>
+<p>同一根完美的看涨Pin Bar：<br>出现在上升趋势的回调低点 + 供需区域 = <strong>黄金入场信号</strong><br>出现在下降趋势的中途 + 无人区 = <strong>噪音，可能继续跌</strong><br>出现在震荡区间的中段 = <strong>无意义</strong></p>
+<p>形态不选位置，位置选择形态。位置>形态，永远如此。</p>
+</div>
+
+<div class="section">
+<h3>5.4 Pin Bar在不同位置的含义天差地别</h3>
+<p>这是一个需要"刻进骨头"的认知。让我们用一个对比表来彻底讲清楚：</p>
+
+<table class="data-table">
+<thead>
+<tr><th>位置</th><th>看涨Pin Bar含义</th><th>看跌Pin Bar含义</th></tr>
+</thead>
+<tbody>
+<tr><td>上升趋势回调低点</td><td class="highlight">✅ 强买入信号</td><td>⚠️ 可能只是回调中的反弹</td></tr>
+<tr><td>上升趋势反弹高点</td><td>⚠️ 趋势可能加速</td><td class="highlight">❌ 趋势可能见顶</td></tr>
+<tr><td>下降趋势回调高点</td><td>⚠️ 只是超跌反弹</td><td class="highlight">✅ 强卖出/空仓信号</td></tr>
+<tr><td>下降趋势创新低</td><td class="highlight">✅ 可能是底部反转</td><td>⚠️ 趋势继续</td></tr>
+<tr><td>震荡区间下沿</td><td class="highlight">✅ 区间做多信号</td><td>⚠️ 可能跌破区间</td></tr>
+<tr><td>震荡区间上沿</td><td>⚠️ 可能突破区间</td><td class="highlight">✅ 区间做空信号</td></tr>
+<tr><td>无人区（无关键位）</td><td>❌ 无意义</td><td>❌ 无意义</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>5.5 Pin Bar的入场与止损逻辑</h3>
+<p><strong>入场方式</strong>：</p>
+<ul>
+<li><strong>右侧入场</strong>（推荐新手）：等Pin Bar收盘确认后，在下一根K线开盘时入场。安全，但可能损失一部分利润。</li>
+<li><strong>左侧入场</strong>（需经验）：在Pin Bar影线50%回撤位挂单入场。如果价格回测到影线中部就反弹，你拿到了更好的价格。但如果Pin Bar失效，你也更早被止损。</li>
+</ul>
+<p><strong>止损位置</strong>：设在Pin Bar影线尖端下方（看涨）或上方（看跌），留1个ATR余量。绝不能刚好设在影线尖端——那是算法猎杀的位置。</p>
+</div>
+
+<div class="section">
+<h3>5.6 Pin Bar失败——最常见的误用</h3>
+<p>Pin Bar失败的3个经典原因：</p>
+<ol>
+<li><strong>位置不对</strong>：在无人区看到Pin Bar就冲——没有流动性支撑，Pin Bar只是噪音。</li>
+<li><strong>止损太紧</strong>：把止损设在影线尖端——被猎杀后价格就涨了。</li>
+<li><strong>忽视结构</strong>：在下降趋势中看到看涨Pin Bar就做多——结构不支持，大概率继续跌。</li>
+</ol>
+<p>记住：Pin Bar是触发器，不是预测器。它告诉你"这里有人拒绝了价格"，但不保证拒绝一定成功。<strong>必须结合结构+位置才能交易</strong>。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第5章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我识别出一根Pin Bar时，<span class="action">我将先检查5个标准是否满足≥3个，再检查是否出现在关键位，最后检查结构方向是否一致——三者缺一不可。</span></div>
+<div class="rule-item"><span class="trigger">当</span>Pin Bar出现在无人区时，<span class="action">我将忽略它，不管形态多完美。</span></div>
+<div class="rule-item"><span class="trigger">当</span>基于Pin Bar入场时，<span class="action">我将止损设在影线尖端±1个ATR，绝不刚好设在影线尖端。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本周练习</div>
+<p><strong>任务</strong>：复盘10个Pin Bar案例，记录出现位置（关键位/无人区）、后续走势、入场是否正确。</p>
+<p><strong>预期产出</strong>：10个Pin Bar案例记录表（代码|日期|位置|影线比|后续3天涨跌|入场判断）</p>
+<p><strong>自检</strong>：关键位出现的Pin Bar成功率是否明显高于无人区？</p>
+</div>
+</div>
+
+<!-- ===== 第6章 ===== -->
+<div class="chapter" id="ch6">
+<h2 class="chapter-title"><span class="ch-num">第6章</span>组合K线与结构形态——信号升级</h2>
+
+<div class="section">
+<h3>6.1 Inside Bar（母子线/内包线）：盘整蓄势，风暴将至</h3>
+<p>Inside Bar的定义：<strong>子线的最高价≤母线的最高价，且子线的最低价≥母线的最低价</strong>——子线完全被母线"包裹"在内。</p>
+<p>含义：在母线形成后，市场突然"安静"了——价格不再创新高也不创新低。这种安静不是放松，是<strong>蓄势</strong>。就像弹簧被压缩——压缩得越紧，弹出时越猛。</p>
+<p>博弈论视角：Inside Bar说明多空双方暂时达成平衡。但这个平衡是暂时的——<strong>母线方向的突破概率更高</strong>，因为母线代表了之前的方向惯性。</p>
+</div>
+
+<div class="section">
+<h3>6.2 Inside Bar的三种交易方式</h3>
+<ul>
+<li><strong>突破跟随</strong>（最常用）：子线突破母线高点的方向入场。止损设在母线另一端。</li>
+<li><strong>反向交易</strong>（需确认）：子线突破后快速反转——如果母线在关键位且突破方向与趋势相反，可能是假突破，反向入场。</li>
+<li><strong>区间内挂单</strong>：在母线范围内挂买卖单——风险较大，不推荐新手。</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>6.3 孕线（Harami）vs Inside Bar：两种体系的区别与联系</h3>
+<p>日本蜡烛图体系中的"孕线"强调<strong>实体关系</strong>（子实体被母实体包裹），西方体系中的Inside Bar强调<strong>整根K线范围</strong>。两者大部分时候重合，但偶尔Inside Bar的影线会超出母线范围——这时Inside Bar标准更宽。</p>
+<p>实战建议：<strong>用Inside Bar标准</strong>（包含影线），因为影线本身也是信息。</p>
+</div>
+
+<div class="section">
+<h3>6.4 Engulfing（吞没线）：多空一方完胜</h3>
+<p>后一根K线的实体完全包裹前一根K线的实体。看涨吞没=阳线吞没阴线=买方力量突然碾压卖方。看跌吞没反之。</p>
+<p>关键：<strong>吞没线的实体必须完全包裹前K实体</strong>（影线不算）。如果只包裹了一部分，信号强度打折。</p>
+<p>在关键位出现的吞没线，是裸K交易中<strong>可靠性最高的反转信号之一</strong>——因为它直接展示了"一方完胜"的力量变化。</p>
+</div>
+
+<div class="section">
+<h3>6.5-6.8 其他组合形态速览</h3>
+<p><strong>Outside Bar vs Engulfing</strong>：Outside Bar是整根K线（含影线）包裹前K，比Engulfing更严格。Outside Bar在关键位=极强信号。</p>
+<p><strong>刺透形态与乌云盖顶</strong>：比吞没更温和的反转信号。阳线深入前阴线实体50%以上=刺透（看涨），阴线深入前阳线实体50%以上=乌云盖顶（看跌）。</p>
+<p><strong>早晨之星与黄昏之星</strong>：三K反转形态。中间的十字星/纺锤线+两侧方向相反的大实体。可靠性高于双K形态。</p>
+<p><strong>平头顶部/底部（Tweezer）</strong>：两根K线的高点/低点精确相同。说明该价位存在精确的卖压/买压——支撑阻力验证信号。</p>
+</div>
+
+<div class="section">
+<h3>6.9 双底（W底）与双顶（M顶）</h3>
+<p>双底=两个低点大致相同，中间有一个反弹。双顶反之。这是最经典的反转形态。</p>
+<p>实战要点：<strong>双底不是"两个低点差不多"就完了</strong>。你需要：</p>
+<ol>
+<li>第二个低点处出现反转K线（Pin Bar/吞没/十字星）</li>
+<li>量能在第二个低点明显萎缩（供应枯竭）</li>
+<li>颈线突破时放量确认</li>
+</ol>
+<p>缺少确认的"双底"经常变成"继续下跌的中继"。</p>
+</div>
+
+<div class="section">
+<h3>6.10 头肩形态与旗形整理</h3>
+<p><strong>头肩顶</strong>：左肩→头→右肩，颈线跌破=反转确认。可靠性最高的顶部反转形态之一。<strong>头肩底</strong>反之。</p>
+<p><strong>旗形整理</strong>：趋势中的短暂停顿，价格在倾斜的平行通道内运行。旗形是<strong>趋势延续信号</strong>，不是反转信号。在上升趋势的旗形整理末期做多，比在趋势顶部做空更安全。</p>
+</div>
+
+<div class="section">
+<h3>6.11 颈线与测量目标位（Measured Move）</h3>
+<p>头肩顶的颈线跌破后，<strong>理论目标位=头顶到颈线的距离，从颈线往下等量投射</strong>。这不是精确预测，是"如果形态成立，大致能走多远"的估算。</p>
+<p>实战用法：用测量目标位计算<strong>潜在盈亏比</strong>。如果理论目标位给出的盈亏比<2:1，这个形态不值得交易——风险收益不划算。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 盈亏比前置</div>
+<p>在入场之前就计算盈亏比，不是入场之后。如果你发现"止损距离3%，目标位5%，盈亏比不到2:1"——这笔交易不做。等待是裸K交易者最重要的能力。</p>
+</div>
+
+<div class="section">
+<h3>6.12 组合信号永远强于单K</h3>
+<p>一根Pin Bar+一根吞没线出现在同一个关键位=比两根单独的Pin Bar强5倍。为什么？因为它们在<strong>同一个位置</strong>发出了<strong>两次拒绝信号</strong>。组合信号的可靠性远高于任何单K形态。</p>
+<p>这引出一个重要原则：<strong>信号越"拥挤"（多个因素在同一个价格区域重合），越值得交易</strong>。第27章"复合信号"会深度展开。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第6章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>Inside Bar出现时，<span class="action">我将等子线突破母线方向后再入场，止损设在母线另一端±1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>吞没线出现在关键位时，<span class="action">我将在下一根K线开盘入场，止损设在吞没线影线尖端±1个ATR。如果吞没线无影线，止损设在吞没线实体的反方向端。</span></div>
+<div class="rule-item"><span class="trigger">当</span>双底/双顶出现时，<span class="action">我将不猜颈线是否突破，而是等颈线突破+回踩确认后入场，止损设在形态的极值点。</span></div>
+</div>
+</div>
+
+<!-- ===== 第7章 ===== -->
+<div class="chapter" id="ch7">
+<h2 class="chapter-title"><span class="ch-num">第7章</span>势·位·形——裸K的决策公式</h2>
+
+<div class="section">
+<h3>7.1 为什么分析要有优先级</h3>
+<p>裸K交易者面对图表时，最容易犯的错误不是"看不到信号"，而是<strong>"什么都想交易"</strong>。每一根K线都在说话，每一个位置都像机会。如果你没有优先级框架，你会被信息淹没。</p>
+<p>势·位·形就是你的<strong>信息过滤器</strong>。它把无数可能性的图表，压缩为三个有序的问题：</p>
+<ol>
+<li><strong>势</strong>：大方向是什么？（方向错了，一切都错）</li>
+<li><strong>位</strong>：价格在哪个位置？（位置决定盈亏比）</li>
+<li><strong>形</strong>：出现了什么信号？（形态只是触发器）</li>
+</ol>
+<p>这个顺序不可颠倒。先定方向，再定位置，最后找信号。</p>
+</div>
+
+<div class="section">
+<h3>7.2 势（趋势）：先定方向</h3>
+<p>问自己：<strong>当前的HH/HL或LH/LL结构指向哪个方向？</strong></p>
+<p>如果是HH/HL，你的交易方向=做多。如果是LH/LL，你的方向=做空或空仓。如果是震荡，你的方向=区间交易。</p>
+<p>不要"逆势找形态"。在下降趋势中找看涨Pin Bar，就像逆水行舟——你偶尔能成功，但长期概率不利于你。</p>
+</div>
+
+<div class="section">
+<h3>7.3 位（位置）：再定盈亏比</h3>
+<p>方向确定后，问自己：<strong>价格现在在哪里？离关键位多远？</strong></p>
+<p>如果你想做多，但价格已经远离最近的支撑位、靠近阻力位——盈亏比很差。如果你想做多，且价格刚好回调到支撑位附近——盈亏比很好。</p>
+<p><strong>位置决定盈亏比，盈亏比决定这笔交易值不值得做</strong>。位置不好的交易，即使方向对了，也不值得做——因为你的止损距离太远、目标位太近。</p>
+</div>
+
+<div class="section">
+<h3>7.4 形（形态）：最后定触发</h3>
+<p>方向对了、位置好了，最后问：<strong>有没有明确的K线信号？</strong></p>
+<p>Pin Bar、吞没线、Inside Bar突破——这些都是"触发器"。它们告诉你"现在可以入场了"。</p>
+<p>关键：<strong>没有触发器就不动</strong>。即使方向对、位置好，如果没有出现形态信号，你就等待。等待不是"错失机会"，等待是"拒绝低概率入场"。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 势位形公式</div>
+<p><strong>势</strong>（方向）× <strong>位</strong>（盈亏比）× <strong>形</strong>（触发）= 交易决策</p>
+<p>三个条件同时满足=入场。缺少任何一个=等待。这不是"尽量满足"，是<strong>必须全部满足</strong>。</p>
+</div>
+
+<div class="section">
+<h3>7.5 位置优先于形态——裸K最重要的一个原则</h3>
+<p>如果你只能记住一条规则，记住这条：<strong>位置>形态</strong>。</p>
+<p>一根"不完美"的Pin Bar在关键支撑位出现，比一根"完美"的Pin Bar在无人区出现，可靠性高10倍。为什么？因为关键位有流动性支撑——真正的买盘在那里等待。无人区没有——只有追涨杀跌的散户。</p>
+<p>这就是为什么"形态崇拜"是裸K交易者最大的敌人。看到Pin Bar就冲，不看位置——这是指标依赖的另一种表现形式：从"依赖MACD"变成"依赖Pin Bar"。</p>
+</div>
+
+<div class="section">
+<h3>7.6 同一根Pin Bar，在低位和在高位意义完全相反</h3>
+<p>让我们用一个完整的例子来巩固：</p>
+
+<table class="data-table">
+<thead>
+<tr><th>场景</th><th>结构</th><th>位置</th><th>同一根看涨Pin Bar</th><th>决策</th></tr>
+</thead>
+<tbody>
+<tr><td>A</td><td>HH/HL上升</td><td>回调至供需区域</td><td class="highlight">✅ 高概率做多</td><td>入场</td></tr>
+<tr><td>B</td><td>HH/HL上升</td><td>已远离支撑，接近阻力</td><td>⚠️ 追高</td><td>放弃</td></tr>
+<tr><td>C</td><td>LH/LL下降</td><td>在下跌中途</td><td>❌ 逆势</td><td>放弃</td></tr>
+<tr><td>D</td><td>震荡</td><td>区间下沿</td><td class="highlight">✅ 区间做多</td><td>入场</td></tr>
+<tr><td>E</td><td>震荡</td><td>区间中段</td><td>❌ 无位</td><td>放弃</td></tr>
+</tbody>
+</table>
+
+<p>同样的Pin Bar，5种场景，只有2种值得入场。这就是"位置>形态"的威力——<strong>它帮你过滤掉了60%的错误交易</strong>。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 过滤比寻找更重要</div>
+<p>裸K交易者的核心竞争力不是"找到更多信号"，而是<strong>"过滤掉更多假信号"</strong>。势位形三重过滤，能帮你把100个"可能的入场点"过滤到3-5个"值得交易的入场点"。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第7章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我打开图表准备交易时，<span class="action">我将按"势→位→形"三步走，绝不跳步。先判断结构方向，再找关键位置，最后等信号触发。缺少任何一步，就不交易。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我"很想交易"但势位形三步中有一步不满足时，<span class="action">我将关闭图表，离开电脑至少30分钟。冲动入场是亏损的第一来源。</span></div>
+<div class="rule-item"><span class="trigger">当</span>形态完美但位置不对（无人区）时，<span class="action">我将放弃这笔交易，不管形态多诱人。位置>形态，没有例外。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本周练习</div>
+<p><strong>任务</strong>：选择3只股票，用"势位形"三步法分析当前状态，写出每只股票的：①当前结构（HH/HL/LH/LL/震荡）②最近关键位③是否有形态信号。如果三步都满足，模拟一笔交易并记录。</p>
+<p><strong>预期产出</strong>：3只股票的势位形分析报告 + 0-3笔模拟交易记录</p>
+<p><strong>自检</strong>：是否严格执行了"三步缺一不入场"？是否过滤掉了位置不好的"完美形态"？</p>
+</div>
+</div>
+
+</div><!-- end container Part 2 -->
+
+<!-- ==================== 第三篇：P1进阶 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part3">
+  <div class="part-tag">第三篇 · P1进阶</div>
+  <h2>三步分析法与趋势动力——势·位·形</h2>
+  <p class="part-goal">将散乱的知识整合为可操作的分析框架。引入缺口理论和推动浪/回调浪体系，升级"势"的判断维度。</p>
+</div>
+
+<!-- ===== 第8章 ===== -->
+<div class="chapter" id="ch8">
+<h2 class="chapter-title"><span class="ch-num">第8章</span>缺口理论——价格跳空的语言</h2>
+
+<div class="section">
+<h3>8.1 什么是缺口：价格从一个区间跳到另一个区间，中间没有成交</h3>
+<p>缺口（Gap）是裸K分析中最被低估的信号之一。它意味着<strong>在某个价格区间内，没有任何人愿意成交</strong>——买方和卖方的预期出现了断层。</p>
+<p>为什么缺口重要？因为它暴露了<strong>市场情绪的突变</strong>。缺口越大，情绪变化越剧烈。而情绪突变往往是趋势启动或反转的起点。</p>
+</div>
+
+<div class="section">
+<h3>8.2 普通缺口：很快回补，噪音信号</h3>
+<p>普通缺口出现在震荡区间内，几天内就会被回补。它反映的是短期的情绪波动，没有方向性意义。</p>
+<p>实战建议：<strong>忽略普通缺口</strong>。它既不是买入信号也不是卖出信号，只是噪音。判断方法：缺口出现后3天内被回补=普通缺口。</p>
+</div>
+
+<div class="section">
+<h3>8.3 突破缺口：放量跳空，趋势启动信号</h3>
+<p>突破缺口出现在关键位被突破时，<strong>伴随明显放量</strong>。它是趋势启动的"发令枪"——意味着有足够的力量推动价格离开原来的区间。</p>
+<p>突破缺口的两个特征：</p>
+<ul>
+<li><strong>放量</strong>：成交量明显大于近期均值（1.5倍以上）</li>
+<li><strong>不回补</strong>：突破后数日甚至数周不回补缺口=确认趋势有效</li>
+</ul>
+<p>如果突破缺口在3-5天内被回补，它可能是假突破——卖出信号。</p>
+</div>
+
+<div class="section">
+<h3>8.4 持续缺口（测量缺口）：趋势加速，可估算目标位</h3>
+<p>持续缺口出现在趋势运行的中途，量能适中。它反映趋势在加速——多空双方对方向的共识正在加强。</p>
+<p>实战用法：<strong>用持续缺口估算趋势目标位</strong>。方法：从趋势起点到持续缺口中点的距离，等于从持续缺口到趋势终点的距离。这不是精确预测，是"如果趋势继续，大致能走多远"的参考。</p>
+</div>
+
+<div class="section">
+<h3>8.5 衰竭缺口：缩量跳空，趋势即将结束</h3>
+<p>衰竭缺口出现在趋势末端，<strong>缩量</strong>，很快被回补。它是趋势力竭的信号——最后的参与者已经入场，没有新的力量推动。</p>
+<p>特征：衰竭缺口后1-2天内被回补。如果缺口回补后价格反转方向，高概率是反转信号。</p>
+</div>
+
+<div class="section">
+<h3>8.6 缺口回补规律：哪种缺口会回补，哪种不会</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>缺口类型</th><th>回补概率</th><th>回补时间</th><th>实战意义</th></tr>
+</thead>
+<tbody>
+<tr><td>普通缺口</td><td class="highlight">≈100%</td><td>1-5天</td><td>忽略，噪音</td></tr>
+<tr><td>突破缺口</td><td>≈20%</td><td>数周-数月</td><td>不回补=趋势确认</td></tr>
+<tr><td>持续缺口</td><td>≈50%</td><td>数周</td><td>中速回补=趋势减速</td></tr>
+<tr><td>衰竭缺口</td><td class="highlight">≈90%</td><td>1-3天</td><td>快速回补=反转信号</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>8.7 缺口作为支撑/阻力的角色转换</h3>
+<p>突破缺口一旦形成，缺口区域就变成了<strong>支撑（向上突破）或阻力（向下突破）</strong>。价格回测到缺口边缘时，往往获得支撑/遇到阻力。</p>
+<p>角色转换：如果缺口被完全回补，<strong>支撑/阻力角色消失</strong>，价格可能继续反向运动。所以"缺口被回补"本身就是信号——突破缺口被回补=突破失败，衰竭缺口被回补=反转确认。</p>
+</div>
+
+<div class="section">
+<h3>8.8 A股缺口的特殊性：涨跌停板制度下的跳空更频繁</h3>
+<p>A股的涨跌停板制度导致跳空更频繁——涨停/跌停形成的跳空不等于正常缺口。连续涨停期间的缺口反映了<strong>被压抑的流动性</strong>，打开涨停后可能快速回补。</p>
+<p>实战建议：对于A股涨跌停造成的缺口，<strong>等涨停打开后观察量能</strong>。如果打开时放量+快速封回=缺口有效。如果打开时放量+不再封板=缺口可能回补。</p>
+</div>
+
+<!-- ECharts: 缺口四种类型图 -->
+<div class="chart-box">
+<div class="chart-title">图8-1 四种缺口类型示意图</div>
+<div class="chart-container" id="chart-gap-types"></div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第8章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>缺口出现时，<span class="action">我将先判断类型（看量能：放量=突破/持续，缩量=衰竭/普通），再判断是否在关键位，最后决定是否交易。</span></div>
+<div class="rule-item"><span class="trigger">当</span>突破缺口3-5天内被回补时，<span class="action">我将视为假突破信号，平掉突破方向的仓位，考虑反向操作。</span></div>
+<div class="rule-item"><span class="trigger">当</span>衰竭缺口被回补且价格反转时，<span class="action">我将在反转确认后入场，止损设在缺口另一侧。</span></div>
+</div>
+</div>
+
+<!-- ===== 第9章 ===== -->
+<div class="chapter" id="ch9">
+<h2 class="chapter-title"><span class="ch-num">第9章</span>推动浪与回调浪——趋势的健康度诊断</h2>
+
+<div class="section">
+<h3>9.1 什么是推动浪：沿趋势方向的价格段，幅度大速度快</h3>
+<p>推动浪是趋势的"主攻方向"。在上升趋势中，推动浪是向上的——幅度大、速度快、量能足。它是主力资金集中进攻的结果。</p>
+</div>
+
+<div class="section">
+<h3>9.2 什么是回调浪：逆趋势方向的价格段，幅度小速度慢</h3>
+<p>回调浪是趋势中的"喘息"。在上升趋势中，回调浪是向下的——幅度小、速度慢、量能缩。它是获利盘离场+空头抵抗的结果。</p>
+<p>关键认知：<strong>回调浪是入场机会，不是趋势结束</strong>。但前提是回调浪必须遵守规则——不能破前低（上升趋势中）。</p>
+</div>
+
+<div class="section">
+<h3>9.3 为什么永远只在回调浪末端顺势入场——不追推动浪的铁律</h3>
+<p>追推动浪=追涨杀跌。推动浪末端入场的后果：</p>
+<ul>
+<li>止损距离极远（设在回调低点太远）</li>
+<li>盈亏比极差（推动浪已走完大部分，剩余空间有限）</li>
+<li>恰好遇到回调，浮亏→恐慌→止损→价格继续涨</li>
+</ul>
+<p><strong>永远只在回调浪末端入场</strong>——这不是建议，是铁律。推动浪给你方向，回调浪给你位置。</p>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 铁律</div>
+<p>当价格正在推动浪中运行时，<strong>我绝不追入</strong>。我等回调浪回到关键位，出现反转信号后，再入场。宁可错过，不可追涨。</p>
+</div>
+
+<div class="section">
+<h3>9.4 回调幅度的三级分类</h3>
+<ul>
+<li><strong>浅回调（38.2%）</strong>：趋势非常强劲，买盘迫不及待。浅回调后的入场点可能需要用限价单在回调过程中埋伏。</li>
+<li><strong>正常回调（50%）</strong>：最常见的回调幅度。回调到50%后出现反转K线=标准入场信号。</li>
+<li><strong>深回调（61.8%）</strong>：趋势偏弱，但如果61.8%位+供需区域+反转K线三者共振，反而是盈亏比最好的入场点——止损距离小、目标空间大。</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>9.5 回调不破起点：前低/前高是趋势健康的底线</h3>
+<p>在上升趋势中，回调浪的低点不能跌破上一个推动浪的起点（前低）。如果跌破了=<strong>CHOCH</strong>，趋势可能反转。</p>
+<p>这就是为什么"前低"是止损的天然位置——它是趋势健康的最后防线。</p>
+</div>
+
+<div class="section">
+<h3>9.6 推动浪衰竭：幅度缩小+量能萎缩=趋势即将反转</h3>
+<p>当连续几段推动浪的幅度越来越小、量能越来越低——趋势正在"衰竭"。就像一个跑步的人越来越慢——他不会突然加速，他快停了。</p>
+<p>推动浪衰竭+回调浪加深=双重警告。如果你持有多头，开始收紧止损；如果你在场外，不要在这时候追入。</p>
+</div>
+
+<div class="section">
+<h3>9.7 推动浪与BOS的关系：每一段推动浪都在创造新的BOS</h3>
+<p>在上升趋势中，每一段推动浪创新高=一次BOS。BOS确认趋势延续。如果推动浪无法创新高（幅度衰竭）=BOS可能不再出现=趋势转折的早期信号。</p>
+</div>
+
+<!-- ECharts: 推动浪与回调浪 -->
+<div class="chart-box">
+<div class="chart-title">图9-1 推动浪与回调浪：健康趋势 vs 衰竭趋势</div>
+<div class="chart-container" id="chart-impulse-corrective"></div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第9章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>价格正在推动浪中加速运行时，<span class="action">我将不追入，而是标记推动浪起点作为关键位，等回调到该位置附近再考虑入场。</span></div>
+<div class="rule-item"><span class="trigger">当</span>回调浪到达38.2%/50%/61.8%且出现反转K线时，<span class="action">我将入场做多，止损设在回调浪起点下方1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>连续3段推动浪幅度递减且量能萎缩时，<span class="action">我将收紧止损至最近一个回调低点，不新建仓位。</span></div>
+</div>
+</div>
+
+<!-- ===== 第10章 ===== -->
+<div class="chapter" id="ch10">
+<h2 class="chapter-title"><span class="ch-num">第10章</span>势——判断趋势方向与量价关系</h2>
+
+<div class="section">
+<h3>10.1 高低点结构识别法</h3>
+<p>第3章已建立基础。这里强调实战细节：<strong>不要用1天的高低点判断趋势，用至少5个以上的拐点</strong>。单个拐点可能是噪音，序列才有意义。</p>
+<p>技巧：在日线图上，用20日均线辅助确认——价格在20日线上方+HH/HL=上升趋势确认，价格在20日线下方+LH/LL=下降趋势确认。</p>
+</div>
+
+<div class="section">
+<h3>10.2 均线辅助确认（裸K也能参考均线）</h3>
+<p>裸K交易者不依赖均线做决策，但均线是很好的"方向过滤器"：</p>
+<ul>
+<li>20日线=中期方向；60日线=长期方向；5日线=短期方向</li>
+<li>三线同向发散=强趋势；三线缠绕=震荡</li>
+<li>裸K信号+均线方向一致=信号增强；裸K信号+均线方向相反=信号打折</li>
+</ul>
+<p><strong>均线是辅助，不是决策依据</strong>。当裸K结构和均线方向矛盾时，信裸K结构。</p>
+</div>
+
+<div class="section">
+<h3>10.3 量价关系的系统化应用</h3>
+<p><strong>量价配合四定律</strong>：</p>
+<ol>
+<li><strong>上涨放量+回调缩量=健康趋势</strong>——买盘积极，卖盘不主动，趋势可持续</li>
+<li><strong>上涨缩量+回调放量=趋势衰竭</strong>——买盘犹豫，卖盘积极，趋势可能反转</li>
+<li><strong>放量滞涨=顶部信号</strong>——大量换手但价格不涨，说明有人在出货</li>
+<li><strong>地量地价=底部信号</strong>——没人愿意卖了，供应枯竭，反弹一触即发</li>
+</ol>
+<p><strong>量在价先</strong>：成交量是领先指标，价格是滞后确认。量能异动往往先于价格转折——"量先动，价后跟"。</p>
+<p><strong>量价背离</strong>：价格创新高但成交量低于前高=量价背离=反转预警。这不是"可能反转"，是"反转的概率在增加"——你需要收紧止损，但不一定立刻翻空。</p>
+</div>
+
+<div class="section">
+<h3>10.4 趋势衰竭的信号：加速赶顶/赶底、放量滞涨、量价背离</h3>
+<p>趋势衰竭的三个信号叠加=高概率反转：</p>
+<ul>
+<li>加速赶顶（连续大阳线+缺口）=情绪最高潮</li>
+<li>放量滞涨（巨量但涨幅缩小）=出货标志</li>
+<li>量价背离（新高无量）=买盘枯竭</li>
+</ul>
+<p>三个信号同时出现，你不必猜"会不会跌"——你只需要做一件事：<strong>收紧止损</strong>。让市场告诉你什么时候确认。</p>
+</div>
+
+<div class="section">
+<h3>10.5 趋势破坏的信号：关键低点/高点失守</h3>
+<p>上升趋势中，最近一个HL（更高的低点）被跌破=趋势破坏的第一个信号。如果下一个HH也无法创新高=双重确认。此时必须离场或翻空。</p>
+<p>不要"等等看"。趋势破坏后的"等等看"，通常变成"深度套牢"。</p>
+</div>
+
+<div class="section">
+<h3>10.6 震荡市的识别——最容易亏钱的市场</h3>
+<p>为什么震荡市最亏钱？因为你在用"趋势策略"做"震荡行情"：</p>
+<ul>
+<li>假突破频繁→止损被反复触发</li>
+<li>金叉死叉交替出现→指标失效</li>
+<li>追涨杀跌→两头挨打</li>
+</ul>
+<p><strong>震荡市量化标准</strong>：</p>
+<ul>
+<li>ATR收窄至近期均值50%以下</li>
+<li>5/10/20日均线距离<2%（缠绕）</li>
+<li>20日内无有效BOS</li>
+</ul>
+<p><strong>震荡市转趋势的信号</strong>：成交量突然放大+ATR扩张+BOS出现。三条件同时满足=趋势可能启动。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ A股约60%时间震荡</div>
+<p>不要把震荡当例外。在A股，震荡是常态，趋势是例外。如果你只会做趋势策略，你在60%的时间里都在亏钱。学会区间交易（第15章）是生存必需。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第10章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>量价背离出现（价格新高但成交量低于前高）时，<span class="action">我将收紧止损至最近一个回调低点，不新建仓位，等结构确认后再做决定。</span></div>
+<div class="rule-item"><span class="trigger">当</span>ATR收窄+均线缠绕+20日无BOS时，<span class="action">我将切换为区间交易策略，停止趋势策略，只在区间边界操作。</span></div>
+<div class="rule-item"><span class="trigger">当</span>放量滞涨出现（成交量>2倍均量但涨幅<1%）时，<span class="action">我将在下个交易日开盘减仓50%，止损收紧至前低。</span></div>
+</div>
+</div>
+
+<!-- ===== 第11章 ===== -->
+<div class="chapter" id="ch11">
+<h2 class="chapter-title"><span class="ch-num">第11章</span>位——找到关键位置</h2>
+
+<div class="section">
+<h3>11.1 关键位的三种类型：前高低点、供需区域、整数关口</h3>
+<p>关键位是"位置>形态"的核心。它决定了你的入场是否有流动性支撑、止损是否合理、盈亏比是否足够。</p>
+<p>三种关键位的可靠性排序：<strong>供需区域 > 前高低点 > 整数关口</strong>。供需区域有机构资金痕迹，前高低点是技术位，整数关口是心理位——前者最可靠，后者最弱。</p>
+</div>
+
+<div class="section">
+<h3>11.2 支撑与阻力：从画线到画区域</h3>
+<p>新手画支撑阻力=一条精确的水平线。实战中，支撑阻力不是线，是<strong>区域</strong>。因为买盘和卖盘不会精确地在同一个价格挂单——它们在一个价格区间内密集排列。</p>
+<p>画法：<strong>用矩形框标注区域，而不是单线</strong>。区域的宽度由该区域的历史波动范围决定（通常是ATR的0.5-1倍）。</p>
+</div>
+
+<div class="section">
+<h3>11.3 供需区域（Demand/Supply Zone）：机构建仓的痕迹</h3>
+<p>供需区域是裸K交易中最强大的位置工具。它和传统支撑阻力的本质区别：</p>
+<ul>
+<li><strong>支撑阻力</strong>：价格多次到达同一区域后反弹=该区域有"记忆"</li>
+<li><strong>供需区域</strong>：价格在某区域快速离开（不盘整）=机构在该区域大量建仓/出货</li>
+</ul>
+<p>关键洞察：<strong>供需区域是"起源点"，不是"多次反弹点"</strong>。一个供需区域只需要被验证一次（快速离开），就能成为未来回测时的入场位。</p>
+</div>
+
+<div class="section">
+<h3>11.4 供需区域的5步识别法</h3>
+<ol>
+<li><strong>找快速运动</strong>：价格在某区域快速离开，几乎不盘整（连续阳线或连续阴线）</li>
+<li><strong>回溯起源</strong>：快速运动前最后一根反向K线=订单块（OB），整个盘整区间=供需区域</li>
+<li><strong>画矩形区域</strong>：从起源K线的低点到快速运动起涨点=需求区；从起源K线的高点到快速运动起跌点=供应区</li>
+<li><strong>确认新鲜度</strong>：该区域是否被回测过？首次回测最强</li>
+<li><strong>标记优先级</strong>：大级别（日线/周线）的供需区域 > 小级别（1小时）的供需区域</li>
+</ol>
+</div>
+
+<div class="section">
+<h3>11.5 新鲜度：首次回测最强，多次回测失效</h3>
+<p>供需区域像一块海绵——首次使用吸水性最强，用一次就损失一部分吸力：</p>
+<ul>
+<li><strong>首次回测</strong>：可靠性最高，机构可能再次在该区域操作</li>
+<li><strong>二次回测</strong>：可靠性下降，部分机构可能已离场</li>
+<li><strong>三次及以上</strong>：大概率失效，该区域的流动性已被充分消化</li>
+</ul>
+<p>实战规则：<strong>只交易首次回测和二次回测，三次以上放弃</strong>。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 新鲜度定律</div>
+<p>供需区域的可靠性 = 1 / 回测次数。首次回测≈70%可靠，二次≈50%，三次≈30%，四次以上≈0%。只交易首次和二次，这是数学上的正期望值。</p>
+</div>
+
+<div class="section">
+<h3>11.6 供需区域 vs 传统支撑阻力的区别</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>维度</th><th>传统支撑阻力</th><th>供需区域</th></tr>
+</thead>
+<tbody>
+<tr><td>识别依据</td><td>历史多次反弹/受阻</td><td class="highlight">快速运动的起源点</td></tr>
+<tr><td>画法</td><td>水平线</td><td>矩形区域</td></tr>
+<tr><td>新鲜度</td><td>越多次越"强"</td><td class="highlight">越多次越"弱"</td></tr>
+<tr><td>机构视角</td><td>无</td><td class="highlight">有（机构建仓痕迹）</td></tr>
+<tr><td>回测可靠性</td><td>不确定</td><td class="highlight">首次高，逐次递减</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>11.7 "无人区"——最不该交易的地方</h3>
+<p>无人区=远离所有关键位的区域。在无人区交易=在沙漠里找水——没有流动性支撑，你的止损容易被扫，你的信号没有位置确认。</p>
+<p><strong>如果价格在无人区，你的唯一动作=等待</strong>。等它回到关键位。如果它不回来，这笔交易不属于你。</p>
+</div>
+
+<div class="section">
+<h3>11.8 关键位画法实战：5-8个区域足够</h3>
+<p>新手最容易犯的错：<strong>满屏画线</strong>。如果每个价位都是支撑，那没有任何价位是支撑。</p>
+<p>实战规则：<strong>每只股票只标注5-8个最重要的关键区域</strong>。优先标注：</p>
+<ol>
+<li>日线/周线级别的供需区域</li>
+<li>最近3个月的前高低点</li>
+<li>整数关口（仅限和心理价位相关，如100/200/500）</li>
+</ol>
+<p>5-8个区域。不多不少。多了=噪音，少了=漏信号。</p>
+</div>
+
+<!-- ECharts: 供需区域标注图 -->
+<div class="chart-box">
+<div class="chart-title">图11-1 供需区域标注：需求区（绿色）与供应区（红色）</div>
+<div class="chart-container" id="chart-supply-demand"></div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第11章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我要画关键位时，<span class="action">我将只标注5-8个最重要的区域，优先供需区域和前高低点。多余的全部删除。</span></div>
+<div class="rule-item"><span class="trigger">当</span>供需区域已被回测3次以上时，<span class="action">我将标记为"失效"并从图中移除，不再作为交易依据。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格处于无人区（距最近关键位>2个ATR）时，<span class="action">我将不交易，等待价格回到关键位。</span></div>
+</div>
+</div>
+
+<!-- ===== 第12章 ===== -->
+<div class="chapter" id="ch12">
+<h2 class="chapter-title"><span class="ch-num">第12章</span>形——确认入场信号</h2>
+
+<div class="section">
+<h3>12.1 形态只是触发器，不是预测器</h3>
+<p>到了这一步，你已经知道了方向（势）和位置（位）。现在你需要一个"扳机"——告诉你"现在入场"。</p>
+<p>形态（K线信号）就是那个扳机。但请记住：<strong>扳机不决定打哪个方向，它只决定什么时候扣</strong>。方向是"势"定的，位置是"位"定的，形态只负责"时机"。</p>
+</div>
+
+<div class="section">
+<h3>12.2 收盘价确认原则：盘中信号不算数</h3>
+<p>A股T+1制度下，盘中突破=不算数。只有<strong>收盘价确认</strong>才算数。</p>
+<p>原因：盘中价格是实时博弈的中间状态，随时可能反转。收盘价是全天博弈的"最终裁判"——它代表了一整天多空交战后的结论。</p>
+<p>实战规则：<strong>任何K线信号，必须等收盘确认后再做决策</strong>。盘中看到的信号只能做"预备"，不能做"行动"。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ T+1下的收盘确认</div>
+<p>在美股T+0环境下，你可以在盘中入场+盘中止损。但在A股T+1下，如果你在盘中入场且判断错误，你今天卖不掉。<strong>收盘前15分钟决策比早盘冲入安全10倍</strong>。</p>
+</div>
+
+<div class="section">
+<h3>12.3 组合K线强于单根K线</h3>
+<p>一根Pin Bar=中等信号。Pin Bar+吞没线在同一个关键位=强信号。Pin Bar+吞没线+量价配合=极强信号。</p>
+<p>信号强度排序：<strong>三重确认 > 双重确认 > 单K确认</strong>。宁可多等1-2根K线获取双重确认，也不要用单K冒险。</p>
+</div>
+
+<div class="section">
+<h3>12.4 信号必须出现在关键位才有效</h3>
+<p>这是"位置>形态"原则的延伸。即使是最完美的Pin Bar，如果出现在无人区，它就不是信号——它是噪音。</p>
+<p>有效信号的定义：<strong>结构方向正确 + 关键位 + K线形态确认</strong>。三重条件缺一不可。</p>
+</div>
+
+<div class="section">
+<h3>12.5 信号的"确认强度"分级</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>级别</th><th>条件</th><th>可靠性</th><th>仓位</th></tr>
+</thead>
+<tbody>
+<tr><td>C级（弱）</td><td>单K+关键位+顺势</td><td>~50%</td><td>1/3仓</td></tr>
+<tr><td>B级（中）</td><td>双K确认+关键位+顺势+量价配合</td><td>~60%</td><td>1/2仓</td></tr>
+<tr><td class="highlight">A级（强）</td><td>三重确认+供需区域+顺势+量价+多周期</td><td>~70%+</td><td>标准仓位</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>12.6 没有信号就不动——学会等待</h3>
+<p>裸K交易者最大的敌人不是市场，是<strong>"很想做点什么"的冲动</strong>。当势位形三步中缺少"形"这一步时，正确的做法=什么都不做。</p>
+<p>等待不是浪费时间，等待是<strong>保护资本</strong>。每一笔没有信号支撑的交易，都是在增加亏损的概率。你不需要每天交易，你只需要在信号出现时交易。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第12章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>K线信号出现在关键位但尚未收盘时，<span class="action">我将不入场，等收盘确认后再做决策。A股T+1下，优先在收盘前15分钟决策。</span></div>
+<div class="rule-item"><span class="trigger">当</span>势位两步满足但"形"不满足时，<span class="action">我将设价格提醒（到达关键位时通知），但不入场。没有扳机不扣扳机。</span></div>
+<div class="rule-item"><span class="trigger">当</span>信号级别为C级时，<span class="action">我将只用1/3仓位入场；B级用1/2仓位；A级用标准仓位。信号越弱，仓位越小。</span></div>
+</div>
+</div>
+
+</div><!-- end container Part 3 -->
+
+<!-- ==================== 第四篇：交易决策 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part4">
+  <div class="part-tag">第四篇 · 交易决策</div>
+  <h2>从分析到决策</h2>
+  <p class="part-goal">把"势-位-形"分析落地为可执行的交易决策。本篇聚焦"基于价格结构的入场/出场规则"，仓位算法和账户级风控不展开，详见风控手册。</p>
+</div>
+
+<!-- ===== 第13章 ===== -->
+<div class="chapter" id="ch13">
+<h2 class="chapter-title"><span class="ch-num">第13章</span>入场——左侧试仓与右侧确认</h2>
+
+<div class="section">
+<h3>13.1 左侧交易：在关键位提前埋伏</h3>
+<p>左侧入场=在价格到达关键位之前就挂单。优点：入场价格好，盈亏比高。缺点：关键位可能不被测试，或者到达后直接穿透。</p>
+<p>适合左侧入场的场景：供需区域明确、结构方向清晰、你对这个关键位有信心。在A股，左侧入场必须搭配<strong>更小的仓位（1/3标准仓）</strong>——因为T+1下你无法当日纠错。</p>
+</div>
+
+<div class="section">
+<h3>13.2 右侧交易：信号确认后跟进</h3>
+<p>右侧入场=在K线信号收盘确认后，下一根K线开盘时入场。优点：信号已确认，入场更安全。缺点：入场价格比左侧差，止损距离可能更大。</p>
+<p>适合右侧入场的场景：关键位不太确定、市场波动剧烈、你是新手。右侧入场可以用<strong>标准仓位</strong>，因为确认后失败的概率更低。</p>
+</div>
+
+<div class="section">
+<h3>13.3 左右结合：试仓1/3 + 确认加仓2/3</h3>
+<p>这是裸K交易者最优的入场方式：</p>
+<ol>
+<li><strong>左侧试仓</strong>：在关键位挂1/3仓位限价单</li>
+<li><strong>右侧加仓</strong>：K线信号确认后追加2/3仓位</li>
+</ol>
+<p>如果左侧入场后信号确认=满仓+好价格。如果左侧入场后信号不出现=1/3仓位，止损小，损失可控。</p>
+<p>如果左侧未成交（价格没到关键位）=等右侧信号出现后再入场。没有遗憾——不属于你的交易就不要硬做。</p>
+</div>
+
+<div class="section">
+<h3>13.4 为什么纯左侧和纯右侧都不完美</h3>
+<p>纯左侧=赌方向，胜率低但盈亏比好。纯右侧=追确认，胜率高但盈亏比差。左右结合=兼顾胜率和盈亏比，是数学上的最优解。</p>
+</div>
+
+<div class="section">
+<h3>13.5 入场前必须回答的三个问题</h3>
+<ol>
+<li><strong>方向</strong>：当前结构是HH/HL还是LH/LL？我的方向和结构一致吗？</li>
+<li><strong>位置</strong>：我在关键位附近吗？盈亏比≥2:1吗？</li>
+<li><strong>确认</strong>：有K线信号吗？收盘确认了吗？</li>
+</ol>
+<p>三个问题中任何一个回答"否"=不入场。没有例外。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第13章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我要入场时，<span class="action">我将先回答三个问题：方向？位置？确认？三个"是"才入场，任何一个"否"就不动。</span></div>
+<div class="rule-item"><span class="trigger">当</span>关键位明确且我有信心时，<span class="action">我将用左右结合法：左侧1/3限价单+右侧2/3确认加仓。如果没有信心，只用右侧入场。</span></div>
+</div>
+</div>
+
+<!-- ===== 第14章 ===== -->
+<div class="chapter" id="ch14">
+<h2 class="chapter-title"><span class="ch-num">第14章</span>趋势跟随策略——顺势而为</h2>
+
+<div class="section">
+<h3>14.1 趋势跟随的核心逻辑：不抄底不猜顶</h3>
+<p>趋势跟随是裸K交易中<strong>最可靠、最简单</strong>的策略。逻辑：市场已经告诉你方向（HH/HL=做多），你只需要在回调时入场，然后跟着趋势走。</p>
+<p>这不是"低买高卖"，而是<strong>"高买更高卖"</strong>。你不需要买在最低点，你只需要买在趋势延续的起点。</p>
+</div>
+
+<div class="section">
+<h3>14.2 回踩入场：趋势中的关键低点/高点</h3>
+<p>在上升趋势中，回踩到HL（更高的低点）附近+反转K线确认=入场点。止损设在HL下方1个ATR。目标位至少是止损距离的2倍。</p>
+<p>关键是"HL附近"——不要求精确到小数点后两位。你画一个区域，价格进入区域+出现信号=入场。</p>
+</div>
+
+<div class="section">
+<h3>14.3 突破入场：新高/新低后的首次回踩</h3>
+<p>BOS出现（创新高/新低）后，等价格回踩到突破位附近+确认信号=入场点。这种入场的止损更紧凑（设在突破位下方），盈亏比更好。</p>
+</div>
+
+<div class="section">
+<h3>14.4 分批建仓的节奏（3-3-4比例）</h3>
+<p>不一次性满仓入场。分批建仓：</p>
+<ul>
+<li>回调到位+首次信号：30%仓位</li>
+<li>确认信号出现（第二根K线确认）：30%仓位</li>
+<li>趋势延续确认（BOS出现后回踩）：40%仓位</li>
+</ul>
+<p>如果第一步就失败，你只损失30%仓位的2%=总账户的0.6%。如果成功，你在趋势确认后逐步加满。</p>
+</div>
+
+<div class="section">
+<h3>14.5-14.6 趋势跟随的止损与止盈</h3>
+<p><strong>止损</strong>：设在最近一个HL下方（上升趋势）或LH上方（下降趋势），留1个ATR余量。结构止损，不是固定百分比止损。</p>
+<p><strong>止盈</strong>：两种方式——</p>
+<ol>
+<li><strong>结构止盈</strong>：趋势结构被破坏时离场（HL被跌破）</li>
+<li><strong>跟踪止盈</strong>：每创新高后，将止损上移至新HL下方。利润越奔跑，止损越跟近——直到被触发，你吃到了大部分趋势。</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第14章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>上升趋势回踩HL附近出现反转信号时，<span class="action">我将用3-3-4分批建仓法入场，止损设在HL下方1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>趋势运行中每创新高后，<span class="action">我将把止损上移至新HL下方1个ATR，让利润奔跑直到止损被触发。</span></div>
+</div>
+</div>
+
+<!-- ===== 第15章 ===== -->
+<div class="chapter" id="ch15">
+<h2 class="chapter-title"><span class="ch-num">第15章</span>区间交易策略——高抛低吸</h2>
+
+<div class="section">
+<h3>15.1 箱体的识别：明确的上下边界</h3>
+<p>箱体=价格在一个明确的上下边界之间反复运动。上边界=阻力区，下边界=支撑区。识别标准：至少2次触及上边界+2次触及下边界。</p>
+</div>
+
+<div class="section">
+<h3>15.2 下沿做多，上沿做空</h3>
+<p>区间交易的核心=在边界操作。价格到达下边界+反转K线=做多。价格到达上边界+反转K线=做空。</p>
+<p>止损设在区间边界外侧1个ATR。目标位=区间对侧边界。盈亏比通常为1:1.5-2。</p>
+</div>
+
+<div class="section">
+<h3>15.3 区间中段是最危险的区域</h3>
+<p>价格在区间中段=离上下边界都远=没有盈亏比优势。在中段做多，止损在区间下沿太远；在中段做空，止损在区间上沿太远。盈亏比<1:1=不值得做。</p>
+<p><strong>区间中段=观望区</strong>。只有在边界附近才操作。</p>
+</div>
+
+<div class="section">
+<h3>15.4 区间交易的资金管理规则</h3>
+<p>区间交易失败率高于趋势交易（假突破更多），所以仓位要更保守：<strong>区间交易仓位≤趋势交易仓位的2/3</strong>。</p>
+</div>
+
+<div class="section">
+<h3>15.5 箱体突破的处理：止损后反手还是观望</h3>
+<p>箱体被突破后，你有两个选择：</p>
+<ol>
+<li><strong>止损离场+观望</strong>（推荐新手）：等突破-回踩-确认后再决定方向</li>
+<li><strong>止损+反手</strong>（需经验）：如果突破放量+大实体K线，可能趋势启动，可以反手跟随</li>
+</ol>
+</div>
+
+<div class="section">
+<h3>15.6 区间交易最常犯的错误</h3>
+<ul>
+<li>区间中段追涨杀跌→两头挨打</li>
+<li>不设止损就做区间交易→突破后深套</li>
+<li>在突破后继续用区间策略→趋势中逆势</li>
+<li>区间太窄（波动<3%）→交易成本占比过高</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>15.7 震荡市与趋势市的切换识别</h3>
+<p><strong>震荡→趋势</strong>：成交量突然放大+ATR扩张+BOS出现=趋势可能启动，切换为趋势策略。</p>
+<p><strong>趋势→震荡</strong>：推动浪幅度递减+量能萎缩+无BOS=趋势可能转震荡，切换为区间策略。</p>
+</div>
+
+<div class="section">
+<h3>15.8 A股约60%时间处于震荡——震荡市是主战场不是例外</h3>
+<p>如果你只学趋势策略，你在60%的时间里都在亏钱。学会区间交易=你的生存时间翻倍。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第15章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>价格到达区间边界+出现反转K线时，<span class="action">我将入场，仓位≤趋势交易的2/3，止损设在边界外1个ATR，目标位为区间对侧。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格在区间中段时，<span class="action">我将不交易，即使出现K线信号——没有位置支持的信号=噪音。</span></div>
+<div class="rule-item"><span class="trigger">当</span>箱体被放量突破时，<span class="action">我将先止损离场，再等突破-回踩-确认后决定是否反手跟随新方向。</span></div>
+</div>
+</div>
+
+<!-- ===== 第16章 ===== -->
+<div class="chapter" id="ch16">
+<h2 class="chapter-title"><span class="ch-num">第16章</span>突破交易策略——突破-回踩-确认</h2>
+
+<div class="section">
+<h3>16.1 突破的三种类型</h3>
+<ul>
+<li><strong>真突破</strong>：放量+收盘站上+次日不回跌=趋势启动</li>
+<li><strong>假突破</strong>：缩量+盘中冲过但收盘回落=诱多/诱空</li>
+<li><strong>延迟突破</strong>：突破后几天内回踩确认再出发=最常见的健康突破</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>16.2 真突破 vs 假突破的区分</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>维度</th><th>真突破</th><th>假突破</th></tr>
+</thead>
+<tbody>
+<tr><td>量能</td><td class="highlight">放量（>1.5倍均量）</td><td>缩量（<均量）</td></tr>
+<tr><td>收盘</td><td class="highlight">收盘站稳突破位上方</td><td>收盘回落至突破位下方</td></tr>
+<tr><td>次日</td><td class="highlight">不回踩或回踩不破</td><td>快速跌回原区间</td></tr>
+<tr><td>K线</td><td>大实体阳线</td><td>长上影/十字星</td></tr>
+<tr><td>回测</td><td class="highlight">3-5天内回踩确认</td><td>3天内回补缺口/跌回</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>16.3 突破-回踩-确认三步法</h3>
+<p>这是突破交易最安全的入场方式：</p>
+<ol>
+<li><strong>突破</strong>：价格放量突破关键位，收盘确认</li>
+<li><strong>回踩</strong>：价格回调到突破位附近（不跌破）</li>
+<li><strong>确认</strong>：回踩后出现反转K线，确认突破位已转为支撑</li>
+</ol>
+<p>三步完成=入场。止损设在回踩低点下方1个ATR。目标位=测量目标位（突破距离的等量投射）。</p>
+</div>
+
+<div class="section">
+<h3>16.4 没有回测支撑的突破不追</h3>
+<p>追突破=最危险的入场方式。因为你不知道是真突破还是假突破。等回踩=让市场替你验证。如果回踩不破=真突破确认，你安全入场。如果回踩跌破=假突破，你避免了亏损。</p>
+<p><strong>宁可少赚3%也不追突破</strong>——这3%是你为"确定性"支付的保险费。</p>
+</div>
+
+<div class="section">
+<h3>16.5 假突破反杀：如何识别和操作</h3>
+<p>假突破=机构诱多/诱空的杰作。当价格突破关键位后收盘回落=假突破确认。此时：</p>
+<ul>
+<li>做多假突破反杀=在收盘回落确认后做空</li>
+<li>做空假突破反杀=在收盘回升确认后做多</li>
+</ul>
+<p>止损设在假突破极值点±1个ATR。目标位=区间对侧边界。</p>
+</div>
+
+<div class="section">
+<h3>16.6 假跌破低吸：诱空后的最佳买点</h3>
+<p>假跌破=价格跌破支撑后快速收回。这是机构吸筹的经典手法（威科夫Spring）。假跌破确认后做多，是裸K交易中<strong>盈亏比最高的入场点</strong>——因为止损距离极小（就在假跌破低点下方）。</p>
+</div>
+
+<div class="section">
+<h3>16.7 突破交易的止损与仓位规则</h3>
+<p>止损=设在突破位下方1个ATR（真突破入场）或假突破极值点±1个ATR（反杀入场）。仓位=从止损距离反推（详见第18章和风控手册第3章）。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第16章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>价格突破关键位时，<span class="action">我将不追入，而是等回踩-确认三步法完成后再入场。没有回踩支撑的突破不追。</span></div>
+<div class="rule-item"><span class="trigger">当</span>假突破确认（收盘回落至突破位下方）时，<span class="action">我将在下一交易日开盘反杀入场，止损设在假突破极值点±1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>假跌破确认（跌破支撑后收盘收回）时，<span class="action">我将做多，止损设在假跌破最低点下方1个ATR——这是盈亏比最高的入场点。</span></div>
+</div>
+</div>
+
+<!-- ===== 第17章 ===== -->
+<div class="chapter" id="ch17">
+<h2 class="chapter-title"><span class="ch-num">第17章</span>止损——保命的第一优先级</h2>
+
+<div class="section">
+<h3>17.1 止损不是"认输"，是"成本"</h3>
+<p>你害怕止损，是因为你把止损当作"承认错误"。但在裸K交易中，<strong>止损是做生意的成本</strong>——就像开餐厅要付房租一样。没有止损的交易=没有房租的餐厅=不可持续。</p>
+<p>每笔交易的止损是确定的、有限的。但如果你不设止损，亏损是无限的。</p>
+</div>
+
+<div class="section">
+<h3>17.2 结构止损：设在逻辑失效位</h3>
+<p>裸K交易的止损不是随便设的，它有逻辑依据：<strong>设在"如果价格到了这里，我的入场逻辑就失效了"的位置</strong>。</p>
+<p>例如：你在HL（更高的低点）入场做多，止损就设在HL下方——因为如果HL被跌破，"上升趋势延续"的逻辑就失效了，你没有理由继续持有多头。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 结构止损公式</div>
+<p>止损位 = 入场逻辑失效位 + 1个ATR余量<br>余量不是为了"多忍一下"，是为了<strong>不被算法猎杀</strong>。</p>
+</div>
+
+<div class="section">
+<h3>17.3 绝不设在影线尖端——ATR动态止损法</h3>
+<p>散户最常犯的止损错误：<strong>把止损精确地设在Pin Bar影线尖端或前低/前高</strong>。这就是在告诉算法："我就在这里，请来猎杀我。"</p>
+<p>ATR止损法：</p>
+<ul>
+<li>计算14日ATR（平均真实波幅）</li>
+<li>止损=关键位 ± 1个ATR</li>
+<li>如果ATR=2%，前低=10元，止损=10-2%=9.80元（而非9.95元）</li>
+</ul>
+<p>1个ATR的余量让止损在"正常波动范围"之外，大幅降低被猎杀的概率。</p>
+</div>
+
+<div class="section">
+<h3>17.4 算法猎杀止损的原理与应对</h3>
+<p>量化算法会扫描市场上的止损聚集区（前高/前低附近），然后短暂推价格到那里，触发大量止损单后反向操作。</p>
+<p>应对方法：</p>
+<ol>
+<li><strong>ATR余量</strong>：止损偏离关键位1个ATR，不在聚集区</li>
+<li><strong>收盘确认</strong>：只用收盘价判断止损是否触发，忽略盘中穿透</li>
+<li><strong>条件单</strong>：用收盘价触发的条件单，而非实时价触发的止损单</li>
+</ol>
+</div>
+
+<div class="section">
+<h3>17.5 止损设得太紧和太松都不行</h3>
+<p><strong>太紧</strong>（<0.5个ATR）：被正常波动频繁触发，胜率低。<strong>太松</strong>（>2个ATR）：单笔亏损过大，破坏盈亏比。<strong>刚好</strong>（1-1.5个ATR）：在"不被猎杀"和"单笔可控"之间取得平衡。</p>
+</div>
+
+<div class="section">
+<h3>17.6 单笔风险铁律：≤2%</h3>
+<p>每笔交易的亏损不超过总账户的2%。公式：<strong>仓位=账户×2%÷止损距离</strong>（详见风控手册第3章）。</p>
+<p>这不是建议，是铁律。连续5次2%亏损=总亏损<10%，可以恢复。一次10%亏损=需要11%盈利才能回本。</p>
+</div>
+
+<div class="section">
+<h3>17.7 不补亏损仓，只加盈利仓</h3>
+<p>马丁格尔策略（亏损后加倍下注）=赌博，不是交易。反马丁格尔策略（盈利后加仓）=正确的加仓方式。详见风控手册第3章。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第17章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我要设止损时，<span class="action">我将设在入场逻辑失效位±1个ATR，绝不精确设在关键位上或影线尖端。</span></div>
+<div class="rule-item"><span class="trigger">当</span>盘中价格穿透止损位但收盘收回时，<span class="action">我将不触发止损（使用收盘价确认原则），等次日再判断。</span></div>
+<div class="rule-item"><span class="trigger">当</span>连续3次止损被触发后，<span class="action">我将暂停交易2天，复盘最近的止损位置是否合理——可能是ATR参数需要调整，也可能是我在错误的市场环境中交易。</span></div>
+</div>
+</div>
+
+<!-- ===== 第18章 ===== -->
+<div class="chapter" id="ch18">
+<h2 class="chapter-title"><span class="ch-num">第18章</span>止盈与仓位——守住利润的艺术</h2>
+
+<div class="section">
+<h3>18.1 盈亏比：裸K交易的数学底座</h3>
+<p>盈亏比=潜在盈利÷潜在亏损。如果你止损2%、目标4%，盈亏比=2:1。</p>
+<p>为什么盈亏比重要？因为它决定了<strong>你需要多少胜率才能盈利</strong>：</p>
+<ul>
+<li>盈亏比1:1 → 需要>50%胜率才能盈利</li>
+<li>盈亏比2:1 → 只需要>33%胜率就能盈利</li>
+<li>盈亏比3:1 → 只需要>25%胜率就能盈利</li>
+</ul>
+<p>裸K交易的核心不是追求高胜率，而是<strong>追求正期望值</strong>。50%胜率+2:1盈亏比=每笔交易期望盈利0.5R（R=单笔风险），长期稳赚。</p>
+</div>
+
+<div class="section">
+<h3>18.2 最低盈亏比要求：1:2</h3>
+<p>入场前计算盈亏比。如果<2:1，不入场。这是一个数学规则，不是感觉。2:1盈亏比+40%胜率=微亏，2:1+50%胜率=稳赚。低于2:1的交易，你需要非常高的胜率才能盈利——这不现实。</p>
+</div>
+
+<!-- 交互组件：盈亏比计算器 -->
+<div class="calc-widget" id="rrr-calc">
+<div class="widget-title">📐 盈亏比计算器</div>
+<div class="input-group">
+<label>入场价格（元）</label>
+<input type="number" id="rrr-entry" value="10.00" step="0.01">
+</div>
+<div class="input-group">
+<label>止损价格（元）</label>
+<input type="number" id="rrr-stop" value="9.50" step="0.01">
+</div>
+<div class="input-group">
+<label>目标价格（元）</label>
+<input type="number" id="rrr-target" value="11.00" step="0.01">
+</div>
+<button onclick="calcRRR()">计算盈亏比</button>
+<div class="result-box">
+<div class="result-value" id="rrr-result">—</div>
+<div class="result-label" id="rrr-label">盈亏比</div>
+</div>
+</div>
+
+<div class="section">
+<h3>18.3 固定止盈 vs 跟踪止盈</h3>
+<p><strong>固定止盈</strong>：到达目标位就平仓。优点=执行简单。缺点=可能错过后续趋势。</p>
+<p><strong>跟踪止盈</strong>：每创新高（新低）后，把止损上移（下移）至最近的HL（LH）下方1个ATR。优点=让利润奔跑。缺点=回吐部分利润。</p>
+<p>实战建议：<strong>分批止盈</strong>——50%仓位用固定止盈（锁定利润），50%仓位用跟踪止盈（追求超额）。</p>
+</div>
+
+<div class="section">
+<h3>18.4 结构止盈：趋势破坏时离场</h3>
+<p>当趋势结构被破坏（HL被跌破或LH被突破），你的持仓逻辑失效——离场。这是最"正确"的止盈方式，因为它基于结构而非情绪。</p>
+</div>
+
+<div class="section">
+<h3>18.5 分批止盈：锁定部分+让剩余奔跑</h3>
+<p>到达第一个目标位（1:2盈亏比）=平掉50%仓位，剩余50%设跟踪止损。这样你锁定了确定的利润，同时保留了获取超额利润的可能性。</p>
+</div>
+
+<div class="section">
+<h3>18.6 仓位计算：从止损距离反推</h3>
+<p>仓位=（账户总资金×2%）÷（入场价-止损价）÷ 入场价 × 100%</p>
+<p>示例：账户10万，入场价10元，止损价9.5元（止损5%）。仓位=（100000×2%）÷0.5÷10=4000股=4万元=40%仓位。</p>
+<p>如果止损距离只有2%，仓位会放大到100%——此时需要叠加仓位上限约束。</p>
+</div>
+
+<div class="section">
+<h3>18.7 仓位上限：总仓位≤50%，单板块≤20%</h3>
+<p>仓位上限是账户级风控规则（详见风控手册）。裸K交易者必须遵守：<strong>总仓位不超过50%，单一板块不超过20%</strong>。分散风险比追求收益更重要。</p>
+</div>
+
+<!-- 交互组件：仓位反推计算器 -->
+<div class="calc-widget" id="position-calc">
+<div class="widget-title">📐 仓位反推计算器</div>
+<div class="input-group">
+<label>账户总资金（万元）</label>
+<input type="number" id="pos-account" value="10" step="0.1">
+</div>
+<div class="input-group">
+<label>单笔风险（%）</label>
+<input type="number" id="pos-risk" value="2" step="0.1">
+</div>
+<div class="input-group">
+<label>入场价格（元）</label>
+<input type="number" id="pos-entry" value="10.00" step="0.01">
+</div>
+<div class="input-group">
+<label>止损价格（元）</label>
+<input type="number" id="pos-stop" value="9.50" step="0.01">
+</div>
+<button onclick="calcPosition()">计算仓位</button>
+<div class="result-box">
+<div class="result-value" id="pos-result">—</div>
+<div class="result-label" id="pos-label">建议仓位</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第18章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>入场前盈亏比<2:1时，<span class="action">我将放弃这笔交易，不管形态多完美。2:1是数学底线，不是建议。</span></div>
+<div class="rule-item"><span class="trigger">当</span>利润达到2:1盈亏比时，<span class="action">我将平掉50%仓位锁定利润，剩余50%设跟踪止损让利润奔跑。</span></div>
+<div class="rule-item"><span class="trigger">当</span>趋势结构被破坏（HL被跌破）时，<span class="action">我将立即平仓，不犹豫、不期待、不幻想"也许还能涨回来"。</span></div>
+</div>
+</div>
+
+</div><!-- end container Part 4 -->
+
+<!-- ==================== 第五篇：P2高阶 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part5">
+  <div class="part-tag">第五篇 · P2高阶突破</div>
+  <h2>高阶分析——SMC、斐波那契与威科夫</h2>
+  <p class="part-goal">从"看懂趋势和形态"升级到"读取机构的微观痕迹"。SMC提供精确入场位，斐波那契提供回撤/目标计算，威科夫提供市场阶段的全局剧本。三者结合=裸K的终极武器。</p>
+</div>
+
+<!-- ===== 第19章 ===== -->
+<div class="chapter" id="ch19">
+<h2 class="chapter-title"><span class="ch-num">第19章</span>假突破深度——流动性猎取与2B法则</h2>
+
+<div class="section">
+<h3>19.1 假突破的本质：流动性猎杀——机构扫掉散户止损后反向操作</h3>
+<p>你已经知道假突破是"突破后站不住"。但你知道<strong>为什么</strong>站不住吗？因为突破的目的不是"开启新趋势"，而是<strong>"吃掉流动性"</strong>。</p>
+<p>想象一个湖泊（关键位上方聚集的止损单和突破买单），猎人（机构）故意放水（把价格推到湖面）让鱼跳出来（触发止损和追涨单），然后猎人收网（反向操作）。这就是流动性猎取（Liquidity Sweep）。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 流动性猎取公式</div>
+<p>假突破 = 机构制造的方向性幻觉 + 触发散户止损/追涨 + 机构反向建仓<br>识别假突破 = 识别机构的真实意图（不是看它"往哪推"，而是看它推完后"往哪走"）</p>
+</div>
+
+<div class="section">
+<h3>19.2 盘中突破 vs 收盘确认</h3>
+<p>盘中突破可能是流动性猎取的第一步——推价格上去触发止损。但如果收盘价格回落，说明机构完成了猎取并反向操作。收盘确认是区分真假突破的<strong>最简单也最可靠</strong>的方法。</p>
+</div>
+
+<div class="section">
+<h3>19.3 假突破的三种经典模式</h3>
+<ul>
+<li><strong>单K假突破</strong>：盘中创新高/新低，但收盘收回原区间——最常见的模式</li>
+<li><strong>多K假突破</strong>：连续2-3天维持在突破位上方，但无力继续上行，然后跌回——更危险，因为看起来像"真突破的回踩"</li>
+<li><strong>极端假突破</strong>：大幅突破后V型反转——通常是重大消息驱动的流动性事件</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>19.4 识别假突破的5个条件</h3>
+<ol>
+<li><strong>量能不足</strong>：突破时成交量<20日均量1.2倍=没有真正的力量推动</li>
+<li><strong>收盘回落</strong>：收盘价回到突破位下方=最直接的信号</li>
+<li><strong>K线形态</strong>：长上影线/十字星在突破位出现=拒绝信号</li>
+<li><strong>次日确认</strong>：次日继续回落=假突破确认</li>
+<li><strong>结构矛盾</strong>：突破方向与更大周期结构方向相反=高概率假突破</li>
+</ol>
+<p>满足3个以上=高概率假突破，可以反杀入场。</p>
+</div>
+
+<div class="section">
+<h3>19.5-19.6 假突破反杀与假跌破低吸</h3>
+<p><strong>假突破反杀</strong>：收盘确认假突破后，下一交易日做空。止损设在假突破最高点上方1个ATR。目标位=区间对侧。</p>
+<p><strong>假跌破低吸</strong>：收盘确认假跌破后，下一交易日做多。止损设在假跌破最低点下方1个ATR。这是裸K交易中盈亏比最高的入场——止损距离极小，目标空间极大。</p>
+</div>
+
+<div class="section">
+<h3>19.7 2B法则：Victor Sperandeo的经典反转识别</h3>
+<p>2B法则定义：在上升趋势中，价格创新高后<strong>无法维持在前期高点上方</strong>，跌回前高之下=上升趋势可能反转。在下降趋势中反之。</p>
+<p>2B的"2"是指"第二次测试"——第二次测试前高/前低失败=反转信号。第一次测试（突破）是猎取流动性，第二次测试（回落确认）是暴露真实意图。</p>
+</div>
+
+<div class="section">
+<h3>19.8 2B法则的实战应用与止损设置</h3>
+<p>2B法则入场：在价格跌回前高/前低之下时入场。止损设在假突破极值点±1个ATR。目标位至少2:1盈亏比。</p>
+<p>注意：2B法则在<strong>大周期（日线/周线）</strong>上比小周期可靠得多。5分钟图上的2B=噪音，日线上的2B=重要反转信号。</p>
+</div>
+
+<div class="section">
+<h3>19.9 为什么假突破比不突破更危险</h3>
+<p>不突破=没有信号，你不会做任何事。假突破=给你一个"看起来像机会"的信号，诱你入场后反转。它比"没有信号"更危险，因为它<strong>消耗你的资本+消耗你的信心</strong>。连续2-3次假突破的亏损+心理打击，可能让你错过下一个真正的趋势。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第19章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>价格突破关键位但量能<1.2倍均量+收盘长上影时，<span class="action">我将标记为"疑似假突破"，次日如果继续回落，反杀入场。</span></div>
+<div class="rule-item"><span class="trigger">当</span>2B法则在日线级别出现时，<span class="action">我将入场，止损设在假突破极值点±1个ATR，目标位至少2:1。5分钟级别的2B我将忽略。</span></div>
+</div>
+</div>
+
+<!-- ===== 第20章 ===== -->
+<div class="chapter" id="ch20">
+<h2 class="chapter-title"><span class="ch-num">第20章</span>SMC深度——读取机构的微观痕迹</h2>
+
+<div class="section">
+<h3>20.1 SMC是什么：Smart Money Concepts，从机构行为推断价格方向</h3>
+<p>SMC不是一套全新的理论，它是对裸K核心概念的<strong>机构视角重构</strong>。你已经知道的BOS/CHOCH/供需区域，在SMC体系中有更精确的定义和操作方法。</p>
+<p>SMC的核心假设：<strong>市场由"聪明钱"（Smart Money，即机构）主导，散户的止损和追涨是流动性的来源</strong>。读懂机构的痕迹=读懂市场的真实方向。</p>
+</div>
+
+<div class="section">
+<h3>20.2 BOS与CHOCH的深度应用</h3>
+<p>P0阶段你学了BOS=趋势延续，CHOCH=趋势可能反转。P2阶段，精确识别：</p>
+<ul>
+<li><strong>BOS</strong>：必须突破的是<strong>关键摆动点</strong>（Swing Point），不是任意高低点。关键摆动点=引发趋势方向改变的那个高低点。</li>
+<li><strong>CHOCH</strong>：第一段逆趋势BOS出现=CHOCH。但CHOCH后必须有<strong>回踩确认</strong>（不破CHOCH起点）才能确认反转。</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>20.3-20.5 FVG（公允价值缺口）</h3>
+<p>FVG是SMC体系中最强大的精确入场工具。定义：<strong>三根连续K线之间，第一根的高点和第三根的低点（或反之）之间存在价格真空区</strong>——这个区域就是FVG。</p>
+<p>比喻：<strong>OB是快递站（机构在此大量装卸货），FVG是快递站之间的真空路段（价格会回来取件）</strong>。</p>
+<p>FVG的交易逻辑：价格离开FVG区域后，有回补倾向。当价格回到FVG区域+出现反转信号=精确入场点。</p>
+</div>
+
+<div class="section">
+<h3>20.6-20.8 OB（订单块）</h3>
+<p>OB是比供需区域更精确的概念：<strong>机构大单进场的最后一根反向K线</strong>。</p>
+<p>OB vs 供需区域的区别：</p>
+<ul>
+<li>供需区域=整个盘整区间（可能包含5-10根K线）</li>
+<li>OB=最后一根反向K线（精确到1根K线）</li>
+</ul>
+<p>OB更精确但更难识别。实战建议：<strong>先用供需区域定位大范围，再用OB在区域内找精确入场点</strong>。</p>
+</div>
+
+<div class="section">
+<h3>20.9 流动性猎取的SMC解读</h3>
+<p>在SMC视角下，假突破不是"形态失败"，而是<strong>机构故意制造的流动性猎取</strong>。目的=扫掉散户的止损单，获取流动性来完成反向建仓。</p>
+<p>识别流动性猎取的方法：</p>
+<ol>
+<li>价格扫过前期高低点（触发止损）</li>
+<li>但无法维持在新区域（收盘回到原区间）</li>
+<li>随后反向运动（机构完成了反向建仓）</li>
+</ol>
+<p>三步确认=高概率反杀机会。</p>
+</div>
+
+<div class="section">
+<h3>20.10 SMC的局限</h3>
+<p>SMC不是万能的。它的局限：</p>
+<ul>
+<li>对初学者太复杂——容易过度分析</li>
+<li>OB/FVG的识别有主观性——不同人可能画出不同的OB</li>
+<li>需要与威科夫和Volume Profile互补——SMC提供精确位，威科夫提供全局阶段，VP提供量能验证</li>
+</ul>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ SMC不是圣杯</div>
+<p>很多交易者学了SMC后过度自信，认为FVG+OB就能预测所有转折。这是从"指标崇拜"跳到了"SMC崇拜"。SMC是工具，不是答案。必须结合结构+位置+量能综合判断。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第20章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>价格回测到FVG区域+出现反转K线+结构方向一致时，<span class="action">我将入场，止损设在FVG边界外侧1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>CHOCH出现后，<span class="action">我将等回踩确认（不破CHOCH起点）后再入场，不追CHOCH。</span></div>
+</div>
+</div>
+
+<!-- ===== 第21章 ===== -->
+<div class="chapter" id="ch21">
+<h2 class="chapter-title"><span class="ch-num">第21章</span>斐波那契——价格回撤的自然法则</h2>
+
+<div class="section">
+<h3>21.1 斐波那契数列与黄金比例</h3>
+<p>1,1,2,3,5,8,13,21...相邻两数的比值趋近0.618。这不是玄学——它在自然界（螺旋、花瓣、贝壳）和人类行为（群体决策、风险偏好）中反复出现。</p>
+<p>在市场中，0.618不是一个"神奇的数字"，而是<strong>群体心理的自然回撤比例</strong>——当足够多的人认为"回撤到0.618就该买"，它就成了自我实现的预言。</p>
+</div>
+
+<div class="section">
+<h3>21.2-21.4 斐波那契回调线</h3>
+<p>六个关键回撤位：0%、23.6%、38.2%、50%、61.8%、78.6%。</p>
+<ul>
+<li><strong>38.2%=浅回调</strong>：趋势非常强劲，买盘迫不及待。这是最难抓住的入场位——你可能需要左侧限价单。</li>
+<li><strong>50%=正常回调</strong>：最常见的回调幅度。回调到50%+反转K线=标准入场信号。</li>
+<li><strong>61.8%=深回调</strong>：趋势偏弱，但如果61.8%位与供需区域重合=盈亏比最好的入场点。</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>21.5-21.6 斐波那契扩展线</h3>
+<p>四个目标位：127.2%、161.8%、200%、261.8%。用于计算趋势启动后的<strong>理论目标位</strong>。用法：</p>
+<ol>
+<li>画法：从波段起点→终点→回调低点（三段画法）</li>
+<li>127.2%=保守目标，200%/261.8%=激进目标</li>
+<li>实际目标位选择=结合结构（前高/前低）和供需区域</li>
+</ol>
+</div>
+
+<div class="section">
+<h3>21.7 斐波那契共振入场</h3>
+<p>这是裸K交易中<strong>最高胜率的入场方式</strong>：</p>
+<p><strong>斐波那契回调位 + 供需区域 + 前高低点 + 反转K线</strong> = 四重共振</p>
+<p>当这4个因素在同一个价格区域重合时，胜率可达75-80%。但注意：三重共振已足够（3个因素重合），四个以上反而过度分析。</p>
+</div>
+
+<div class="section">
+<h3>21.8-21.9 斐波那契与推动浪的配合及常见误用</h3>
+<p>回调浪末端恰好落在关键斐波那契位=完美的入场逻辑。但常见误用：</p>
+<ul>
+<li>不是所有回撤都会精确到0.618——0.618是一个<strong>区域</strong>（±1%），不是一条精确的线</li>
+<li>在震荡市中画斐波那契=给噪音添加数字——没有趋势就没有斐波那契</li>
+<li>过度依赖斐波那契而不看结构和量能=另一种"指标崇拜"</li>
+</ul>
+</div>
+
+<!-- ECharts: 斐波那契回调扩展图 -->
+<div class="chart-box">
+<div class="chart-title">图21-1 斐波那契回调与扩展</div>
+<div class="chart-container" id="chart-fibonacci"></div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第21章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>回调浪末端到达38.2%/50%/61.8%位+供需区域+反转K线三者重合时，<span class="action">我将入场，止损设在回调浪起点下方1个ATR，目标位用斐波那契扩展（161.8%或200%）。</span></div>
+<div class="rule-item"><span class="trigger">当</span>回调浪在78.6%以上时，<span class="action">我将视为趋势可能反转（CHOCH），不入场做多。</span></div>
+</div>
+</div>
+
+<!-- ===== 第22章 ===== -->
+<div class="chapter" id="ch22">
+<h2 class="chapter-title"><span class="ch-num">第22章</span>威科夫微观结构——吸筹与派发的完整剧本</h2>
+
+<div class="section">
+<h3>22.0 威科夫全景图</h3>
+<p>第3章你学了三阶段概览（吸筹→趋势→派发）。现在深入完整的6阶段微观结构——每个阶段都有精确的识别标准和交易操作。</p>
+<p>威科夫的价值：<strong>它给了你一个"剧本"——告诉你市场当前可能在演哪一幕，下一幕可能是什么</strong>。这不是预测，是概率框架。</p>
+</div>
+
+<div class="section">
+<h3>22.1 威科夫方法论的核心</h3>
+<p>所有价格行为都可以归入三个阶段：吸筹（Accumulation）、趋势（Markup/Markdown）、派发（Distribution）。这三个阶段循环往复，永不停歇。</p>
+<p>散户的典型错误：在吸筹末端恐慌卖出（因为横盘太久），在派发末端兴奋买入（因为放量突破）。威科夫帮助你<strong>站在机构一侧</strong>。</p>
+</div>
+
+<div class="section">
+<h3>22.2 吸筹区完整6阶段</h3>
+<ol>
+<li><strong>Phase A：PS（初步支撑）</strong>——下跌减速，量能萎缩。这是"有人开始接盘"的信号。</li>
+<li><strong>Phase B：SC（恐慌抛售）</strong>——放量暴跌。这是散户最后绝望的时刻，也是机构大量接盘的时刻。AR（自动反弹）——空头回补推动反弹。ST（二次测试）——量缩回测SC低点，确认供应枯竭。</li>
+<li><strong>Phase C：Spring（弹簧/假跌破）</strong>——跌破SC低点扫止损，是<strong>最佳买入时机</strong>。Spring是威科夫体系中最强的信号。</li>
+<li><strong>Phase D：SOS（强势出现）+ LPS（最后支撑点）</strong>——突破阻力回踩确认。</li>
+<li><strong>Phase E：突破脱离</strong>——上升趋势开始。</li>
+</ol>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 Spring = 买点</div>
+<p>Spring（假跌破）是威科夫吸筹区中最重要的交易信号。它的本质=机构扫掉散户在SC低点的止损后反手买入。当你识别出Spring，你就站在了机构一边。止损设在Spring低点下方1个ATR，目标位=SOS突破位+趋势延续。</p>
+</div>
+
+<div class="section">
+<h3>22.3 派发区完整6阶段</h3>
+<p>与吸筹完全镜像：</p>
+<ol>
+<li><strong>Phase A：PSY</strong>——上涨减速</li>
+<li><strong>Phase B：BC（买入高潮）</strong>——放量暴涨，机构开始出货。AR+ST确认需求枯竭。</li>
+<li><strong>Phase C：UTAD（向上假突破）</strong>——突破BC高点扫止损，是<strong>最佳卖出时机</strong>。</li>
+<li><strong>Phase D：LPSY</strong>——跌破支撑回弹无力</li>
+<li><strong>Phase E：加速下跌</strong></li>
+</ol>
+<p>UTAD=Spring的镜像，是最强的卖出信号。</p>
+</div>
+
+<div class="section">
+<h3>22.4 Spring vs UTAD：两个最重要的交易信号</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>信号</th><th>出现位置</th><th>操作</th><th>止损</th><th>可靠性</th></tr>
+</thead>
+<tbody>
+<tr><td class="highlight">Spring</td><td>吸筹区底部</td><td>做多</td><td>Spring低点-1ATR</td><td>高（70%+）</td></tr>
+<tr><td class="highlight">UTAD</td><td>派发区顶部</td><td>做空/离场</td><td>UTAD高点+1ATR</td><td>高（70%+）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>22.5 威科夫与裸K势位形的结合</h3>
+<p>威科夫不是替代势位形，而是给势位形加上<strong>阶段维度</strong>：</p>
+<ul>
+<li><strong>威科夫定阶段（势的升级）</strong>：不在吸筹末期做空，不在派发末期做多</li>
+<li><strong>供需区域/FVG/OB定位置（位的升级）</strong>：Spring点=最强的需求区</li>
+<li><strong>反转K线定信号（形的升级）</strong>：Spring日的长下影线=最精确的入场触发</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>22.6 威科夫实战中的难点</h3>
+<p>现实走势很少是教科书式的。你不会看到一个完美的SC→AR→ST→Spring序列。更多时候：</p>
+<ul>
+<li>Phase B可能持续数月，多次SC和ST交替出现</li>
+<li>Spring可能很浅（只跌破一点点），也可能很深（大幅跌破后快速收回）</li>
+<li>有些吸筹区没有明显的Spring（直接从ST跳到SOS）</li>
+</ul>
+<p>实战建议：<strong>不要试图把每只股票都套进威科夫框架</strong>。当结构清晰时使用，当结构模糊时回到基础势位形分析。</p>
+</div>
+
+<!-- ECharts: 威科夫吸筹派发图 -->
+<div class="chart-box">
+<div class="chart-title">图22-1 威科夫吸筹与派发完整6阶段</div>
+<div class="chart-container" id="chart-wyckoff"></div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第22章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我识别出Spring（假跌破+快速收回+量缩回测）时，<span class="action">我将做多，止损设在Spring低点下方1个ATR，目标位=SOS突破位。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我识别出UTAD（假突破+快速回落+量缩回测）时，<span class="action">我将做空或离场，止损设在UTAD高点上方1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>威科夫阶段不清晰时，<span class="action">我将不强行套框架，回到基础势位形分析。宁可不识别，不可误识别。</span></div>
+</div>
+</div>
+
+<!-- ===== 第23章 ===== -->
+<div class="chapter" id="ch23">
+<h2 class="chapter-title"><span class="ch-num">第23章</span>Volume Profile深度——成交量的价格分布</h2>
+
+<div class="section">
+<h3>23.1 什么是Volume Profile</h3>
+<p>传统成交量图是"时间轴上的成交量"——每天成交多少。Volume Profile是<strong>"价格轴上的成交量"</strong>——每个价格位成交多少。</p>
+<p>区别：传统量图告诉你"什么时候交易活跃"，Volume Profile告诉你<strong>"在哪个价位交易最活跃"</strong>。后者对裸K交易者更有价值——因为关键位就是成交量最集中的价格区域。</p>
+</div>
+
+<div class="section">
+<h3>23.2-23.4 POC、VA、VAH/VAL</h3>
+<p><strong>POC（Point of Control）</strong>：成交量最大的价格位——"公允价值"。价格倾向于围绕POC波动。</p>
+<p><strong>VA（Value Area）</strong>：包含70%成交量的价格区间。VAH=上边界，VAL=下边界。</p>
+<p>突破VAH=多头强势，价格可能进入新的价值区。跌破VAL=空头强势。价格在VA内=在"公允价值"附近波动，没有明确方向。</p>
+</div>
+
+<div class="section">
+<h3>23.5-23.6 HVN与LVN</h3>
+<p><strong>HVN（High Volume Node）</strong>：高成交量节点=价格在此停留时间长=强支撑/阻力。价格到达HVN后容易停留或反转。</p>
+<p><strong>LVN（Low Volume Node）</strong>：低成交量节点=价格在此停留时间短=真空地带。价格在LVN中<strong>快速穿过</strong>，不会停留。</p>
+<p>实战含义：在HVN附近找入场点（有支撑/阻力），在LVN中不追（价格可能快速回撤）。</p>
+</div>
+
+<div class="section">
+<h3>23.7-23.8 Volume Profile与供需区域/威科夫的结合</h3>
+<p><strong>VP+供需区域</strong>：POC落在供需区域内=该区域极强（机构成交量+机构建仓痕迹双重确认）。</p>
+<p><strong>VP+威科夫</strong>：吸筹区的成交量集中在底部（SC量大），派发区的成交量集中在顶部（BC量大）。Volume Profile帮你确认威科夫的阶段判断。</p>
+</div>
+
+<div class="section">
+<h3>23.9-23.10 实战用法与局限</h3>
+<p>实战：在POC/HVN附近寻找入场点。价格在LVN中快速移动时不追。Volume Profile的局限：需要足够的历史数据，单日数据噪音大。建议至少用20天的VP数据。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第23章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>价格快速穿越LVN区域后到达HVN附近时，<span class="action">我将开始寻找入场信号——HVN=强支撑/阻力，价格容易在此停留或反转。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格在LVN中快速运动时，<span class="action">我将不追——LVN是真空地带，价格随时可能回撤。</span></div>
+</div>
+</div>
+
+<!-- ===== 第24章 ===== -->
+<div class="chapter" id="ch24">
+<h2 class="chapter-title"><span class="ch-num">第24章</span>算法时代的裸K——2026年的新战场（选读/扩展）</h2>
+
+<div class="section">
+<h3>24.1 高频交易（HFT）如何制造假突破</h3>
+<p>HFT算法可以在毫秒级别扫描止损聚集区，然后短暂推价格到该区域触发止损。这种"闪击"在盘中K线上表现为长影线——看起来像是"市场自然波动"，实际上是算法的精准猎杀。</p>
+</div>
+
+<div class="section">
+<h3>24.2 算法猎杀止损的机制</h3>
+<p>算法的止损猎杀分为三步：①扫描→②触发→③收割。应对方法你已经学了：ATR余量+收盘确认+条件单。</p>
+</div>
+
+<div class="section">
+<h3>24.3 重大数据公布前后的处理原则</h3>
+<p>CPI、PMI、非农等重大数据公布前后30分钟=高风险时段。算法会利用数据公布后的波动扫止损。<strong>数据公布前后30分钟不开新仓、不调整止损</strong>——让市场先消化信息。</p>
+</div>
+
+<div class="section">
+<h3>24.4-24.6 裸K+VP、HFT时代下形态可靠性变化、利用算法行为</h3>
+<p>Volume Profile是算法时代最有价值的补充工具——它不受时间框架限制，直接告诉你"哪里有流动性"。<br>传统形态的可靠性在降低——双底双顶等经典形态被算法"研究透了"，它们会故意制造或破坏这些形态。<br>利用算法行为：当算法扫止损后快速反转=你的假突破反杀机会。算法是你的对手，也是你的猎物。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 进化方向</div>
+<p>裸K不会过时，因为价格行为是市场最底层的语言。但你需要升级：从"只看K线形态"到"K线形态+Volume Profile+机构微观痕迹（SMC）"。这不是加指标，是加维度。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第24章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>重大宏观数据公布前后30分钟时，<span class="action">我将不开新仓、不调整止损，让市场先消化信息。</span></div>
+<div class="rule-item"><span class="trigger">当</span>盘中出现"闪击式"长影线后快速反转时，<span class="action">我将识别为算法止损猎杀，等收盘确认后决定是否反杀入场。</span></div>
+</div>
+</div>
+
+</div><!-- end container Part 5 -->
+
+<!-- ==================== 第六篇：P3整合 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part6">
+  <div class="part-tag">第六篇 · P3系统整合</div>
+  <h2>系统整合与精进——从知识到能力</h2>
+  <p class="part-goal">从"学会了"到"能做到"，通过多时间框架、指数与个股差异化、复合信号、全链路交易计划和复盘体系，把知识变成可执行、可重复的能力。</p>
+</div>
+
+<!-- ===== 第25章 ===== -->
+<div class="chapter" id="ch25">
+<h2 class="chapter-title"><span class="ch-num">第25章</span>多时间框架深度分析——MTFA方法论</h2>
+
+<div class="section">
+<h3>25.1 为什么不能只看一个周期</h3>
+<p>5分钟图告诉你"现在正在涨"，但日线图告诉你"这是一个下降趋势的反弹"。大周期制约小周期——这是MTFA（Multi-Timeframe Analysis）的核心原理。</p>
+</div>
+
+<div class="section">
+<h3>25.2 三重时间框架法：D1定方向→H4找位置→H1找信号</h3>
+<ul>
+<li><strong>D1（日线）</strong>：判断大方向。HH/HL=做多方向，LH/LL=做空方向。</li>
+<li><strong>H4（4小时）</strong>：找关键位置。供需区域、前高低点、FVG等在H4图上标注。</li>
+<li><strong>H1（1小时）</strong>：找入场信号。Pin Bar、吞没线等在H1图上等待触发。</li>
+</ul>
+<p>三个周期各司其职，不可混用——不要在H1图上判断大方向，也不要在D1图上找精确入场点。</p>
+</div>
+
+<div class="section">
+<h3>25.3 大周期与小周期的冲突处理</h3>
+<p>当日线看空但1小时看多时，怎么办？<strong>信大周期</strong>。1小时的多头可能是日线下降趋势中的反弹——你可以做短线多，但仓位要小（≤1/3标准仓），止损要紧。</p>
+<p>最优场景：三个周期方向一致。D1做多+H4回调到位+H1反转信号=最高胜率。</p>
+</div>
+
+<div class="section">
+<h3>25.4-25.7 时间框架三不原则、层级、BOS确认规则、止损设置</h3>
+<p><strong>"三不"原则</strong>：不跳级（D1→H1跳过H4）、不混用（不要临时切到15分钟图"看看"）、不临时切换（入场前定好框架，入场后不改）。</p>
+<p><strong>止损设置</strong>：用小周期止损（H1的结构位），大周期止盈（D1的趋势目标）。止损精确→控制风险，止盈宽松→让利润奔跑。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第25章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>大周期与小周期方向冲突时，<span class="action">我将信大周期，小周期方向只做1/3仓位的短线交易，止损设在H1结构位。</span></div>
+<div class="rule-item"><span class="trigger">当</span>三个周期方向一致+位置到位+信号出现时，<span class="action">我将用标准仓位入场——这是最高胜率的入场条件。</span></div>
+</div>
+</div>
+
+<!-- ===== 第26章 ===== -->
+<div class="chapter" id="ch26">
+<h2 class="chapter-title"><span class="ch-num">第26章</span>指数PA、板块PA与个股PA——差异化应用</h2>
+
+<div class="section">
+<h3>26.1 为什么不能只看个股</h3>
+<p>个股的结构再完美，如果大盘正在暴跌，你的胜率也会大打折扣。<strong>大盘环境决定个股胜率</strong>——这不是"宏观分析"的范畴，这是裸K分析的必要前置条件。</p>
+</div>
+
+<div class="section">
+<h3>26.2-26.4 指数PA、大盘破位、板块PA</h3>
+<p><strong>指数PA</strong>：对沪深300/中证500/创业板指做市场结构分析。HH/HL=系统性做多窗口，LH/LL=系统性风险期。</p>
+<p><strong>大盘破位</strong>：沪深300跌破关键HL=系统性风险信号。此时减仓是第一优先——减仓执行规则详见风控手册。</p>
+<p><strong>板块PA</strong>：板块指数的结构分析。板块从LH/LL转为HH/HL=板块轮动机会。</p>
+</div>
+
+<div class="section">
+<h3>26.5-26.7 个股与大盘的背离、信任判断、最高胜率组合</h3>
+<p><strong>个股强于大盘</strong>：大盘LH/LL但个股HH/HL=选股alpha，但仓位要保守。</p>
+<p><strong>最高胜率组合</strong>：大盘向上（HH/HL）+板块向上（HH/HL）+个股信号（关键位+反转K线）=三重确认，胜率可达75%+。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第26章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>沪深300跌破关键HL（CHOCH）时，<span class="action">我将将总仓位降至30%以下，停止新建多头仓位（减仓执行详见风控手册第6章）。</span></div>
+<div class="rule-item"><span class="trigger">当</span>大盘向上+板块向上+个股信号同时满足时，<span class="action">我将用标准仓位入场——这是裸K交易的最高胜率条件。</span></div>
+</div>
+</div>
+
+<!-- ===== 第27章 ===== -->
+<div class="chapter" id="ch27">
+<h2 class="chapter-title"><span class="ch-num">第27章</span>复合信号与全链路交易计划</h2>
+
+<div class="section">
+<h3>27.1 复合信号：2-3个因素重合，胜率60%→75-80%</h3>
+<p>单一信号的胜率约50-60%。当2-3个独立因素在同一价格区域重合时，胜率跃升至75-80%。这就是<strong>复合信号</strong>的力量。</p>
+<p>关键：复合信号的各个因素必须是<strong>独立</strong>的。斐波那契38.2%和50%不是独立因素（都来自斐波那契），但斐波那契38.2%+供需区域+反转K线是独立的（来自三个不同维度）。</p>
+</div>
+
+<div class="section">
+<h3>27.2 常见的复合信号组合</h3>
+<ul>
+<li>斐波那契回调位 + 供需区域 + Pin Bar = 三重共振做多</li>
+<li>威科夫Spring + FVG回填 + 放量反转 = 极强做多</li>
+<li>UTAD + 量价背离 + 供应区 = 三重共振做空</li>
+<li>BOS + 回踩突破位 + Index配合 = 趋势跟随</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>27.3 过度叠加的陷阱</h3>
+<p>三个因素重合=强信号，四个以上因素=过度分析。为什么？因为你在<strong>挑拣数据</strong>——越找越多，总能凑出"完美"的组合。三个独立因素足够，多则混乱。</p>
+</div>
+
+<div class="section">
+<h3>27.4-27.6 全链路交易计划</h3>
+<p>全链路计划把裸K信号嵌入完整的交易决策链条：</p>
+<ol>
+<li><strong>宏观环境</strong>：大盘方向？（调用宏观手册）</li>
+<li><strong>指数结构</strong>：沪深300/板块方向？（本手册第26章）</li>
+<li><strong>基本面确认</strong>：排雷通过？（调用财报手册第18章）</li>
+<li><strong>PA入场信号</strong>：势位形？（本手册核心）</li>
+<li><strong>仓位</strong>：从止损反推（风控手册第3章）</li>
+<li><strong>止损</strong>：结构止损+1ATR</li>
+<li><strong>止盈</strong>：2:1锁定+跟踪止损</li>
+</ol>
+<p>7步缺一不可。详细的全链路端到端案例见《交易系统手册》第8章（瑞景食品案例）。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第27章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>3个独立因素在同一价格区域重合时，<span class="action">我将用标准仓位入场——这是复合信号，胜率75%+。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我要做任何一笔交易时，<span class="action">我将填写一页纸交易计划（7步），任一步不满足就不入场。</span></div>
+</div>
+</div>
+
+<!-- ===== 第28章 ===== -->
+<div class="chapter" id="ch28">
+<h2 class="chapter-title"><span class="ch-num">第28章</span>复盘体系与持续精进</h2>
+
+<div class="section">
+<h3>28.1 为什么复盘比学新知识更重要</h3>
+<p>学习=获取新武器。复盘=磨利已有的武器。不复盘的交易者=拿着钝刀上战场，武器越多越混乱。</p>
+</div>
+
+<div class="section">
+<h3>28.2 单笔复盘：七维度打分</h3>
+<p>每笔交易用7个维度打分（每维度1-5分）：</p>
+
+<table class="data-table">
+<thead>
+<tr><th>维度</th><th>5分</th><th>3分</th><th>1分</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>势</strong></td><td>顺势入场</td><td>震荡中入场</td><td>逆势入场</td></tr>
+<tr><td><strong>位</strong></td><td class="highlight">供需区域/FVG</td><td>一般支撑阻力</td><td>无人区</td></tr>
+<tr><td><strong>形</strong></td><td class="highlight">组合K线确认</td><td>单K确认</td><td>无信号入场</td></tr>
+<tr><td><strong>守</strong></td><td class="highlight">结构止损</td><td>固定比例止损</td><td>无止损</td></tr>
+<tr><td><strong>定</strong></td><td>全部确认</td><td>部分确认</td><td>未确认</td></tr>
+<tr><td><strong>动</strong></td><td class="highlight">右侧确认后入场</td><td>左侧试仓+右侧加仓</td><td>纯追涨</td></tr>
+<tr><td><strong>离</strong></td><td class="highlight">结构止盈</td><td>移动止盈</td><td>手动恐慌平仓</td></tr>
+</tbody>
+</table>
+<p><strong>总分≥30分=合格交易，<25分=需重点复盘</strong>。目标是让平均分从25逐步提升到30+。</p>
+</div>
+
+<div class="section">
+<h3>28.3-28.4 每周系统复盘与交易日志</h3>
+<p>每周复盘=过去5-10笔交易的七维度平均分+胜率+盈亏比+最大回撤+错误来源分类。</p>
+<p>交易日志模板：日期|标的|方向|入场理由|势分|位分|形分|止损|目标|实际结果|盈亏R|错误复盘</p>
+</div>
+
+<div class="section">
+<h3>28.5-28.6 复盘的目的与跨轮次练习纪律</h3>
+<p>复盘的目的不是"自责"，是<strong>"减少重复性错误"</strong>。如果你每次都在无人区追涨，复盘帮你发现这个模式，然后用规则阻断它。</p>
+<p>跨轮次练习纪律：进入财报/宏观学习后，每日保留15分钟看沪深300日线，标注趋势和S/R，保持盘感。</p>
+</div>
+
+<div class="section">
+<h3>28.7 裸K交易的20条军规</h3>
+<ol>
+<li>结构优先于形态，位置优先于信号</li>
+<li>永远只在回调浪末端顺势入场</li>
+<li>盈亏比<2:1的交易不做</li>
+<li>止损设在结构失效位+1个ATR</li>
+<li>单笔风险≤2%，单日风险≤5%</li>
+<li>没有信号就不动，等待是交易的一部分</li>
+<li>收盘价确认原则，盘中信号不算数</li>
+<li>收盘前15分钟决策比早盘安全10倍</li>
+<li>供需区域只交易首次和二次回测</li>
+<li>5-8个关键位足够，多了是噪音</li>
+<li>信号越弱仓位越小，C级1/3、B级1/2、A级标准</li>
+<li>假突破=反杀机会，真突破=等回踩确认</li>
+<li>三个周期方向一致=最高胜率</li>
+<li>大盘破位=减仓第一，个股分析第二</li>
+<li>复合信号3个因素重合=强信号，4个以上=过度</li>
+<li>连续3次止损=暂停2天复盘</li>
+<li>不补亏损仓，只加盈利仓</li>
+<li>每周复盘七维度平均分，目标≥30分</li>
+<li>跨轮次学习期间每日15分钟看盘保持盘感</li>
+<li>真正的进步不是找到更多形态，是少犯同样的错</li>
+</ol>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 第20条军规</div>
+<p>"真正的进步不是找到更多形态，是少犯同样的错。"——如果你只能记住一条军规，记住这条。减少重复性错误=稳定盈利的最短路径。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第28章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>每笔交易结束后，<span class="action">我将立即填写七维度评分，总分<25分的交易必须在日志中写明错误原因和改进规则。</span></div>
+<div class="rule-item"><span class="trigger">当</span>每周复盘发现同一维度连续3周低于3分时，<span class="action">我将暂停新交易，专门针对该维度进行练习，直到连续5笔交易的该维度≥4分。</span></div>
+<div class="rule-item"><span class="trigger">当</span>进入财报/宏观学习后，<span class="action">我将每日保留15分钟看沪深300日线，标注趋势和S/R，保持裸K盘感不断线。</span></div>
+</div>
+</div>
+
+</div><!-- end container Part 6 -->
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>工具·速查·练习</h2>
+  <p class="part-goal">全局术语表、K线速查、关键位速查、计算工具、自检清单、结构化练习——从知识到行动的最后一公里。</p>
+</div>
+
+<!-- ===== 附录A ===== -->
+<div class="chapter" id="appa">
+<h2 class="chapter-title"><span class="ch-num">附录A</span>全局术语表（五本手册共用）</h2>
+
+<div class="section">
+<p>本附录为五本手册的统一术语规范，确保跨手册阅读时表述一致。其他手册首次出现相关术语时引用"详见裸K手册·附录A全局术语表"。</p>
+
+<h3>一、价格位置类</h3>
+<table class="data-table">
+<thead><tr><th>首选表述</th><th>同义表述</th><th>定义</th><th>主要使用手册</th></tr></thead>
+<tbody>
+<tr><td>支撑</td><td>支撑位/支撑区</td><td>大量未成交买单聚集的价格区域</td><td>裸K</td></tr>
+<tr><td>阻力</td><td>阻力位/压力位/压力区</td><td>大量未成交卖单聚集的价格区域</td><td>裸K</td></tr>
+<tr><td>供需区域</td><td>D/S Zone</td><td>机构大量建仓/出货的起源区域</td><td>裸K</td></tr>
+<tr><td>订单块</td><td>OB/Order Block</td><td>机构大单进场的最后一根反向K线</td><td>裸K</td></tr>
+<tr><td>公允价值缺口</td><td>FVG/Fair Value Gap</td><td>三根K线间的价格真空区</td><td>裸K</td></tr>
+<tr><td>关键位</td><td>关键价格位</td><td>支撑/阻力/供需区域/FVG等价格区域的总称</td><td>裸K</td></tr>
+</tbody>
+</table>
+
+<h3>二、交易执行类</h3>
+<table class="data-table">
+<thead><tr><th>首选表述</th><th>同义表述</th><th>定义</th><th>主要使用手册</th></tr></thead>
+<tbody>
+<tr><td>止损</td><td>Stop Loss</td><td>入场逻辑失效时的离场价格</td><td>裸K/风控</td></tr>
+<tr><td>止盈</td><td>Take Profit</td><td>达到盈利目标时的离场价格</td><td>裸K</td></tr>
+<tr><td>盈亏比</td><td>R:R/Risk-Reward Ratio</td><td>潜在盈利与潜在亏损的比率</td><td>裸K/交易系统</td></tr>
+<tr><td>仓位</td><td>Position Size</td><td>单笔交易的持股数量或资金占比</td><td>裸K/风控</td></tr>
+<tr><td>左侧入场</td><td>逆势入场/预埋</td><td>在价格到达关键位之前挂单入场</td><td>裸K</td></tr>
+<tr><td>右侧入场</td><td>顺势入场/确认入场</td><td>在K线信号确认后入场</td><td>裸K</td></tr>
+</tbody>
+</table>
+
+<h3>三、趋势与结构类</h3>
+<table class="data-table">
+<thead><tr><th>首选表述</th><th>同义表述</th><th>定义</th><th>主要使用手册</th></tr></thead>
+<tbody>
+<tr><td>结构破位</td><td>BOS/Break of Structure</td><td>趋势方向的关键高低点被突破</td><td>裸K</td></tr>
+<tr><td>结构反转</td><td>CHOCH/Change of Character</td><td>反趋势方向的关键高低点被突破</td><td>裸K</td></tr>
+<tr><td>假突破</td><td>Fakeout/Bull Trap/Bear Trap</td><td>突破关键位后收盘回落</td><td>裸K</td></tr>
+<tr><td>推动浪</td><td>Impulse Wave</td><td>沿趋势方向的价格段</td><td>裸K</td></tr>
+<tr><td>回调浪</td><td>Corrective Wave/Pullback</td><td>逆趋势方向的价格段</td><td>裸K</td></tr>
+<tr><td>流动性猎取</td><td>Liquidity Sweep</td><td>机构扫掉散户止损后反向操作</td><td>裸K</td></tr>
+</tbody>
+</table>
+
+<h3>四、风险与绩效类</h3>
+<table class="data-table">
+<thead><tr><th>首选表述</th><th>同义表述</th><th>定义</th><th>主要使用手册</th></tr></thead>
+<tbody>
+<tr><td>单笔风险</td><td>Risk per Trade</td><td>每笔交易的最大亏损占账户比例</td><td>风控</td></tr>
+<tr><td>期望值</td><td>Expected Value/EV</td><td>胜率×平均盈利-(1-胜率)×平均亏损</td><td>交易系统</td></tr>
+<tr><td>最大回撤</td><td>Max Drawdown</td><td>账户从最高点到最低点的最大跌幅</td><td>风控</td></tr>
+<tr><td>ATR</td><td>平均真实波幅</td><td>一定周期内价格波动的平均值</td><td>裸K</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录B ===== -->
+<div class="chapter" id="appb">
+<h2 class="chapter-title"><span class="ch-num">附录B</span>K线形态速查表</h2>
+
+<div class="section">
+<h3>单K速查</h3>
+<table class="data-table">
+<thead><tr><th>形态</th><th>一句话定义</th><th>适用位置</th><th>失败条件</th></tr></thead>
+<tbody>
+<tr><td>锤子线</td><td>小实体+长下影（≥2倍实体）</td><td>下降趋势的支撑位</td><td>出现在无人区或上升趋势中</td></tr>
+<tr><td>倒锤子</td><td>小实体+长上影</td><td>下降趋势的支撑位</td><td>后续K线未确认</td></tr>
+<tr><td>十字星</td><td>开盘≈收盘，实体极小</td><td>趋势末端的关键位</td><td>震荡市中无意义</td></tr>
+<tr><td>Marubozu</td><td>无影线大实体</td><td>趋势启动位</td><td>趋势末端=耗竭</td></tr>
+<tr><td>纺锤线</td><td>小实体短影线</td><td>趋势末端=犹豫</td><td>震荡中=常态</td></tr>
+</tbody>
+</table>
+
+<h3>双K速查</h3>
+<table class="data-table">
+<thead><tr><th>形态</th><th>一句话定义</th><th>适用位置</th><th>失败条件</th></tr></thead>
+<tbody>
+<tr><td>吞没线</td><td>后K实体完全包裹前K实体</td><td>关键位反转</td><td>实体未完全包裹</td></tr>
+<tr><td>Inside Bar</td><td>子线完全在母线范围内</td><td>趋势回调位</td><td>突破方向与趋势相反</td></tr>
+<tr><td>刺透形态</td><td>阳线深入前阴实体>50%</td><td>下降趋势支撑位</td><td>深入<50%</td></tr>
+<tr><td>乌云盖顶</td><td>阴线深入前阳实体>50%</td><td>上升趋势阻力位</td><td>深入<50%</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录C ===== -->
+<div class="chapter" id="appc">
+<h2 class="chapter-title"><span class="ch-num">附录C</span>关键位识别速查</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>关键位类型</th><th>识别方法</th><th>优先级</th><th>回测规则</th></tr></thead>
+<tbody>
+<tr><td>供需区域</td><td>5步法：快速运动→回溯起源→画矩形→确认新鲜度→标记优先级</td><td class="highlight">最高</td><td>首次70%/二次50%/三次放弃</td></tr>
+<tr><td>前高低点</td><td>至少2次触及的波峰/波谷</td><td>高</td><td>越多次越强</td></tr>
+<tr><td>FVG</td><td>三K间价格真空区</td><td>高</td><td>首次回填最强</td></tr>
+<tr><td>OB</td><td>机构建仓最后一根反向K线</td><td>高</td><td>首次回测最强</td></tr>
+<tr><td>斐波那契位</td><td>38.2%/50%/61.8%回撤位</td><td>中</td><td>与其他位共振时有效</td></tr>
+<tr><td>整数关口</td><td>100/200/500等心理价位</td><td>低</td><td>仅作辅助参考</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录D ===== -->
+<div class="chapter" id="appd">
+<h2 class="chapter-title"><span class="ch-num">附录D</span>止损与仓位计算工具</h2>
+<div class="section">
+<h3>ATR止损计算</h3>
+<p>止损价 = 关键位 ± 1个ATR（14日）</p>
+<p>示例：前低=10元，14日ATR=0.40元 → 止损=10-0.40=9.60元</p>
+
+<h3>仓位反推公式</h3>
+<p>仓位（股数）=（账户总资金 × 2%）÷ |入场价 - 止损价|</p>
+<p>示例：账户10万，入场10元，止损9.60元 → 仓位=(100000×2%)÷0.40=5000股=5万元</p>
+
+<h3>单笔风险2%仓位上限表</h3>
+<table class="data-table">
+<thead><tr><th>止损距离</th><th>10万账户仓位</th><th>50万账户仓位</th></tr></thead>
+<tbody>
+<tr><td>2%</td><td>100%（触发上限，实际≤50%）</td><td>100%（触发上限）</td></tr>
+<tr><td>3%</td><td>67%</td><td>67%</td></tr>
+<tr><td>5%</td><td class="highlight">40%</td><td>40%</td></tr>
+<tr><td>8%</td><td>25%</td><td>25%</td></tr>
+<tr><td>10%</td><td>20%</td><td>20%</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录E ===== -->
+<div class="chapter" id="appe">
+<h2 class="chapter-title"><span class="ch-num">附录E</span>术语速查表</h2>
+<div class="section">
+<p>全书核心术语按拼音排序，每条含：中文 → 英文 → 一句话定义 → 首次详细解释章节</p>
+<table class="data-table">
+<thead><tr><th>术语</th><th>英文</th><th>定义</th><th>章节</th></tr></thead>
+<tbody>
+<tr><td>2B法则</td><td>2B Rule</td><td>突破前高/低后无法维持，趋势反转信号</td><td>第19章</td></tr>
+<tr><td>CHOCH</td><td>Change of Character</td><td>反趋势方向的关键高低点被突破</td><td>第3章</td></tr>
+<tr><td>BOS</td><td>Break of Structure</td><td>趋势方向的关键高低点被突破</td><td>第3章</td></tr>
+<tr><td>FVG</td><td>Fair Value Gap</td><td>三根K线间的价格真空区</td><td>第20章</td></tr>
+<tr><td>HVN/LVN</td><td>High/Low Volume Node</td><td>高/低成交量节点</td><td>第23章</td></tr>
+<tr><td>Inside Bar</td><td>Inside Bar</td><td>子线完全在母线范围内</td><td>第6章</td></tr>
+<tr><td>Marubozu</td><td>Marubozu</td><td>无影线的大实体K线</td><td>第4章</td></tr>
+<tr><td>OB</td><td>Order Block</td><td>机构大单进场的最后一根反向K线</td><td>第20章</td></tr>
+<tr><td>Pin Bar</td><td>Pin Bar</td><td>小实体+长影线的拒绝信号</td><td>第5章</td></tr>
+<tr><td>POC</td><td>Point of Control</td><td>成交量最大的价格位</td><td>第23章</td></tr>
+<tr><td>Spring</td><td>Spring</td><td>威科夫吸筹区的假跌破信号</td><td>第22章</td></tr>
+<tr><td>UTAD</td><td>Upthrust After Distribution</td><td>威科夫派发区的假突破信号</td><td>第22章</td></tr>
+<tr><td>Volume Profile</td><td>Volume Profile</td><td>价格轴上的成交量分布</td><td>第23章</td></tr>
+<tr><td>威科夫</td><td>Wyckoff</td><td>市场阶段论：吸筹/趋势/派发循环</td><td>第3/22章</td></tr>
+<tr><td>供需区域</td><td>Supply/Demand Zone</td><td>机构大量建仓/出货的起源区域</td><td>第11章</td></tr>
+<tr><td>假突破</td><td>Fakeout</td><td>突破关键位后收盘回落</td><td>第16/19章</td></tr>
+<tr><td>流动性猎取</td><td>Liquidity Sweep</td><td>机构扫掉散户止损后反向操作</td><td>第2/19章</td></tr>
+<tr><td>势位形</td><td>Trend-Level-Trigger</td><td>趋势方向×关键位置×入场信号</td><td>第7章</td></tr>
+<tr><td>推动浪/回调浪</td><td>Impulse/Corrective</td><td>沿趋势/逆趋势方向的价格段</td><td>第9章</td></tr>
+<tr><td>无人区</td><td>No Man's Land</td><td>远离所有关键位的区域</td><td>第11章</td></tr>
+<tr><td>新鲜度</td><td>Freshness</td><td>供需区域被回测的次数</td><td>第11章</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录F ===== -->
+<div class="chapter" id="appf">
+<h2 class="chapter-title"><span class="ch-num">附录F</span>自检清单</h2>
+<div class="section">
+<h3>入场前自检（6项）</h3>
+<ul>
+<li>☐ 当前结构方向是什么？我的方向是否与结构一致？</li>
+<li>☐ 价格是否在关键位附近（供需区域/前高低/FVG）？</li>
+<li>☐ 是否有K线形态信号？是否收盘确认？</li>
+<li>☐ 大盘环境是否支持（沪深300结构方向）？</li>
+<li>☐ 盈亏比≥2:1？</li>
+<li>☐ 仓位是否从止损距离反推？单笔风险≤2%？</li>
+</ul>
+
+<h3>持仓中自检（4项）</h3>
+<ul>
+<li>☐ 入场逻辑是否仍然有效（结构未破坏）？</li>
+<li>☐ 止损是否需要调整（移动止损上移）？</li>
+<li>☐ 是否到达第一个目标位（1:2盈亏比）？如果是，平掉50%。</li>
+<li>☐ 大盘是否出现系统性风险信号？如果是，减仓。</li>
+</ul>
+
+<h3>离场后自检（3项）</h3>
+<ul>
+<li>☐ 离场原因是什么？（止损/止盈/手动恐慌）</li>
+<li>☐ 七维度评分是多少？</li>
+<li>☐ 如果重新做这笔交易，我会有什么不同的操作？</li>
+</ul>
+
+<h3>每周复盘自检（5项）</h3>
+<ul>
+<li>☐ 本周胜率=？盈亏比=？期望值=正还是负？</li>
+<li>☐ 七维度平均分=？哪个维度最低？</li>
+<li>☐ 本周最大错误是什么？是否是重复性错误？</li>
+<li>☐ 是否有违反20条军规的行为？</li>
+<li>☐ 下周需要重点改进什么？</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录G ===== -->
+<div class="chapter" id="appg">
+<h2 class="chapter-title"><span class="ch-num">附录G</span>结构化图表练习任务</h2>
+<div class="section">
+
+<div class="callout callout-key">
+<div class="callout-title">📋 练习格式标准</div>
+<p>每章正文末尾的"本周练习"框遵循以下标准格式：</p>
+<p>任务：[一句话描述]<br>预期产出：[具体可验证的产出物]<br>自检：[2-3个验证标准，每条以"是否"开头]</p>
+</div>
+
+<h3>练习1：市场结构（对应第3章）</h3>
+<p><strong>任务</strong>：找5只沪深300成分股，在日线图上标注HH/HL/LH/LL和市场结构</p>
+<p><strong>操作步骤</strong>：①打开日线图 ②标记最近5个波峰波谷 ③判断HH/HL或LH/LL序列 ④标注最近BOS/CHOCH位置 ⑤判断当前趋势方向</p>
+<p><strong>验证标准</strong>：5只股票的结构判断与周线方向一致</p>
+<p><strong>记录模板</strong>：股票代码|波峰1价|波谷1价|波峰2价|波谷2价|结构类型|BOS位置|趋势方向</p>
+
+<h3>练习2：K线形态（对应第5章）</h3>
+<p><strong>任务</strong>：复盘10个Pin Bar案例，记录出现位置和后续走势</p>
+<p><strong>验证标准</strong>：关键位出现的Pin Bar成功率明显高于无人区</p>
+
+<h3>练习3：量价关系（对应第10章）</h3>
+<p><strong>任务</strong>：选取3只股票近6个月走势，标注放量/缩量节点，验证量价四定律准确率</p>
+<p><strong>验证标准</strong>：量价四定律准确率在60%以上</p>
+
+<h3>练习4：供需区域（对应第11章）</h3>
+<p><strong>任务</strong>：在5只股票上画出供需区域，标注首次回测/二次回测/失效案例</p>
+<p><strong>验证标准</strong>：首次回测成功率>50%，失效区域有明显特征</p>
+
+<h3>练习5：复合信号（对应第21章）</h3>
+<p><strong>任务</strong>：寻找3个"斐波那契+供需区域+反转K线"三重共振案例</p>
+<p><strong>验证标准</strong>：三重共振入场点的盈亏比≥3:1</p>
+
+<h3>练习6：威科夫（对应第22章）</h3>
+<p><strong>任务</strong>：选取1只底部区域股票，标注威科夫吸筹阶段，持续跟踪4-8周</p>
+<p><strong>验证标准</strong>：阶段判断与后续走势方向一致</p>
+</div>
+</div>
+
+</div><!-- end container appendix -->
+
+<!-- ==================== FOOTER ==================== -->
+<div class="container" style="text-align:center;padding:60px 0 40px;border-top:1px solid var(--border);">
+<p style="color:var(--text-muted);font-size:12px;">裸K与价格行为投资手册 · Price Action 101 · 投资者教育手册系列</p>
+<p style="color:var(--text-muted);font-size:11px;margin-top:8px;">本手册仅供学习参考，不构成投资建议。投资有风险，入市需谨慎。</p>
+</div>
+
+</div><!-- end #main -->
+
+<script>
+// ===== Sidebar Active State =====
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('mobile-toggle');
+  const navLinks = document.querySelectorAll('#nav a');
+  const sections = [];
+  sidebarToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+    sidebarToggle.setAttribute('aria-label', isOpen ? '关闭章节导航' : '打开章节导航');
+  });
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const el = document.querySelector(href);
+      if (el) sections.push({ el, link });
+    }
+  });
+
+  function updateActive() {
+    const scrollY = window.scrollY + 100;
+    let current = sections[0];
+    sections.forEach(s => {
+      if (s.el.offsetTop <= scrollY) current = s;
+    });
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Close sidebar on mobile when link clicked
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open');
+        sidebarToggle.setAttribute('aria-expanded', 'false');
+        sidebarToggle.setAttribute('aria-label', '打开章节导航');
+      }
+    });
+  });
+});
+
+// ===== Risk-Reward Ratio Calculator =====
+function calcRRR() {
+  const entry = parseFloat(document.getElementById('rrr-entry').value);
+  const stop = parseFloat(document.getElementById('rrr-stop').value);
+  const target = parseFloat(document.getElementById('rrr-target').value);
+
+  if (isNaN(entry) || isNaN(stop) || isNaN(target)) return;
+
+  const risk = Math.abs(entry - stop);
+  const reward = Math.abs(target - entry);
+  const rrr = risk > 0 ? (reward / risk).toFixed(2) : '—';
+  const status = parseFloat(rrr) >= 2 ? '✅ 可交易' : parseFloat(rrr) >= 1.5 ? '⚠️ 勉强' : '❌ 不交易';
+
+  document.getElementById('rrr-result').textContent = rrr + ':1';
+  document.getElementById('rrr-label').textContent = status + ' · 风险' + (risk/entry*100).toFixed(1) + '% · 目标' + (reward/entry*100).toFixed(1) + '%';
+}
+
+// ===== Position Size Calculator =====
+function calcPosition() {
+  const account = parseFloat(document.getElementById('pos-account').value) * 10000;
+  const riskPct = parseFloat(document.getElementById('pos-risk').value) / 100;
+  const entry = parseFloat(document.getElementById('pos-entry').value);
+  const stop = parseFloat(document.getElementById('pos-stop').value);
+
+  if (isNaN(account) || isNaN(riskPct) || isNaN(entry) || isNaN(stop)) return;
+
+  const riskAmt = account * riskPct;
+  const stopDist = Math.abs(entry - stop);
+  const stopPct = (stopDist / entry * 100).toFixed(1);
+  const riskShares = stopDist > 0 ? Math.floor(riskAmt / stopDist) : 0;
+  const maxShares = entry > 0 ? Math.floor(account * 0.5 / entry) : 0;
+  const shares = Math.min(riskShares, maxShares);
+  const posValue = shares * entry;
+  const posPct = (posValue / account * 100).toFixed(1);
+
+  document.getElementById('pos-result').textContent = shares + '股 (' + posPct + '%)';
+  document.getElementById('pos-label').textContent = '止损距离' + stopPct + '% · 风险金额¥' + riskAmt.toFixed(0) + ' · 仓位上限≤50%';
+}
+
+// ===== ECharts Lazy Loader =====
+function initCharts() {
+  if (typeof echarts === 'undefined') {
+    setTimeout(initCharts, 500);
+    return;
+  }
+
+  const darkTheme = {
+    backgroundColor: 'transparent',
+    textStyle: { color: '#8B95A5', fontFamily: 'Noto Sans SC' },
+    title: { textStyle: { color: '#E8ECF1' } },
+    legend: { textStyle: { color: '#8B95A5' } },
+  };
+
+  // Chart 1: Market Structure
+  const c1 = document.getElementById('chart-market-structure');
+  if (c1 && c1.offsetParent !== null) {
+    const ch1 = echarts.init(c1);
+    const upData = [100, 108, 103, 112, 107, 118, 113, 125];
+    const downData = [125, 120, 124, 116, 120, 110, 115, 105];
+    const rangeData = [100, 108, 102, 107, 103, 108, 104, 107];
+    ch1.setOption({
+      ...darkTheme,
+      tooltip: { trigger: 'axis' },
+      grid: [{ left: '8%', right: '4%', top: '12%', bottom: '22%', width: '28%' },
+             { left: '36%', right: '4%', top: '12%', bottom: '22%', width: '28%' },
+             { left: '64%', right: '4%', top: '12%', bottom: '22%', width: '28%' }],
+      xAxis: [{ type: 'category', data: Array.from({length:8},(_,i)=>'D'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'category', data: Array.from({length:8},(_,i)=>'D'+(i+1)), gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'category', data: Array.from({length:8},(_,i)=>'D'+(i+1)), gridIndex:2, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      yAxis: [{ type: 'value', gridIndex:0, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'value', gridIndex:1, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'value', gridIndex:2, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      series: [
+        { name:'上升趋势', type:'line', data:upData, xAxisIndex:0, yAxisIndex:0, lineStyle:{color:'#22C55E',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#22C55E'},
+          markPoint:{data:[{coord:['D2',108],name:'HH'},{coord:['D3',103],name:'HL'},{coord:['D4',112],name:'HH'},{coord:['D5',107],name:'HL'},{coord:['D6',118],name:'HH'}],label:{color:'#fff',fontSize:10}}},
+        { name:'下降趋势', type:'line', data:downData, xAxisIndex:1, yAxisIndex:1, lineStyle:{color:'#EF4444',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#EF4444'},
+          markPoint:{data:[{coord:['D2',120],name:'LH'},{coord:['D3',124],name:'LL'},{coord:['D4',116],name:'LH'},{coord:['D5',120],name:'LL'},{coord:['D6',110],name:'LH'}],label:{color:'#fff',fontSize:10}}},
+        { name:'震荡', type:'line', data:rangeData, xAxisIndex:2, yAxisIndex:2, lineStyle:{color:'#EAB308',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#EAB308'},
+          markLine:{data:[{yAxis:102,lineStyle:{color:'#22C55E',type:'dashed'}},{yAxis:108,lineStyle:{color:'#EF4444',type:'dashed'}}],label:{color:'#8B95A5',fontSize:10}}}
+      ]
+    });
+    window.addEventListener('resize', () => ch1.resize());
+  }
+
+  // Chart 2: Gap Types
+  const c2 = document.getElementById('chart-gap-types');
+  if (c2 && c2.offsetParent !== null) {
+    const ch2 = echarts.init(c2);
+    const gapData = [50, 52, 51, 53, null, 58, 60, 59, 61, 60, null, 63, 62, 64, 65, null, 67, 66, 64, 62];
+    const dates = Array.from({length:20},(_,i)=>'T'+(i+1));
+    ch2.setOption({
+      ...darkTheme,
+      tooltip: { trigger: 'axis' },
+      grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
+      xAxis: { type: 'category', data: dates, axisLine:{lineStyle:{color:'#5A6478'}} },
+      yAxis: { type: 'value', splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+      series: [{
+        type: 'line', data: gapData, connectNulls: false,
+        lineStyle: { color: '#F97316', width: 2 }, symbol: 'circle', symbolSize: 6, itemStyle: { color: '#F97316' },
+        markArea: {
+          silent: true,
+          data: [
+            [{ name:'普通缺口', xAxis:'T4', itemStyle:{color:'rgba(234,179,8,0.1)'} }, { xAxis:'T5' }],
+            [{ name:'突破缺口', xAxis:'T5', itemStyle:{color:'rgba(34,197,94,0.1)'} }, { xAxis:'T6' }],
+            [{ name:'持续缺口', xAxis:'T10', itemStyle:{color:'rgba(59,130,246,0.1)'} }, { xAxis:'T11' }],
+            [{ name:'衰竭缺口', xAxis:'T15', itemStyle:{color:'rgba(239,68,68,0.1)'} }, { xAxis:'T16' }]
+          ]
+        }
+      }]
+    });
+    window.addEventListener('resize', () => ch2.resize());
+  }
+
+  // Chart 3: Impulse vs Corrective Waves
+  const cImpulse = document.getElementById('chart-impulse-corrective');
+  if (cImpulse && cImpulse.offsetParent !== null) {
+    const impulseChart = echarts.init(cImpulse);
+    const healthyTrend = [100, 112, 106, 121, 114, 130, 122, 138];
+    const exhaustedTrend = [100, 112, 106, 117, 112, 119, 115, 118];
+    const waveLabels = Array.from({length:8},(_,i)=>'W'+(i+1));
+    impulseChart.setOption({
+      ...darkTheme,
+      tooltip: { trigger: 'axis' },
+      grid: [{ left: '8%', right: '4%', top: '15%', bottom: '15%', width: '42%' },
+             { left: '54%', right: '4%', top: '15%', bottom: '15%', width: '42%' }],
+      xAxis: [{ type: 'category', data: waveLabels, gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'category', data: waveLabels, gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      yAxis: [{ type: 'value', gridIndex:0, min:95, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'value', gridIndex:1, min:95, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      series: [
+        { name:'健康趋势：推动强、回调浅', type:'line', data:healthyTrend, xAxisIndex:0, yAxisIndex:0,
+          lineStyle:{color:'#22C55E',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#22C55E'} },
+        { name:'衰竭趋势：推动缩短、回调加深', type:'line', data:exhaustedTrend, xAxisIndex:1, yAxisIndex:1,
+          lineStyle:{color:'#EF4444',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#EF4444'} }
+      ]
+    });
+    window.addEventListener('resize', () => impulseChart.resize());
+  }
+
+  // Chart 4: Supply/Demand Zones
+  const c3 = document.getElementById('chart-supply-demand');
+  if (c3 && c3.offsetParent !== null) {
+    const ch3 = echarts.init(c3);
+    const priceData = [45, 48, 46, 50, 53, 51, 48, 44, 42, 43, 46, 50, 55, 58, 56, 52, 48, 45, 43, 42, 44, 48, 52, 56, 60];
+    ch3.setOption({
+      ...darkTheme,
+      tooltip: { trigger: 'axis' },
+      grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
+      xAxis: { type: 'category', data: Array.from({length:25},(_,i)=>'D'+(i+1)), axisLine:{lineStyle:{color:'#5A6478'}} },
+      yAxis: { type: 'value', min: 38, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+      series: [{
+        type: 'line', data: priceData,
+        lineStyle: { color: '#F97316', width: 2 }, symbol: 'none',
+        markArea: {
+          silent: true,
+          data: [
+            [{ name:'供应区', yAxis:53, itemStyle:{color:'rgba(239,68,68,0.15)'} }, { yAxis:58 }],
+            [{ name:'需求区', yAxis:42, itemStyle:{color:'rgba(34,197,94,0.15)'} }, { yAxis:46 }]
+          ]
+        }
+      }]
+    });
+    window.addEventListener('resize', () => ch3.resize());
+  }
+
+  // Chart 5: Fibonacci
+  const c4 = document.getElementById('chart-fibonacci');
+  if (c4 && c4.offsetParent !== null) {
+    const ch4 = echarts.init(c4);
+    const fibData = [100, 108, 115, 105, 110, 102, 98, 95, 100, 110, 120, 128];
+    ch4.setOption({
+      ...darkTheme,
+      tooltip: { trigger: 'axis' },
+      grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
+      xAxis: { type: 'category', data: Array.from({length:12},(_,i)=>'D'+(i+1)), axisLine:{lineStyle:{color:'#5A6478'}} },
+      yAxis: { type: 'value', min: 85, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+      series: [{
+        type: 'line', data: fibData,
+        lineStyle: { color: '#F97316', width: 2 }, symbol: 'circle', symbolSize: 6, itemStyle: { color: '#F97316' },
+        markLine: {
+          data: [
+            { yAxis: 115, name:'波段高点', lineStyle:{color:'#EF4444',type:'dashed'}, label:{color:'#EF4444',fontSize:10} },
+            { yAxis: 95, name:'61.8%', lineStyle:{color:'#A855F7',type:'dashed'}, label:{color:'#A855F7',fontSize:10} },
+            { yAxis: 98, name:'50%', lineStyle:{color:'#3B82F6',type:'dashed'}, label:{color:'#3B82F6',fontSize:10} },
+            { yAxis: 102, name:'38.2%', lineStyle:{color:'#22C55E',type:'dashed'}, label:{color:'#22C55E',fontSize:10} },
+            { yAxis: 100, name:'波段起点', lineStyle:{color:'#8B95A5',type:'dashed'}, label:{color:'#8B95A5',fontSize:10} }
+          ]
+        },
+        markArea: {
+          silent: true,
+          data: [[
+            { name:'扩展161.8%', xAxis:'D10', yAxis:128, itemStyle:{color:'rgba(249,115,22,0.08)'} },
+            { xAxis:'D12', yAxis:135 }
+          ]]
+        }
+      }]
+    });
+    window.addEventListener('resize', () => ch4.resize());
+  }
+
+  // Chart 6: Wyckoff
+  const c5 = document.getElementById('chart-wyckoff');
+  if (c5 && c5.offsetParent !== null) {
+    const ch5 = echarts.init(c5);
+    // Accumulation: decline → base → spring → breakout
+    const accData = [80, 72, 65, 60, 55, 52, 48, 50, 53, 51, 49, 52, 55, 53, 51, 53, 56, 58, 55, 57, 60, 63, 66, 70, 75];
+    // Distribution: rise → top → UTAD → breakdown
+    const distData = [50, 55, 60, 65, 70, 75, 80, 78, 76, 79, 82, 80, 78, 81, 83, 81, 78, 76, 73, 75, 72, 68, 64, 60, 55];
+    ch5.setOption({
+      ...darkTheme,
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['吸筹区', '派发区'], textStyle: { color: '#8B95A5' }, top: 5 },
+      grid: [{ left: '8%', right: '4%', top: '15%', bottom: '15%', width: '42%' },
+             { left: '54%', right: '4%', top: '15%', bottom: '15%', width: '42%' }],
+      xAxis: [{ type: 'category', data: Array.from({length:25},(_,i)=>'W'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'category', data: Array.from({length:25},(_,i)=>'W'+(i+1)), gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      yAxis: [{ type: 'value', gridIndex:0, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+              { type: 'value', gridIndex:1, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      series: [
+        { name:'吸筹区', type:'line', data:accData, xAxisIndex:0, yAxisIndex:0, lineStyle:{color:'#22C55E',width:2}, symbol:'none',
+          markArea:{silent:true,data:[
+            [{name:'Phase A: PS',xAxis:'W5',itemStyle:{color:'rgba(59,130,246,0.1)'}},{xAxis:'W7'}],
+            [{name:'Phase B: SC→ST',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.1)'}},{xAxis:'W14'}],
+            [{name:'Phase C: Spring',xAxis:'W14',itemStyle:{color:'rgba(239,68,68,0.15)'}},{xAxis:'W16'}],
+            [{name:'Phase D: SOS',xAxis:'W16',itemStyle:{color:'rgba(34,197,94,0.1)'}},{xAxis:'W20'}],
+            [{name:'Phase E: 突破',xAxis:'W20',itemStyle:{color:'rgba(168,85,247,0.1)'}},{xAxis:'W25'}]
+          ]},
+          markPoint:{data:[{coord:['W8',48],name:'Spring',symbol:'triangle',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
+        },
+        { name:'派发区', type:'line', data:distData, xAxisIndex:1, yAxisIndex:1, lineStyle:{color:'#EF4444',width:2}, symbol:'none',
+          markArea:{silent:true,data:[
+            [{name:'Phase A: PSY',xAxis:'W5',itemStyle:{color:'rgba(59,130,246,0.1)'}},{xAxis:'W7'}],
+            [{name:'Phase B: BC→ST',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.1)'}},{xAxis:'W14'}],
+            [{name:'Phase C: UTAD',xAxis:'W14',itemStyle:{color:'rgba(239,68,68,0.15)'}},{xAxis:'W16'}],
+            [{name:'Phase D: LPSY',xAxis:'W16',itemStyle:{color:'rgba(34,197,94,0.1)'}},{xAxis:'W20'}],
+            [{name:'Phase E: 下跌',xAxis:'W20',itemStyle:{color:'rgba(168,85,247,0.1)'}},{xAxis:'W25'}]
+          ]},
+          markPoint:{data:[{coord:['W11',82],name:'UTAD',symbol:'diamond',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
+        }
+      ]
+    });
+    window.addEventListener('resize', () => ch5.resize());
+  }
+}
+
+// Init charts on scroll (lazy load)
+let chartsInitialized = false;
+function initializeCharts() {
+  if (chartsInitialized) return;
+  chartsInitialized = true;
+  initCharts();
+}
+window.addEventListener('scroll', function() {
+  if (!chartsInitialized) {
+    const chartBoxes = document.querySelectorAll('.chart-container');
+    let anyVisible = false;
+    chartBoxes.forEach(box => {
+      const rect = box.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) anyVisible = true;
+    });
+    if (anyVisible) initializeCharts();
+  }
+}, { passive: true });
+
+// Also try init on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(initializeCharts, 1000);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>交易系统与实战投资手册 · System 101</title>
+<style>
+:root{--bg:#0B0E14;--bg2:#111520;--card:#141820;--card2:#1A2030;--border:#2A3040;--text-primary:#E8ECF4;--text-secondary:#A0A8B8;--text-muted:#6A7280;--accent:#0D9488;--accent-light:#14B8A6;--accent-dim:rgba(13,148,136,0.15);--accent-glow:rgba(13,148,136,0.3);--orange:#F59E0B;--yellow:#EAB308;--red:#EF4444;--green:#22C55E;--blue:#3B82F6;--cyan:#06B6D4;--font:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg);color:var(--text-primary);line-height:1.8;font-size:15px;}
+::selection{background:var(--accent);color:#fff;}
+
+/* Cover */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;background:linear-gradient(160deg,#0B0E14 0%,#0A1A18 40%,#0D1F1C 70%,#0B0E14 100%);position:relative;overflow:hidden;}
+.cover::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(13,148,136,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 30%,rgba(20,184,166,0.05) 0%,transparent 40%);animation:coverGlow 8s ease-in-out infinite alternate;}
+@keyframes coverGlow{0%{transform:translate(0,0)}100%{transform:translate(-2%,-1%)}}
+.cover-badge{display:inline-block;padding:6px 20px;border:1px solid var(--accent);border-radius:20px;color:var(--accent-light);font-size:13px;letter-spacing:2px;margin-bottom:24px;background:var(--accent-dim);}
+.cover h1{font-size:clamp(32px,6vw,56px);font-weight:800;color:var(--text-primary);margin-bottom:12px;letter-spacing:1px;}
+.cover h1 span{color:var(--accent-light);}
+.cover .subtitle{font-size:clamp(16px,2.5vw,22px);color:var(--text-secondary);margin-bottom:36px;font-weight:300;}
+.cover-meta{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;color:var(--text-muted);font-size:13px;}
+.cover-meta span{display:flex;align-items:center;gap:6px;}
+.cover-arrow{margin-top:40px;color:var(--accent);font-size:24px;opacity:0.6;animation:bounce 2s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
+
+/* Layout */
+.layout{display:flex;min-height:100vh;}
+#sidebar{width:280px;position:fixed;top:0;left:0;height:100vh;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;z-index:100;padding:20px 0;transition:transform 0.3s;}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+#main{margin-left:280px;flex:1;min-width:0;}
+#nav-toggle{display:none;position:fixed;top:16px;left:16px;z-index:200;background:var(--card);border:1px solid var(--border);color:var(--accent-light);width:40px;height:40px;border-radius:8px;font-size:20px;cursor:pointer;}
+@media(max-width:900px){#sidebar{transform:translateX(-100%);}#sidebar.open{transform:translateX(0);}#main{margin-left:0;}#nav-toggle{display:flex;align-items:center;justify-content:center;}.data-table{display:block;max-width:100%;overflow-x:auto;}}
+.nav-title{padding:12px 20px 8px;font-size:11px;color:var(--accent-light);letter-spacing:2px;font-weight:700;text-transform:uppercase;}
+.nav-part{padding:8px 20px 4px;font-size:11px;color:var(--text-muted);font-weight:600;margin-top:8px;border-top:1px solid var(--border);}
+#nav a{display:block;padding:6px 20px 6px 28px;color:var(--text-secondary);text-decoration:none;font-size:13px;transition:all 0.2s;border-left:3px solid transparent;}
+#nav a:hover{color:var(--accent-light);background:var(--accent-dim);border-left-color:var(--accent);}
+#nav a.active{color:var(--accent-light);background:var(--accent-dim);border-left-color:var(--accent-light);font-weight:600;}
+#nav a.ch-link{padding-left:36px;font-size:12px;}
+#nav a.app-link{padding-left:36px;font-size:12px;color:var(--text-muted);}
+
+/* Content */
+.container{max-width:860px;margin:0 auto;padding:40px 32px;}
+.part-header{text-align:center;padding:48px 0 32px;border-bottom:1px solid var(--border);margin-bottom:32px;}
+.part-tag{display:inline-block;padding:4px 16px;background:var(--accent-dim);border:1px solid var(--accent);border-radius:12px;color:var(--accent-light);font-size:12px;letter-spacing:2px;font-weight:700;margin-bottom:12px;}
+.part-header h2{font-size:28px;font-weight:800;color:var(--text-primary);}
+.part-header .part-goal{color:var(--text-muted);font-size:14px;margin-top:8px;}
+.chapter{margin-bottom:40px;}
+.chapter-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:10px;}
+.ch-num{color:var(--accent-light);font-size:18px;font-weight:800;}
+.section{margin-bottom:24px;}
+.section h3{font-size:17px;font-weight:700;color:var(--accent-light);margin:20px 0 10px;padding-left:12px;border-left:3px solid var(--accent);}
+.section p{margin:8px 0;color:var(--text-secondary);line-height:1.9;}
+.section ul,.section ol{margin:8px 0 8px 20px;color:var(--text-secondary);}
+.section li{margin:4px 0;line-height:1.8;}
+.highlight{color:var(--accent-light);font-weight:600;}
+.green{color:var(--green);}
+.red{color:var(--red);}
+.yellow{color:var(--yellow);}
+.orange{color:var(--orange);}
+.blue{color:var(--blue);}
+strong{color:var(--text-primary);}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0 20px;font-size:13px;}
+.data-table thead{background:var(--card2);}
+.data-table th{padding:10px 12px;text-align:left;color:var(--accent-light);font-weight:600;border-bottom:2px solid var(--accent);font-size:12px;white-space:nowrap;}
+.data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text-secondary);vertical-align:top;}
+.data-table tbody tr:hover{background:var(--accent-dim);}
+.data-table td.highlight{color:var(--accent-light);font-weight:600;}
+
+/* Callouts */
+.callout{padding:16px 20px;border-radius:8px;margin:16px 0;border-left:4px solid;font-size:14px;line-height:1.8;}
+.callout-title{font-weight:700;margin-bottom:6px;font-size:14px;}
+.callout-tip{background:rgba(13,148,136,0.08);border-color:var(--accent);}.callout-tip .callout-title{color:var(--accent-light);}
+.callout-key{background:rgba(245,158,11,0.08);border-color:var(--orange);}.callout-key .callout-title{color:var(--orange);}
+.callout-warn{background:rgba(234,179,8,0.08);border-color:var(--yellow);}.callout-warn .callout-title{color:var(--yellow);}
+.callout-danger{background:rgba(239,68,68,0.08);border-color:var(--red);}.callout-danger .callout-title{color:var(--red);}
+
+/* Rule Box */
+.rule-box{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:20px;margin:20px 0;}
+.rule-title{font-weight:700;color:var(--accent-light);margin-bottom:12px;font-size:15px;}
+.rule-item{margin:8px 0;padding:8px 12px;background:var(--bg2);border-radius:6px;font-size:14px;line-height:1.7;}
+.rule-trigger{color:var(--blue);font-weight:600;}
+.rule-action{color:var(--green);font-weight:600;}
+
+/* Practice Box */
+.practice-box{border:1px solid var(--cyan);border-radius:8px;padding:20px;margin:20px 0;background:rgba(6,182,212,0.06);}
+.practice-title{font-weight:700;color:var(--cyan);margin-bottom:10px;font-size:15px;}
+.practice-box ul{margin:4px 0 4px 16px;}
+.practice-box li{margin:4px 0;color:var(--text-secondary);font-size:14px;}
+
+/* Calc Widget */
+.calc-widget{background:var(--card2);border:1px solid var(--accent);border-radius:10px;padding:24px;margin:20px 0;}
+.calc-widget h4{color:var(--accent-light);margin-bottom:16px;font-size:16px;}
+.calc-row{display:flex;gap:12px;align-items:center;margin:8px 0;flex-wrap:wrap;}
+.calc-row label{color:var(--text-secondary);font-size:13px;min-width:100px;}
+.calc-row input,.calc-row select{background:var(--bg2);border:1px solid var(--border);color:var(--text-primary);padding:8px 12px;border-radius:6px;font-size:14px;width:100px;font-family:var(--font);}
+.calc-row input:focus{outline:none;border-color:var(--accent);}
+.calc-result{margin-top:16px;padding:16px;background:var(--accent-dim);border-radius:8px;text-align:center;}
+.calc-result .big{font-size:32px;font-weight:800;color:var(--accent-light);}
+.calc-result .label{font-size:12px;color:var(--text-muted);margin-top:4px;}
+
+/* Signal Widget */
+.signal-widget{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+.signal-widget h4{color:var(--accent-light);margin-bottom:16px;font-size:16px;}
+.signal-row{display:flex;gap:12px;align-items:center;margin:8px 0;flex-wrap:wrap;}
+.signal-row label{color:var(--text-secondary);font-size:13px;min-width:120px;}
+.signal-row select{background:var(--bg2);border:1px solid var(--border);color:var(--text-primary);padding:8px 12px;border-radius:6px;font-size:13px;width:140px;font-family:var(--font);}
+.signal-result{display:none;margin-top:16px;padding:20px;background:var(--bg2);border-radius:8px;align-items:center;gap:16px;}
+.signal-dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:var(--green);box-shadow:0 0 12px var(--green);}
+.dot-yellow{background:var(--yellow);box-shadow:0 0 12px var(--yellow);}
+.dot-red{background:var(--red);box-shadow:0 0 12px var(--red);}
+.signal-text{font-size:16px;font-weight:700;}
+.signal-advice{font-size:13px;color:var(--text-muted);margin-top:4px;}
+
+/* Clock Widget */
+.clock-widget{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:24px;margin:20px 0;}
+.clock-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.clock-cell{padding:16px;border:2px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.clock-cell:hover{border-color:var(--accent);background:var(--accent-dim);}
+.clock-cell.active{border-color:var(--accent-light);background:var(--accent-dim);}
+.clock-cell h5{font-size:15px;margin-bottom:4px;}
+.clock-cell p{font-size:11px;color:var(--text-muted);}
+#clock-detail{display:none;margin-top:12px;padding:16px;background:var(--bg2);border-radius:8px;font-size:14px;color:var(--text-secondary);line-height:1.8;}
+
+/* Chart Container */
+.chart-container{width:100%;height:350px;margin:16px 0;background:var(--card);border:1px solid var(--border);border-radius:8px;}
+
+/* Reading Path */
+.reading-path{background:var(--card2);border:1px solid var(--accent);border-radius:10px;padding:28px;margin:24px 0;}
+.reading-path h3{color:var(--accent-light);font-size:17px;margin-bottom:16px;}
+.path-item{padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-secondary);}
+.path-item:last-child{border-bottom:none;}
+.path-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:8px;}
+.path-fast{background:var(--accent-dim);color:var(--accent-light);}
+.path-full{background:rgba(59,130,246,0.15);color:var(--blue);}
+.path-opt{background:rgba(245,158,11,0.15);color:var(--orange);}
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<div class="cover">
+<div class="cover-badge">SYSTEM 101</div>
+<h1>交易系统与实战<br><span>投资手册</span></h1>
+<p class="subtitle">从散件到闭环——把所有知识组装成一套可运行、可回测、可迭代的交易系统</p>
+<div class="cover-meta">
+<span>📘 6篇 · 21章 · 7附录</span>
+<span>🎯 强调色：青绿 #0D9488</span>
+<span>👤 面向：有基础但没系统的新手</span>
+</div>
+<div class="cover-arrow">↓</div>
+</div>
+
+<!-- ===== READING PATH ===== -->
+<div class="container">
+<div class="reading-path">
+<h3>🗺️ 阅读路径与学习地图</h3>
+<p style="color:var(--text-muted);font-size:13px;margin-bottom:12px;">你在整体学习地图中的位置：裸K → 财报 → 宏观 → <span class="highlight">交易系统 ←你在这里</span> → 风控心理</p>
+<div class="path-item"><span class="path-tag path-fast">快速上手</span>第1章（为什么需要系统）→ 第2章（系统全景）→ 第8章（标准模板）→ 附录A系统模板</div>
+<div class="path-item"><span class="path-tag path-full">系统学习</span>从第1章顺序读到第21章 → 附录A-G完整查漏补缺</div>
+<div class="path-item"><span class="path-tag path-opt">已有散件</span>第3-7章（六大组件设计）→ 第8章（组装）→ 第9-10章（回测）→ 第14-17章（实盘）→ 第20-21章（迭代与长期）</div>
+<div class="path-item"><span class="path-tag path-opt">已有系统想优化</span>第10章（评估指标）→ 第18-19章（误区与案例）→ 第20章（多系统并行）→ 附录C绩效自检</div>
+</div>
+</div>
+
+<!-- ===== SIDEBAR ===== -->
+<button id="nav-toggle" type="button" aria-label="打开章节导航" aria-controls="sidebar" aria-expanded="false">☰</button>
+<div class="layout">
+<nav id="sidebar">
+<div class="nav-title">交易系统与实战</div>
+<div id="nav">
+<div class="nav-part">第一篇 · 系统思维</div>
+<a href="#ch1" class="ch-link">第1章 为什么需要交易系统</a>
+<a href="#ch2" class="ch-link">第2章 交易系统全景地图</a>
+<div class="nav-part">第二篇 · 系统设计</div>
+<a href="#ch3" class="ch-link">第3章 自我定位</a>
+<a href="#ch4" class="ch-link">第4章 选股规则</a>
+<a href="#ch5" class="ch-link">第5章 入场规则</a>
+<a href="#ch6" class="ch-link">第6章 仓位规则</a>
+<a href="#ch7" class="ch-link">第7章 出场规则</a>
+<div class="nav-part">第三篇 · 系统组装</div>
+<a href="#ch8" class="ch-link">第8章 标准模板与全链路案例</a>
+<a href="#ch9" class="ch-link">第9章 回测</a>
+<a href="#ch10" class="ch-link">第10章 系统评估指标</a>
+<div class="nav-part">第四篇 · 从模拟到实盘</div>
+<a href="#ch11" class="ch-link">第11章 模拟盘练习</a>
+<a href="#ch12" class="ch-link">第12章 小仓位实盘</a>
+<a href="#ch13" class="ch-link">第13章 交易日志</a>
+<a href="#ch14" class="ch-link">第14章 正常仓位实盘</a>
+<div class="nav-part">第五篇 · 系统迭代与进化</div>
+<a href="#ch15" class="ch-link">第15章 复盘机制</a>
+<a href="#ch16" class="ch-link">第16章 系统失效</a>
+<a href="#ch17" class="ch-link">第17章 系统迭代</a>
+<a href="#ch18" class="ch-link">第18章 常见系统设计误区</a>
+<div class="nav-part">第六篇 · 长期实战</div>
+<a href="#ch19" class="ch-link">第19章 经典交易系统案例</a>
+<a href="#ch20" class="ch-link">第20章 多系统并行</a>
+<a href="#ch21" class="ch-link">第21章 长期盈利的终极秘密</a>
+<div class="nav-part">附录</div>
+<a href="#appa" class="app-link">附录A 系统模板</a>
+<a href="#appb" class="app-link">附录B 交易日志模板</a>
+<a href="#appc" class="app-link">附录C 绩效自检清单</a>
+<a href="#appd" class="app-link">附录D 术语速查表</a>
+<a href="#appe" class="app-link">附录E 系统化交易者自检</a>
+<a href="#appf" class="app-link">附录F 推荐书籍</a>
+<a href="#appg" class="app-link">附录G 学习工具与节奏</a>
+</div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div id="main">
+
+<!-- ==================== 第一篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part1">
+<div class="part-tag">第一篇</div>
+<h2>系统思维——从随机交易到系统化交易</h2>
+<p class="part-goal">核心目标：建立"系统化交易"的认知框架，理解为什么90%的散户亏损，以及一套完整交易系统长什么样。</p>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<div class="chapter" id="ch1">
+<h2 class="chapter-title"><span class="ch-num">第1章</span>为什么你需要一套交易系统</h2>
+<div class="section">
+<h3>散户亏损的终极原因：不是看不懂K线，是没有系统</h3>
+<p>大多数散户的亏损，<strong>不是技术问题，是结构问题</strong>。你可能学了K线形态、均线系统、基本面分析，甚至读了十几本投资书，但每次交易的决策路径都不一样——今天靠均线，明天听消息，后天看财报。你的知识是散的，你的操作是随机的。</p>
+<p>随机交易的本质：<strong>每一次决策都是即兴发挥</strong>。就像一个厨师，今天做红烧肉、明天做披萨，但从来不做菜谱、不记用量、不总结哪个菜受欢迎——他永远无法复制成功，也无法避免失败。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 致命认知</div>
+"我懂技术分析/基本面/宏观，所以我能赚钱"——这是散户最大的错觉。知识≠系统，散装知识不闭环等于没学。正期望值系统+0%执行率=确定亏损。
+</div>
+
+<h3>随机交易 vs 系统交易：三个维度的本质区别</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>随机交易</th><th>系统交易</th></tr></thead>
+<tbody>
+<tr><td class="highlight">决策依据</td><td>感觉/消息/灵感</td><td>规则清单，逐一核对</td></tr>
+<tr><td class="highlight">买入后行为</td><td>买了再想"什么时候卖"</td><td>买入前已写好出场规则</td></tr>
+<tr><td class="highlight">亏损后反应</td><td>情绪化——加仓摊平/报复性交易/割肉离场</td><td>系统化——止损触发→执行→复盘→不改规则</td></tr>
+<tr><td class="highlight">长期结果</td><td>不确定，靠运气</td><td>确定的可控范围，靠概率</td></tr>
+<tr><td class="highlight">可改进性</td><td>无法改进（不知道错在哪）</td><td>可迭代（记录→复盘→优化）</td></tr>
+</tbody>
+</table>
+
+<h3>交易系统是什么：把"艺术"变成"工程"</h3>
+<p>交易系统是一套定义<strong>"买什么、何时买、买多少、何时卖、错了怎么办"</strong>的完整规则集。</p>
+<p>工程思维 vs 艺术思维的关键区别：</p>
+<ul>
+<li><strong>工程思维</strong>：图纸→施工→质检→验收→维护。每一步有标准，每一步可追溯，每一步可改进。</li>
+<li><strong>艺术思维</strong>：灵感→创作→完成。无法复制，无法量化，无法迭代。</li>
+<li>交易系统 = 工程思维应用到交易。<strong>你的交易应该是施工，不是创作。</strong></li>
+</ul>
+
+<h3>好系统的三个标准</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 好系统的三个标准</div>
+<p><strong>① 可执行</strong>：规则清晰到无歧义——"当均线金叉时买入"比"趋势好的时候买入"好，因为"好"无法定义，"金叉"可以判断。</p>
+<p><strong>② 可回测</strong>：历史数据可验证——你能在过去的数据上跑一遍，看看这套规则过去表现如何。</p>
+<p><strong>③ 可迭代</strong>：有优化机制——发现缺陷可以修改，修改后有验证流程，不会越改越乱。</p>
+</div>
+
+<h3>系统不能保证盈利，但能保证"可控"</h3>
+<p>这是交易系统最重要的认知：<strong>系统不保证赚钱，但保证你亏得明明白白、赚得有据可查</strong>。</p>
+<ul>
+<li>没有系统：亏了不知道为什么，赚了也不知道为什么，下次还是靠运气。</li>
+<li>有系统：亏了知道是哪个环节出了问题（入场条件太松？止损太紧？仓位太大？），可以针对性改进。</li>
+<li><strong>可控 = 可改进 = 长期可盈利</strong>。这就是系统化交易的终极价值。</li>
+</ul>
+<div class="callout callout-tip">
+<div class="callout-title">💡 类比</div>
+系统就像导航：导航不能保证你不堵车，但保证你知道自己在哪、该往哪走、走错了怎么纠偏。没有导航 = 在陌生城市瞎逛。
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第1章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的交易决策没有对照规则清单时，</span>我将<strong>停止交易</strong>——没有规则依据的操作一律不做</div>
+<div class="rule-item"><span class="rule-trigger">当我发现自己在"凭感觉"操作时，</span>我将<strong>退出交易软件</strong>，打开系统规则文档重新确认</div>
+<div class="rule-item"><span class="rule-trigger">当我亏损后第一反应是"我要赚回来"时，</span>我将<strong>立即暂停交易</strong>至少1天——这是报复性交易的危险信号</div>
+</div>
+</div>
+
+<!-- ===== 第2章 ===== -->
+<div class="chapter" id="ch2">
+<h2 class="chapter-title"><span class="ch-num">第2章</span>交易系统全景地图</h2>
+<div class="section">
+<h3>汽车比喻——一次完整的自驾游</h3>
+<p>交易系统就像一次完整的自驾游：</p>
+<table class="data-table">
+<thead><tr><th>自驾游环节</th><th>对应系统组件</th><th>核心问题</th></tr></thead>
+<tbody>
+<tr><td>🚗 选择车型</td><td class="highlight">自我定位</td><td>我是什么类型的交易者？</td></tr>
+<tr><td>📍 选择目的地</td><td class="highlight">选股规则</td><td>我要去哪里（买什么）？</td></tr>
+<tr><td>🗺️ 选路线出发</td><td class="highlight">入场规则</td><td>什么时候出发（何时买）？</td></tr>
+<tr><td>⛽ 控制油门</td><td class="highlight">仓位规则</td><td>开多快（买多少）？</td></tr>
+<tr><td>🛑 刹车停车</td><td class="highlight">出场规则</td><td>什么时候停（何时卖）？</td></tr>
+<tr><td>🔧 保养维修</td><td class="highlight">复盘规则</td><td>车况如何（系统好不好）？</td></tr>
+</tbody>
+</table>
+<p>缺任何一个环节，自驾游都会出问题：没选车型就上路（没定位），到了目的地不知道怎么停（没出场规则），车坏了不会修（没复盘机制）。</p>
+
+<h3>完整交易系统的六大组件</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 六大组件闭环</div>
+<p><strong>定位 → 选股 → 入场 → 仓位 → 出场 → 复盘</strong></p>
+<p>六个组件缺一环即不闭环。不闭环的系统 = 漏水的桶——水（利润）从缺口流走。</p>
+</div>
+
+<h3>核心术语速释</h3>
+<table class="data-table">
+<thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>详见章节</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易系统</td><td>Trading System</td><td>定义"买什么/何时买/买多少/何时卖/错了怎么办"的完整规则集</td><td>第1章</td></tr>
+<tr><td class="highlight">闭环</td><td>Closed Loop</td><td>执行→记录→复盘→优化→再执行，缺一环即不闭环</td><td>第2章</td></tr>
+<tr><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益=胜率×平均盈利-败率×平均亏损</td><td>第10章</td></tr>
+<tr><td class="highlight">盈亏比</td><td>Risk/Reward Ratio</td><td>平均盈利金额/平均亏损金额，系统要求≥2:1</td><td>第7章</td></tr>
+<tr><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险（R）为单位的盈亏衡量，盈利2R=盈亏比2:1</td><td>第10章</td></tr>
+<tr><td class="highlight">利润因子</td><td>Profit Factor</td><td>总盈利/总亏损，>1.5可用，>2.0优秀</td><td>第10章</td></tr>
+<tr><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>资金曲线从峰值到谷底的最大跌幅</td><td>第10章</td></tr>
+<tr><td class="highlight">回测</td><td>Backtesting</td><td>用历史数据模拟系统表现</td><td>第9章</td></tr>
+<tr><td class="highlight">曲线拟合</td><td>Curve Fitting</td><td>参数过度优化以适应历史数据，实盘必然失效</td><td>第9章</td></tr>
+<tr><td class="highlight">ATR</td><td>Average True Range</td><td>平均真实波幅，衡量股票波动率的指标</td><td>第6章</td></tr>
+</tbody>
+</table>
+
+<h3>系统的"闭环"</h3>
+<p>闭环 = <strong>执行→记录→复盘→优化→再执行</strong>。这是系统化交易的生命线。</p>
+<ul>
+<li><strong>执行</strong>：按规则操作</li>
+<li><strong>记录</strong>：把每笔交易的决策过程写下来</li>
+<li><strong>复盘</strong>：分析做对了什么、做错了什么</li>
+<li><strong>优化</strong>：修改有缺陷的规则（每次只改一个变量）</li>
+<li><strong>再执行</strong>：用优化后的规则继续操作</li>
+</ul>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 最常见的系统"断环"</div>
+<p><strong>断环1</strong>：只有买入没有卖出规则——买了再说，跌了不知道怎么办。</p>
+<p><strong>断环2</strong>：只有规则没有复盘机制——规则写好了但从不检查是否有效。</p>
+<p><strong>断环3</strong>：有复盘但不改规则——发现问题但不行动，复盘变成了自我批评。</p>
+</div>
+
+<h3>交易成本：被忽视的利润杀手</h3>
+<p>很多新手完全忽略了交易成本对利润的侵蚀。我们来算一笔账：</p>
+<table class="data-table">
+<thead><tr><th>成本项</th><th>费率</th><th>收取方式</th><th>10万全仓一笔</th></tr></thead>
+<tbody>
+<tr><td>佣金</td><td>万2.5-万3</td><td>双向</td><td>50-60元（买卖各一次）</td></tr>
+<tr><td>印花税</td><td>千1</td><td>卖出单边</td><td>100元</td></tr>
+<tr><td>过户费</td><td>万0.1（沪市）</td><td>双向</td><td>2元</td></tr>
+<tr><td>滑点</td><td>约0.1-0.3%</td><td>隐性</td><td>100-300元</td></tr>
+<tr><td class="highlight">合计</td><td>-</td><td>-</td><td class="red">约250-460元/笔</td></tr>
+</tbody>
+</table>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 成本杀伤力</div>
+<p>10万资金每月交易10次（每次全仓）→年交易成本约2000-3000元 → 占资金<strong>2-3%</strong>。</p>
+<p>如果你的系统年化收益预期是10%，交易成本就吃掉了20-30%的利润。<strong>"减少交易频率=直接增加利润"</strong>——这是最简单的提高收益的方法。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第2章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我设计交易系统时，</span>我将<strong>确保六大组件（定位→选股→入场→仓位→出场→复盘）全部存在</strong>，缺一不闭环</div>
+<div class="rule-item"><span class="rule-trigger">当我的系统没有复盘机制时，</span>我将<strong>先停下手设计复盘规则</strong>——没有复盘的系统不是系统</div>
+<div class="rule-item"><span class="rule-trigger">当我计算期望值时，</span>我将<strong>扣除交易成本</strong>——名义期望值为正但扣除成本后为负的系统不可行</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第二篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part2">
+<div class="part-tag">第二篇</div>
+<h2>系统设计——六大组件逐个构建</h2>
+<p class="part-goal">核心目标：把进阶手册中散讲的仓位/止损/组合等知识，重新组织为"系统组件设计"的流程，每个组件给出具体的设计方法和模板。</p>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div class="chapter" id="ch3">
+<h2 class="chapter-title"><span class="ch-num">第3章</span>组件一：自我定位——系统的地基</h2>
+<div class="section">
+<h3>为什么定位是第一步</h3>
+<p>照搬别人的系统 = 系统崩盘的第一大原因。一个上班族照搬全职交易者的短线系统，结果因为<strong>没时间盯盘</strong>，止损总是慢半拍，每次亏损都比计划大20%。一个50万资金的人照搬10万资金的高频系统，结果<strong>流动性不够</strong>，滑点吃掉了利润。</p>
+<p>你的系统必须匹配<strong>你</strong>——你的资金、时间、性格、风险承受力。定位错了，后面的设计再精妙也是空中楼阁。</p>
+
+<h3>四维定位法</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>关键问题</th><th>对系统的影响</th></tr></thead>
+<tbody>
+<tr><td class="highlight">💰 资金量</td><td>可投入股市的金额是多少？</td><td>决定选股范围、仓位分散度、交易频率上限</td></tr>
+<tr><td class="highlight">⏰ 可用时间</td><td>每天能花多少时间看盘/研究？</td><td>决定交易风格（日内需盯盘/中线可盘后分析）</td></tr>
+<tr><td class="highlight">🧠 性格特征</td><td>你更擅长耐心等待还是快速决策？</td><td>决定持仓周期和信号敏感度</td></tr>
+<tr><td class="highlight">⚡ 风险偏好</td><td>最大单笔亏损你能接受多少？</td><td>决定仓位算法和止损参数</td></tr>
+</tbody>
+</table>
+
+<h3>四种交易风格对应的系统参数差异</h3>
+<table class="data-table">
+<thead><tr><th>风格</th><th>持仓周期</th><th>看盘时间</th><th>单笔风险</th><th>典型止损</th><th>适合人群</th></tr></thead>
+<tbody>
+<tr><td class="highlight">日内</td><td>当日</td><td>全天</td><td>0.5-1%</td><td>0.5-1.5%</td><td>全职交易者</td></tr>
+<tr><td class="highlight">短线波段</td><td>2-10天</td><td>1-2小时</td><td>1-1.5%</td><td>3-5%</td><td>半职/有时间</td></tr>
+<tr><td class="highlight">中线波段</td><td>2-8周</td><td>30分钟</td><td>1-2%</td><td>5-8%</td><td>上班族</td></tr>
+<tr><td class="highlight">长线价值</td><td>3-12月</td><td>每周1-2次</td><td>1-2%</td><td>10-15%</td><td>极忙人士</td></tr>
+</tbody>
+</table>
+
+<h3>定位后的"半年锁定"规则</h3>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 半年锁定规则</div>
+<p>选定定位后，<strong>至少锁定6个月不切换风格</strong>。理由：</p>
+<ul>
+<li>任何系统都需要足够的数据样本（至少100笔）来评估</li>
+<li>频繁切换=永远在"试错期"，永远无法积累统计样本</li>
+<li>"这周学趋势，下周学波段"=最昂贵的学费缴纳方式</li>
+</ul>
+</div>
+
+<h3>资金量级与系统参数的对应关系</h3>
+<table class="data-table">
+<thead><tr><th>资金量</th><th>选股范围</th><th>持股数</th><th>交易频率</th><th>核心目标</th></tr></thead>
+<tbody>
+<tr><td class="highlight">10万以下</td><td>不限（流动性不是问题）</td><td>2-3只</td><td>可较高</td><td>学习积累</td></tr>
+<tr><td class="highlight">10-50万</td><td>仍宽</td><td>3-5只</td><td>开始控制</td><td>建立系统</td></tr>
+<tr><td class="highlight">50-200万</td><td>日成交额>1000万</td><td>5-8只</td><td>降低</td><td>稳定盈利</td></tr>
+<tr><td class="highlight">200万+</td><td>沪深300/中证500成分</td><td>8-15只</td><td>低频</td><td>资产配置+多系统</td></tr>
+</tbody>
+</table>
+<div class="callout callout-tip">
+<div class="callout-title">💡 小资金的优势</div>
+<p>资金量小不是劣势——小资金流动性好、船小好调头、交易成本占比可控。巴菲特说过："小资金可以做到大资金做不到的收益率。"所以别急着加钱，先把系统做好。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：填写你的自我定位表</div>
+<ul>
+<li>资金量：____万 | 可用时间：每天____小时 | 风格选择：____</li>
+<li>最大单笔亏损承受：总资金的____% | 预期交易频率：每月____笔</li>
+<li>写好后放在系统文档的第一页，以后每次想改风格时先看这张表</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第3章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我完成自我定位后，</span>我将<strong>锁定至少6个月不切换风格</strong>——6个月内只优化参数不改方向</div>
+<div class="rule-item"><span class="rule-trigger">当我想照搬别人的系统时，</span>我将<strong>先对照四维定位法</strong>——对方的资金/时间/性格/风险偏好与我一致吗？</div>
+<div class="rule-item"><span class="rule-trigger">当我的可用时间发生变化时（如工作变动），</span>我将<strong>重新定位并调整系统参数</strong>，而不是硬撑旧参数</div>
+</div>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div class="chapter" id="ch4">
+<h2 class="chapter-title"><span class="ch-num">第4章</span>组件二：选股规则——买什么</h2>
+<div class="section">
+<h3>选股规则的目标：从4000只缩小到10只</h3>
+<p>A股有5000+只股票，你的自选池里只需要10-30只。<strong>选择越少，决策质量越高</strong>。选股规则就是一个漏斗，把4000只过滤到你真正会操作的范围。</p>
+
+<h3>基础排除层：先排雷</h3>
+<table class="data-table">
+<thead><tr><th>排除条件</th><th>标准</th><th>原因</th></tr></thead>
+<tbody>
+<tr><td class="red">ST/*ST</td><td>股票名称含ST</td><td>退市风险</td></tr>
+<tr><td class="red">低流动性</td><td>日均成交额<3000万</td><td>滑点大、难进出</td></tr>
+<tr><td class="red">暴雷风险</td><td>审计非标/立案调查/重大违规</td><td>基本面恶化</td></tr>
+<tr><td class="red">高管大额减持</td><td>近3个月减持>1%股本</td><td>内部人看空</td></tr>
+<tr><td class="red">次新股</td><td>上市不足6个月</td><td>缺乏历史数据，无法回测</td></tr>
+</tbody>
+</table>
+
+<h3>风格筛选层：按你的系统类型筛选</h3>
+<div class="callout callout-tip">
+<div class="callout-title">💡 三种主流选股风格</div>
+<p><strong>① 主线赛道法</strong>：跟踪当前市场主线（AI/新能源/消费等），从主线板块中选龙头或弹性标的。</p>
+<p><strong>② 基本面筛选法</strong>：ROE>15%、毛利率>30%、营收增速>15%、负债率<60%等硬指标，从财务数据中筛选。【调用财报手册筛选方法】</p>
+<p><strong>③ 技术面筛选法</strong>：趋势向上+量价配合+形态完成，从技术形态中筛选。【调用裸K手册势位形分析】</p>
+</div>
+
+<h3>观察池管理：每日盘后筛选→加入自选→仅在自选内操作</h3>
+<p>观察池（Watchlist）是你的"候选池"——每天盘后用选股规则扫描一遍，把符合条件的加入自选。<strong>只在自选池里操作，杜绝盘中临时选股</strong>。</p>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ "不在自选池里就不买"</div>
+<p>盘中看到一只股票突然拉升，你的第一反应可能是"追！"。但如果你之前没有研究过它，你不知道它的基本面、不知道合理的入场位、不知道止损该设在哪——<strong>这笔交易从一开始就是赌博</strong>。</p>
+<p>铁律：<strong>不在自选池里就不买</strong>。错过的机会永远比做错的交易便宜。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：写你的选股规则清单</div>
+<ul>
+<li>基础排除：ST排除□ | 日成交额>____万□ | 上市>6月□</li>
+<li>风格筛选：ROE>____%□ | 营收增速>____%□ | 趋势向上□</li>
+<li>观察池容量上限：____只 | 每日盘后筛选时间：收盘后____分钟</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第4章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我想买入一只不在自选池里的股票时，</span>我将<strong>放弃这笔交易</strong>——不在自选池里就不买</div>
+<div class="rule-item"><span class="rule-trigger">当我每日盘后筛选时，</span>我将<strong>按选股规则清单逐项核对</strong>，不达标的绝不加入自选</div>
+<div class="rule-item"><span class="rule-trigger">当自选池超过30只时，</span>我将<strong>按信号强度排序，剔除最弱的10只</strong>，保持池子精简</div>
+</div>
+</div>
+
+<!-- ===== 第5章 ===== -->
+<div class="chapter" id="ch5">
+<h2 class="chapter-title"><span class="ch-num">第5章</span>组件三：入场规则——什么时候买</h2>
+<div class="section">
+<h3>入场规则的铁律：多条件同时满足才开仓</h3>
+<p>好的入场规则是<strong>多条件AND逻辑</strong>——趋势AND形态AND量能AND大盘环境，少一条就放弃。差的入场规则是OR逻辑——"均线金叉OR放量OR感觉不错"就买，条件越多越容易买到假信号。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 入场铁律</div>
+<p><strong>少一条就放弃</strong>——宁可错过100个机会，也不做1个条件不全的交易。错过不亏钱，做错才亏钱。</p>
+</div>
+
+<h3>两种主流入场模式</h3>
+<h3>趋势回踩低吸</h3>
+<table class="data-table">
+<thead><tr><th>条件</th><th>具体标准</th><th>目的</th></tr></thead>
+<tbody>
+<tr><td class="highlight">趋势向上</td><td>20日均线向上，价格在20日线上方</td><td>确保大方向对</td></tr>
+<tr><td class="highlight">回踩支撑</td><td>价格回踩20日均线或前期筹码密集区</td><td>在支撑位附近买</td></tr>
+<tr><td class="highlight">缩量回调</td><td>回调期间成交量萎缩至均量50-70%</td><td>卖压减弱</td></tr>
+<tr><td class="highlight">放量收阳</td><td>支撑位附近出现放量阳线确认</td><td>买方重新进场</td></tr>
+<tr><td class="highlight">大盘环境</td><td>大盘非单边暴跌</td><td>环境允许</td></tr>
+</tbody>
+</table>
+
+<h3>突破入场</h3>
+<table class="data-table">
+<thead><tr><th>条件</th><th>具体标准</th><th>目的</th></tr></thead>
+<tbody>
+<tr><td class="highlight">箱体形成</td><td>价格横盘整理>15天，有明确的支撑阻力</td><td>蓄势充分</td></tr>
+<tr><td class="highlight">放量突破</td><td>突破日成交量>均量1.5倍</td><td>真突破而非假突破</td></tr>
+<tr><td class="highlight">收盘确认</td><td>突破日收盘价在箱体上沿之上</td><td>日内假突破过滤</td></tr>
+<tr><td class="highlight">板块配合</td><td>同板块至少2只个股同步走强</td><td>非孤狼行情</td></tr>
+<tr><td class="highlight">大盘环境</td><td>大盘多头或震荡偏多</td><td>环境允许</td></tr>
+</tbody>
+</table>
+
+<h3>大盘环境过滤</h3>
+<table class="data-table">
+<thead><tr><th>大盘状态</th><th>判断标准</th><th>允许操作</th><th>仓位上限</th></tr></thead>
+<tbody>
+<tr><td class="green">多头</td><td>沪深300在20日均线上方，趋势向上</td><td>✅ 全部规则可用</td><td>80%</td></tr>
+<tr><td class="yellow">震荡</td><td>沪深300在20日均线附近反复</td><td>⚠️ 仅低吸，不做突破</td><td>50%</td></tr>
+<tr><td class="red">空头</td><td>沪深300在20日均线下方，趋势向下</td><td>❌ 不开新仓</td><td>20%（仅持有）</td></tr>
+</tbody>
+</table>
+
+<h3>入场前的"四问检查"</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 入场四问</div>
+<p><strong>① 这只股票在我的自选池里吗？</strong>→ 不在就不买</p>
+<p><strong>② 入场条件全部满足了吗？</strong>→ 少一条就放弃</p>
+<p><strong>③ 大盘环境允许吗？</strong>→ 空头市不开新仓</p>
+<p><strong>④ 盈亏比≥2:1吗？</strong>→ 算一下（目标价-入场价）/（入场价-止损价），<2就放弃</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：写你的入场规则清单</div>
+<ul>
+<li>我的入场模式：□趋势回踩 □突破入场 □其他____</li>
+<li>条件1：____ 条件2：____ 条件3：____ 条件4：____</li>
+<li>大盘过滤标准：____ 盈亏比最低要求：____:1</li>
+<li>入场四问清单放在下单前的必读位置</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第5章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当入场条件少一条时，</span>我将<strong>放弃这笔交易</strong>——宁可错过，不可做错</div>
+<div class="rule-item"><span class="rule-trigger">当大盘处于空头状态时，</span>我将<strong>不开任何新仓</strong>，只管理现有持仓</div>
+<div class="rule-item"><span class="rule-trigger">当盈亏比<2:1时，</span>我将<strong>放弃入场</strong>——哪怕其他条件全部满足</div>
+<div class="rule-item"><span class="rule-trigger">当我想在盘中临时选股时，</span>我将<strong>关闭交易软件</strong>——盘中选股=赌博</div>
+</div>
+</div>
+
+<!-- ===== 第6章 ===== -->
+<div class="chapter" id="ch6">
+<h2 class="chapter-title"><span class="ch-num">第6章</span>组件四：仓位规则——买多少</h2>
+<div class="section">
+<h3>仓位管理的系统化设计：从"感觉"到"算法"</h3>
+<p>散户最常见的仓位决策："这只看起来不错，买个三分之一仓吧"——这是<strong>感觉仓位</strong>，没有数学依据。系统化仓位是<strong>算法仓位</strong>：用公式反推，每笔交易的风险精确可控。</p>
+
+<h3>单笔风险上限法（固定分数法）</h3>
+<p>核心公式：<strong>买入股数 = 单笔风险上限金额 ÷ 每股风险</strong></p>
+<div class="calc-widget">
+<h4>🧮 ATR仓位计算器</h4>
+<div class="calc-row"><label>总资金（元）</label><input type="number" id="pos-capital" value="100000" step="10000"></div>
+<div class="calc-row"><label>单笔风险%</label><input type="number" id="pos-risk" value="1.5" step="0.5" min="0.5" max="5"></div>
+<div class="calc-row"><label>入场价（元）</label><input type="number" id="pos-entry" value="30" step="0.5"></div>
+<div class="calc-row"><label>止损价（元）</label><input type="number" id="pos-stop" value="28" step="0.5"></div>
+<div class="calc-row" style="margin-top:12px;"><button onclick="calcPosition()" style="background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:6px;cursor:pointer;font-size:14px;font-family:var(--font);">计算仓位</button></div>
+<div class="calc-result" id="pos-result" style="display:none;">
+<div class="big" id="pos-shares">--</div>
+<div class="label" id="pos-label"></div>
+</div>
+</div>
+<div class="callout callout-tip">
+<div class="callout-title">💡 示例</div>
+<p>总资金10万，单笔风险1.5%=1500元。入场价30元，止损价28元，每股风险=2元。买入股数=1500÷2=750股，仓位金额=750×30=22500元（占总资金22.5%）。</p>
+</div>
+
+<h3>波动率仓位法（ATR法）</h3>
+<p>ATR（Average True Range）衡量股票的日常波动幅度。<strong>波动大的少买，波动小的多买</strong>，使每笔交易面对的波动风险一致。</p>
+<p>止损位 = 入场价 - N × ATR（N通常取2-3）。ATR大的股票止损距离远，仓位自然更小。</p>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 何时选波动率法 vs 固定分数法？</div>
+<p><strong>固定分数法</strong>：你已经确定了止损价（技术位止损），用每股风险反推仓位。</p>
+<p><strong>波动率法</strong>：你没有明确的技术位止损，用ATR倍数设置止损，再反推仓位。</p>
+<p>新手建议：<strong>先用固定分数法</strong>，因为止损价更直观。进阶后再用ATR法。</p>
+</div>
+
+<h3>仓位上限矩阵</h3>
+<table class="data-table">
+<thead><tr><th>大盘状态\信号强度</th><th>强信号</th><th>中等信号</th><th>弱信号</th></tr></thead>
+<tbody>
+<tr><td class="green">多头市</td><td class="green">总仓位80%</td><td class="green">总仓位60%</td><td class="yellow">总仓位40%</td></tr>
+<tr><td class="yellow">震荡市</td><td class="green">总仓位50%</td><td class="yellow">总仓位35%</td><td class="yellow">总仓位20%</td></tr>
+<tr><td class="red">空头市</td><td class="red">不开新仓</td><td class="red">不开新仓</td><td class="red">不开新仓</td></tr>
+</tbody>
+</table>
+
+<h3>分批建仓与金字塔加仓</h3>
+<p><strong>分批建仓</strong>：底仓50% → 确认后加仓30% → 趋势延续再加20%。每次加仓都有独立的止损位。</p>
+<p><strong>金字塔加仓</strong>：盈利后才能加仓，每次加仓量递减（如底仓1000股→加仓600股→再加仓300股）。加仓后的止损统一上移至保本位。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 绝对禁止</div>
+<p><strong>亏损后加仓摊平 = 最危险的仓位错误</strong>。这是马丁格尔策略——亏损后加倍下注，期望一次翻盘。短期可能"解套"，长期必然爆仓。新手永远用反马丁格尔（盈利后加仓）。</p>
+</div>
+
+<h3>三条不可违反的资金红线</h3>
+<div class="callout callout-danger">
+<div class="callout-title">🚫 资金红线</div>
+<p><strong>① 永远不借钱炒股</strong>（融资融券不算，但有上限）</p>
+<p><strong>② 永远不用生活必需资金炒股</strong>（房租/房贷/孩子学费的钱不入市）</p>
+<p><strong>③ 亏损超过月收入的10%必须暂停</strong>（暂停期至少1周，期间只复盘不开仓）</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：写你的仓位规则清单</div>
+<ul>
+<li>单笔风险上限：总资金的____% | 单票上限：总资金的____%</li>
+<li>总仓位上限：多头____% / 震荡____% / 空头____%</li>
+<li>加仓规则：□不允许加仓 □盈利后金字塔加仓</li>
+<li>资金红线：□不借钱 □不用生活资金 □月亏损>10%暂停</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第6章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我计算仓位时，</span>我将<strong>用单笔风险上限法反推买入量</strong>——先算风险，再算仓位</div>
+<div class="rule-item"><span class="rule-trigger">当我持仓亏损想加仓摊平时，</span>我将<strong>执行止损而非加仓</strong>——亏损加仓=马丁格尔=长期必爆</div>
+<div class="rule-item"><span class="rule-trigger">当总仓位超过矩阵上限时，</span>我将<strong>不开新仓</strong>，直到仓位自然降低</div>
+<div class="rule-item"><span class="rule-trigger">当月亏损超过月收入10%时，</span>我将<strong>暂停交易至少1周</strong>——这是红线，不可违反</div>
+</div>
+</div>
+
+<!-- ===== 第7章 ===== -->
+<div class="chapter" id="ch7">
+<h2 class="chapter-title"><span class="ch-num">第7章</span>组件五：出场规则——什么时候卖</h2>
+<div class="section">
+<h3>出场规则必须在买入前写好</h3>
+<p>这是系统化交易最重要的纪律之一：<strong>在你还没买入的时候，你的大脑最冷静</strong>。买入后，持仓盈亏会扭曲你的判断——赚了舍不得卖，亏了不愿止损。所以出场规则必须在买入前就写好，写在交易计划单上。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 铁律</div>
+<p><strong>没有出场规则就不开仓</strong>。买入前写好：止损价、止盈目标、移动止盈规则。写在纸上，下单时照做。</p>
+</div>
+
+<h3>止损设计</h3>
+<table class="data-table">
+<thead><tr><th>止损类型</th><th>设置方法</th><th>适用场景</th><th>优缺点</th></tr></thead>
+<tbody>
+<tr><td class="highlight">固定比例</td><td>入场价×(1-止损%)</td><td>新手首选</td><td>简单但忽略个股波动差异</td></tr>
+<tr><td class="highlight">技术位</td><td>支撑位/均线/供需区域下方</td><td>有技术分析基础</td><td>最合理，但需技术判断</td></tr>
+<tr><td class="highlight">ATR止损</td><td>入场价-N×ATR</td><td>波动率差异大的个股</td><td>自适应波动率，最专业</td></tr>
+<tr><td class="highlight">时间止损</td><td>持有N天未达预期→退出</td><td>资金时间成本高的交易者</td><td>防止死扛不动</td></tr>
+<tr><td class="highlight">基本面止损</td><td>买入逻辑被证伪（如业绩暴雷）</td><td>基本面驱动型交易</td><td>最根本但反应慢</td></tr>
+</tbody>
+</table>
+
+<h3>止盈设计</h3>
+<table class="data-table">
+<thead><tr><th>止盈类型</th><th>方法</th><th>适用场景</th></tr></thead>
+<tbody>
+<tr><td class="highlight">分批止盈</td><td>目标1减仓50%→目标2减仓30%→留20%移动止盈</td><td>中线波段</td></tr>
+<tr><td class="highlight">移动止盈</td><td>盈利后止损线上移：每涨5%，止损上移3%</td><td>趋势跟踪</td></tr>
+<tr><td class="highlight">信号止盈</td><td>出现反向信号（如放量滞涨/均线死叉）时退出</td><td>技术面驱动</td></tr>
+</tbody>
+</table>
+
+<h3>盈亏比设计：为什么R:R≥2:1是入场前提</h3>
+<p>R = 初始风险（入场价-止损价）。如果目标盈利≥2R，盈亏比就是2:1。这意味着<strong>即使胜率只有40%，你也能盈利</strong>：</p>
+<p>期望值 = 40%×2R - 60%×1R = 0.8R - 0.6R = <strong class="green">0.2R（正期望值）</strong></p>
+<p>如果盈亏比只有1:1，胜率40%→期望值 = 40%×1R - 60%×1R = <strong class="red">-0.2R（负期望值）</strong>，长期必亏。</p>
+
+<h3>止损被触发后的处理</h3>
+<p>止损被触发后，最危险的冲动是<strong>报复性交易</strong>——"我要赚回来"。这是亏损加速器。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 报复性交易：亏损后最危险的冲动</div>
+<p>心理机制：亏损→杏仁核激活→"我要赢回来"→加大仓位/频繁交易→亏损加速→更大的亏损→更强烈的报复→恶性循环。</p>
+<p><strong>系统级阻断方案</strong>：连续亏损3笔后，系统自动暂停1-3天——把规则写进系统，不靠意志力。详见风控心理手册。</p>
+</div>
+
+<h3>止损后区分假突破 vs 趋势反转</h3>
+<ul>
+<li><strong>假突破止损</strong>：价格短暂跌破支撑后快速回升，你的止损被"猎杀"了。这种情况<strong>可以再入场</strong>——趋势逻辑没变，只是止损设在了太拥挤的位置。下次可以把止损再放宽一些。</li>
+<li><strong>趋势反转止损</strong>：价格跌破支撑后持续下行，趋势逻辑已被证伪。这种情况<strong>不再入场</strong>——方向已变，等新的趋势信号。</li>
+</ul>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：写你的出场规则清单</div>
+<ul>
+<li>止损类型：□固定____% □技术位____ □ATR____倍</li>
+<li>止盈类型：□分批（目标1____/目标2____） □移动止盈（每涨____%上移____%） □信号止盈</li>
+<li>盈亏比最低要求：____:1 | 报复性交易阻断：连续亏损____笔后暂停____天</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第7章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我准备买入时，</span>我将<strong>先写好止损价、止盈目标、移动止盈规则</strong>——没有出场规则就不开仓</div>
+<div class="rule-item"><span class="rule-trigger">当止损被触发时，</span>我将<strong>立即执行，不犹豫</strong>——止损是保险，不是惩罚</div>
+<div class="rule-item"><span class="rule-trigger">当盈亏比<2:1时，</span>我将<strong>放弃入场</strong>——低盈亏比交易长期必亏</div>
+<div class="rule-item"><span class="rule-trigger">当连续亏损3笔后，</span>我将<strong>暂停交易1-3天</strong>，复盘最近5笔的规则执行率——这是报复性交易的阻断阀</div>
+<div class="rule-item"><span class="rule-trigger">当止损后我想立刻再入场时，</span>我将<strong>先判断是假突破还是趋势反转</strong>——假突破可再入，趋势反转则放弃</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第三篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part3">
+<div class="part-tag">第三篇</div>
+<h2>系统组装——从散件到闭环</h2>
+<p class="part-goal">核心目标：把第二篇设计的六大组件组装成一套完整可运行的交易系统，提供标准模板和完整案例。</p>
+</div>
+
+<!-- ===== 第8章 ===== -->
+<div class="chapter" id="ch8">
+<h2 class="chapter-title"><span class="ch-num">第8章</span>组装完整交易系统——标准模板与全链路案例</h2>
+<div class="section">
+<h3>六大组件如何串联</h3>
+<p>第二篇我们逐个设计了六个组件，现在要把它们串联成一条完整的决策链：</p>
+<p style="text-align:center;padding:16px 0;font-size:15px;font-weight:600;color:var(--accent-light);">定位（什么风格）→ 选股（买什么）→ 入场（何时买）→ 仓位（买多少）→ 出场（何时卖）→ 复盘（好不好）</p>
+<p>每个环节的输出是下一个环节的输入——定位决定选股范围，选股决定入场候选，入场信号触发仓位计算，仓位计算依赖出场规则（止损位），出场结果进入复盘。</p>
+
+<h3>标准交易计划模板（一页纸版本）</h3>
+<table class="data-table">
+<thead><tr><th>字段</th><th>填写内容</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易标的</td><td>股票代码/名称</td></tr>
+<tr><td class="highlight">交易方向</td><td>做多/做空</td></tr>
+<tr><td class="highlight">入场条件</td><td>①____ ②____ ③____ ④____（全满足才入场）</td></tr>
+<tr><td class="highlight">入场价</td><td>____元</td></tr>
+<tr><td class="highlight">止损价</td><td>____元（理由：____）</td></tr>
+<tr><td class="highlight">目标价1</td><td>____元（盈亏比____:1）→ 减仓50%</td></tr>
+<tr><td class="highlight">目标价2</td><td>____元（盈亏比____:1）→ 减仓30%</td></tr>
+<tr><td class="highlight">移动止盈规则</td><td>每涨____%止损上移____%</td></tr>
+<tr><td class="highlight">仓位</td><td>____股（____元，占总资金____%）</td></tr>
+<tr><td class="highlight">大盘环境</td><td>多头/震荡/空头 → 允许/不允许</td></tr>
+<tr><td class="highlight">时间止损</td><td>持有____天未达目标1→评估</td></tr>
+</tbody>
+</table>
+
+<h3>全链路交易计划模板</h3>
+<p>这是"一页纸版本"的升级版——每一步调用对应手册的方法论，形成端到端的完整决策链：</p>
+<table class="data-table">
+<thead><tr><th>步骤</th><th>调用来源</th><th>输出</th></tr></thead>
+<tbody>
+<tr><td class="highlight">①宏观环境判断</td><td>宏观手册·五步流程</td><td>允不允许做权益、仓位上限</td></tr>
+<tr><td class="highlight">②指数结构判断</td><td>裸K手册·指数PA</td><td>大盘多头/震荡/空头</td></tr>
+<tr><td class="highlight">③板块筛选</td><td>宏观手册·行业轮动</td><td>当前周期利好板块</td></tr>
+<tr><td class="highlight">④基本面确认</td><td>财报手册·排雷清单</td><td>标的财务是否健康、估值是否合理</td></tr>
+<tr><td class="highlight">⑤PA入场信号</td><td>裸K手册·势位形分析</td><td>具体入场价位和触发条件</td></tr>
+<tr><td class="highlight">⑥仓位计算</td><td>本手册·单笔风险法</td><td>买入股数和仓位占比</td></tr>
+<tr><td class="highlight">⑦出场规则</td><td>本手册·出场规则</td><td>止损、止盈、移动止盈</td></tr>
+<tr><td class="highlight">⑧复盘准备</td><td>本手册·交易日志</td><td>15字段预填、盘前心理预演</td></tr>
+</tbody>
+</table>
+
+<h3>全链路交易计划填写示范——"瑞景食品"案例</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 本手册的阵眼案例</div>
+<p>"瑞景食品"全链路案例是整套书的<strong>超级符号</strong>——读者跟着走一遍，打通任督二脉。每一步都有明确的数据来源、判断逻辑和跨手册调用依据。</p>
+</div>
+
+<p><strong>背景设定</strong>：2025年Q3，某消费白马股（虚构名称"瑞景食品"）出现潜在交易机会。总资金20万。</p>
+
+<p><strong>第一步·宏观环境判断</strong>【调用宏观手册第21章五步流程】</p>
+<ul>
+<li>PMI 50.3（扩张区间）| CPI 2.1%（温和通胀）| M2同比+8.5%（货币偏宽松）| 社融增速回升</li>
+<li>美林时钟定位：经济温和复苏+通胀温和→偏向"复苏期"，股票>债券</li>
+<li>结论：<strong class="green">宏观环境支持权益资产，仓位可用至中等偏上</strong></li>
+</ul>
+
+<p><strong>第二步·指数结构判断</strong>【调用裸K手册·指数PA】</p>
+<ul>
+<li>沪深300日线：处于上升趋势，当前回踩至20日均线上方</li>
+<li>大盘状态：<strong class="green">多头→仓位上限可用80%</strong></li>
+</ul>
+
+<p><strong>第三步·板块筛选</strong>【调用宏观手册第18章行业轮动】</p>
+<ul>
+<li>复苏期利好消费板块，食品饮料历史在复苏期表现优于大盘</li>
+<li>板块资金流向：近5日消费板块净流入为正</li>
+<li>结论：<strong class="green">消费板块符合宏观逻辑</strong></li>
+</ul>
+
+<p><strong>第四步·基本面确认与排雷</strong>【调用财报手册第18章排雷清单】</p>
+<ul>
+<li>瑞景食品：ROE 18%（行业均值12%）| 毛利率42% | 经营现金流/净利润=1.1 | 资产负债率35%</li>
+<li>排雷十项逐项检查：无商誉异常、无形资产占比低、存货周转正常、应收账款健康、现金流充裕</li>
+<li>管理层评估：大股东无质押、近三年承诺兑现率100%</li>
+<li>估值合理性：PE 22倍，近5年PE百分位25%（偏低区域），PEG=0.8</li>
+<li>结论：<strong class="green">基本面通过，估值偏低</strong></li>
+</ul>
+
+<p><strong>第五步·PA入场信号</strong>【调用裸K手册第7章势位形分析法】</p>
+<ul>
+<li><strong>势</strong>：日线上升趋势，周线多头排列，月线底部回升</li>
+<li><strong>位</strong>：价格回踩至前期筹码密集区上沿（供需区域），对应支撑位约28.5元</li>
+<li><strong>形</strong>：日线出现Pin Bar（长下影线拒绝下破），当日缩量回调后放量收阳</li>
+<li>入场触发：<strong class="highlight">28.8元放量突破Pin Bar高点时入场</strong></li>
+</ul>
+
+<p><strong>第六步·仓位计算</strong>【调用本手册第6章单笔风险法】</p>
+<ul>
+<li>总资金20万，单笔风险上限1.5%=3000元</li>
+<li>入场价28.8元，止损价27.5元（支撑位下方），每股风险=1.3元</li>
+<li>买入股数=3000÷1.3≈2300股，仓位金额≈66240元（占总资金33%）</li>
+<li>仓位上限检查：单票上限40%，33%<40%→通过 ✅ | 总仓位上限80%，当前总仓位45%+33%=78%<80%→通过 ✅</li>
+</ul>
+
+<p><strong>第七步·出场规则</strong>【调用本手册第7章出场规则】</p>
+<ul>
+<li>止损：27.5元（技术位止损），亏损≈3000元（=1.5%总资金）</li>
+<li>止盈目标1：33元（前期高点，盈亏比=4.2÷1.3≈3.2:1），到达后<strong>减仓50%</strong></li>
+<li>止盈目标2：36元（测量目标位），到达后<strong>减仓30%</strong>，留20%移动止盈</li>
+<li>移动止盈：目标1后止损上移至29元（保本+微利）；目标2后止损上移至32元</li>
+<li>时间止损：持有15个交易日未达目标1→评估是否继续持有</li>
+</ul>
+
+<p><strong>第八步·复盘记录预填</strong>【调用本手册第13章交易日志】</p>
+<ul>
+<li>15字段预填完毕，盘前心理预演：如果跳空低开2%→不追等回踩；如果高开3%→不追高等回踩确认</li>
+</ul>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 总结</div>
+<p>这个端到端示范展示了全链路模板的实际填写过程——每一步都有明确的数据来源、判断逻辑和调用依据。你在实际操作中<strong>复制这个流程即可</strong>。不需要每步都写这么详细，但每步的结论必须写下来。</p>
+</div>
+
+<h3>三套案例对比</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>案例A：上班族中线</th><th>案例B：全职短线</th><th>案例C：价值投资</th></tr></thead>
+<tbody>
+<tr><td class="highlight">定位</td><td>资金10万，每日30分钟</td><td>资金30万，全职盯盘</td><td>资金50万，每周1小时</td></tr>
+<tr><td class="highlight">选股</td><td>沪深300成分+消费/医药</td><td>全市场+主线赛道</td><td>ROE>15%+高分红+低PE</td></tr>
+<tr><td class="highlight">入场</td><td>均线回踩+放量确认</td><td>突破+量能+板块配合</td><td>估值百分位<30%+基本面拐点</td></tr>
+<tr><td class="highlight">仓位</td><td>单笔风险1.5%，3-5只</td><td>单笔风险1%，2-3只</td><td>单笔风险2%，5-8只</td></tr>
+<tr><td class="highlight">止损</td><td>8%或技术位</td><td>3%或ATR×2</td><td>15%或基本面证伪</td></tr>
+<tr><td class="highlight">止盈</td><td>目标1减50%，移动止盈</td><td>目标1减60%，快速止盈</td><td>估值百分位>70%减仓</td></tr>
+<tr><td class="highlight">持仓周期</td><td>2-8周</td><td>2-10天</td><td>3-12个月</td></tr>
+</tbody>
+</table>
+
+<h3>系统的"一页纸"原则</h3>
+<p>好系统应该能写在一页纸上。如果你的系统写了10页，说明要么条件太多（堆砌指标），要么规则太模糊（"适当买入"不是规则）。<strong>一页纸 = 规则精简到无冗余 = 可执行</strong>。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第8章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我准备开仓时，</span>我将<strong>填写完整的交易计划单</strong>——入场价/止损价/目标价/仓位/大盘环境全部写好才下单</div>
+<div class="rule-item"><span class="rule-trigger">当我用全链路模板时，</span>我将<strong>八个步骤逐一填写</strong>，跳步=系统断环=漏水</div>
+<div class="rule-item"><span class="rule-trigger">当我的系统规则超过一页纸时，</span>我将<strong>精简规则</strong>——条件太多=可执行性越差</div>
+</div>
+</div>
+
+<!-- ===== 第9章 ===== -->
+<div class="chapter" id="ch9">
+<h2 class="chapter-title"><span class="ch-num">第9章</span>回测——用历史数据验证系统</h2>
+<div class="section">
+<h3>为什么要回测</h3>
+<p>不验证的系统 = 未测试的飞机。你会坐一架从未试飞过的飞机吗？同样，你不应该用一套从未回测过的系统去实盘交易。<strong>回测不是万能的，但回测差 = 系统有缺陷</strong>，这是确定的。</p>
+
+<h3>手动回测方法</h3>
+<p>新手不需要昂贵的回测软件。<strong>手动翻图回测</strong>是最直观、最便宜的方法：</p>
+<ol>
+<li>选一只流动性好的股票，时间跨度2-3年</li>
+<li>打开K线图，从左到右逐日浏览</li>
+<li>每次你的入场条件满足时，记录"入场价、止损价、目标价"</li>
+<li>继续往后翻，看这笔交易最终是止损还是止盈</li>
+<li>记录50笔交易后，统计胜率、盈亏比、期望值</li>
+</ol>
+<div class="callout callout-tip">
+<div class="callout-title">💡 手动回测的核心价值</div>
+<p>手动回测不仅验证规则，更重要的是<strong>让你深入理解规则在不同行情下的表现</strong>。你会发现哪些条件经常产生假信号、哪些过滤条件最有效——这是自动回测软件给不了的直觉。</p>
+</div>
+
+<h3>回测的核心指标</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>计算方法</th><th>健康值</th><th>警告值</th></tr></thead>
+<tbody>
+<tr><td class="highlight">胜率</td><td>盈利笔数/总笔数</td><td>>35%</td><td><25%（除非盈亏比很高）</td></tr>
+<tr><td class="highlight">盈亏比</td><td>平均盈利/平均亏损</td><td>>2.0</td><td><1.5</td></tr>
+<tr><td class="highlight">利润因子</td><td>总盈利/总亏损</td><td>>1.5</td><td><1.2</td></tr>
+<tr><td class="highlight">最大回撤</td><td>峰值到谷底最大跌幅</td><td><20%</td><td>>30%</td></tr>
+<tr><td class="highlight">期望值</td><td>胜率×均盈-败率×均亏</td><td>>0</td><td>≤0</td></tr>
+</tbody>
+</table>
+
+<h3>回测的陷阱：曲线拟合（过拟合）</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 曲线拟合 = 回测越完美越可疑</div>
+<p>如果你调整参数让回测结果"完美"——胜率80%、利润因子5.0、最大回撤5%——这几乎一定是<strong>过拟合</strong>。你把历史数据的噪音当成了信号，实盘必然失效。</p>
+<p><strong>检验方法</strong>：用回测未使用的数据做<strong>样本外测试</strong>。如果样本外表现大幅下降，说明过拟合了。</p>
+</div>
+
+<h3>回测结论的正确解读</h3>
+<ul>
+<li><strong class="green">回测好 ≠ 实盘好</strong>：回测没有滑点、没有情绪、没有流动性问题</li>
+<li><strong class="red">回测差 = 系统有缺陷</strong>：如果历史数据上都不赚钱，实盘更不会</li>
+<li><strong>合理预期</strong>：实盘表现通常是回测的60-80%。如果回测期望值是0.3R，实盘可能是0.18-0.24R</li>
+</ul>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：手动回测20笔</div>
+<ul>
+<li>选一只你熟悉的股票，回测区间2年以上</li>
+<li>用你的入场规则逐日翻图，记录20笔模拟交易</li>
+<li>统计：胜率____% | 平均盈利____% | 平均亏损____% | 盈亏比____:1 | 期望值____</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第9章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的系统未经回测时，</span>我将<strong>不进入实盘</strong>——先手动回测至少50笔</div>
+<div class="rule-item"><span class="rule-trigger">当回测结果"过于完美"时（胜率>70%且利润因子>3），</span>我将<strong>怀疑过拟合</strong>，用样本外数据做验证</div>
+<div class="rule-item"><span class="rule-trigger">当回测期望值为负时，</span>我将<strong>修改系统规则后重新回测</strong>——负期望值系统坚决不进实盘</div>
+</div>
+</div>
+
+<!-- ===== 第10章 ===== -->
+<div class="chapter" id="ch10">
+<h2 class="chapter-title"><span class="ch-num">第10章</span>系统评估指标——用数字判断系统好坏</h2>
+<div class="section">
+<h3>期望值计算器</h3>
+<div class="calc-widget">
+<h4>🧮 期望值计算器</h4>
+<div class="calc-row"><label>胜率%</label><input type="number" id="exp-win" value="40" step="5" min="10" max="90"></div>
+<div class="calc-row"><label>平均盈利R</label><input type="number" id="exp-avgwin" value="2.5" step="0.5" min="0.5"></div>
+<div class="calc-row"><label>平均亏损R</label><input type="number" id="exp-avgloss" value="1" step="0.5" min="0.5"></div>
+<div class="calc-row" style="margin-top:12px;"><button onclick="calcExpectancy()" style="background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:6px;cursor:pointer;font-size:14px;font-family:var(--font);">计算期望值</button></div>
+<div class="calc-result" id="exp-result" style="display:none;">
+<div class="big" id="exp-value">--</div>
+<div class="label" id="exp-label"></div>
+</div>
+</div>
+
+<h3>胜率：高胜率≠好系统</h3>
+<p>新手最关心胜率，但胜率只是期望值方程的一半。<strong>40%胜率+2.5:1盈亏比</strong> vs <strong>60%胜率+0.8:1盈亏比</strong>，前者期望值更高。</p>
+
+<h3>R倍数：以风险单位衡量盈亏</h3>
+<p>R = 你的初始风险（入场价-止损价）。盈利2R意味着你赚了2倍初始风险的钱。R倍数的好处是<strong>标准化</strong>——不同股票、不同仓位大小的盈亏可以用同一个标尺衡量。</p>
+<table class="data-table">
+<thead><tr><th>R倍数</th><th>含义</th><th>评价</th></tr></thead>
+<tbody>
+<tr><td class="green">+3R及以上</td><td>赚了3倍以上初始风险</td><td>优秀交易</td></tr>
+<tr><td class="green">+2R</td><td>赚了2倍初始风险</td><td>好交易（盈亏比2:1）</td></tr>
+<tr><td class="yellow">+1R</td><td>赚了1倍初始风险</td><td>刚好达标</td></tr>
+<tr><td>-1R</td><td>亏了初始风险</td><td>止损执行正常</td></tr>
+<tr><td class="red">-2R及以上</td><td>亏了2倍以上初始风险</td><td>止损未执行！必须复盘</td></tr>
+</tbody>
+</table>
+
+<h3>交易成本调整后的期望值</h3>
+<p>名义期望值 - 每笔交易成本 = 实际期望值。</p>
+<p>示例：每笔交易成本约0.3%（佣金+印花税+滑点）。如果你的名义期望值是0.2R（R=3%），即0.6%，扣除0.3%成本后实际期望值只剩0.3%。<strong>如果名义期望值本身就不高，交易成本可能把正期望值变成负的</strong>。</p>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 交易成本敏感性</div>
+<p>高频交易者（每月>20笔）对交易成本极敏感。中线交易者（每月2-4笔）影响较小。<strong>在系统设计阶段就把交易成本算进去</strong>——如果扣除成本后期望值为负，要么提高盈亏比，要么降低频率。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：计算你系统的实际期望值</div>
+<ul>
+<li>从你的回测/实盘记录中统计：胜率____% | 平均盈利____% | 平均亏损____%</li>
+<li>计算名义期望值：____ | 估算每笔交易成本：____%</li>
+<li>实际期望值 = 名义期望值 - 交易成本 = ____ | 正还是负？</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第10章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我评估系统时，</span>我将<strong>同时看胜率和盈亏比</strong>——单独看胜率没有意义</div>
+<div class="rule-item"><span class="rule-trigger">当实际期望值（扣除成本后）为负时，</span>我将<strong>暂停系统</strong>，提高盈亏比或降低频率后重新评估</div>
+<div class="rule-item"><span class="rule-trigger">当我出现-2R以上的亏损时，</span>我将<strong>立即复盘止损执行情况</strong>——-2R说明止损没执行</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第四篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part4">
+<div class="part-tag">第四篇</div>
+<h2>从模拟到实盘——系统落地的成长路径</h2>
+<p class="part-goal">核心目标：给出从"纸面系统"到"实盘运行"的完整成长路径，每个阶段有明确的里程碑和任务。</p>
+</div>
+
+<!-- ===== 第11章 ===== -->
+<div class="chapter" id="ch11">
+<h2 class="chapter-title"><span class="ch-num">第11章</span>模拟盘练习——系统验证的第一步</h2>
+<div class="section">
+<h3>模拟盘的目标：验证系统可执行性</h3>
+<p>模拟盘不是用来"赚模拟钱"的——模拟钱毫无意义。模拟盘的真正目标是<strong>验证你的系统是否可执行</strong>：</p>
+<ul>
+<li>规则是否清晰到无歧义？（如果模拟盘里你都在犹豫，实盘更会犹豫）</li>
+<li>条件是否太多导致信号太少？（一个月连一个信号都没有的系统不实用）</li>
+<li>止损/止盈规则是否可操作？（到了止损位你真的会"卖"吗？）</li>
+</ul>
+
+<h3>模拟盘的正确用法</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 模拟盘铁律</div>
+<p><strong>完全按真实系统操作</strong>——用真实资金量、真实仓位计算、真实止损止盈规则。唯一的区别是钱是虚拟的。如果模拟盘里你"随便玩"，那模拟盘的验证价值为零。</p>
+</div>
+
+<h3>模拟盘的局限性</h3>
+<p>模拟盘最大的缺陷：<strong>没有真实亏损的恐惧</strong>。模拟止损就是点一下按钮，没有"真金白银没了"的心理冲击。所以模拟盘能验证系统的"逻辑可行性"，但无法验证"心理可承受性"——这就是为什么必须经过实盘。</p>
+
+<h3>模拟期（0-50笔）的关键任务</h3>
+<table class="data-table">
+<thead><tr><th>任务</th><th>具体要求</th></tr></thead>
+<tbody>
+<tr><td class="highlight">发现规则漏洞</td><td>记录每次"规则不够清晰"的情况，如"缩量"到底多小算缩量？</td></tr>
+<tr><td class="highlight">修正模糊条件</td><td>把所有模糊描述改为可量化的标准</td></tr>
+<tr><td class="highlight">统计胜率/盈亏比</td><td>50笔后统计，判断期望值是否为正</td></tr>
+<tr><td class="highlight">执行率记录</td><td>每笔交易记录是否100%按规则执行</td></tr>
+</tbody>
+</table>
+
+<h3>模拟盘毕业标准</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 模拟盘毕业 = 两个条件同时满足</div>
+<p><strong>① 连续50笔执行率>90%</strong>（5笔以内偏离规则）</p>
+<p><strong>② 期望值为正</strong>（胜率×平均盈利 - 败率×平均亏损 > 0）</p>
+<p>两个条件缺一不可：执行率高但期望值为负=系统有缺陷；期望值为正但执行率低=心理问题未解决。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：开始你的第一笔模拟交易</div>
+<ul>
+<li>用你的系统规则，在模拟账户中执行一笔完整交易</li>
+<li>填写交易计划单（入场价/止损/目标/仓位全部写好）</li>
+<li>记录：是否100%按规则执行？如果不是，偏差在哪？</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第11章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我做模拟盘时，</span>我将<strong>完全按真实系统操作</strong>——真实仓位、真实止损、真实记录</div>
+<div class="rule-item"><span class="rule-trigger">当模拟盘50笔后执行率<90%时，</span>我将<strong>不进入实盘</strong>——先解决规则模糊问题</div>
+<div class="rule-item"><span class="rule-trigger">当模拟盘期望值为负时，</span>我将<strong>修改系统规则后重新模拟</strong>——负期望值系统绝不进实盘</div>
+</div>
+</div>
+
+<!-- ===== 第12章 ===== -->
+<div class="chapter" id="ch12">
+<h2 class="chapter-title"><span class="ch-num">第12章</span>小仓位实盘——心理验证的关键一步</h2>
+<div class="section">
+<h3>为什么必须经过实盘</h3>
+<p>模拟盘能验证逻辑，但<strong>只有真金白银的亏损才能验证你的心理承受力</strong>。很多在模拟盘中执行完美的规则，到了实盘就变形——止损下不去手、盈利急着跑、加仓摊平……这些都是心理问题，不是系统问题。</p>
+
+<h3>小仓位原则</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 "亏了不心疼"原则</div>
+<p>小仓位的标准：<strong>即使全部亏损，你的生活质量不受影响</strong>。建议用总资金的5-10%做小仓位期。10万资金用5000-10000元做实盘验证，每笔亏损不超过100-200元。</p>
+</div>
+
+<h3>常见的"实盘冲击"</h3>
+<table class="data-table">
+<thead><tr><th>冲击</th><th>表现</th><th>应对</th></tr></thead>
+<tbody>
+<tr><td class="highlight">手抖不敢买</td><td>信号出现了但犹豫不敢下单</td><td>回到规则清单——条件全满足就买，犹豫=不信任系统</td></tr>
+<tr><td class="highlight">止损下不去手</td><td>到了止损价不想卖，想"再等等"</td><td>用条件单代替手动执行——提前设好自动止损</td></tr>
+<tr><td class="highlight">盈利急着跑</td><td>小赚就跑，不敢持有到目标</td><td>看盈亏比——没到目标1不减仓，相信规则</td></tr>
+<tr><td class="highlight">亏损后报复性交易</td><td>亏了一笔就想立刻赚回来</td><td>连续亏损3笔→系统暂停1-3天</td></tr>
+</tbody>
+</table>
+
+<h3>小仓位期（51-100笔）的毕业标准</h3>
+<ul>
+<li><strong>执行率>80%</strong>：100笔中不超过20笔偏离规则</li>
+<li><strong>情绪干扰记录减少</strong>：后半段的情绪干扰记录比前半段少50%以上</li>
+<li><strong>期望值仍然为正</strong>：扣除交易成本后实际期望值>0</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第12章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我进入小仓位实盘时，</span>我将<strong>用总资金的5-10%</strong>——亏了不心疼但又能感受到痛</div>
+<div class="rule-item"><span class="rule-trigger">当我想手动执行止损时犹豫了，</span>我将<strong>使用条件单自动执行</strong>——把止损交给系统，不靠意志力</div>
+<div class="rule-item"><span class="rule-trigger">当小仓位100笔后执行率<80%时，</span>我将<strong>退回模拟盘</strong>——心理准备不足，不可加大仓位</div>
+</div>
+</div>
+
+<!-- ===== 第13章 ===== -->
+<div class="chapter" id="ch13">
+<h2 class="chapter-title"><span class="ch-num">第13章</span>交易日志——系统的"黑匣子"</h2>
+<div class="section">
+<h3>为什么必须有交易日志</h3>
+<p>没有记录 = 没有复盘 = 没有迭代。<strong>交易日志是系统闭环的关键连接器</strong>——它把"执行"和"复盘"连起来。不写日志的交易者永远不知道自己为什么亏、为什么赚，也无法改进。</p>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 不写日志 = 闭着眼开车</div>
+<p>你每次交易都在积累宝贵的数据——但如果你不记录，这些数据就消失了。就像一家公司不做账，年底不知道赚了还是亏了。交易日志就是你的"财务报表"。</p>
+</div>
+
+<h3>交易日志15个必填字段</h3>
+<table class="data-table">
+<thead><tr><th>#</th><th>字段</th><th>说明</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>日期</td><td>交易日期</td><td>2025-08-15</td></tr>
+<tr><td>2</td><td>标的</td><td>股票代码+名称</td><td>600519 贵州茅台</td></tr>
+<tr><td>3</td><td>方向</td><td>做多/做空</td><td>做多</td></tr>
+<tr><td>4</td><td>入场价</td><td>实际成交价</td><td>1680元</td></tr>
+<tr><td>5</td><td>止损价</td><td>系统设定的止损位</td><td>1600元</td></tr>
+<tr><td>6</td><td>目标价</td><td>止盈目标</td><td>1850元</td></tr>
+<tr><td>7</td><td>仓位</td><td>买入股数/金额/占总资金%</td><td>200股/33.6万/16.8%</td></tr>
+<tr><td>8</td><td>入场理由</td><td>对照规则清单逐项打钩</td><td>✅趋势✅回踩✅放量✅大盘</td></tr>
+<tr><td>9</td><td>出场价</td><td>实际出场价</td><td>1830元</td></tr>
+<tr><td>10</td><td>出场理由</td><td>止损/止盈/信号/情绪</td><td>目标1止盈（减仓50%）</td></tr>
+<tr><td>11</td><td>盈亏金额</td><td>实际盈亏金额</td><td>+30000元</td></tr>
+<tr><td>12</td><td>R倍数</td><td>盈亏/初始风险</td><td>+1.9R</td></tr>
+<tr><td>13</td><td>情绪标记</td><td>冷静/犹豫/冲动/恐慌</td><td>冷静</td></tr>
+<tr><td>14</td><td>执行率</td><td>是否100%按规则执行</td><td>90%（止损晚5分钟）</td></tr>
+<tr><td>15</td><td>复盘备注</td><td>做对了/做错了/规则修正</td><td>入场时机好，但止损可放宽至1590</td></tr>
+</tbody>
+</table>
+
+<h3>R倍数记录法</h3>
+<p>R = 初始风险 = 入场价 - 止损价。如果你的入场价30元、止损价28元，R=2元。</p>
+<ul>
+<li>盈利4元 = +2R（好交易）</li>
+<li>亏损2元 = -1R（正常止损）</li>
+<li>亏损4元 = -2R（<strong class="red">止损未执行！</strong>）</li>
+</ul>
+<p>R倍数让不同股票、不同仓位大小的盈亏<strong>可以在同一标尺下比较</strong>，这是评估系统的核心工具。</p>
+
+<h3>周复盘统计</h3>
+<p>每周日花30分钟统计：</p>
+<ul>
+<li>本周交易笔数、胜率、平均盈亏R倍数、利润因子</li>
+<li>执行率：本周有几笔偏离规则？偏离原因？</li>
+<li>异常交易标记：是否有情绪化交易、报复性交易？</li>
+</ul>
+
+<h3>月度系统健康报告</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>本月值</th><th>上月值</th><th>趋势</th><th>健康区间</th></tr></thead>
+<tbody>
+<tr><td class="highlight">胜率</td><td>____%</td><td>____%</td><td>↑↓→</td><td>>35%</td></tr>
+<tr><td class="highlight">盈亏比</td><td>____:1</td><td>____:1</td><td>↑↓→</td><td>>2.0</td></tr>
+<tr><td class="highlight">利润因子</td><td>____</td><td>____</td><td>↑↓→</td><td>>1.5</td></tr>
+<tr><td class="highlight">执行率</td><td>____%</td><td>____%</td><td>↑↓→</td><td>>85%</td></tr>
+<tr><td class="highlight">最大回撤</td><td>____%</td><td>____%</td><td>↑↓→</td><td><20%</td></tr>
+<tr><td class="highlight">情绪干扰笔数</td><td>____</td><td>____</td><td>↑↓→</td><td><3笔/月</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：建立你的交易日志</div>
+<ul>
+<li>选择记录工具：□Excel □Notion □纸质笔记本</li>
+<li>建立15字段模板，每笔交易必须填完所有字段</li>
+<li>设定每周日30分钟复盘时间，雷打不动</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第13章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我完成一笔交易时，</span>我将<strong>在当天填写完整的15字段交易日志</strong>——当天记，绝不拖延</div>
+<div class="rule-item"><span class="rule-trigger">当每周日复盘时间到了时，</span>我将<strong>花30分钟做周复盘</strong>——统计胜率/盈亏比/执行率，标记异常交易</div>
+<div class="rule-item"><span class="rule-trigger">当我发现一笔-2R以上的亏损时，</span>我将<strong>立即复盘止损执行情况</strong>——-2R=止损没执行=系统断环</div>
+</div>
+</div>
+
+<!-- ===== 第14章 ===== -->
+<div class="chapter" id="ch14">
+<h2 class="chapter-title"><span class="ch-num">第14章</span>正常仓位实盘——积累经验与优化</h2>
+<div class="section">
+<h3>从小仓位到正常仓位的过渡标准</h3>
+<p>小仓位毕业≠可以立即满仓操作。过渡标准：</p>
+<ul>
+<li>小仓位期（51-100笔）执行率>80% ✅</li>
+<li>实际期望值（扣除成本后）为正 ✅</li>
+<li>情绪干扰记录后半段比前半段减少50%以上 ✅</li>
+</ul>
+<p>三个条件同时满足，可以逐步增加仓位：5%→10%→15%→按系统规则正常仓位。<strong>每增加一个台阶，至少运行20笔确认执行率不下降</strong>。</p>
+
+<h3>正常仓位期（101-300笔）的核心目标</h3>
+<p><strong>积累统计样本</strong>——100笔交易才能初步判断系统的统计特征（胜率/盈亏比的稳定性），300笔才能形成较可靠的结论。</p>
+
+<h3>参数微调：基于100+笔数据的统计调整</h3>
+<p>当你积累了100笔以上的数据，你可以开始<strong>基于统计</strong>微调参数：</p>
+<ul>
+<li>胜率低于预期→入场条件是否太松？增加过滤条件</li>
+<li>盈亏比低于预期→止盈目标是否太保守？或止损太紧被频繁震出？</li>
+<li>执行率下降→规则是否太复杂？简化</li>
+</ul>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 每次只改一个变量</div>
+<p>如果你同时改了入场条件和止损参数，你永远不知道哪个改动产生了效果。<strong>每次只改一个变量→回测→模拟→小仓位确认→推广</strong>。</p>
+</div>
+
+<h3>信心建立：从"怀疑系统"到"信任系统"</h3>
+<p>正常仓位期最大的心理挑战是<strong>信任</strong>——当系统连续亏损时，你是否还能继续执行？答案是：看数据。</p>
+<ul>
+<li>如果100笔中连续亏损5笔，但总期望值仍为正→<strong class="green">继续执行</strong></li>
+<li>如果期望值从正变负→<strong class="red">暂停，评估系统是否失效</strong></li>
+</ul>
+
+<h3>正常仓位期的最大风险：过度自信</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 过度自信 = 系统崩溃的前兆</div>
+<p>连续盈利几笔后，最容易犯的错误：<strong>放松纪律</strong>——"今天规则不满足但感觉不错，买吧"、"止损不用那么紧，再等等"。<strong>赚钱时的偏离规则比亏钱时更危险</strong>，因为它给你"我比系统更聪明"的错觉。</p>
+</div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">🛠️ 动手做：第一个100笔的统计分析</div>
+<ul>
+<li>统计100笔的：胜率、盈亏比、利润因子、期望值、最大回撤、连续亏损次数</li>
+<li>与回测数据对比：实盘vs回测偏差在20%以内→正常 | 偏差>40%→系统需要调整</li>
+<li>找出执行率最低的10笔，分析偏离原因</li>
+</ul>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第14章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我从小仓位过渡到正常仓位时，</span>我将<strong>分3-4个台阶逐步增加</strong>，每台阶运行20笔确认执行率不下降</div>
+<div class="rule-item"><span class="rule-trigger">当我想同时修改多个参数时，</span>我将<strong>只改一个变量</strong>——改→回测→模拟→确认→再改下一个</div>
+<div class="rule-item"><span class="rule-trigger">当我连续盈利后想"灵活操作"时，</span>我将<strong>回到规则清单</strong>——赚钱时的偏离规则比亏钱时更危险</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第五篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part5">
+<div class="part-tag">第五篇</div>
+<h2>系统迭代与进化——让系统持续有效</h2>
+<p class="part-goal">核心目标：理解系统不是一劳永逸的，市场在变，系统必须迭代。学会判断"什么时候该坚持"和"什么时候该改变"。</p>
+</div>
+
+<!-- ===== 第15章 ===== -->
+<div class="chapter" id="ch15">
+<h2 class="chapter-title"><span class="ch-num">第15章</span>复盘机制——系统的"维修保养"</h2>
+<div class="section">
+<h3>复盘的三个层次</h3>
+<table class="data-table">
+<thead><tr><th>层次</th><th>频率</th><th>核心问题</th><th>输出</th></tr></thead>
+<tbody>
+<tr><td class="highlight">每笔复盘</td><td>每笔交易当天</td><td>做对了什么/做错了什么</td><td>经验教训+规则修正建议</td></tr>
+<tr><td class="highlight">每周复盘</td><td>每周日30分钟</td><td>本周执行率/胜率/异常</td><td>周统计+异常交易标记</td></tr>
+<tr><td class="highlight">每季系统评估</td><td>每季度2小时</td><td>系统是否仍适应当前市场</td><td>系统健康报告+是否需要迭代</td></tr>
+</tbody>
+</table>
+
+<h3>每笔复盘三问</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 每笔复盘三问</div>
+<p><strong>① 我做对了什么？</strong>——哪些决策符合规则，产生了好结果</p>
+<p><strong>② 我做错了什么？</strong>——哪些决策偏离了规则，为什么偏离</p>
+<p><strong>③ 规则需要修改吗？</strong>——如果同一条件连续3次失败，该条件可能需要修改</p>
+</div>
+<p>注意：<strong>复盘是修补系统，不是自我批评</strong>。"我做错了"不是"我很蠢"，而是"这条规则不够清晰"或"我在这类行情下容易偏离"——找出问题，修改系统，下次不再犯。</p>
+
+<h3>"连续3次失效"规则</h3>
+<p>如果同一条件在3笔交易中连续失效，说明该条件可能有问题：</p>
+<ul>
+<li>止损连续3次被震出→止损可能设太紧，加宽1个ATR试试</li>
+<li>入场信号连续3次假突破→入场条件可能太松，增加1个过滤条件</li>
+<li>某板块连续3笔亏损→该板块可能已过气，暂时从观察池移除</li>
+</ul>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 3次失效≠立即推翻系统</div>
+<p>连续3次失效是"提示信号"，不是"死刑判决"。先分析原因——是规则问题还是市场环境变化？再决定是调参数还是换规则。切忌一次亏损就推翻系统。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第15章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我完成一笔交易时，</span>我将<strong>当天复盘三问</strong>——做对/做错/规则要改吗</div>
+<div class="rule-item"><span class="rule-trigger">当同一条件连续3次失效时，</span>我将<strong>暂停使用该条件</strong>，回测验证修改方案后重新启用</div>
+<div class="rule-item"><span class="rule-trigger">当我复盘时想自我批评时，</span>我将<strong>转向"修补系统"</strong>——不是"我很蠢"，而是"规则需要改进"</div>
+</div>
+</div>
+
+<!-- ===== 第16章 ===== -->
+<div class="chapter" id="ch16">
+<h2 class="chapter-title"><span class="ch-num">第16章</span>系统失效——什么时候该坚持，什么时候该改变</h2>
+<div class="section">
+<h3>正常回撤 vs 系统失效</h3>
+<table class="data-table">
+<thead><tr><th>特征</th><th>正常回撤</th><th>系统失效</th></tr></thead>
+<tbody>
+<tr><td class="highlight">持续时间</td><td>1-3个月</td><td>>6个月</td></tr>
+<tr><td class="highlight">亏损幅度</td><td>在历史最大回撤范围内</td><td>超过历史最大回撤50%以上</td></tr>
+<tr><td class="highlight">原因</td><td>正常概率波动（连亏是随机的）</td><td>市场结构变化导致逻辑失效</td></tr>
+<tr><td class="highlight">期望值</td><td>滚动100笔仍为正</td><td>滚动100笔转为负</td></tr>
+<tr><td class="highlight">应对</td><td>继续执行，可适当降低仓位</td><td>暂停，评估系统逻辑是否仍成立</td></tr>
+</tbody>
+</table>
+
+<h3>系统失效的五个信号</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 系统失效的五个红灯信号</div>
+<p><strong>① 连续亏损超过历史最大连亏×1.5</strong>——比如历史最大连亏6笔，现在连亏10笔还没停</p>
+<p><strong>② 滚动100笔期望值转负</strong>——不是偶尔亏损，而是持续亏损</p>
+<p><strong>③ 胜率和盈亏比同时大幅下降</strong>——不是盈亏比低了但胜率还在，而是双降</p>
+<p><strong>④ 市场状态发生根本性变化</strong>——如从趋势市变为长期震荡市，趋势系统必然失效</p>
+<p><strong>⑤ 最大回撤超过预设上限</strong>——如预设最大回撤20%，现在已亏25%+</p>
+</div>
+
+<h3>"暂停"而不是"放弃"</h3>
+<p>触及失效信号时，正确的做法是<strong>暂停操作→评估系统</strong>，而不是立即放弃换新系统。很多交易者在系统正常回撤期就放弃，结果刚放弃系统就恢复了——这是最常见的"黎明前离场"。</p>
+
+<h3>坚持系统的纪律</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 关注过程而非结果</div>
+<p><strong>执行率 > 胜率</strong>——按规则做了即使亏了也是对的，没按规则做了即使赚了也是错的。</p>
+<p>原因：按规则亏损是系统成本（概率波动的正常结果），不按规则赚钱是运气（不可复制，且强化了坏习惯）。</p>
+</div>
+
+<h3>系统验证期铁律</h3>
+<p>给系统至少<strong>3-6个月的实盘验证期</strong>，期间只做小仓位，不做大调整。频繁切换系统 = 永远在试错期 = 永远无法积累统计样本。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第16章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当连续亏损超过历史最大连亏×1.5时，</span>我将<strong>暂停操作</strong>，用2-3天评估系统逻辑是否仍成立</div>
+<div class="rule-item"><span class="rule-trigger">当滚动100笔期望值转负时，</span>我将<strong>暂停系统</strong>，回测+分析原因→修改→重新验证</div>
+<div class="rule-item"><span class="rule-trigger">当我在正常回撤期想放弃系统时，</span>我将<strong>检查执行率和期望值</strong>——执行率高+期望值正=继续执行</div>
+<div class="rule-item"><span class="rule-trigger">当系统运行不满3个月时，</span>我将<strong>不做大调整</strong>——数据不够，判断不准</div>
+</div>
+</div>
+
+<!-- ===== 第17章 ===== -->
+<div class="chapter" id="ch17">
+<h2 class="chapter-title"><span class="ch-num">第17章</span>系统迭代——怎么改才不会越改越差</h2>
+<div class="section">
+<h3>迭代的基本原则：每次只改一个变量</h3>
+<p>这是系统迭代的<strong>第一铁律</strong>。如果你同时改了入场条件和止损参数，效果变好了——你不知道是哪个改动贡献的。效果变差了——你也不知道该撤回哪个。</p>
+<div class="callout callout-key">
+<div class="callout-title">🔑 迭代五步流程</div>
+<p><strong>改→回测→模拟→小仓位实盘→确认→推广</strong></p>
+<p>每一步都是验证——回测验证逻辑、模拟验证可执行性、小仓位验证心理、确认后推广到正常仓位。跳步 = 未验证的修改进入实盘 = 危险。</p>
+</div>
+
+<h3>参数优化 vs 规则优化</h3>
+<table class="data-table">
+<thead><tr><th>类型</th><th>示例</th><th>风险</th><th>频率</th></tr></thead>
+<tbody>
+<tr><td class="highlight">参数优化（微调）</td><td>止损从5%改为6% | 均线从20日改为30日</td><td>低（逻辑不变）</td><td>可较多</td></tr>
+<tr><td class="highlight">规则优化（结构变化）</td><td>增加1个入场过滤条件 | 更换止损类型</td><td>中（逻辑部分改变）</td><td>谨慎</td></tr>
+<tr><td class="red">推翻重建</td><td>放弃趋势系统→改用均值回归系统</td><td>高（全新系统）</td><td>极少</td></tr>
+</tbody>
+</table>
+
+<h3>过度优化的陷阱</h3>
+<p>过度优化 = 在历史数据上调参数让回测结果"完美"。特征：</p>
+<ul>
+<li>参数精度过高（如止损5.73%而不是5%或6%）</li>
+<li>参数数量过多（5个以上可调参数）</li>
+<li>回测利润因子>3、胜率>60%、最大回撤<10%</li>
+<li>样本外表现大幅下降</li>
+</ul>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 过度优化的判断标准</div>
+<p>如果你的系统有N个可调参数，回测样本数至少需要N×50笔交易。3个参数的系统至少需要150笔回测样本。如果样本不够，参数优化结果不可靠。</p>
+</div>
+
+<h3>系统的"半衰期"</h3>
+<p>任何系统都会随市场变化而衰减——这就是"半衰期"。趋势系统在震荡市中衰减，价值系统在泡沫期衰减。<strong>系统不是一劳永逸的</strong>，定期评估和迭代是必需的。</p>
+<p>典型的半衰期：短线系统6-12个月，中线系统1-2年，长线系统2-5年。</p>
+
+<h3>系统切换决策树</h3>
+<p>当你的趋势系统在长期震荡市中持续失效：</p>
+<ol>
+<li><strong>逻辑是否仍然有效？</strong>→ 是→调参数（降低仓位/收紧止损）→否→继续</li>
+<li><strong>市场状态是否已根本性改变？</strong>→ 是→考虑切换到适配当前状态的系统→否→暂停等待市场回归</li>
+<li><strong>切换前提</strong>：新系统必须经过完整回测+模拟盘验证，<strong>不能直接实盘切换</strong></li>
+<li><strong>切换节奏</strong>：旧系统逐步减仓→新系统逐步建仓→过渡期至少1-2个月</li>
+</ol>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 一个交易者最多同时有效运行两套系统</div>
+<p>超过两套=管理不过来=每套的执行率都下降。先做好一套，再考虑第二套。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第17章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我想修改系统时，</span>我将<strong>每次只改一个变量</strong>，走完"改→回测→模拟→小仓位→确认"五步</div>
+<div class="rule-item"><span class="rule-trigger">当我发现回测结果"过于完美"时，</span>我将<strong>用样本外数据验证</strong>——过拟合的回测实盘必然失效</div>
+<div class="rule-item"><span class="rule-trigger">当我想切换到新系统时，</span>我将<strong>先用回测+模拟验证新系统</strong>，再过渡1-2个月，不直接实盘切换</div>
+<div class="rule-item"><span class="rule-trigger">当我同时想运行3套以上系统时，</span>我将<strong>精简为2套</strong>——超过2套=管理不过来</div>
+</div>
+</div>
+
+<!-- ===== 第18章 ===== -->
+<div class="chapter" id="ch18">
+<h2 class="chapter-title"><span class="ch-num">第18章</span>常见系统设计误区</h2>
+<div class="section">
+<h3>误区1：堆砌指标</h3>
+<p>新手最爱做的事：加入均线、MACD、KDJ、RSI、布林带……指标越多，条件越难同时满足，信号越少。就算满足了，你也不知道哪个指标真正有效。</p>
+<p><strong>正确做法</strong>：每类功能选1个指标——趋势1个（如均线）、动量1个（如RSI）、量能1个（如成交量）。3个指标足矣。</p>
+
+<h3>误区2：只有买入没有卖出</h3>
+<p>"会买的是徒弟，会卖的是师傅"——如果你只有买入规则，没有出场规则，那你的系统只有半环。买入后的一切都是即兴发挥。</p>
+
+<h3>误区3：盈利后随意修改规则</h3>
+<p>"短期赚钱就放宽条件"——这是最隐蔽的误区。赚钱后放宽条件，看似更灵活，实际上是<strong>降低了系统的保护屏障</strong>。等你遇到亏损期，宽松条件会让你亏更多。</p>
+
+<h3>误区4：忽略大盘环境</h3>
+<p>个股信号再好，大盘暴跌也亏。系统必须包含<strong>大盘环境过滤</strong>——这是"天气判断"，决定你今天出不出门。</p>
+
+<h3>误区5：止损设太紧</h3>
+<p>止损太紧=被正常波动频繁震出。如果你发现自己经常"刚止损就涨回来"，说明止损设在了太拥挤的位置。<strong>正确做法</strong>：止损设在关键支撑位下方+1个ATR的空间。</p>
+
+<h3>误区6：不止损死扛</h3>
+<p>把"投资"变成"赌博"——不止损的唯一理由是"我相信它会回来"。但它可能不回来。<strong>止损是保险，不是惩罚</strong>。交了保费（止损），你才能继续在市场上活着。</p>
+
+<h3>误区7：频繁切换系统</h3>
+<p>"这周学趋势，下周学波段"=永远在试错期=永远没有统计样本。任何系统至少需要100笔实盘数据才能初步评估。</p>
+
+<h3>误区8：把运气当能力</h3>
+<p>牛市赚钱不等于系统有效。2014-2015年人人都是股神，但2015年下半年大多数人都亏回去。检验系统的唯一标准：<strong>扣除交易成本后的长期期望值是否为正</strong>。</p>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 八大误区一句话总结</div>
+<p>堆指标=信号枯竭 | 没出场=半环系统 | 盈利改规则=拆保护罩 | 忽略大盘=逆天而行 | 止损太紧=频繁被猎 | 不止损=赌徒 | 频切换=永远试错 | 牛市赚钱=运气非能力</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第18章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的系统超过5个指标时，</span>我将<strong>精简为3个以内</strong>——每类功能1个，够用就行</div>
+<div class="rule-item"><span class="rule-trigger">当我的系统没有大盘环境过滤时，</span>我将<strong>立即加入</strong>——没有天气判断不出门</div>
+<div class="rule-item"><span class="rule-trigger">当我想在盈利后放宽规则时，</span>我将<strong>回想这个误区</strong>——放宽规则=拆保护罩</div>
+<div class="rule-item"><span class="rule-trigger">当我想切换系统时，</span>我将<strong>问自己：当前系统至少运行了100笔吗？</strong>没有就继续坚持</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第六篇 ==================== -->
+<div class="container">
+<div class="part-header" id="part6">
+<div class="part-tag">第六篇</div>
+<h2>长期实战——从"有系统"到"靠系统吃饭"</h2>
+<p class="part-goal">核心目标：面向已经建立并运行过系统的读者，讲如何长期依靠系统稳定盈利。</p>
+</div>
+
+<!-- ===== 第19章 ===== -->
+<div class="chapter" id="ch19">
+<h2 class="chapter-title"><span class="ch-num">第19章</span>经典交易系统案例拆解</h2>
+<div class="section">
+<h3>海龟交易法：最著名的系统化交易案例</h3>
+<p>1983年，理查德·丹尼斯用一套完全系统化的交易规则，培训了一群"海龟"交易员，证明了交易可以被系统化教授。海龟系统的核心规则：</p>
+<table class="data-table">
+<thead><tr><th>组件</th><th>规则</th></tr></thead>
+<tbody>
+<tr><td class="highlight">选股</td><td>流动性好的期货品种（后扩展到股票）</td></tr>
+<tr><td class="highlight">入场</td><td>20日突破（价格突破近20日最高价时做多）</td></tr>
+<tr><td class="highlight">仓位</td><td>ATR法（波动大的少买，波动小的多买）</td></tr>
+<tr><td class="highlight">止损</td><td>入场价-2×ATR</td></tr>
+<tr><td class="highlight">止盈</td><td>10日反向突破退出</td></tr>
+<tr><td class="highlight">加仓</td><td>每盈利0.5×ATR加仓1个单位，最多4个单位（金字塔加仓）</td></tr>
+</tbody>
+</table>
+<p><strong>历史绩效</strong>：1983-1988年，海龟团队年化收益率约80%，但最大回撤也超过30%。</p>
+<p><strong>优缺点</strong>：优点是逻辑清晰、完全系统化、长期正期望值；缺点是胜率低（约35-40%）、需要极大的心理承受力（连续亏损7-10笔是常态）、在震荡市中表现差（频繁假突破）。</p>
+<p><strong>A股本土化</strong>：用沪深300成分股回测海龟系统——在2007/2015等大牛市表现优异，但在2016-2018震荡市中频繁假突破，年化收益仅3-5%。<strong>海龟系统在A股的趋势市有效，震荡市水土不服</strong>。</p>
+
+<h3>双均线交叉系统：最简单的趋势跟踪</h3>
+<table class="data-table">
+<thead><tr><th>组件</th><th>规则</th></tr></thead>
+<tbody>
+<tr><td class="highlight">入场</td><td>短期均线（5日）上穿长期均线（20日）时做多</td></tr>
+<tr><td class="highlight">出场</td><td>短期均线下穿长期均线时平仓</td></tr>
+<tr><td class="highlight">止损</td><td>入场价-3%或均线交叉退出</td></tr>
+<tr><td class="highlight">仓位</td><td>固定分数法</td></tr>
+</tbody>
+</table>
+<p><strong>优缺点</strong>：极简，新手友好；但信号滞后（均线本身滞后）、震荡市频繁假信号。适合趋势明显的行情。</p>
+
+<h3>突破回踩系统：中线波段经典</h3>
+<table class="data-table">
+<thead><tr><th>组件</th><th>规则</th></tr></thead>
+<tbody>
+<tr><td class="highlight">选股</td><td>趋势向上+箱体整理>15天</td></tr>
+<tr><td class="highlight">入场</td><td>突破箱体上沿→缩量回踩箱体上沿→放量收阳时入场</td></tr>
+<tr><td class="highlight">止损</td><td>箱体中轨下方</td></tr>
+<tr><td class="highlight">止盈</td><td>目标1=突破幅度×1，目标2=×1.5</td></tr>
+</tbody>
+</table>
+
+<h3>失败案例：2019-2021趋势系统在2022-2024的失效</h3>
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 系统失效真实案例</div>
+<p><strong>背景</strong>：一套"均线金叉+放量突破+ATR止损"的趋势跟踪系统，在2019-2021年（核心资产牛市）表现优异：年化25%、胜率48%、盈亏比2.8:1。</p>
+<p><strong>失效</strong>：2022-2024年市场转为长期震荡+黑天鹅（俄乌/美联储加息/疫情反复），趋势信号频繁假突破。胜率降至28%、盈亏比降至1.2:1、期望值转负。</p>
+<p><strong>原因</strong>：趋势系统在趋势市赚钱、在震荡市亏钱——这是系统本质决定的，不是参数问题。</p>
+<p><strong>应对</strong>：①识别市场状态变化（趋势→震荡）→②降低仓位→③暂停系统→④考虑切换到均值回归系统→⑤新系统验证后过渡。</p>
+</div>
+
+<h3>从经典系统中学习的正确姿势</h3>
+<p><strong>学逻辑，不照搬参数</strong>。海龟的20日突破在A股可能需要改成15日或30日——参数要匹配你的市场、你的风格、你的资金量。但"趋势突破+ATR仓位+金字塔加仓"的<strong>逻辑框架</strong>是通用的。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第19章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我学习经典系统时，</span>我将<strong>学逻辑框架而非照搬参数</strong>——参数匹配自己的市场、风格、资金量</div>
+<div class="rule-item"><span class="rule-trigger">当我的趋势系统在震荡市中持续亏损时，</span>我将<strong>判断市场状态是否已根本性改变</strong>——是则考虑切换系统</div>
+<div class="rule-item"><span class="rule-trigger">当我回测经典系统时，</span>我将<strong>在A股数据上验证</strong>——海外有效的系统不一定适合A股</div>
+</div>
+</div>
+
+<!-- ===== 第20章 ===== -->
+<div class="chapter" id="ch20">
+<h2 class="chapter-title"><span class="ch-num">第20章</span>多系统并行——从单一系统到投资组合化</h2>
+<div class="section">
+<h3>为什么要多系统</h3>
+<p>单一系统只适应一种市场状态——趋势系统在震荡市失效，震荡系统在趋势市跑输。<strong>多系统并行 = 分散市场状态风险</strong>：趋势系统+震荡系统同时运行，无论市场处于什么状态，总有一套在赚钱。</p>
+
+<h3>多系统的组合逻辑</h3>
+<table class="data-table">
+<thead><tr><th>维度</th><th>系统A</th><th>系统B</th><th>互补效果</th></tr></thead>
+<tbody>
+<tr><td class="highlight">风格</td><td>趋势跟踪</td><td>均值回归</td><td>趋势市赚A，震荡市赚B</td></tr>
+<tr><td class="highlight">周期</td><td>短线（2-10天）</td><td>中线（2-8周）</td><td>不同节奏的信号互不干扰</td></tr>
+<tr><td class="highlight">市场状态</td><td>牛市系统</td><td>熊市/震荡系统</td><td>全天候覆盖</td></tr>
+</tbody>
+</table>
+
+<h3>系统之间的资金分配</h3>
+<p>按历史绩效和当前市场状态分配：</p>
+<ul>
+<li>趋势市→趋势系统分70%，震荡系统分30%</li>
+<li>震荡市→震荡系统分70%，趋势系统分30%</li>
+<li>不确定→各50%</li>
+</ul>
+
+<h3>多系统的管理复杂度</h3>
+<div class="callout callout-warn">
+<div class="callout-title">⚡ 系统越多越需要纪律</div>
+<p>多系统的风险不是"系统冲突"，而是"管理不过来"。每套系统都需要独立的选股、入场、出场、复盘——2套系统的工作量是1套的2倍以上。<strong>新手建议：先做好一套系统，再考虑第二套</strong>。</p>
+</div>
+
+<h3>从"交易者"到"系统管理者"的角色转变</h3>
+<p>当你运行2套以上系统时，你的角色从"交易者"变成了"系统管理者"——你不再执行每一笔交易，而是管理系统的运行状态、资金分配、定期评估。这是一个重要的认知跃迁。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第20章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的第一套系统运行不满300笔时，</span>我将<strong>不考虑第二套</strong>——先做好一套</div>
+<div class="rule-item"><span class="rule-trigger">当我运行多系统时，</span>我将<strong>最多同时运行2套</strong>——超过2套=管理不过来</div>
+<div class="rule-item"><span class="rule-trigger">当我分配多系统资金时，</span>我将<strong>按当前市场状态分配</strong>——适配当前状态的系统分更多</div>
+</div>
+</div>
+
+<!-- ===== 第21章 ===== -->
+<div class="chapter" id="ch21">
+<h2 class="chapter-title"><span class="ch-num">第21章</span>长期盈利的终极秘密</h2>
+<div class="section">
+<h3>长期盈利 = 正期望值系统 + 严格执行 + 足够时间</h3>
+<p>这三者缺一不可：</p>
+<ul>
+<li><strong>正期望值系统</strong>：胜率×平均盈利 - 败率×平均亏损 > 0（扣除交易成本后）。没有正期望值，再好的执行也是确定亏损。</li>
+<li><strong>严格执行</strong>：执行率>85%。正期望值系统+0%执行率=确定亏损。系统设计得再好，不执行等于没有系统。</li>
+<li><strong>足够时间</strong>：概率需要大样本才能显现。100笔交易才能初步判断，300笔才能形成可靠结论。短期亏损不代表系统无效，短期盈利也不代表系统有效。</li>
+</ul>
+
+<h3>为什么大多数人知道却做不到</h3>
+<p>执行是最大的瓶颈。知道"该止损"和"真的止损"之间隔着一个杏仁核——0.3秒的恐惧反应就能让你放弃规则。<strong>这就是为什么需要系统：系统代替意志力</strong>。条件单自动止损、连续亏损自动暂停——把规则写进"硬件"，不靠"软件"（意志力）。</p>
+
+<h3>从"靠系统赚钱"到"靠系统活着"</h3>
+<div class="callout callout-key">
+<div class="callout-title">🔑 生存优先于盈利</div>
+<p>巴菲特第一条规则：不要亏钱。第二条：记住第一条。</p>
+<p>系统化交易的终极价值不是让你赚多少，而是<strong>让你在市场上活着</strong>——活着才有机会赚。死扛不止损的人可能在牛市赚很多，但一次大熊市就清零。系统保证你的亏损永远在可控范围内。</p>
+</div>
+
+<h3>向市场学习的具体方法</h3>
+<p>每周观察一个新现象→记录→验证→纳入系统或排除。例如：</p>
+<ul>
+<li>"最近主力资金总是尾盘拉升"→观察10次→验证是否可量化→纳入入场条件或排除</li>
+<li>"某板块的龙头总是先于板块启动"→观察→验证→纳入选股规则</li>
+</ul>
+<p><strong>市场是活的，系统也要是活的</strong>。但迭代要有纪律——每次只改一个变量，改后验证。</p>
+
+<h3>8轮线性学习路径概览</h3>
+<table class="data-table">
+<thead><tr><th>轮次</th><th>内容</th><th>核心目标</th></tr></thead>
+<tbody>
+<tr><td class="highlight">轮次1</td><td>裸K·筑基P0</td><td>价格行为基础认知</td></tr>
+<tr><td class="highlight">轮次2</td><td>裸K·进阶P1</td><td>势位形分析与入场信号</td></tr>
+<tr><td class="highlight">轮次3</td><td>财报</td><td>基本面筛选与排雷</td></tr>
+<tr><td class="highlight">轮次4</td><td>宏观</td><td>大盘环境判断</td></tr>
+<tr><td class="highlight">轮次5</td><td>裸K·高阶P2</td><td>缺口/SMC/威科夫深度</td></tr>
+<tr><td class="highlight">轮次6</td><td>裸K·系统整合P3</td><td>PA嵌入完整交易系统</td></tr>
+<tr><td class="highlight">轮次7</td><td>资金管理与交易心理</td><td>仓位算法+心理防线</td></tr>
+<tr><td class="highlight">轮次8</td><td>实盘复盘与持续迭代</td><td>从100笔到10000笔</td></tr>
+</tbody>
+</table>
+<p style="color:var(--text-muted);font-size:13px;">不可跳轮，不可并行；进入财报/宏观轮次后每日保留15分钟PA练习保持盘感。</p>
+
+<h3>持续精进的路径</h3>
+<ul>
+<li><strong>100笔</strong>：建立统计基础，初步判断系统特征</li>
+<li><strong>300笔</strong>：形成可靠结论，开始参数微调</li>
+<li><strong>1000笔</strong>：系统成熟，考虑多系统并行</li>
+<li><strong>10000笔</strong>：直觉与系统融合，"从心所欲不逾矩"</li>
+</ul>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 写给系统化交易者的最后一封信</div>
+<p>交易系统不是终点，是起点。你的系统会迭代、会进化、甚至会失效——但<strong>"系统化思维"本身永远不会过时</strong>。当你学会了用系统的方式思考交易，你就从一个"在市场上碰运气的人"变成了一个"在市场上管理概率的人"。</p>
+<p>这条路很长，但每一步都算数。从今天的第一笔模拟交易开始，到10000笔后的从容——中间的每一笔记录、每一次复盘、每一个规则修正，都是你通往长期盈利的铺路石。</p>
+<p><strong>祝你系统化交易顺利。</strong></p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">📏 第21章 If-Then 规则</div>
+<div class="rule-item"><span class="rule-trigger">当我的系统期望值为正但短期亏损时，</span>我将<strong>检查执行率而非怀疑系统</strong>——执行率>85%且期望值正=继续执行</div>
+<div class="rule-item"><span class="rule-trigger">当我想靠意志力执行规则时，</span>我将<strong>改为用系统工具代替</strong>——条件单自动止损、连续亏损自动暂停</div>
+<div class="rule-item"><span class="rule-trigger">当我运行系统满6个月时，</span>我将<strong>做一次全面系统评估</strong>——300笔统计+逻辑审视+迭代计划</div>
+<div class="rule-item"><span class="rule-trigger">当我想跳过学习路径的某个轮次时，</span>我将<strong>回到8轮路径</strong>——不可跳轮，不可并行</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>模板·日志·自检·速查</h2>
+  <p class="part-goal">从知识到行动的最后一公里——可打印的模板、日志、自检清单和术语速查。</p>
+</div>
+
+<!-- ===== 附录A ===== -->
+<div class="chapter" id="appa">
+<h2 class="chapter-title"><span class="ch-num">附录A</span>交易系统标准模板（可打印）</h2>
+<div class="section">
+<h3>一页纸系统模板</h3>
+<table class="data-table">
+<thead><tr><th>组件</th><th>我的规则</th></tr></thead>
+<tbody>
+<tr><td class="highlight">定位</td><td>资金____万 | 时间____h/天 | 风格____ | 单笔风险____%</td></tr>
+<tr><td class="highlight">选股</td><td>排除：____ | 筛选：____ | 观察池上限____只</td></tr>
+<tr><td class="highlight">入场</td><td>条件①____ ②____ ③____ ④____ | 大盘过滤：____</td></tr>
+<tr><td class="highlight">仓位</td><td>单笔风险____% | 单票上限____% | 总仓位上限：多头____%/震荡____%/空头____%</td></tr>
+<tr><td class="highlight">出场</td><td>止损：____ | 止盈目标1____目标2____ | 移动止盈：____</td></tr>
+<tr><td class="highlight">复盘</td><td>每笔三问 | 每周日30分钟 | 每季2小时</td></tr>
+</tbody>
+</table>
+
+<h3>每笔交易计划单</h3>
+<table class="data-table">
+<thead><tr><th>字段</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td>标的/方向</td><td>____</td></tr>
+<tr><td>入场条件</td><td>①□ ②□ ③□ ④□（全✅才入场）</td></tr>
+<tr><td>入场价/止损价/目标价1/目标价2</td><td>____ / ____ / ____ / ____</td></tr>
+<tr><td>盈亏比</td><td>____:1（≥2:1才入场）</td></tr>
+<tr><td>仓位</td><td>____股 ____元 占____%</td></tr>
+<tr><td>大盘环境</td><td>多头/震荡/空头 → 允许/不允许</td></tr>
+<tr><td>时间止损</td><td>____天未达目标1→评估</td></tr>
+</tbody>
+</table>
+
+<h3>每季系统评估报告模板</h3>
+<ul>
+<li>本季交易笔数：____ | 胜率：____% | 盈亏比：____:1 | 利润因子：____ | 期望值：____R</li>
+<li>最大回撤：____% | 连续亏损最多：____笔 | 执行率：____%</li>
+<li>系统是否仍适应当前市场：□是 □否（原因：____）</li>
+<li>是否需要迭代：□否 □是（改什么：____）</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录B ===== -->
+<div class="chapter" id="appb">
+<h2 class="chapter-title"><span class="ch-num">附录B</span>交易日志模板</h2>
+<div class="section">
+<h3>15字段交易记录表</h3>
+<p>详见第13章表格。建议用Excel建表，每笔一行，方便统计。</p>
+
+<h3>周统计汇总表</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>本周</th><th>上周</th><th>月度均值</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易笔数</td><td>____</td><td>____</td><td>____</td></tr>
+<tr><td class="highlight">胜率</td><td>____%</td><td>____%</td><td>____%</td></tr>
+<tr><td class="highlight">盈亏比</td><td>____:1</td><td>____:1</td><td>____:1</td></tr>
+<tr><td class="highlight">利润因子</td><td>____</td><td>____</td><td>____</td></tr>
+<tr><td class="highlight">期望值</td><td>____R</td><td>____R</td><td>____R</td></tr>
+<tr><td class="highlight">执行率</td><td>____%</td><td>____%</td><td>____%</td></tr>
+<tr><td class="highlight">情绪干扰笔数</td><td>____</td><td>____</td><td>____</td></tr>
+</tbody>
+</table>
+
+<h3>R倍数记录法说明</h3>
+<p>R = 入场价 - 止损价（做多）。盈利4元/亏损2元时R=2元→+2R/-1R。R倍数标准化了不同股票、不同仓位大小的盈亏比较。</p>
+</div>
+</div>
+
+<!-- ===== 附录C ===== -->
+<div class="chapter" id="appc">
+<h2 class="chapter-title"><span class="ch-num">附录C</span>系统绩效自检清单</h2>
+<div class="section">
+<h3>10项必查指标</h3>
+<table class="data-table">
+<thead><tr><th>#</th><th>指标</th><th>计算方法</th><th>健康区间</th><th>失效阈值</th><th>触发行动</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="highlight">胜率</td><td>盈利笔数/总笔数</td><td>>35%</td><td><25%</td><td>增加入场过滤条件</td></tr>
+<tr><td>2</td><td class="highlight">盈亏比</td><td>平均盈利/平均亏损</td><td>>2.0</td><td><1.5</td><td>放宽止盈或收紧止损</td></tr>
+<tr><td>3</td><td class="highlight">利润因子</td><td>总盈利/总亏损</td><td>>1.5</td><td><1.2</td><td>暂停系统</td></tr>
+<tr><td>4</td><td class="highlight">期望值</td><td>胜率×均盈-败率×均亏</td><td>>0</td><td>≤0</td><td>暂停系统</td></tr>
+<tr><td>5</td><td class="highlight">最大回撤</td><td>峰值到谷底最大跌幅</td><td><20%</td><td>>30%</td><td>降低仓位上限</td></tr>
+<tr><td>6</td><td class="highlight">夏普比率</td><td>(年化收益-无风险利率)/年化波动</td><td>>1.0</td><td><0.5</td><td>评估风险收益比</td></tr>
+<tr><td>7</td><td class="highlight">执行率</td><td>按规则执行的笔数/总笔数</td><td>>85%</td><td><70%</td><td>简化规则或回模拟盘</td></tr>
+<tr><td>8</td><td class="highlight">连续亏损</td><td>最大连续亏损笔数</td><td><历史最大×1.5</td><td>>历史最大×2</td><td>暂停评估</td></tr>
+<tr><td>9</td><td class="highlight">系统覆盖率</td><td>有信号交易的周数/总周数</td><td>>60%</td><td><30%</td><td>放宽入场条件</td></tr>
+<tr><td>10</td><td class="highlight">迭代次数</td><td>每季度修改规则的次数</td><td>1-2次</td><td>>5次</td><td>系统不稳定，暂停迭代</td></tr>
+</tbody>
+</table>
+
+<h3>5个"系统红灯"信号（一票否决）</h3>
+<ul>
+<li class="red">① 实际期望值（扣除成本后）连续3个月为负</li>
+<li class="red">② 最大回撤超过预设上限50%</li>
+<li class="red">③ 执行率连续2个月低于70%</li>
+<li class="red">④ 连续亏损超过历史最大连亏×2</li>
+<li class="red">⑤ 出现-2R以上亏损笔数>5%</li>
+</ul>
+<p style="color:var(--text-muted);font-size:13px;">任何一个红灯亮起→立即暂停系统→评估→修改→重新验证后才恢复。</p>
+</div>
+</div>
+
+<!-- ===== 附录D ===== -->
+<div class="chapter" id="appd">
+<h2 class="chapter-title"><span class="ch-num">附录D</span>术语速查表</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>章节</th></tr></thead>
+<tbody>
+<tr><td class="highlight">交易系统</td><td>Trading System</td><td>定义"买什么/何时买/买多少/何时卖/错了怎么办"的规则集</td><td>第1章</td></tr>
+<tr><td class="highlight">闭环</td><td>Closed Loop</td><td>执行→记录→复盘→优化→再执行</td><td>第2章</td></tr>
+<tr><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益=胜率×均盈-败率×均亏</td><td>第10章</td></tr>
+<tr><td class="highlight">盈亏比</td><td>Risk/Reward</td><td>平均盈利/平均亏损，系统要求≥2:1</td><td>第7章</td></tr>
+<tr><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险R为单位的盈亏衡量</td><td>第10章</td></tr>
+<tr><td class="highlight">利润因子</td><td>Profit Factor</td><td>总盈利/总亏损，>1.5可用，>2.0优秀</td><td>第10章</td></tr>
+<tr><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>资金曲线从峰值到谷底的最大跌幅</td><td>第10章</td></tr>
+<tr><td class="highlight">夏普比率</td><td>Sharpe Ratio</td><td>(年化收益-无风险利率)/年化波动</td><td>第10章</td></tr>
+<tr><td class="highlight">回测</td><td>Backtesting</td><td>用历史数据模拟系统表现</td><td>第9章</td></tr>
+<tr><td class="highlight">曲线拟合</td><td>Curve Fitting</td><td>参数过度优化以适应历史，实盘失效</td><td>第9章</td></tr>
+<tr><td class="highlight">样本外测试</td><td>Out-of-Sample</td><td>用回测未使用的数据验证系统</td><td>第9章</td></tr>
+<tr><td class="highlight">ATR</td><td>Average True Range</td><td>平均真实波幅，衡量波动率</td><td>第6章</td></tr>
+<tr><td class="highlight">移动止盈</td><td>Trailing Stop</td><td>盈利后止损线随价格上移</td><td>第7章</td></tr>
+<tr><td class="highlight">金字塔加仓</td><td>Pyramiding</td><td>盈利后加仓，每次递减</td><td>第6章</td></tr>
+<tr><td class="highlight">凯利公式</td><td>Kelly Criterion</td><td>f*=(bp-q)/b，最优仓位比例，实际用半凯利</td><td>第6章</td></tr>
+<tr><td class="highlight">固定分数法</td><td>Fixed Fractional</td><td>每笔冒固定比例的风险反推仓位</td><td>第6章</td></tr>
+<tr><td class="highlight">波动率仓位法</td><td>Volatility Sizing</td><td>根据ATR调整仓位大小</td><td>第6章</td></tr>
+<tr><td class="highlight">系统失效</td><td>System Failure</td><td>系统逻辑被市场变化证伪</td><td>第16章</td></tr>
+<tr><td class="highlight">系统半衰期</td><td>Half-Life</td><td>系统随市场变化衰减的速度</td><td>第17章</td></tr>
+<tr><td class="highlight">多系统并行</td><td>Multi-System</td><td>同时运行多套系统分散市场状态风险</td><td>第20章</td></tr>
+<tr><td class="highlight">马丁格尔</td><td>Martingale</td><td>亏损后加倍下注，长期必爆</td><td>第6章</td></tr>
+<tr><td class="highlight">反马丁格尔</td><td>Anti-Martingale</td><td>盈利后加仓，趋势跟踪策略</td><td>第6章</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录E ===== -->
+<div class="chapter" id="appe">
+<h2 class="chapter-title"><span class="ch-num">附录E</span>系统化交易者自检清单</h2>
+<div class="section">
+<h3>系统设计自检</h3>
+<ul>
+<li>☐ 当我设计系统时，我将确保六大组件（定位→选股→入场→仓位→出场→复盘）全部完整</li>
+<li>☐ 当我写规则时，我将确保每条规则无歧义（"均线金叉"而非"趋势好"）</li>
+<li>☐ 当系统完成后，我将确保它可回测（历史数据可验证）</li>
+<li>☐ 当系统有仓位算法时，我将确保用公式反推而非凭感觉</li>
+<li>☐ 当系统有出场规则时，我将确保在买入前写好而非买入后临时决定</li>
+</ul>
+
+<h3>执行纪律自检</h3>
+<ul>
+<li>☐ 当我下单前，我将对照入场四问清单逐项打钩</li>
+<li>☐ 当止损被触发时，我将立即执行不犹豫（或用条件单自动执行）</li>
+<li>☐ 当我持仓亏损时，我将不加仓摊平</li>
+<li>☐ 当我在盘中时，我将不修改规则（规则只能在盘后修改）</li>
+<li>☐ 当每周日复盘时间到了时，我将花30分钟做周复盘</li>
+</ul>
+
+<h3>系统迭代自检</h3>
+<ul>
+<li>☐ 当我修改规则时，我将每次只改一个变量</li>
+<li>☐ 当我修改后，我将先回测→模拟→小仓位确认→推广</li>
+<li>☐ 当每季度末时，我将做2小时系统评估</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录F ===== -->
+<div class="chapter" id="appf">
+<h2 class="chapter-title"><span class="ch-num">附录F</span>按学习路径轮次映射的推荐书籍</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>轮次</th><th>书名</th><th>作者</th><th>推荐理由</th><th>优先级</th></tr></thead>
+<tbody>
+<tr><td class="highlight">P0-P1 裸K</td><td>《日本蜡烛图技术》</td><td>Steve Nison</td><td>K线形态的奠基之作</td><td>必读</td></tr>
+<tr><td class="highlight">P2 裸K高阶</td><td>《威科夫方法论》</td><td>Richard Wyckoff</td><td>供需分析与主力行为</td><td>必读</td></tr>
+<tr><td class="highlight">P2 裸K高阶</td><td>《Trading in the Zone》</td><td>Mark Douglas</td><td>概率思维与执行心理</td><td>必读</td></tr>
+<tr><td class="highlight">P3 财报</td><td>《手把手教你读财报》</td><td>唐朝</td><td>A股财报实战入门</td><td>必读</td></tr>
+<tr><td class="highlight">P3 财报</td><td>《股市真规则》</td><td>Pat Dorsey</td><td>基本面分析框架</td><td>选读</td></tr>
+<tr><td class="highlight">P4 宏观</td><td>《经济学原理》</td><td>Mankiw</td><td>宏观经济学基础（选读）</td><td>选读</td></tr>
+<tr><td class="highlight">P7 交易心理</td><td>《交易心理分析》</td><td>Mark Douglas</td><td>交易心理的圣经</td><td>必读</td></tr>
+<tr><td class="highlight">P7 交易心理</td><td>《股票作手回忆录》</td><td>Edwin Lefèvre</td><td>交易智慧与人性</td><td>必读</td></tr>
+<tr><td class="highlight">P8 持续学习</td><td>《海龟交易法则》</td><td>Curtis Faith</td><td>系统化交易的经典案例</td><td>必读</td></tr>
+<tr><td class="highlight">P8 持续学习</td><td>《彼得·林奇的成功投资》</td><td>Peter Lynch</td><td>价值投资实务</td><td>选读</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录G ===== -->
+<div class="chapter" id="appg">
+<h2 class="chapter-title"><span class="ch-num">附录G</span>学习工具与学习节奏推荐</h2>
+<div class="section">
+<h3>工具推荐</h3>
+<table class="data-table">
+<thead><tr><th>类别</th><th>工具</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td class="highlight">看盘</td><td>同花顺/东方财富</td><td>A股行情+技术分析</td></tr>
+<tr><td class="highlight">看盘（全球）</td><td>TradingView</td><td>全球行情+Volume Profile</td></tr>
+<tr><td class="highlight">基本面</td><td>理杏仁/韭圈儿</td><td>财务数据与基金分析</td></tr>
+<tr><td class="highlight">研报</td><td>慧博/萝卜投研</td><td>卖方研报</td></tr>
+<tr><td class="highlight">社区</td><td>雪球</td><td>交流与跟踪</td></tr>
+<tr><td class="highlight">记录</td><td>Excel/Notion</td><td>交易日记与系统模板</td></tr>
+</tbody>
+</table>
+
+<h3>Python绩效统计脚本</h3>
+<p>以下脚本可复制使用，输入交易日志CSV，输出核心绩效指标：</p>
+<pre style="background:var(--card2);padding:16px;border-radius:8px;font-size:12px;color:var(--text-secondary);overflow-x:auto;">
+import pandas as pd
+import numpy as np
+
+# 读取交易日志CSV（需含字段：入场价,止损价,出场价,方向,盈亏金额）
+df = pd.read_csv('trading_log.csv')
+
+# 核心指标计算
+wins = df[df['盈亏金额'] > 0]
+losses = df[df['盈亏金额'] <= 0]
+win_rate = len(wins) / len(df) * 100
+avg_win = wins['盈亏金额'].mean()
+avg_loss = abs(losses['盈亏金额'].mean())
+profit_factor = wins['盈亏金额'].sum() / abs(losses['盈亏金额'].sum())
+expectancy = (win_rate/100 * avg_win) - ((100-win_rate)/100 * avg_loss)
+max_loss_streak = 0; current = 0
+for p in df['盈亏金额']:
+    current = current + 1 if p <= 0 else 0
+    max_loss_streak = max(max_loss_streak, current)
+
+# R倍数计算
+df['R'] = abs(df['入场价'] - df['止损价'])
+df['R_multiple'] = df['盈亏金额'] / df['R']
+
+print(f"胜率: {win_rate:.1f}%")
+print(f"盈亏比: {avg_win/avg_loss:.2f}:1")
+print(f"利润因子: {profit_factor:.2f}")
+print(f"期望值: {expectancy:.2f}元/笔")
+print(f"最大连续亏损: {max_loss_streak}笔")
+print(f"最大R倍数盈利: {df['R_multiple'].max():.1f}R")
+print(f"最大R倍数亏损: {df['R_multiple'].min():.1f}R")
+</pre>
+
+<h3>学习节奏建议</h3>
+<table class="data-table">
+<thead><tr><th>频率</th><th>时间</th><th>任务</th></tr></thead>
+<tbody>
+<tr><td class="highlight">每日</td><td>15分钟</td><td>收盘后看沪深300日线，标注趋势和S/R，保持盘感</td></tr>
+<tr><td class="highlight">每周</td><td>2-4小时</td><td>深度学习1个新知识点 + 周复盘</td></tr>
+<tr><td class="highlight">每月</td><td>30分钟</td><td>月度系统健康检查 + 调整计划</td></tr>
+<tr><td class="highlight">每季</td><td>2小时</td><td>季度系统评估 + 迭代决策</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div><!-- end container appendix -->
+
+<!-- ==================== FOOTER ==================== -->
+<div class="container" style="text-align:center;padding:60px 0 40px;border-top:1px solid var(--border);">
+<p style="color:var(--text-muted);font-size:12px;">交易系统与实战投资手册 · System 101 · 投资者教育手册系列</p>
+<p style="color:var(--text-muted);font-size:11px;margin-top:8px;">本手册仅供学习参考，不构成投资建议。投资有风险，入市需谨慎。</p>
+</div>
+
+</div><!-- end #main -->
+
+<script>
+// ===== Sidebar Active State =====
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('nav-toggle');
+  const navLinks = document.querySelectorAll('#nav a');
+  const sections = [];
+  sidebarToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+    sidebarToggle.setAttribute('aria-label', isOpen ? '关闭章节导航' : '打开章节导航');
+  });
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const el = document.querySelector(href);
+      if (el) sections.push({ el, link });
+    }
+  });
+  function updateActive() {
+    const scrollY = window.scrollY + 100;
+    let current = sections[0];
+    sections.forEach(s => { if (s.el.offsetTop <= scrollY) current = s; });
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open');
+        sidebarToggle.setAttribute('aria-expanded', 'false');
+        sidebarToggle.setAttribute('aria-label', '打开章节导航');
+      }
+    });
+  });
+});
+
+// ===== Position Calculator =====
+function calcPosition() {
+  const capital = parseFloat(document.getElementById('pos-capital').value);
+  const riskPct = parseFloat(document.getElementById('pos-risk').value);
+  const entry = parseFloat(document.getElementById('pos-entry').value);
+  const stop = parseFloat(document.getElementById('pos-stop').value);
+  if (isNaN(capital) || isNaN(riskPct) || isNaN(entry) || isNaN(stop)) return;
+  if (entry <= stop) { alert('入场价必须大于止损价'); return; }
+  const riskAmount = capital * riskPct / 100;
+  const perShareRisk = entry - stop;
+  const shares = Math.floor(riskAmount / perShareRisk);
+  const positionValue = shares * entry;
+  const positionPct = (positionValue / capital * 100).toFixed(1);
+  const result = document.getElementById('pos-result');
+  const big = document.getElementById('pos-shares');
+  const label = document.getElementById('pos-label');
+  result.style.display = 'block';
+  big.textContent = shares + ' 股';
+  label.innerHTML = '仓位金额：' + positionValue.toFixed(0) + '元（占总资金' + positionPct + '%）<br>每股风险：' + perShareRisk.toFixed(2) + '元 | 总风险：' + riskAmount.toFixed(0) + '元';
+}
+
+// ===== Expectancy Calculator =====
+function calcExpectancy() {
+  const winRate = parseFloat(document.getElementById('exp-win').value) / 100;
+  const avgWin = parseFloat(document.getElementById('exp-avgwin').value);
+  const avgLoss = parseFloat(document.getElementById('exp-avgloss').value);
+  if (isNaN(winRate) || isNaN(avgWin) || isNaN(avgLoss)) return;
+  const lossRate = 1 - winRate;
+  const expectancy = winRate * avgWin - lossRate * avgLoss;
+  const profitFactor = (winRate * avgWin) / (lossRate * avgLoss);
+  const result = document.getElementById('exp-result');
+  const big = document.getElementById('exp-value');
+  const label = document.getElementById('exp-label');
+  result.style.display = 'block';
+  const sign = expectancy >= 0 ? '+' : '';
+  big.textContent = sign + expectancy.toFixed(2) + 'R';
+  big.style.color = expectancy >= 0 ? 'var(--green)' : 'var(--red)';
+  label.innerHTML = '利润因子：' + profitFactor.toFixed(2) + ' | ' +
+    (expectancy >= 0 ? '<span style="color:var(--green)">正期望值 → 系统可行</span>' : '<span style="color:var(--red)">负期望值 → 系统不可行</span>');
+}
+
+// Initial calc
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() { calcExpectancy(); }, 500);
+});
+</script>
+</body>
+</html>
