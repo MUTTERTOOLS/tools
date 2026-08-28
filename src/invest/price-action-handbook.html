@@ -395,17 +395,17 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
     <div class="meta-card"><div class="label">附录</div><div class="value">A-G</div></div>
   </div>
   <div class="learning-map">
-    <h3>📍 8轮学习地图中的位置</h3>
+    <h3>📍 五册系列 · 第1册</h3>
     <div class="map-path">
-      <div class="map-node current">裸K<br><small>轮次1-2,5-6</small></div>
+      <div class="map-node current">裸K<br><small>第1册</small></div>
       <span class="map-arrow">→</span>
-      <div class="map-node">财报<br><small>轮次3</small></div>
+      <div class="map-node">财报<br><small>第2册</small></div>
       <span class="map-arrow">→</span>
-      <div class="map-node">宏观<br><small>轮次4</small></div>
+      <div class="map-node">宏观<br><small>第3册</small></div>
       <span class="map-arrow">→</span>
-      <div class="map-node">交易系统<br><small>轮次6</small></div>
+      <div class="map-node">交易系统<br><small>第4册</small></div>
       <span class="map-arrow">→</span>
-      <div class="map-node">风控心理<br><small>轮次7</small></div>
+      <div class="map-node">风控心理<br><small>第5册</small></div>
     </div>
   </div>
 </div>
@@ -1131,15 +1131,16 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <table class="data-table">
 <thead>
-<tr><th>缺口类型</th><th>回补概率</th><th>回补时间</th><th>实战意义</th></tr>
+<tr><th>缺口类型</th><th>回补倾向</th><th>常见节奏</th><th>实战意义</th></tr>
 </thead>
 <tbody>
-<tr><td>普通缺口</td><td class="highlight">≈100%</td><td>1-5天</td><td>忽略，噪音</td></tr>
-<tr><td>突破缺口</td><td>≈20%</td><td>数周-数月</td><td>不回补=趋势确认</td></tr>
-<tr><td>持续缺口</td><td>≈50%</td><td>数周</td><td>中速回补=趋势减速</td></tr>
-<tr><td>衰竭缺口</td><td class="highlight">≈90%</td><td>1-3天</td><td>快速回补=反转信号</td></tr>
+<tr><td>普通缺口</td><td class="highlight">通常较高</td><td>往往较快</td><td>多为短期噪音，仍需结合环境判断</td></tr>
+<tr><td>突破缺口</td><td>通常较低</td><td>可能持续数周或更久</td><td>未快速回补可作为趋势确认之一</td></tr>
+<tr><td>持续缺口</td><td>中等</td><td>常见于趋势运行期间</td><td>回补速度加快可能提示趋势减速</td></tr>
+<tr><td>衰竭缺口</td><td class="highlight">通常较高</td><td>往往较快</td><td>快速回补可作为反转确认之一</td></tr>
 </tbody>
 </table>
+<p style="color:var(--text-muted);font-size:12px;">以上是经验性特征，不是固定概率或期限；实际表现会随品种、周期、市场制度与样本口径变化。</p>
 </div>
 
 <div class="section">
@@ -1363,14 +1364,14 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <ul>
 <li><strong>首次回测</strong>：可靠性最高，机构可能再次在该区域操作</li>
 <li><strong>二次回测</strong>：可靠性下降，部分机构可能已离场</li>
-<li><strong>三次及以上</strong>：大概率失效，该区域的流动性已被充分消化</li>
+<li><strong>三次及以上</strong>：参考价值通常进一步下降，需结合结构、量能与市场环境重新确认</li>
 </ul>
-<p>实战规则：<strong>只交易首次回测和二次回测，三次以上放弃</strong>。</p>
+<p>实战规则：<strong>优先评估首次和二次回测；三次以上降低优先级，除非有新的结构与量能确认</strong>。</p>
 </div>
 
 <div class="callout callout-key">
-<div class="callout-title">🔑 新鲜度定律</div>
-<p>供需区域的可靠性 = 1 / 回测次数。首次回测≈70%可靠，二次≈50%，三次≈30%，四次以上≈0%。只交易首次和二次，这是数学上的正期望值。</p>
+<div class="callout-title">🔑 新鲜度原则</div>
+<p>一般而言，供需区域被反复回测后，未成交订单可能逐步被消化，参考价值也会减弱。但回测次数不能直接换算为固定胜率；应按具体品种和周期回测，并结合结构、量能、交易成本与止损规则评估期望值。</p>
 </div>
 
 <div class="section">
@@ -1814,12 +1815,12 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li>盈亏比2:1 → 只需要>33%胜率就能盈利</li>
 <li>盈亏比3:1 → 只需要>25%胜率就能盈利</li>
 </ul>
-<p>裸K交易的核心不是追求高胜率，而是<strong>追求正期望值</strong>。50%胜率+2:1盈亏比=每笔交易期望盈利0.5R（R=单笔风险），长期稳赚。</p>
+<p>裸K交易的核心不是追求高胜率，而是<strong>追求正期望值</strong>。在未计佣金、滑点等交易成本时，50%胜率+2:1盈亏比的每笔交易期望值为+0.5R（R=单笔风险）；这表示长期统计期望为正，不代表每个阶段都能盈利。</p>
 </div>
 
 <div class="section">
-<h3>18.2 最低盈亏比要求：1:2</h3>
-<p>入场前计算盈亏比。如果<2:1，不入场。这是一个数学规则，不是感觉。2:1盈亏比+40%胜率=微亏，2:1+50%胜率=稳赚。低于2:1的交易，你需要非常高的胜率才能盈利——这不现实。</p>
+<h3>18.2 最低盈亏比要求：2:1</h3>
+<p>入场前计算盈亏比。本手册将2:1设为策略筛选门槛，而不是适用于所有系统的数学定律。未计交易成本时，2:1盈亏比+40%胜率的期望值为+0.2R，2:1+50%胜率为+0.5R；盈亏比越低，达到盈亏平衡所需的胜率越高，实际判断还要计入佣金、滑点和样本波动。</p>
 </div>
 
 <!-- 交互组件：盈亏比计算器 -->
@@ -2092,9 +2093,9 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>21.7 斐波那契共振入场</h3>
-<p>这是裸K交易中<strong>最高胜率的入场方式</strong>：</p>
+<p>这是一种用多个维度交叉确认的<strong>高筛选强度入场方式</strong>：</p>
 <p><strong>斐波那契回调位 + 供需区域 + 前高低点 + 反转K线</strong> = 四重共振</p>
-<p>当这4个因素在同一个价格区域重合时，胜率可达75-80%。但注意：三重共振已足够（3个因素重合），四个以上反而过度分析。</p>
+<p>当这些因素在同一价格区域重合时，信号的确认维度更完整，但不能据此直接推导固定胜率。三重共振通常已能形成可检验的规则；继续叠加条件可能造成过度拟合，实际效果应通过同品种、同周期的样本外测试验证。</p>
 </div>
 
 <div class="section">
@@ -2325,7 +2326,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>25.3 大周期与小周期的冲突处理</h3>
 <p>当日线看空但1小时看多时，怎么办？<strong>信大周期</strong>。1小时的多头可能是日线下降趋势中的反弹——你可以做短线多，但仓位要小（≤1/3标准仓），止损要紧。</p>
-<p>最优场景：三个周期方向一致。D1做多+H4回调到位+H1反转信号=最高胜率。</p>
+<p>优先场景：三个周期方向一致。D1做多+H4回调到位+H1反转信号，可形成更完整的多周期确认。</p>
 </div>
 
 <div class="section">
@@ -2337,7 +2338,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="rule-box">
 <div class="rule-title">第25章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>大周期与小周期方向冲突时，<span class="action">我将信大周期，小周期方向只做1/3仓位的短线交易，止损设在H1结构位。</span></div>
-<div class="rule-item"><span class="trigger">当</span>三个周期方向一致+位置到位+信号出现时，<span class="action">我将用标准仓位入场——这是最高胜率的入场条件。</span></div>
+<div class="rule-item"><span class="trigger">当</span>三个周期方向一致+位置到位+信号出现时，<span class="action">我将按经回测验证的仓位规则入场——这是多周期确认较完整的条件。</span></div>
 </div>
 </div>
 
@@ -2358,15 +2359,15 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 
 <div class="section">
-<h3>26.5-26.7 个股与大盘的背离、信任判断、最高胜率组合</h3>
+<h3>26.5-26.7 个股与大盘的背离、信任判断、多层确认组合</h3>
 <p><strong>个股强于大盘</strong>：大盘LH/LL但个股HH/HL=选股alpha，但仓位要保守。</p>
-<p><strong>最高胜率组合</strong>：大盘向上（HH/HL）+板块向上（HH/HL）+个股信号（关键位+反转K线）=三重确认，胜率可达75%+。</p>
+<p><strong>多层确认组合</strong>：大盘向上（HH/HL）+板块向上（HH/HL）+个股信号（关键位+反转K线）=三重确认。它有助于过滤逆势信号，但实际胜率仍取决于品种、周期、样本与执行成本。</p>
 </div>
 
 <div class="rule-box">
 <div class="rule-title">第26章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>沪深300跌破关键HL（CHOCH）时，<span class="action">我将将总仓位降至30%以下，停止新建多头仓位（减仓执行详见风控手册第6章）。</span></div>
-<div class="rule-item"><span class="trigger">当</span>大盘向上+板块向上+个股信号同时满足时，<span class="action">我将用标准仓位入场——这是裸K交易的最高胜率条件。</span></div>
+<div class="rule-item"><span class="trigger">当</span>大盘向上+板块向上+个股信号同时满足时，<span class="action">我将按经回测验证的仓位规则入场——这是多层确认较完整的条件。</span></div>
 </div>
 </div>
 
@@ -2375,8 +2376,8 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <h2 class="chapter-title"><span class="ch-num">第27章</span>复合信号与全链路交易计划</h2>
 
 <div class="section">
-<h3>27.1 复合信号：2-3个因素重合，胜率60%→75-80%</h3>
-<p>单一信号的胜率约50-60%。当2-3个独立因素在同一价格区域重合时，胜率跃升至75-80%。这就是<strong>复合信号</strong>的力量。</p>
+<h3>27.1 复合信号：用2-3个独立因素交叉确认</h3>
+<p>单一信号提供的信息有限。当2-3个相对独立的因素在同一价格区域重合时，可以过滤一部分低质量机会，但不能直接换算为固定胜率。策略是否改善，应以明确口径的回测、样本外测试和实盘记录为准。</p>
 <p>关键：复合信号的各个因素必须是<strong>独立</strong>的。斐波那契38.2%和50%不是独立因素（都来自斐波那契），但斐波那契38.2%+供需区域+反转K线是独立的（来自三个不同维度）。</p>
 </div>
 
@@ -2412,7 +2413,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="rule-box">
 <div class="rule-title">第27章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>3个独立因素在同一价格区域重合时，<span class="action">我将用标准仓位入场——这是复合信号，胜率75%+。</span></div>
+<div class="rule-item"><span class="trigger">当</span>3个独立因素在同一价格区域重合时，<span class="action">我将把它视为复合信号，并按经回测验证的仓位规则执行。</span></div>
 <div class="rule-item"><span class="trigger">当</span>我要做任何一笔交易时，<span class="action">我将填写一页纸交易计划（7步），任一步不满足就不入场。</span></div>
 </div>
 </div>
@@ -2474,7 +2475,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li>5-8个关键位足够，多了是噪音</li>
 <li>信号越弱仓位越小，C级1/3、B级1/2、A级标准</li>
 <li>假突破=反杀机会，真突破=等回踩确认</li>
-<li>三个周期方向一致=最高胜率</li>
+<li>三个周期方向一致=多周期确认更完整</li>
 <li>大盘破位=减仓第一，个股分析第二</li>
 <li>复合信号3个因素重合=强信号，4个以上=过度</li>
 <li>连续3次止损=暂停2天复盘</li>

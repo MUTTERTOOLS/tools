@@ -322,7 +322,7 @@ strong{color:var(--text-primary);}
 <tr><td class="highlight">利润因子</td><td>Profit Factor</td><td>总盈利/总亏损，>1.5可用，>2.0优秀</td><td>第10章</td></tr>
 <tr><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>资金曲线从峰值到谷底的最大跌幅</td><td>第10章</td></tr>
 <tr><td class="highlight">回测</td><td>Backtesting</td><td>用历史数据模拟系统表现</td><td>第9章</td></tr>
-<tr><td class="highlight">曲线拟合</td><td>Curve Fitting</td><td>参数过度优化以适应历史数据，实盘必然失效</td><td>第9章</td></tr>
+<tr><td class="highlight">曲线拟合</td><td>Curve Fitting</td><td>参数过度优化以适应历史数据，样本外或实盘表现通常会显著衰减</td><td>第9章</td></tr>
 <tr><td class="highlight">ATR</td><td>Average True Range</td><td>平均真实波幅，衡量股票波动率的指标</td><td>第6章</td></tr>
 </tbody>
 </table>
@@ -632,7 +632,7 @@ strong{color:var(--text-primary);}
 <p><strong>金字塔加仓</strong>：盈利后才能加仓，每次加仓量递减（如底仓1000股→加仓600股→再加仓300股）。加仓后的止损统一上移至保本位。</p>
 <div class="callout callout-danger">
 <div class="callout-title">⚠️ 绝对禁止</div>
-<p><strong>亏损后加仓摊平 = 最危险的仓位错误</strong>。这是马丁格尔策略——亏损后加倍下注，期望一次翻盘。短期可能"解套"，长期必然爆仓。新手永远用反马丁格尔（盈利后加仓）。</p>
+<p><strong>亏损后加仓摊平 = 高风险的仓位错误</strong>。这是马丁格尔策略——亏损后加倍下注，期望一次翻盘。短期可能"解套"，但在有限资金和连续亏损下会显著放大极端回撤乃至爆仓风险。新手应避免亏损后加倍下注；如采用盈利后加仓，也必须预先限定总风险。</p>
 </div>
 
 <h3>三条不可违反的资金红线</h3>
@@ -697,9 +697,9 @@ strong{color:var(--text-primary);}
 </table>
 
 <h3>盈亏比设计：为什么R:R≥2:1是入场前提</h3>
-<p>R = 初始风险（入场价-止损价）。如果目标盈利≥2R，盈亏比就是2:1。这意味着<strong>即使胜率只有40%，你也能盈利</strong>：</p>
+<p>R = 初始风险（入场价-止损价）。如果目标盈利≥2R，盈亏比就是2:1。在胜率和盈亏比的估计可靠、且暂不计交易成本时，40%胜率对应正期望值：</p>
 <p>期望值 = 40%×2R - 60%×1R = 0.8R - 0.6R = <strong class="green">0.2R（正期望值）</strong></p>
-<p>如果盈亏比只有1:1，胜率40%→期望值 = 40%×1R - 60%×1R = <strong class="red">-0.2R（负期望值）</strong>，长期必亏。</p>
+<p>如果盈亏比只有1:1，胜率40%→期望值 = 40%×1R - 60%×1R = <strong class="red">-0.2R（负期望值）</strong>；在这些假设稳定成立且未计交易成本时，长期统计期望为负。</p>
 
 <h3>止损被触发后的处理</h3>
 <p>止损被触发后，最危险的冲动是<strong>报复性交易</strong>——"我要赚回来"。这是亏损加速器。</p>
@@ -729,7 +729,7 @@ strong{color:var(--text-primary);}
 <div class="rule-title">📏 第7章 If-Then 规则</div>
 <div class="rule-item"><span class="rule-trigger">当我准备买入时，</span>我将<strong>先写好止损价、止盈目标、移动止盈规则</strong>——没有出场规则就不开仓</div>
 <div class="rule-item"><span class="rule-trigger">当止损被触发时，</span>我将<strong>立即执行，不犹豫</strong>——止损是保险，不是惩罚</div>
-<div class="rule-item"><span class="rule-trigger">当盈亏比<2:1时，</span>我将<strong>放弃入场</strong>——低盈亏比交易长期必亏</div>
+<div class="rule-item"><span class="rule-trigger">当盈亏比&lt;2:1时，</span>我将<strong>按本系统规则放弃入场</strong>——盈亏比越低，需要越高胜率才能覆盖亏损和交易成本</div>
 <div class="rule-item"><span class="rule-trigger">当连续亏损3笔后，</span>我将<strong>暂停交易1-3天</strong>，复盘最近5笔的规则执行率——这是报复性交易的阻断阀</div>
 <div class="rule-item"><span class="rule-trigger">当止损后我想立刻再入场时，</span>我将<strong>先判断是假突破还是趋势反转</strong>——假突破可再入，趋势反转则放弃</div>
 </div>
@@ -921,7 +921,7 @@ strong{color:var(--text-primary);}
 <h3>回测的陷阱：曲线拟合（过拟合）</h3>
 <div class="callout callout-danger">
 <div class="callout-title">⚠️ 曲线拟合 = 回测越完美越可疑</div>
-<p>如果你调整参数让回测结果"完美"——胜率80%、利润因子5.0、最大回撤5%——这几乎一定是<strong>过拟合</strong>。你把历史数据的噪音当成了信号，实盘必然失效。</p>
+<p>如果你反复调整参数，让回测结果呈现异常理想的胜率、利润因子和最大回撤，应高度警惕<strong>过拟合</strong>。这可能把历史数据的噪音当成信号，导致样本外或实盘表现显著衰减。</p>
 <p><strong>检验方法</strong>：用回测未使用的数据做<strong>样本外测试</strong>。如果样本外表现大幅下降，说明过拟合了。</p>
 </div>
 
@@ -1331,7 +1331,7 @@ strong{color:var(--text-primary);}
 <p><strong>① 连续亏损超过历史最大连亏×1.5</strong>——比如历史最大连亏6笔，现在连亏10笔还没停</p>
 <p><strong>② 滚动100笔期望值转负</strong>——不是偶尔亏损，而是持续亏损</p>
 <p><strong>③ 胜率和盈亏比同时大幅下降</strong>——不是盈亏比低了但胜率还在，而是双降</p>
-<p><strong>④ 市场状态发生根本性变化</strong>——如从趋势市变为长期震荡市，趋势系统必然失效</p>
+<p><strong>④ 市场状态发生根本性变化</strong>——如从趋势市变为长期震荡市，趋势系统表现通常会明显恶化</p>
 <p><strong>⑤ 最大回撤超过预设上限</strong>——如预设最大回撤20%，现在已亏25%+</p>
 </div>
 
@@ -1414,7 +1414,7 @@ strong{color:var(--text-primary);}
 <div class="rule-box">
 <div class="rule-title">📏 第17章 If-Then 规则</div>
 <div class="rule-item"><span class="rule-trigger">当我想修改系统时，</span>我将<strong>每次只改一个变量</strong>，走完"改→回测→模拟→小仓位→确认"五步</div>
-<div class="rule-item"><span class="rule-trigger">当我发现回测结果"过于完美"时，</span>我将<strong>用样本外数据验证</strong>——过拟合的回测实盘必然失效</div>
+<div class="rule-item"><span class="rule-trigger">当我发现回测结果"过于完美"时，</span>我将<strong>用样本外数据验证</strong>——过拟合通常会使样本外和实盘表现显著衰减</div>
 <div class="rule-item"><span class="rule-trigger">当我想切换到新系统时，</span>我将<strong>先用回测+模拟验证新系统</strong>，再过渡1-2个月，不直接实盘切换</div>
 <div class="rule-item"><span class="rule-trigger">当我同时想运行3套以上系统时，</span>我将<strong>精简为2套</strong>——超过2套=管理不过来</div>
 </div>
