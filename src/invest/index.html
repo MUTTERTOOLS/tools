@@ -557,7 +557,7 @@
 
     .research-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 18px;
     }
 
@@ -581,14 +581,17 @@
     .fundamentals { color: #62c6a6; }
     .macro { color: #73b8e5; }
     .valuation { color: #f58ea2; }
+    .coal { color: #d7a63d; }
     .handbook-card.analysis::after { content: "九面"; }
     .handbook-card.fundamentals::after { content: "财报"; }
     .handbook-card.macro::after { content: "宏观"; }
     .handbook-card.valuation::after { content: "PE"; }
+    .handbook-card.coal::after { content: "煤"; }
     .analysis .card-action { color: #79aefe; }
     .fundamentals .card-action { color: #62c6a6; }
     .macro .card-action { color: #73b8e5; }
     .valuation .card-action { color: #f58ea2; }
+    .coal .card-action { color: #d7a63d; }
 
     .price-action { color: #f4ae64; }
     .risk-mind { color: #ef8291; }
@@ -612,6 +615,7 @@
 
     @media (max-width: 900px) {
       .topic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .research-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 720px) {
@@ -874,7 +878,7 @@
               <p class="research-kicker">研究方法</p>
               <h2 id="research-title">把看法变成分析框架</h2>
             </div>
-            <p>从多维分析视角到估值指标，适合在你准备深入研究一只股票时按需阅读。</p>
+            <p>从多维分析、估值指标到行业研究，适合在你准备深入研究一只股票时按需阅读。</p>
           </div>
 
           <div class="research-grid">
@@ -900,6 +904,19 @@
               <p class="card-description">理解不同估值指标适用的公司和场景，用交叉验证判断价格是否合理。</p>
               <div class="card-meta">
                 <span>判断价格与价值</span>
+                <span class="card-action">查看手册 →</span>
+              </div>
+            </a>
+
+            <a class="handbook-card research-card coal" href="./coal-handbook.html" aria-label="打开煤炭行业投资手册">
+              <div class="card-topline">
+                <span class="card-stage">行业研究</span>
+                <span>Coal 101</span>
+              </div>
+              <h3 class="card-title">煤炭行业<br />投资手册</h3>
+              <p class="card-description">从煤种、产业链和供需价格入门，再看企业成本、现金流、政策与行业风险。配有新手路线、数据图解、一手来源与误读提示。</p>
+              <div class="card-meta">
+                <span>建立煤炭行业研究框架</span>
                 <span class="card-action">查看手册 →</span>
               </div>
             </a>
