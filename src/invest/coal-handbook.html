@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>煤炭投资入门手册 · 黑金读懂</title>
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&amp;family=Noto+Sans+SC:wght@400;500;700&amp;family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #080c08;
+  --bg-card: rgba(18,28,18,0.85);
+  --bg-card-hover: rgba(25,40,25,0.95);
+  --accent-gold: #d4a017;
+  --accent-gold-dim: rgba(212,160,23,0.12);
+  --accent-gold-glow: rgba(212,160,23,0.4);
+  --accent-ember: #e85d26;
+  --accent-ember-dim: rgba(232,93,38,0.12);
+  --accent-ember-glow: rgba(232,93,38,0.35);
+  --accent-green: #4ade80;
+  --accent-green-dim: rgba(74,222,128,0.12);
+  --accent-ice: #7dd3fc;
+  --accent-ice-dim: rgba(125,211,252,0.12);
+  --accent-violet: #a78bfa;
+  --accent-violet-dim: rgba(167,139,250,0.12);
+  --accent-rose: #fb7185;
+  --accent-rose-dim: rgba(251,113,133,0.12);
+  --text-primary: #e8edf0;
+  --text-secondary: rgba(232,237,240,0.8);
+  --text-dim: rgba(232,237,240,0.62);
+  --border-subtle: rgba(212,160,23,0.12);
+  --border-ember: rgba(232,93,38,0.12);
+  --font-serif: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-tech: 'Orbitron', monospace;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--accent-gold-dim) var(--bg-deep)}
+body{font-family:var(--font-serif);background:var(--bg-deep);color:var(--text-primary);line-height:1.9;font-size:17px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.skip-link{position:fixed;top:8px;left:12px;z-index:2000;padding:10px 14px;border-radius:6px;background:var(--accent-gold);color:#080c08;font-family:var(--font-sans);font-size:14px;font-weight:700;transform:translateY(-160%);transition:transform .2s ease}
+.skip-link:focus{transform:translateY(0);outline:2px solid var(--accent-ice);outline-offset:3px}
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent-gold),var(--accent-ember));z-index:1000;transition:width .1s linear}
+
+/* SIDEBAR NAV */
+#side-nav{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:999;display:flex;flex-direction:column;gap:0}
+.nav-dot{width:44px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;position:relative;display:grid;place-items:center}
+.nav-dot::before{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--accent-gold);background:transparent;content:"";transition:all .3s}
+.nav-dot.active::before{background:var(--accent-gold);box-shadow:0 0 10px var(--accent-gold-glow)}
+.nav-dot:focus-visible{outline:2px solid var(--accent-ice);outline-offset:4px}
+.nav-dot:hover::after{content:attr(data-label);position:absolute;right:44px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:12px;color:var(--accent-gold);font-family:var(--font-serif);background:var(--bg-card);padding:4px 10px;border-radius:4px;border:1px solid var(--border-subtle)}
+
+.content-wrapper{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 32px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;padding:60px 0}
+.hero-icon{width:100px;height:100px;border:2px solid var(--accent-gold);border-radius:50%;position:relative;margin-bottom:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px var(--accent-gold-dim),inset 0 0 25px var(--accent-ember-dim);animation:coal-glow 4s ease-in-out infinite}
+.hero-icon::before{content:'';width:36px;height:36px;background:linear-gradient(135deg,#1a1a1a 25%,#2d2d2d 50%,#1a1a1a 75%);border-radius:6px;transform:rotate(45deg);box-shadow:0 0 15px var(--accent-ember-glow)}
+.hero-icon::after{content:'';position:absolute;bottom:-8px;width:20px;height:4px;background:var(--accent-ember);border-radius:2px;box-shadow:0 0 8px var(--accent-ember-glow);animation:ember-flicker 1.5s ease-in-out infinite}
+@keyframes coal-glow{0%,100%{box-shadow:0 0 40px var(--accent-gold-dim),inset 0 0 25px var(--accent-ember-dim)}50%{box-shadow:0 0 60px var(--accent-gold-glow),inset 0 0 35px var(--accent-ember-dim)}}
+@keyframes ember-flicker{0%,100%{opacity:1}30%{opacity:.6}60%{opacity:.9}80%{opacity:.4}}
+.hero h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.2;letter-spacing:-.02em;margin-bottom:24px;background:linear-gradient(135deg,var(--text-primary) 20%,var(--accent-gold) 70%,var(--accent-ember) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .subtitle{font-size:18px;color:var(--text-secondary);max-width:620px;line-height:2}
+.hero .subtitle strong{color:var(--accent-gold);-webkit-text-fill-color:var(--accent-gold)}
+.hero .meta-line{margin-top:32px;font-size:13px;color:var(--text-dim);font-family:var(--font-sans)}
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-dim);font-size:12px;letter-spacing:2px;font-family:var(--font-tech);animation:float 2s ease-in-out infinite}
+.scroll-hint .arrow{width:1px;height:30px;background:linear-gradient(180deg,var(--accent-gold),transparent)}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* LEARNING MAP */
+.learning-map{margin:48px 0;padding:24px 28px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;font-size:14px}
+.learning-map .lm-label{font-family:var(--font-tech);font-size:10px;letter-spacing:3px;color:var(--text-dim);margin-bottom:10px;display:block}
+.learning-map .lm-path{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--font-sans)}
+.learning-map .lm-step{padding:4px 12px;border-radius:4px;background:var(--accent-gold-dim);color:var(--text-secondary);font-size:13px;border:1px solid rgba(212,160,23,0.15)}
+.learning-map .lm-step.current{background:var(--accent-gold);color:#080c08;font-weight:700;border-color:var(--accent-gold)}
+.learning-map .lm-arrow{color:var(--text-dim);font-size:12px}
+
+/* READING GUIDE */
+.reading-guide{margin:0 0 60px;padding:28px 32px;background:linear-gradient(135deg,var(--accent-gold-dim),var(--accent-ember-dim));border:1px solid var(--border-subtle);border-radius:12px}
+.reading-guide .rg-title{font-family:var(--font-tech);font-size:11px;letter-spacing:3px;color:var(--accent-gold);margin-bottom:12px}
+.reading-guide .rg-body{font-size:15px;line-height:1.9;color:var(--text-secondary)}
+.reading-guide .rg-body strong{color:var(--accent-gold)}
+.audit-banner{margin:0 0 28px;padding:20px 24px;border:1px solid rgba(251,113,133,0.35);border-radius:10px;background:rgba(251,113,133,0.08);font-family:var(--font-sans);font-size:14px;line-height:1.8;color:var(--text-secondary)}
+.audit-banner strong{color:var(--accent-rose)}
+.audit-banner a{color:var(--accent-gold);text-decoration:underline;text-underline-offset:3px}
+.source-link{color:var(--accent-ice);text-decoration:underline;text-underline-offset:3px}
+.source-list{margin:18px 0 0;padding-left:20px;color:var(--text-secondary);font-size:14px;line-height:1.9}
+.source-list li+li{margin-top:6px}
+
+/* BEGINNER ROUTE */
+.novice-route{margin:0 0 64px;padding:28px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px}
+.novice-route .nr-eyebrow{font-family:var(--font-tech);font-size:10px;letter-spacing:3px;color:var(--accent-gold);display:block;margin-bottom:8px}
+.novice-route h2{font-size:22px;line-height:1.45;text-wrap:balance;margin-bottom:6px}
+.novice-route>p{font-family:var(--font-sans);font-size:14px;color:var(--text-secondary);margin-bottom:20px}
+.route-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.route-card{min-height:126px;padding:16px;border:1px solid rgba(212,160,23,0.22);border-radius:8px;background:rgba(212,160,23,0.05);display:flex;flex-direction:column;transition:border-color .2s ease,background .2s ease,transform .2s ease;touch-action:manipulation}
+.route-card:hover{border-color:var(--accent-gold);background:var(--accent-gold-dim);transform:translateY(-2px)}
+.route-card:active{border-color:var(--accent-gold);background:rgba(212,160,23,0.18)}
+.route-card:focus-visible{outline:2px solid var(--accent-ice);outline-offset:3px}
+.route-card .route-no{font-family:var(--font-tech);font-size:11px;color:var(--accent-gold);margin-bottom:12px}
+.route-card strong{font-size:15px;line-height:1.45;margin-bottom:5px}
+.route-card small{font-family:var(--font-sans);font-size:12px;line-height:1.55;color:var(--text-secondary)}
+.learning-bridge{margin:34px 0;padding:26px 28px;border:1px solid rgba(125,211,252,0.2);border-radius:12px;background:var(--accent-ice-dim)}
+.learning-bridge .bridge-eyebrow{display:block;font-family:var(--font-tech);font-size:10px;letter-spacing:2.5px;color:var(--accent-ice);margin-bottom:7px}
+.learning-bridge>h4{font-size:20px;line-height:1.45;text-wrap:balance;margin-bottom:6px}
+.learning-bridge>p{font-family:var(--font-sans);font-size:13px;line-height:1.7;color:var(--text-secondary);margin-bottom:18px}
+.learning-bridge .flow-diagram{margin:0}
+
+/* SECTIONS */
+.section{padding:100px 0 80px;position:relative}
+.js .section{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.js .section.visible{opacity:1;transform:translateY(0)}
+.section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--accent-gold-dim),var(--accent-gold),var(--accent-gold-dim),transparent);position:relative;margin:0 auto}
+.section-divider::before{content:'';position:absolute;width:80px;height:3px;background:var(--accent-gold);top:-1px;left:50%;transform:translateX(-50%);box-shadow:0 0 20px var(--accent-gold-glow)}
+.section-number{font-family:var(--font-tech);font-size:12px;color:var(--accent-gold);letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;display:block}
+.section-title{font-size:clamp(28px,4vw,42px);font-weight:900;line-height:1.3;margin-bottom:48px;position:relative}
+.section-title .hl{color:var(--accent-gold);-webkit-text-fill-color:var(--accent-gold)}
+.section-title .hl2{color:var(--accent-ember);-webkit-text-fill-color:var(--accent-ember)}
+
+/* PART HEADER */
+.part-header{padding:80px 0 40px;text-align:center;position:relative}
+.part-header .part-num{font-family:var(--font-tech);font-size:13px;letter-spacing:6px;color:var(--accent-gold);margin-bottom:16px;display:block}
+.part-header .part-title{font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-.03em;background:linear-gradient(135deg,var(--text-primary) 30%,var(--accent-gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px}
+.part-header .part-goal{font-size:15px;color:var(--text-secondary);max-width:600px;margin:0 auto;line-height:1.9}
+
+/* PARAGRAPH */
+.para{margin-bottom:28px;font-size:17px;line-height:2}
+.para.dim{color:var(--text-secondary)}
+.para strong{color:var(--accent-gold);font-weight:700}
+.para strong.ember{color:var(--accent-ember)}
+
+/* CHAPTER HEADER */
+.chapter-header{margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border-subtle)}
+.chapter-header .ch-num{font-family:var(--font-tech);font-size:11px;letter-spacing:3px;color:var(--accent-ember);margin-bottom:8px;display:block}
+.chapter-header h3{font-size:clamp(22px,3vw,30px);font-weight:700;line-height:1.4}
+.chapter-header h3 .hl{color:var(--accent-gold)}
+.chapter-header h3 .hl2{color:var(--accent-ember)}
+
+/* TERM CALLOUT (first-use bridge) */
+.term-bridge{display:inline-block;font-size:13px;background:var(--accent-gold-dim);color:var(--accent-gold);padding:2px 8px;border-radius:3px;margin:0 2px;cursor:help;border:1px solid rgba(212,160,23,0.15);font-family:var(--font-sans)}
+
+/* INSIGHT BOX */
+.insight-box{border-left:3px solid var(--accent-gold);background:var(--accent-gold-dim);padding:24px 28px;margin:36px 0;border-radius:0 8px 8px 0;font-size:17px;font-weight:600;line-height:1.8}
+.insight-box.ember{border-left-color:var(--accent-ember);background:var(--accent-ember-dim)}
+.insight-box.green{border-left-color:var(--accent-green);background:var(--accent-green-dim)}
+.insight-box.ice{border-left-color:var(--accent-ice);background:var(--accent-ice-dim)}
+.insight-box.violet{border-left-color:var(--accent-violet);background:var(--accent-violet-dim)}
+.insight-box.rose{border-left-color:var(--accent-rose);background:var(--accent-rose-dim)}
+.insight-box .label{font-family:var(--font-tech);font-size:10px;letter-spacing:3px;color:var(--text-dim);margin-bottom:8px;display:block}
+
+/* TIP / KEY / WARN / DANGER BOXES */
+.tip-box{border-left:3px solid var(--accent-green);background:var(--accent-green-dim);padding:20px 24px;margin:32px 0;border-radius:0 8px 8px 0;font-size:15px;line-height:1.9}
+.tip-box .tb-label{font-family:var(--font-tech);font-size:10px;letter-spacing:2px;color:var(--accent-green);margin-bottom:6px;display:block}
+.key-box{border-left:3px solid var(--accent-gold);background:var(--accent-gold-dim);padding:20px 24px;margin:32px 0;border-radius:0 8px 8px 0;font-size:15px;line-height:1.9}
+.key-box .kb-label{font-family:var(--font-tech);font-size:10px;letter-spacing:2px;color:var(--accent-gold);margin-bottom:6px;display:block}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:32px 0}
+.stat-item{text-align:center;padding:24px 16px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;transition:all .3s}
+.stat-item:hover{border-color:var(--accent-gold);box-shadow:0 0 20px var(--accent-gold-dim)}
+.stat-item .sv{font-family:var(--font-tech);font-size:26px;font-weight:900;color:var(--accent-gold);margin-bottom:6px}
+.stat-item .sl{font-size:12px;color:var(--text-secondary);line-height:1.6}
+
+/* DATA STORYTELLING */
+.data-figure{margin:40px 0;padding:30px;background:rgba(14,22,15,0.94);border:1px solid rgba(212,160,23,0.24);border-radius:14px;box-shadow:0 18px 60px rgba(0,0,0,0.18)}
+.viz-header{margin-bottom:24px}
+.viz-eyebrow{display:block;font-family:var(--font-tech);font-size:10px;letter-spacing:2.5px;color:var(--accent-gold);margin-bottom:7px}
+.viz-title{font-family:var(--font-serif);font-size:21px;line-height:1.45;text-wrap:balance;margin-bottom:5px}
+.viz-subtitle{font-family:var(--font-sans);font-size:13px;line-height:1.7;color:var(--text-secondary)}
+.viz-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.viz-panel{padding:20px;background:rgba(232,237,240,0.035);border:1px solid rgba(232,237,240,0.1);border-radius:10px}
+.viz-panel.wide{grid-column:1/-1}
+.viz-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.viz-panel-title{font-family:var(--font-sans);font-size:14px;font-weight:700;line-height:1.5}
+.viz-delta{font-family:var(--font-tech);font-size:11px;white-space:nowrap;color:var(--accent-ice);padding:3px 7px;border:1px solid rgba(125,211,252,0.25);border-radius:999px;background:var(--accent-ice-dim)}
+.viz-delta.down{color:var(--accent-gold);border-color:rgba(212,160,23,0.25);background:var(--accent-gold-dim)}
+.composition-row{display:grid;grid-template-columns:46px minmax(0,1fr);gap:10px;align-items:center;margin-top:10px}
+.composition-year,.metric-year{font-family:var(--font-tech);font-size:11px;color:var(--text-secondary)}
+.composition-track{height:32px;display:flex;overflow:hidden;border:1px solid rgba(232,237,240,0.12);border-radius:5px;background:rgba(232,237,240,0.06)}
+.composition-coal,.composition-other{display:flex;align-items:center;justify-content:center;font-family:var(--font-tech);font-size:10px;font-weight:700;white-space:nowrap}
+.composition-coal{background:var(--accent-gold);color:#080c08}
+.composition-other{background:rgba(232,237,240,0.1);color:var(--text-secondary)}
+.composition-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-family:var(--font-sans);font-size:11px;color:var(--text-secondary)}
+.legend-key{display:inline-flex;align-items:center;gap:6px}
+.legend-swatch{width:10px;height:10px;border-radius:2px;background:var(--accent-gold);border:1px solid rgba(232,237,240,0.28)}
+.legend-swatch.other{background:rgba(232,237,240,0.1)}
+.metric-scale{font-family:var(--font-sans);font-size:10px;color:var(--text-dim);text-align:right;margin:-8px 0 8px}
+.metric-row{display:grid;grid-template-columns:42px minmax(0,1fr) 86px;gap:8px;align-items:center;margin-top:11px}
+.metric-track{height:22px;background:rgba(232,237,240,0.07);border:1px solid rgba(232,237,240,0.1);border-radius:4px;overflow:hidden}
+.metric-fill{display:block;height:100%;background:var(--accent-gold);border-right:1px solid rgba(8,12,8,0.5)}
+.metric-fill.ice{background:var(--accent-ice)}
+.metric-value{font-family:var(--font-tech);font-size:11px;text-align:right;color:var(--text-primary);white-space:nowrap}
+.reader-takeaway{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.reader-note{padding:14px 15px;border-top:2px solid var(--accent-gold);background:var(--accent-gold-dim);border-radius:0 0 7px 7px}
+.reader-note.caution{border-top-color:var(--accent-ember);background:var(--accent-ember-dim)}
+.reader-note.next{border-top-color:var(--accent-ice);background:var(--accent-ice-dim)}
+.reader-note strong{display:block;font-family:var(--font-sans);font-size:12px;margin-bottom:4px}
+.reader-note p{font-family:var(--font-sans);font-size:12px;line-height:1.65;color:var(--text-secondary)}
+.appendix-jump{min-height:44px;margin-top:14px;display:inline-flex;align-items:center;gap:8px;color:var(--accent-ice);font-family:var(--font-sans);font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:3px;touch-action:manipulation}
+.appendix-jump::after{content:'→';color:var(--accent-gold);font-family:var(--font-tech)}
+.appendix-jump:focus-visible,.back-link:focus-visible{outline:2px solid var(--accent-ice);outline-offset:3px}
+.source-record{scroll-margin-top:24px;margin:26px 0;padding:24px;background:var(--bg-card);border:1px solid rgba(232,237,240,0.12);border-radius:10px}
+.source-record:target{border-color:var(--accent-gold);box-shadow:0 0 0 3px var(--accent-gold-dim)}
+.source-record-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.source-code{flex-shrink:0;padding:3px 7px;border-radius:4px;background:var(--accent-gold-dim);border:1px solid rgba(212,160,23,0.24);color:var(--accent-gold);font-family:var(--font-tech);font-size:10px}
+.source-record h4{font-size:18px;line-height:1.45}
+.source-record p{font-family:var(--font-sans);font-size:13px;line-height:1.8;color:var(--text-secondary)}
+.source-record .compare-table{margin:16px 0}
+.back-link{min-height:44px;display:inline-flex;align-items:center;color:var(--accent-ice);font-family:var(--font-sans);font-size:12px;text-decoration:underline;text-underline-offset:3px;touch-action:manipulation}
+.source-directory-header{margin-top:64px}
+.timeline-item[id]{scroll-margin-top:24px;padding-top:12px;border-radius:8px}
+.timeline-item[id]:target{background:var(--accent-gold-dim);box-shadow:0 0 0 3px var(--accent-gold-dim)}
+.range-chart{margin:12px 0 0;padding:34px 12px 8px}
+.range-track{height:24px;background:rgba(232,237,240,0.08);border:1px solid rgba(232,237,240,0.14);border-radius:999px;position:relative}
+.range-band{position:absolute;left:23.333%;width:66.667%;top:-1px;height:24px;background:var(--accent-gold);border:1px solid #f0c65a;border-radius:999px;box-shadow:0 0 18px var(--accent-gold-dim)}
+.range-mid{position:absolute;left:56.667%;top:-9px;width:2px;height:40px;background:var(--text-primary)}
+.range-mid::after{content:'中点 670';position:absolute;left:50%;bottom:43px;transform:translateX(-50%);font-family:var(--font-tech);font-size:10px;color:var(--text-primary);white-space:nowrap}
+.range-axis{height:28px;position:relative;font-family:var(--font-tech);font-size:10px;color:var(--text-secondary)}
+.range-axis span{position:absolute;top:8px;transform:translateX(-50%)}
+.range-axis .a500{left:0;transform:none}.range-axis .a570{left:23.333%}.range-axis .a770{left:90%}.range-axis .a800{right:0;left:auto;transform:none}
+.range-band-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-tech);font-size:11px;font-weight:900;color:#080c08}
+.liquidity-summary{display:flex;align-items:flex-end;gap:12px;margin-bottom:18px}
+.liquidity-summary strong{font-family:var(--font-tech);font-size:36px;line-height:1;color:var(--accent-gold)}
+.liquidity-summary span{font-family:var(--font-sans);font-size:13px;line-height:1.55;color:var(--text-secondary)}
+.liquidity-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.contract-cell{padding:12px 10px;border:1px solid rgba(232,237,240,0.12);border-radius:7px;background:rgba(232,237,240,0.035)}
+.contract-cell strong{display:block;font-family:var(--font-tech);font-size:12px;color:var(--text-primary);margin-bottom:4px}
+.contract-cell span{display:block;font-family:var(--font-sans);font-size:11px;color:var(--text-secondary);line-height:1.5}
+
+/* STRUCTURE DIAGRAM / DIAGRAM CARD */
+.structure-diagram{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:40px 0}
+.diagram-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;padding:28px;position:relative;overflow:hidden;transition:all .3s}
+.diagram-card:hover{background:var(--bg-card-hover);border-color:var(--accent-gold);box-shadow:0 0 25px var(--accent-gold-dim)}
+.diagram-card .ci{font-size:28px;margin-bottom:12px;display:block}
+.diagram-card h4{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--accent-gold)}
+.diagram-card.ember h4{color:var(--accent-ember)}
+.diagram-card.green h4{color:var(--accent-green)}
+.diagram-card p{font-size:14px;color:var(--text-secondary);line-height:1.8}
+.diagram-card .ct{display:inline-block;font-family:var(--font-tech);font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:3px;margin-top:12px;background:var(--accent-gold-dim);color:var(--accent-gold);border:1px solid rgba(212,160,23,0.2)}
+.diagram-card.ember .ct{background:var(--accent-ember-dim);color:var(--accent-ember);border-color:rgba(232,93,38,0.2)}
+.diagram-card.green .ct{background:var(--accent-green-dim);color:var(--accent-green);border-color:rgba(74,222,128,0.2)}
+.diagram-card.full-width{grid-column:1/-1}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:separate;border-spacing:0;margin:32px 0;font-size:14px}
+.compare-table thead th{font-family:var(--font-tech);font-size:11px;letter-spacing:2px;color:var(--accent-gold);text-align:left;padding:14px 16px;border-bottom:1px solid var(--accent-gold-dim);font-weight:400}
+.compare-table tbody td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-secondary);vertical-align:top}
+.compare-table tbody td:first-child{color:var(--text-primary);font-weight:600}
+.compare-table tbody tr:hover td{background:var(--accent-gold-dim)}
+
+/* POWER MAP */
+.power-map{display:flex;flex-direction:column;gap:0;margin:40px 0}
+.power-layer{display:flex;align-items:stretch;border-bottom:1px solid rgba(255,255,255,0.04);transition:all .3s}
+.power-layer:hover{background:var(--accent-gold-dim)}
+.power-layer .lr{width:60px;display:flex;align-items:center;justify-content:center;font-family:var(--font-tech);font-size:22px;font-weight:900;color:var(--text-dim);flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04)}
+.power-layer:first-child .lr{color:var(--accent-gold)}
+.power-layer:last-child .lr{color:var(--accent-ember)}
+.power-layer .lb{flex:1;padding:18px 24px}
+.power-layer .lb h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.power-layer .lb p{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.power-layer .lb .players{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.power-layer .lb .pt{font-family:var(--font-tech);font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:3px;background:var(--accent-gold-dim);color:var(--accent-gold);border:1px solid rgba(212,160,23,0.15)}
+.power-layer:last-child .lb .pt{background:var(--accent-ember-dim);color:var(--accent-ember);border-color:rgba(232,93,38,0.15)}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:40px;margin:40px 0}
+.timeline::before{content:'';position:absolute;left:14px;top:0;width:2px;height:100%;background:linear-gradient(180deg,var(--accent-gold),var(--accent-ember))}
+.timeline-item{position:relative;margin-bottom:40px;padding-left:24px}
+.timeline-item::before{content:'';position:absolute;left:-30px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--accent-gold);box-shadow:0 0 10px var(--accent-gold-glow)}
+.timeline-item .ty{font-family:var(--font-tech);font-size:12px;letter-spacing:2px;color:var(--accent-gold);margin-bottom:6px}
+.timeline-item h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.timeline-item p{font-size:15px;color:var(--text-secondary);line-height:1.8}
+
+/* PRICE LADDER */
+.price-ladder{display:flex;flex-direction:column;gap:0;margin:40px 0;position:relative}
+.price-ladder::before{content:'';position:absolute;left:30px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent-ember),var(--accent-gold),var(--accent-green));border-radius:2px}
+.price-step{display:flex;align-items:center;gap:20px;padding:20px 24px;position:relative}
+.price-step .pd{width:20px;height:20px;border-radius:50%;border:3px solid;flex-shrink:0;z-index:1;background:var(--bg-deep)}
+.price-step .pc{flex:1}
+.price-step .pc h5{font-size:16px;font-weight:700;margin-bottom:2px}
+.price-step .pc p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.price-step .pv{font-family:var(--font-tech);font-size:18px;font-weight:700;flex-shrink:0;text-align:right;min-width:80px}
+
+/* FLOW DIAGRAM */
+.flow-diagram{display:flex;flex-direction:column;gap:2px;margin:40px 0}
+.flow-step{display:flex;align-items:center;gap:16px;padding:18px 24px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:8px;transition:all .3s}
+.flow-step:hover{border-color:var(--accent-gold);background:var(--bg-card-hover)}
+.flow-step .fn{font-family:var(--font-tech);font-size:14px;font-weight:700;color:var(--accent-gold);flex-shrink:0;width:28px}
+.flow-step .fc{flex:1}
+.flow-step .fc h5{font-size:15px;font-weight:700;margin-bottom:3px}
+.flow-step .fc p{font-size:13px;color:var(--text-secondary);line-height:1.7}
+
+/* TECH ROUTE CARDS */
+.tech-routes{display:flex;flex-direction:column;gap:20px;margin:40px 0}
+.tech-route{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:32px;position:relative;overflow:hidden}
+.tech-route::before{content:attr(data-step);position:absolute;top:-10px;right:20px;font-family:var(--font-tech);font-size:72px;font-weight:900;color:rgba(212,160,23,0.04);line-height:1}
+.tech-route .rl{font-family:var(--font-tech);font-size:11px;letter-spacing:3px;color:var(--accent-gold);margin-bottom:8px}
+.tech-route h4{font-size:22px;font-weight:700;margin-bottom:12px}
+.tech-route .analogy{color:var(--accent-ember);font-style:italic;margin-bottom:16px;font-size:16px;line-height:1.8}
+.tech-route p{color:var(--text-secondary);font-size:15px;line-height:1.9}
+
+/* TAKEAWAY */
+.takeaway{margin:60px 0}
+.takeaway-line{display:flex;align-items:flex-start;gap:20px;margin-bottom:36px;padding:32px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px}
+.takeaway-line .ln{font-family:var(--font-tech);font-size:36px;font-weight:900;color:var(--accent-gold);flex-shrink:0;line-height:1}
+.takeaway-line:nth-child(2) .ln{color:var(--accent-ember)}
+.takeaway-line:nth-child(3) .ln{color:var(--accent-green)}
+.takeaway-line:nth-child(4) .ln{color:var(--accent-ice)}
+.takeaway-line .lc h4{font-size:20px;font-weight:700;margin-bottom:10px}
+.takeaway-line .lc p{font-size:15px;color:var(--text-secondary);line-height:1.9}
+
+/* COMPANY CARD */
+.company-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:40px 0}
+.company-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:28px;position:relative;overflow:hidden;transition:all .3s}
+.company-card:hover{border-color:var(--accent-gold);box-shadow:0 0 25px var(--accent-gold-dim)}
+.company-card .cc-rank{position:absolute;top:16px;right:20px;font-family:var(--font-tech);font-size:48px;font-weight:900;color:rgba(212,160,23,0.06);line-height:1}
+.company-card .cc-tag{font-family:var(--font-tech);font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:3px;margin-bottom:12px;display:inline-block}
+.company-card .cc-tag.gold{background:var(--accent-gold-dim);color:var(--accent-gold);border:1px solid rgba(212,160,23,0.2)}
+.company-card .cc-tag.ember{background:var(--accent-ember-dim);color:var(--accent-ember);border:1px solid rgba(232,93,38,0.2)}
+.company-card .cc-tag.green{background:var(--accent-green-dim);color:var(--accent-green);border:1px solid rgba(74,222,128,0.2)}
+.company-card .cc-tag.ice{background:var(--accent-ice-dim);color:var(--accent-ice);border:1px solid rgba(125,211,252,0.2)}
+.company-card h4{font-size:18px;font-weight:700;margin-bottom:4px}
+.company-card .cc-code{font-family:var(--font-tech);font-size:10px;color:var(--text-dim);margin-bottom:12px;display:block}
+.company-card .cc-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.company-card .cc-stat{text-align:center}
+.company-card .cc-stat .csv{font-family:var(--font-tech);font-size:16px;font-weight:700;color:var(--accent-gold)}
+.company-card .cc-stat .csl{font-size:10px;color:var(--text-dim)}
+.company-card .cc-analogy{font-size:14px;color:var(--accent-ember);font-style:italic;margin-bottom:8px;line-height:1.6}
+.company-card p{font-size:13px;color:var(--text-secondary);line-height:1.7}
+.company-card.full-width{grid-column:1/-1}
+
+/* RISK MATRIX */
+.risk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:40px 0}
+.risk-card{background:var(--bg-card);border-radius:10px;padding:22px;position:relative;overflow:hidden}
+.risk-card .rc-icon{font-size:20px;margin-bottom:8px;display:block}
+.risk-card h5{font-size:15px;font-weight:700;margin-bottom:6px}
+.risk-card .rc-trigger{font-size:12px;color:var(--text-secondary);margin-bottom:8px;line-height:1.5}
+.risk-card .rc-impact{font-size:12px;line-height:1.5}
+.risk-card .rc-prob{position:absolute;top:14px;right:16px;font-family:var(--font-tech);font-size:10px;letter-spacing:1px;padding:2px 8px;border-radius:3px}
+.risk-card .rc-prob.high{background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.2)}
+.risk-card .rc-prob.mid{background:var(--accent-ember-dim);color:var(--accent-ember);border:1px solid rgba(232,93,38,0.2)}
+.risk-card .rc-prob.low{background:var(--accent-green-dim);color:var(--accent-green);border:1px solid rgba(74,222,128,0.2)}
+
+/* PORTFOLIO CARD */
+.portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0}
+.portfolio-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:28px;text-align:center;transition:all .3s}
+.portfolio-card:hover{border-color:var(--accent-gold);box-shadow:0 0 20px var(--accent-gold-dim)}
+.portfolio-card .pc-label{font-family:var(--font-tech);font-size:10px;letter-spacing:2px;margin-bottom:12px;display:block}
+.portfolio-card .pc-label.conservative{color:var(--accent-green)}
+.portfolio-card .pc-label.balanced{color:var(--accent-gold)}
+.portfolio-card .pc-label.aggressive{color:var(--accent-ember)}
+.portfolio-card h4{font-size:20px;font-weight:700;margin-bottom:16px}
+.portfolio-card .pc-alloc{font-size:14px;color:var(--text-secondary);line-height:1.8;margin-bottom:16px}
+.portfolio-card .pc-alloc strong{color:var(--text-primary)}
+.portfolio-card .pc-return{font-family:var(--font-tech);font-size:20px;font-weight:700;margin-bottom:4px}
+.portfolio-card .pc-risk{font-size:12px;color:var(--text-dim)}
+
+/* QUESTION BLOCK */
+.question-block{text-align:center;padding:48px 0;margin:40px 0}
+.question-block p{font-size:22px;font-weight:700;line-height:1.7}
+.question-block .q-mark{font-family:var(--font-tech);font-size:48px;color:var(--accent-gold);opacity:.25;display:block;margin-bottom:16px}
+
+/* INDICATOR CARD */
+.indicator-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:32px 0}
+.indicator-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:8px;padding:20px;transition:all .3s}
+.indicator-card:hover{border-color:var(--accent-gold)}
+.indicator-card .ic-cat{font-family:var(--font-tech);font-size:9px;letter-spacing:2px;color:var(--text-dim);margin-bottom:6px}
+.indicator-card .ic-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.indicator-card .ic-signal{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.indicator-card .ic-signal .bull{color:var(--accent-green)}
+.indicator-card .ic-signal .bear{color:var(--accent-ember)}
+
+/* ECHARTS */
+.chart-container{width:100%;height:360px;margin:32px 0;border-radius:10px;overflow:hidden;background:var(--bg-card);border:1px solid var(--border-subtle)}
+.svg-diagram svg text[fill^="rgba(232,237,"]{fill:rgba(232,237,245,0.82)!important}
+.svg-diagram svg text[fill^="rgba(212,160,23,"]{fill:var(--accent-gold)!important}
+.svg-diagram svg text[fill^="rgba(232,93,38,"]{fill:var(--accent-ember)!important}
+.svg-diagram svg text[fill^="rgba(74,222,128,"]{fill:var(--accent-green)!important}
+
+/* GLOSSARY TABLE */
+.glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:32px 0}
+.glossary-item{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:8px;padding:14px 18px;transition:all .3s}
+.glossary-item:hover{border-color:var(--accent-gold)}
+.glossary-item .gi-term{font-size:15px;font-weight:700;color:var(--accent-gold);margin-bottom:3px}
+.glossary-item .gi-def{font-size:13px;color:var(--text-secondary);line-height:1.6}
+
+/* FADE IN */
+.js .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.js .fade-in.visible{opacity:1;transform:translateY(0)}
+.fade-in.delay-1{transition-delay:.1s}
+.fade-in.delay-2{transition-delay:.2s}
+.fade-in.delay-3{transition-delay:.3s}
+
+/* FOOTER */
+.footer{text-align:center;padding:80px 0 60px;color:var(--text-dim);font-size:13px}
+.footer .fl{width:60px;height:1px;background:var(--accent-gold-dim);margin:0 auto 24px}
+.footer p{line-height:2}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .content-wrapper{padding:0 20px}
+  .route-grid{grid-template-columns:1fr 1fr}
+  .structure-diagram,.company-grid,.indicator-grid,.glossary-grid{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:1fr}
+  .viz-grid,.reader-takeaway{grid-template-columns:1fr}
+  .viz-panel.wide{grid-column:auto}
+  .liquidity-grid{grid-template-columns:repeat(3,1fr)}
+  .portfolio-grid{grid-template-columns:1fr}
+  .risk-grid{grid-template-columns:1fr}
+  .compare-table{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-color:var(--accent-gold-dim) transparent}
+  .compare-table th,.compare-table td{min-width:132px;white-space:normal}
+  .compare-table th:first-child,.compare-table td:first-child{min-width:108px}
+  .svg-diagram{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-color:var(--accent-gold-dim) transparent}
+  .svg-diagram svg{min-width:680px}
+  #side-nav{display:none}
+  .power-layer{flex-direction:column}
+  .power-layer .lr{width:100%;height:40px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .takeaway-line{flex-direction:column}
+  .tech-route .pros-cons{flex-direction:column;gap:8px}
+  .price-step .pv{font-size:14px;min-width:60px}
+  .chart-container{height:260px}
+}
+@media(max-width:480px){
+  .novice-route,.data-figure,.learning-bridge{padding:20px}
+  .route-grid{grid-template-columns:1fr}
+  .composition-row{grid-template-columns:38px minmax(0,1fr);gap:7px}
+  .metric-row{grid-template-columns:36px minmax(0,1fr) 86px;gap:6px}
+  .liquidity-grid{grid-template-columns:1fr 1fr}
+  .range-chart{padding-left:2px;padding-right:2px}
+  .range-axis .a800{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+  #bg-canvas{display:none}
+  .js .section,.js .fade-in{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">跳到手册正文</a>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div id="scroll-progress" aria-hidden="true"></div>
+
+<nav id="side-nav" aria-label="章节导航">
+  <button type="button" class="nav-dot active" aria-label="跳到开篇" aria-current="true" data-label="开篇" data-section="hero"></button>
+  <button type="button" class="nav-dot" aria-label="跳到认识煤炭" data-label="认识煤炭" data-section="part1"></button>
+  <button type="button" class="nav-dot" aria-label="跳到产业链" data-label="产业链" data-section="part2"></button>
+  <button type="button" class="nav-dot" aria-label="跳到供需价格" data-label="供需价格" data-section="part3"></button>
+  <button type="button" class="nav-dot" aria-label="跳到企业评估" data-label="选股" data-section="part4"></button>
+  <button type="button" class="nav-dot" aria-label="跳到政策地缘" data-label="政策地缘" data-section="part5"></button>
+  <button type="button" class="nav-dot" aria-label="跳到实操指南" data-label="实操" data-section="part6"></button>
+  <button type="button" class="nav-dot" aria-label="跳到附录" data-label="附录" data-section="appendix"></button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-icon"></div>
+  <h1>煤炭投资入门手册</h1>
+  <p class="subtitle">
+    从行业基础到研究框架的完整指南<br>
+    在数据口径、政策边界与周期风险中，<strong>读懂黑金的研究逻辑</strong>
+  </p>
+  <p class="meta-line">适用读者：煤炭行业研究入门者 · 数据快照截至 2026年8月31日</p>
+  <div class="scroll-hint"><span>SCROLL</span><div class="arrow"></div></div>
+</section>
+
+<main class="content-wrapper" id="main-content">
+
+<!-- 学习地图 + 导读 -->
+<div class="audit-banner">
+  <strong>阅读提示：</strong>本页是行业研究学习材料，不是实时行情页、收益承诺或个股推荐。正文专注解释研究逻辑，完整的<a href="#sec-app-b">数据来源与口径见附录B</a>，<a href="#sec-app-d">政策原文见附录D</a>。<a href="./index.html">返回投资阅读目录</a>
+</div>
+
+<div class="learning-map fade-in">
+  <span class="lm-label">LEARNING PATH</span>
+  <div class="lm-path">
+    <span class="lm-step">基础 STOCK 101</span>
+    <span class="lm-arrow">→</span>
+    <span class="lm-step">进阶 STOCK 201</span>
+    <span class="lm-arrow">→</span>
+    <span class="lm-step current">行业研究 · 煤炭 [←你在这里]</span>
+    <span class="lm-arrow">→</span>
+    <span class="lm-step">五册系列</span>
+  </div>
+</div>
+
+<div class="reading-guide fade-in">
+  <div class="rg-title">HOW TO READ</div>
+  <div class="rg-body">
+    本手册共<strong>6篇21章+5个附录</strong>，从"煤是什么"讲到"如何建立研究清单"，由浅入深。<br>
+    如果你<strong>完全不了解煤炭</strong>，请从第一篇顺序阅读；如果你<strong>已有行业基础</strong>，可直接跳到第三篇（供需与价格分析框架）或第六篇（实操指南）。<br>
+    通用投资方法论（财报/估值/风控）请参考系列其他手册，本手册<strong>只聚焦煤炭行业的特殊看点</strong>。
+  </div>
+</div>
+
+<nav class="novice-route fade-in" aria-labelledby="novice-route-title">
+  <span class="nr-eyebrow">15-MINUTE STARTER ROUTE</span>
+  <h2 id="novice-route-title">第一次看煤炭，不必一次读完 21 章</h2>
+  <p>先走完下面四站，形成“产品—价格—指标—公司”的最小闭环；之后再按兴趣补读政策、地缘和组合章节。</p>
+  <div class="route-grid">
+    <a class="route-card" href="#sec-1-2">
+      <span class="route-no">01 · PRODUCT</span>
+      <strong>先分清三类煤</strong>
+      <small>知道动力煤、炼焦煤和化工煤分别卖给谁。</small>
+    </a>
+    <a class="route-card" href="#sec-10">
+      <span class="route-no">02 · PRICE</span>
+      <strong>再理解四种价格</strong>
+      <small>避免把长协、港口现货、坑口和进口到岸价混在一起。</small>
+    </a>
+    <a class="route-card" href="#sec-11">
+      <span class="route-no">03 · SIGNAL</span>
+      <strong>只跟踪“3+1”</strong>
+      <small>从库存到货、价差、停复产和产品价差开始。</small>
+    </a>
+    <a class="route-card" href="#sec-12">
+      <span class="route-no">04 · COMPANY</span>
+      <strong>最后落到现金流</strong>
+      <small>把煤价变化翻译成销量、成本、资本开支和自由现金流。</small>
+    </a>
+  </div>
+</nav>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     第一篇  认识煤炭
+     =================================================================== -->
+<div class="part-header" id="part1">
+  <span class="part-num fade-in">PART 01</span>
+  <h2 class="part-title fade-in">认识煤炭</h2>
+  <p class="part-goal fade-in">让完全不了解煤炭的投资者建立基本概念，理解煤炭在中国能源体系中的核心地位，掌握三大煤种的基本属性与用途区分。</p>
+</div>
+
+<!-- 第1章 煤炭是什么 -->
+<section class="section" id="sec-1-1">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 01</span>
+    <h3>煤炭是什么：<span class="hl">远古的阳光</span>，<span class="hl2">今天的基石</span></h3>
+  </div>
+
+  <p class="para fade-in">煤炭是远古植物在地质作用下经漫长煤化过程形成的可燃固体矿物。可以把它理解为<strong>储存在地层中的远古太阳能</strong>——植物固定的能量随有机质埋藏和煤化过程保存下来。</p>
+
+  <p class="para fade-in">按常见的煤化程度序列，可从泥炭、褐煤观察到烟煤和无烟煤。煤化程度提高时，挥发分通常下降、固定碳通常上升。新手判断煤质时，先看<strong>热值、水分、灰分</strong>三项，再补充硫分和工艺指标。</p>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">KEY CONCEPT</span>
+    衡量煤炭品质的五个核心指标：<br>
+    <strong>热值</strong>（发热量）：煤完全燃烧释放的热量；Q5500表示约5,500千卡/千克，但仍需注明基准状态<br>
+    <strong>灰分</strong>：规定条件下燃烧后的无机残留，影响热值、结渣、排放和处置<br>
+    <strong>硫分</strong>：煤中硫含量，影响排放控制和下游工艺适配<br>
+    <strong>挥发分</strong>：规定条件下隔绝空气加热产生的挥发物，是分类、燃烧和炼焦的重要指标<br>
+    <strong>固定碳</strong>：工业分析中按同一基准由100%扣除水分、灰分和挥发分得到的余量，不等同于元素碳含量
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>煤种</th><th>煤化程度</th><th>常见热值特征</th><th>挥发分特征</th><th>典型用途</th></tr></thead>
+    <tbody>
+      <tr><td>褐煤</td><td>较低</td><td>通常较低且水分较高</td><td>通常较高</td><td>坑口发电</td></tr>
+      <tr><td>烟煤</td><td>中等至较高</td><td>差异范围较大</td><td>因煤阶和品种而异</td><td>发电/炼焦/化工</td></tr>
+      <tr><td>无烟煤</td><td>较高</td><td>通常较高</td><td>通常较低</td><td>化肥/化工/喷吹</td></tr>
+    </tbody>
+  </table>
+
+  <p class="para fade-in">上表用于建立煤化程度与用途的直觉。实际交易价格最终落在具体检验报告上：同是动力煤，热值、水分、灰硫和交货地不同，价格也会明显不同。</p>
+
+  <p class="para fade-in">中国煤炭资源呈现“北多南少、西多东少”的格局，原煤产量集中于晋陕蒙新等省区。对新手最有用的区域指标是<strong>主产区产量与外运量</strong>：产量变化说明矿端供给，铁路和港口发运决定这些煤能否到达消费地。</p>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-item"><div class="sv">51.4%</div><div class="sl">煤炭占能源消费总量<br>2025年官方初步核算</div></div>
+    <div class="stat-item"><div class="sv">48.5亿吨</div><div class="sl">全国原煤产量<br>2025年统计公报</div></div>
+    <div class="stat-item"><div class="sv">4.9027亿吨</div><div class="sl">煤及褐煤进口量<br>2025年海关口径</div></div>
+  </div>
+
+  <figure class="data-figure fade-in" id="figure-macro" aria-labelledby="macro-viz-title">
+    <figcaption class="viz-header">
+      <span class="viz-eyebrow">DATA STORY 01 · ANNUAL SNAPSHOT</span>
+      <h4 class="viz-title" id="macro-viz-title">2024—2025年煤炭相关官方数据</h4>
+      <p class="viz-subtitle">三项指标单位不同，因此分开展示；两年数据只适合做年度对比，不绘制成“长期趋势线”。</p>
+    </figcaption>
+
+    <div class="viz-grid">
+      <div class="viz-panel wide" role="img" aria-label="煤炭占能源消费总量比重由2024年的53.2%降至2025年的51.4%，下降1.8个百分点">
+        <div class="viz-panel-head">
+          <div class="viz-panel-title">煤炭占能源消费总量比重</div>
+          <span class="viz-delta down">−1.8个百分点</span>
+        </div>
+        <div class="composition-row">
+          <span class="composition-year">2024</span>
+          <div class="composition-track">
+            <span class="composition-coal" style="width:53.2%">煤炭 53.2%</span>
+            <span class="composition-other" style="width:46.8%">其他 46.8%</span>
+          </div>
+        </div>
+        <div class="composition-row">
+          <span class="composition-year">2025</span>
+          <div class="composition-track">
+            <span class="composition-coal" style="width:51.4%">煤炭 51.4%</span>
+            <span class="composition-other" style="width:48.6%">其他 48.6%</span>
+          </div>
+        </div>
+        <div class="composition-legend" aria-hidden="true">
+          <span class="legend-key"><i class="legend-swatch"></i>煤炭</span>
+          <span class="legend-key"><i class="legend-swatch other"></i>其他能源合计</span>
+        </div>
+      </div>
+
+      <div class="viz-panel" role="img" aria-label="全国原煤产量由2024年的47.8亿吨增至2025年的48.5亿吨，同比增长1.4%">
+        <div class="viz-panel-head">
+          <div class="viz-panel-title">全国原煤产量</div>
+          <span class="viz-delta">+1.4%</span>
+        </div>
+        <div class="metric-scale">横轴从0开始 · 上限50亿吨</div>
+        <div class="metric-row">
+          <span class="metric-year">2024</span>
+          <span class="metric-track"><i class="metric-fill" style="width:95.6%"></i></span>
+          <span class="metric-value">47.8亿吨</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-year">2025</span>
+          <span class="metric-track"><i class="metric-fill" style="width:97%"></i></span>
+          <span class="metric-value">48.5亿吨</span>
+        </div>
+      </div>
+
+      <div class="viz-panel" role="img" aria-label="煤及褐煤进口量由2024年的5.4270亿吨降至2025年的4.9027亿吨，同比下降9.6%">
+        <div class="viz-panel-head">
+          <div class="viz-panel-title">煤及褐煤进口量</div>
+          <span class="viz-delta down">−9.6%</span>
+        </div>
+        <div class="metric-scale">横轴从0开始 · 上限6亿吨</div>
+        <div class="metric-row">
+          <span class="metric-year">2024</span>
+          <span class="metric-track"><i class="metric-fill ice" style="width:90.45%"></i></span>
+          <span class="metric-value">5.4270亿吨</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-year">2025</span>
+          <span class="metric-track"><i class="metric-fill ice" style="width:81.712%"></i></span>
+          <span class="metric-value">4.9027亿吨</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reader-takeaway">
+      <div class="reader-note">
+        <strong>先看到什么</strong>
+        <p>2025年原煤产量小幅增加，同时进口量和煤炭能源占比下降，三个方向并不相同。</p>
+      </div>
+      <div class="reader-note caution">
+        <strong>怎样理解</strong>
+        <p>能源占比、原煤产量和进口量是三种不同指标；把它们并排看，比只追踪其中一个更接近行业全貌。</p>
+      </div>
+      <div class="reader-note next">
+        <strong>下一步看什么</strong>
+        <p>到第6章拆进口煤种与品质，再到第10章区分长协、现货、坑口和到岸价格。</p>
+      </div>
+    </div>
+
+    <a class="appendix-jump" href="#source-macro">来源与口径：附录B · B1</a>
+  </figure>
+
+  <div class="insight-box fade-in">
+    <span class="label">CORE COGNITION</span>
+    煤炭仍在中国能源结构中占较高比重，但其占比、绝对消费量和用途结构可能沿不同路径变化。投资分析应同时评估能源安全、可再生能源替代、煤电调节价值、碳约束与终端需求，而不是预设单一路径。
+  </div>
+</section>
+
+<!-- 第2章 三大煤种 -->
+<section class="section" id="sec-1-2">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 02</span>
+    <h3>三大煤种：<span class="hl">同根不同命</span></h3>
+  </div>
+
+  <p class="para fade-in">投资研究常按主要用途把煤炭观察对象分为动力煤、炼焦煤和化工原料煤，但这不是严格且互斥的煤阶分类：同一种煤可能因品质、洗选和客户不同进入不同用途。使用下表时，应先确认热值、灰硫、挥发分、黏结性以及交货地点等具体口径。</p>
+
+  <!-- SVG: 三大煤种产业链全景图 -->
+  <div class="svg-diagram fade-in" style="margin:40px 0;">
+    <svg viewBox="0 0 820 440" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" role="img" aria-label="动力煤、炼焦煤和化工原料煤的用途与研究变量示意图">
+      <defs>
+        <filter id="glow3"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <linearGradient id="gGoldV" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d4a017" stop-opacity="0.2"/><stop offset="100%" stop-color="#d4a017" stop-opacity="0.02"/></linearGradient>
+        <linearGradient id="gEmberV" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e85d26" stop-opacity="0.2"/><stop offset="100%" stop-color="#e85d26" stop-opacity="0.02"/></linearGradient>
+        <linearGradient id="gGreenV" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4ade80" stop-opacity="0.2"/><stop offset="100%" stop-color="#4ade80" stop-opacity="0.02"/></linearGradient>
+      </defs>
+      <!-- 动力煤 -->
+      <g transform="translate(10,0)">
+        <rect x="5" y="10" width="255" height="420" rx="10" fill="url(#gGoldV)" stroke="rgba(212,160,23,0.3)" stroke-width="1"/>
+        <text x="132" y="38" text-anchor="middle" fill="#d4a017" font-size="14" font-weight="700" font-family="Noto Serif SC">动力煤</text>
+        <text x="132" y="55" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Orbitron">THERMAL COAL · POWER &amp; HEAT</text>
+        <rect x="30" y="75" width="205" height="45" rx="6" fill="rgba(212,160,23,0.08)" stroke="rgba(212,160,23,0.4)" stroke-width="1"/>
+        <text x="132" y="95" text-anchor="middle" fill="rgba(232,237,245,0.6)" font-size="12" font-family="Noto Serif SC">🪨 煤矿开采</text>
+        <text x="132" y="112" text-anchor="middle" fill="rgba(232,237,245,0.3)" font-size="9">神华 · 陕煤 · 中煤</text>
+        <line x1="132" y1="120" x2="132" y2="140" stroke="#d4a017" stroke-width="2" opacity="0.5"/>
+        <polygon points="127,138 137,138 132,145" fill="#d4a017" opacity="0.5"/>
+        <rect x="30" y="148" width="205" height="55" rx="6" fill="rgba(212,160,23,0.1)" stroke="rgba(212,160,23,0.5)" stroke-width="1.5"/>
+        <text x="132" y="168" text-anchor="middle" fill="#d4a017" font-size="12" font-weight="600" font-family="Noto Serif SC">🔥 发电与供热</text>
+        <text x="132" y="188" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Noto Serif SC">长协与现货并存 · 分口径定价</text>
+        <line x1="132" y1="203" x2="132" y2="223" stroke="#d4a017" stroke-width="2" opacity="0.5"/>
+        <polygon points="127,221 137,221 132,228" fill="#d4a017" opacity="0.5"/>
+        <rect x="30" y="230" width="95" height="40" rx="4" fill="rgba(212,160,23,0.05)" stroke="rgba(212,160,23,0.25)" stroke-width="1"/>
+        <text x="77" y="254" text-anchor="middle" fill="rgba(232,237,245,0.5)" font-size="10" font-family="Noto Serif SC">建材</text>
+        <rect x="140" y="230" width="95" height="40" rx="4" fill="rgba(212,160,23,0.05)" stroke="rgba(212,160,23,0.25)" stroke-width="1"/>
+        <text x="187" y="254" text-anchor="middle" fill="rgba(232,237,245,0.5)" font-size="10" font-family="Noto Serif SC">化工</text>
+        <rect x="30" y="285" width="205" height="50" rx="6" fill="rgba(212,160,23,0.04)" stroke="rgba(212,160,23,0.2)" stroke-width="1"/>
+        <text x="132" y="305" text-anchor="middle" fill="#d4a017" font-size="11" font-weight="600" font-family="Noto Serif SC">港口与产地同品质价格</text>
+        <text x="132" y="325" text-anchor="middle" fill="rgba(232,237,245,0.35)" font-size="9">标注地点 · 热值 · 税费 · 日期</text>
+        <rect x="30" y="350" width="205" height="65" rx="6" fill="rgba(212,160,23,0.06)" stroke="rgba(212,160,23,0.25)" stroke-width="1"/>
+        <text x="132" y="373" text-anchor="middle" fill="#d4a017" font-size="12" font-weight="700" font-family="Noto Serif SC">政策煤种 · 基本盘</text>
+        <text x="132" y="393" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Noto Serif SC">重点观察政策与电力需求</text>
+        <text x="132" y="408" text-anchor="middle" fill="rgba(212,160,23,0.5)" font-size="10" font-family="Noto Serif SC">样本：神华/陕煤/中煤</text>
+      </g>
+      <!-- 炼焦煤 -->
+      <g transform="translate(280,0)">
+        <rect x="5" y="10" width="255" height="420" rx="10" fill="url(#gEmberV)" stroke="rgba(232,93,38,0.3)" stroke-width="1"/>
+        <text x="132" y="38" text-anchor="middle" fill="#e85d26" font-size="14" font-weight="700" font-family="Noto Serif SC">炼焦煤</text>
+        <text x="132" y="55" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Orbitron">COKING COAL · STEEL INPUT</text>
+        <rect x="30" y="75" width="205" height="45" rx="6" fill="rgba(232,93,38,0.08)" stroke="rgba(232,93,38,0.4)" stroke-width="1"/>
+        <text x="132" y="95" text-anchor="middle" fill="rgba(232,237,245,0.6)" font-size="12" font-family="Noto Serif SC">🪨 煤矿开采</text>
+        <text x="132" y="112" text-anchor="middle" fill="rgba(232,237,245,0.3)" font-size="9">煤质差异 · 产地集中</text>
+        <line x1="132" y1="120" x2="132" y2="140" stroke="#e85d26" stroke-width="2" opacity="0.5"/>
+        <polygon points="127,138 137,138 132,145" fill="#e85d26" opacity="0.5"/>
+        <rect x="30" y="148" width="205" height="55" rx="6" fill="rgba(232,93,38,0.1)" stroke="rgba(232,93,38,0.5)" stroke-width="1.5"/>
+        <text x="132" y="168" text-anchor="middle" fill="#e85d26" font-size="12" font-weight="600" font-family="Noto Serif SC">🏗️ 炼焦 → 焦炭</text>
+        <text x="132" y="188" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Noto Serif SC">钢铁原料 · 市场化定价</text>
+        <line x1="132" y1="203" x2="132" y2="223" stroke="#e85d26" stroke-width="2" opacity="0.5"/>
+        <polygon points="127,221 137,221 132,228" fill="#e85d26" opacity="0.5"/>
+        <rect x="30" y="230" width="205" height="40" rx="6" fill="rgba(232,93,38,0.08)" stroke="rgba(232,93,38,0.4)" stroke-width="1"/>
+        <text x="132" y="254" text-anchor="middle" fill="rgba(232,237,245,0.6)" font-size="12" font-family="Noto Serif SC">⚒️ 钢铁冶炼</text>
+        <rect x="30" y="285" width="205" height="50" rx="6" fill="rgba(232,93,38,0.04)" stroke="rgba(232,93,38,0.2)" stroke-width="1"/>
+        <text x="132" y="305" text-anchor="middle" fill="rgba(232,93,38,0.7)" font-size="11" font-weight="600" font-family="Noto Serif SC">跟踪同品质进口煤</text>
+        <text x="132" y="325" text-anchor="middle" fill="rgba(232,237,245,0.35)" font-size="9">口岸 · 运费 · 通关量</text>
+        <rect x="30" y="350" width="205" height="65" rx="6" fill="rgba(232,93,38,0.06)" stroke="rgba(232,93,38,0.25)" stroke-width="1"/>
+        <text x="132" y="373" text-anchor="middle" fill="#e85d26" font-size="12" font-weight="700" font-family="Noto Serif SC">市场煤种 · 弹性盘</text>
+        <text x="132" y="393" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Noto Serif SC">跟着地产/钢铁周期波动</text>
+        <text x="132" y="408" text-anchor="middle" fill="rgba(232,93,38,0.5)" font-size="10" font-family="Noto Serif SC">样本：平煤/淮矿/山西焦煤</text>
+      </g>
+      <!-- 化工煤 -->
+      <g transform="translate(550,0)">
+        <rect x="5" y="10" width="255" height="420" rx="10" fill="url(#gGreenV)" stroke="rgba(74,222,128,0.3)" stroke-width="1"/>
+        <text x="132" y="38" text-anchor="middle" fill="#4ade80" font-size="14" font-weight="700" font-family="Noto Serif SC">化工煤</text>
+        <text x="132" y="55" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Orbitron">CHEMICAL COAL · FEEDSTOCK</text>
+        <rect x="30" y="75" width="205" height="45" rx="6" fill="rgba(74,222,128,0.08)" stroke="rgba(74,222,128,0.4)" stroke-width="1"/>
+        <text x="132" y="95" text-anchor="middle" fill="rgba(232,237,245,0.6)" font-size="12" font-family="Noto Serif SC">🪨 无烟煤/化工煤</text>
+        <text x="132" y="112" text-anchor="middle" fill="rgba(232,237,245,0.3)" font-size="9">兰花科创 · 广汇能源</text>
+        <line x1="132" y1="120" x2="132" y2="140" stroke="#4ade80" stroke-width="2" opacity="0.5"/>
+        <polygon points="127,138 137,138 132,145" fill="#4ade80" opacity="0.5"/>
+        <rect x="30" y="148" width="205" height="55" rx="6" fill="rgba(74,222,128,0.1)" stroke="rgba(74,222,128,0.5)" stroke-width="1.5"/>
+        <text x="132" y="168" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="600" font-family="Noto Serif SC">🧪 煤化工转化</text>
+        <text x="132" y="188" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Noto Serif SC">工艺路线与产品结构不同</text>
+        <line x1="132" y1="203" x2="132" y2="223" stroke="#4ade80" stroke-width="2" opacity="0.5"/>
+        <polygon points="127,221 137,221 132,228" fill="#4ade80" opacity="0.5"/>
+        <rect x="30" y="230" width="95" height="40" rx="4" fill="rgba(74,222,128,0.05)" stroke="rgba(74,222,128,0.25)" stroke-width="1"/>
+        <text x="77" y="254" text-anchor="middle" fill="rgba(232,237,245,0.5)" font-size="10" font-family="Noto Serif SC">烯烃</text>
+        <rect x="140" y="230" width="95" height="40" rx="4" fill="rgba(74,222,128,0.05)" stroke="rgba(74,222,128,0.25)" stroke-width="1"/>
+        <text x="187" y="254" text-anchor="middle" fill="rgba(232,237,245,0.5)" font-size="10" font-family="Noto Serif SC">甲醇</text>
+        <rect x="30" y="285" width="205" height="50" rx="6" fill="rgba(74,222,128,0.04)" stroke="rgba(74,222,128,0.2)" stroke-width="1"/>
+        <text x="132" y="305" text-anchor="middle" fill="rgba(74,222,128,0.7)" font-size="11" font-weight="600" font-family="Noto Serif SC">关注煤—化工品价差</text>
+        <text x="132" y="325" text-anchor="middle" fill="rgba(232,237,245,0.35)" font-size="9">同时看煤价 · 产品价 · 装置负荷</text>
+        <rect x="30" y="350" width="205" height="65" rx="6" fill="rgba(74,222,128,0.06)" stroke="rgba(74,222,128,0.25)" stroke-width="1"/>
+        <text x="132" y="373" text-anchor="middle" fill="#4ade80" font-size="12" font-weight="700" font-family="Noto Serif SC">价差驱动 · 项目盘</text>
+        <text x="132" y="393" text-anchor="middle" fill="rgba(232,237,245,0.4)" font-size="10" font-family="Noto Serif SC">煤价+产品价+装置负荷</text>
+        <text x="132" y="408" text-anchor="middle" fill="rgba(74,222,128,0.5)" font-size="10" font-family="Noto Serif SC">样本：兖矿/兰花/广汇</text>
+      </g>
+    </svg>
+    <p style="text-align:center;font-size:12px;color:var(--text-dim);margin-top:8px;font-family:var(--font-serif);">图：按主要用途观察的产业链示意；分类存在交叉，公司名称只是研究样本，不代表推荐。</p>
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>维度</th><th>动力煤</th><th>炼焦煤</th><th>无烟煤/化工煤</th></tr></thead>
+    <tbody>
+      <tr><td>核心质量口径</td><td>热值/灰硫/交货地</td><td>黏结性/挥发分/灰硫</td><td>煤种/粒度/工艺适配</td></tr>
+      <tr><td>常用价格基准</td><td>港口或产地同品质价格</td><td>产地、港口或进口同品质价格</td><td>按煤种、粒度和交货地分别比较</td></tr>
+      <tr><td>更新要求</td><td>标注日期与长协/现货</td><td>标注日期与国产/进口</td><td>标注日期与具体下游产品</td></tr>
+      <tr><td>需求驱动</td><td>电力+化工</td><td>钢铁+地产</td><td>油气替代</td></tr>
+      <tr><td>供给判断</td><td>核定产能、安监、运输与进口</td><td>煤质、矿井条件、进口与洗选</td><td>原料适配、项目进度与运输</td></tr>
+      <tr><td>价格判断</td><td>长协与现货需分开</td><td>同品质、同地区比较</td><td>与下游产品价差联动分析</td></tr>
+      <tr><td>判断方法</td><td>日耗、库存、运价、长协政策</td><td>铁水、焦化利润、进口与库存</td><td>产品价差、开工率、煤价与油气价格</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">💡 ANALOGY</span>
+    可以把动力煤、炼焦煤和化工原料煤理解为三套需求链：分别先看<strong>电力日耗</strong>、<strong>高炉铁水</strong>和<strong>化工产品价差</strong>。这是新手进入三个市场最快的入口。
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     第二篇  煤炭产业链全景
+     =================================================================== -->
+<div class="part-header" id="part2">
+  <span class="part-num fade-in">PART 02</span>
+  <h2 class="part-title fade-in">产业链全景</h2>
+  <p class="part-goal fade-in">理解煤炭从矿井到终端的完整流转路径，掌握产业链各环节的关键节点和影响因素。</p>
+</div>
+
+<!-- 第3章 上游 -->
+<section class="section" id="sec-3">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 03</span>
+    <h3>上游：<span class="hl">开采与洗选</span>——成本之外还要看什么</h3>
+  </div>
+
+  <p class="para fade-in">资源禀赋和单位成本是煤企竞争力的重要部分，但并非全部。价格下行时，低成本矿通常更有缓冲；矿井寿命、煤质、运输、资本开支、负债和安全环保义务也会决定现金流能否持续。</p>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">⛏️</span>
+      <h4>井工矿 · 地下作业</h4>
+      <p>通过竖井或斜井进行地下开采。地质、埋深、瓦斯、水害、人工和机械化程度会显著影响成本、安全投入与产能弹性。</p>
+      <p style="margin-top:8px;">研究要点：矿井条件、灾害等级、采掘接续与洗选率</p>
+      <span class="ct">UNDERGROUND · MINE SPECIFIC</span>
+    </div>
+    <div class="diagram-card ember">
+      <span class="ci">🏔️</span>
+      <h4>露天矿 · 剥离开采</h4>
+      <p>通过剥离覆盖层进行开采，部分矿区可能具备规模化和机械化优势；但剥采比、征地复垦、运输距离、气候和环保约束都会改变成本。</p>
+      <p style="margin-top:8px;">研究要点：剥采比、运距、扩产边界与复垦义务</p>
+      <span class="ct">OPEN-PIT · SITE SPECIFIC</span>
+    </div>
+  </div>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">BEGINNER METRIC · EFFECTIVE SUPPLY</span>
+    新手先看<strong>有效供给 = 可生产能力 × 开工状态 × 外运能力</strong>。短期变化主要来自停复产和铁路发运，长期变化主要来自新矿投产与老矿退出。简单说，先判断矿是否正常生产、煤是否能顺利外运，这比名义规划规模更重要。
+  </div>
+</section>
+
+<!-- 第4章 中游 -->
+<section class="section" id="sec-4">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 04</span>
+    <h3>中游：<span class="hl">运输与物流</span>——西煤东运的生命线</h3>
+  </div>
+
+  <p class="para fade-in">煤炭是大宗商品，运输成本和效率直接影响供需格局。中国煤炭运输呈现"西煤东运、北煤南运"的典型格局——就像一个巨型快递系统，矿区是仓库，铁路是干线物流，港口是分拣中心，沿海电厂是终端客户。</p>
+
+  <div class="flow-diagram fade-in">
+    <div class="flow-step"><span class="fn">01</span><div class="fc"><h5>坑口价</h5><p>煤矿出矿价格，产地交易的基础价</p></div></div>
+    <div class="flow-step"><span class="fn">02</span><div class="fc"><h5>集运站 → 铁路</h5><p>线路运量、检修和请车兑现率决定铁路发运节奏</p></div></div>
+    <div class="flow-step"><span class="fn">03</span><div class="fc"><h5>港口中转（平仓价）</h5><p>按港口、热值、硫分和交货条件选择可比价格；库存需与调入调出合看</p></div></div>
+    <div class="flow-step"><span class="fn">04</span><div class="fc"><h5>海运 → 沿海电厂（到厂价）</h5><p>坑口价加上铁路、港杂、海运、税费与损耗，形成电厂到厂成本</p></div></div>
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>通道示例</th><th>连接区域</th><th>优先跟踪</th><th>怎样理解</th></tr></thead>
+    <tbody>
+      <tr><td>大秦线</td><td>山西北部—秦皇岛港</td><td>实际运量、检修与港口疏港</td><td>把设计能力当成当期发运量</td></tr>
+      <tr><td>朔黄线</td><td>西煤东运—黄骅港</td><td>线路运量、港口吞吐与下游拉运</td><td>忽略不同港口的煤种结构</td></tr>
+      <tr><td>红淖铁路</td><td>新疆矿区—兰新铁路</td><td>接轨能力、运价与目标市场</td><td>把通道建成直接等同于有效需求</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">💡 PRACTICAL TIP</span>
+    新手先看<strong>港口价－坑口价－运杂费</strong>。差额变薄，贸易商发运意愿通常减弱；差额变厚，产地煤更有动力流向港口。再结合港口调入量，就能判断这条传导是否正在发生。
+  </div>
+</section>
+
+<!-- 第5章 下游 -->
+<section class="section" id="sec-5">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 05</span>
+    <h3>下游：<span class="hl">四大需求行业</span>——谁在买煤？</h3>
+  </div>
+
+  <div class="power-map fade-in">
+    <div class="power-layer">
+      <div class="lr">01</div>
+      <div class="lb">
+        <h4>🔥 电力 · 动力煤核心需求</h4>
+        <p>先看<strong>火电发电量与电厂日耗</strong>。用电增长而水风光出力偏弱时，动力煤需求通常更强；反之则更弱。</p>
+        <div class="players"><span class="pt">日耗与库存</span><span class="pt">水风光出力</span><span class="pt">温度与来水</span></div>
+      </div>
+    </div>
+    <div class="power-layer">
+      <div class="lr">02</div>
+      <div class="lb">
+        <h4>⚒️ 钢铁 · 炼焦煤核心需求</h4>
+        <p>高炉铁水、焦化开工、钢厂利润和焦煤库存共同影响需求；地产、制造业与出口对钢材需求的作用也可能相互抵消。</p>
+        <div class="players"><span class="pt">铁水与焦化开工</span><span class="pt">钢厂利润和库存</span></div>
+      </div>
+    </div>
+    <div class="power-layer">
+      <div class="lr">03</div>
+      <div class="lb">
+        <h4>🏗️ 建材 · 区域性需求</h4>
+        <p>先看<strong>水泥、玻璃产量与开工</strong>。地产、基建施工旺季通常带动区域用煤，错峰生产则压低需求。</p>
+        <div class="players"><span class="pt" style="background:var(--accent-ember-dim);color:var(--accent-ember);border-color:rgba(232,93,38,0.15)">产量与错峰生产</span></div>
+      </div>
+    </div>
+    <div class="power-layer">
+      <div class="lr">04</div>
+      <div class="lb">
+        <h4>🧪 化工 · 原料与价差驱动</h4>
+        <p>先看<strong>产品售价－煤炭与加工成本</strong>。价差扩大通常支持装置提高负荷，价差收窄则压低开工意愿。</p>
+        <div class="players"><span class="pt" style="background:var(--accent-green-dim);color:var(--accent-green);border-color:rgba(74,222,128,0.15)">产品价差</span><span class="pt" style="background:var(--accent-green-dim);color:var(--accent-green);border-color:rgba(74,222,128,0.15)">装置负荷</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box ember fade-in">
+    <span class="label">COUNTER-INTUITIVE</span>
+    可再生能源发电增加时，煤电的角色会从“多发电”逐步增加“保容量、做调节”。投资上分开看两组指标：<strong>煤电发电量</strong>决定耗煤，<strong>容量与辅助服务收入</strong>决定煤电资产的额外回报。
+  </div>
+</section>
+
+<!-- 第6章 进口 -->
+<section class="section" id="sec-6">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 06</span>
+    <h3>进口：<span class="hl">海外煤炭</span>的<span class="hl2">补充与约束</span></h3>
+  </div>
+
+  <p class="para fade-in">海关口径显示，2025年中国进口“煤及褐煤”4.9027亿吨。新手先把进口理解成国内供给的“补充阀门”：<strong>同品质到岸价低于国内价</strong>时进口吸引力通常增强，反之则减弱。</p>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>观察对象</th><th>主要来源示例</th><th>比较前统一</th><th>主要变量</th><th>结果指标</th></tr></thead>
+    <tbody>
+      <tr><td>动力煤</td><td>印尼/俄罗斯/澳大利亚等</td><td>热值、硫分、到岸地</td><td>运费、汇率、出口政策</td><td>海关商品编码与月度表</td></tr>
+      <tr><td>炼焦煤</td><td>蒙古/俄罗斯/澳大利亚等</td><td>黏结性、灰硫、口岸</td><td>通关、铁水、内外价差</td><td>海关商品编码与口岸数据</td></tr>
+    </tbody>
+  </table>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">🇮🇩</span>
+      <h4>印尼：政策与装船量</h4>
+      <p>核心指标是<strong>实际装船量</strong>。年度产量计划和国内市场义务会影响可出口资源，最终变化会先反映在装船与到岸报价上。</p>
+      <span class="ct">POLICY WATCH</span>
+    </div>
+    <div class="diagram-card ember">
+      <span class="ci">🇲🇳</span>
+      <h4>蒙煤：口岸与同品质价格</h4>
+      <p>核心指标是<strong>口岸日均通关量</strong>，配合口岸库存和同品质价格，可判断蒙煤对国内焦煤市场的边际影响。</p>
+      <span class="ct">IMPORT WATCH</span>
+    </div>
+  </div>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">BEGINNER METRIC · IMPORT PARITY</span>
+    <strong>进口价差 = 国内同品质价格－进口到岸成本</strong>。价差为正且扩大，通常意味着进口更有吸引力；价差转负，进口动力通常减弱。汇率和海运费是最常见的两个扰动项。
+  </div>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     第三篇  供需与价格分析框架
+     =================================================================== -->
+<div class="part-header" id="part3">
+  <span class="part-num fade-in">PART 03</span>
+  <h2 class="part-title fade-in">供需与价格分析</h2>
+  <p class="part-goal fade-in">掌握判断煤价走势的分析工具和量化指标体系，从"凭感觉"升级为"看数据"。</p>
+</div>
+
+<!-- 第7章 供给端 -->
+<section class="section" id="sec-7">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 07</span>
+    <h3>供给端：<span class="hl">三类约束</span>如何影响弹性</h3>
+  </div>
+
+  <p class="para fade-in">供给端先看一个结果指标：<strong>产量是否真的变化</strong>。安监、产能制度和运输瓶颈是三类常见原因；把政策或事件与产量、发运量连起来，就能判断影响大小。</p>
+
+  <div class="tech-routes fade-in">
+    <div class="tech-route" data-step="01">
+      <div class="rl">CONSTRAINT ONE</div>
+      <h4>安监趋严 · 从"人治"到"制度监管"</h4>
+      <p class="analogy">监管标准提高通常会抬高生产与整改成本，短期影响集中在停产矿井和复产节奏。</p>
+      <p>核心指标：停产矿井涉及产能、预计整改天数和实际复产进度。</p>
+    </div>
+    <div class="tech-route" data-step="02">
+      <div class="rl">CONSTRAINT TWO</div>
+      <h4>产能储备制度 · 区分在产与应急能力</h4>
+      <p class="analogy">储备产能更像“应急备用水库”，平时和应急状态的产量不同。</p>
+      <p>核心指标：常态产量与应急释放量；名单、调用条件和释放周期见附录政策索引。</p>
+    </div>
+    <div class="tech-route" data-step="03">
+      <div class="rl">CONSTRAINT THREE</div>
+      <h4>产能西移瓶颈 · 远水解不了近渴</h4>
+      <p class="analogy">资源、铁路和消费地之间的距离会改变到岸成本与可兑现产量。</p>
+      <p>核心指标：新矿实际产量与铁路外运量。项目从获批、建成到满产通常需要时间，运输配套决定增量能否到达市场。</p>
+    </div>
+  </div>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-item"><div class="sv">利用率</div><div class="sl">看季度趋势<br>判断行业开工强弱</div></div>
+    <div class="stat-item"><div class="sv">停复产</div><div class="sl">矿井数量与涉及产能<br>同时跟踪持续时间</div></div>
+    <div class="stat-item"><div class="sv">进口</div><div class="sl">按煤种与品质拆分<br>比较同月和季节性</div></div>
+  </div>
+</section>
+
+<!-- 第8章 需求端 -->
+<section class="section" id="sec-8">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 08</span>
+    <h3>需求端：按<span class="hl">煤种</span>拆解，按<span class="hl2">终端</span>验证</h3>
+  </div>
+
+  <p class="para fade-in">煤炭需求不是铁板一块。动力煤需结合电力日耗、非煤电源出力和库存，炼焦煤需结合铁水、焦化利润与进口，化工原料煤需结合具体产品价差和装置负荷。</p>
+
+  <div class="indicator-grid fade-in">
+    <div class="indicator-card">
+      <div class="ic-cat">POWER DEMAND</div>
+      <div class="ic-name">沿海八省日耗</div>
+      <div class="ic-signal">与气温和同季历史比较；日耗连续上升通常意味着动力煤需求转强</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">STEEL DEMAND</div>
+      <div class="ic-name">铁水产量</div>
+      <div class="ic-signal">铁水上升通常带动焦炭和焦煤需求，再结合钢厂利润判断持续性</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">CHEMICAL DEMAND</div>
+      <div class="ic-name">化工开工率</div>
+      <div class="ic-signal">按具体产品、样本装置和统计机构更新，并同时观察产品库存与价差</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">AI DEMAND</div>
+      <div class="ic-name">算力用电</div>
+      <div class="ic-signal">先看新增用电规模，再看当地新增电量由煤电还是其他电源提供</div>
+    </div>
+  </div>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">💡 SEASONAL RULE</span>
+    <strong>迎峰度夏（通常为6—8月）</strong>：空调负荷可能推升电力需求，强度受温度、来水和风光出力影响<br>
+    <strong>迎峰度冬（通常为11月至次年1月）</strong>：北方供暖可能推升热电需求，需同时观察库存、到货与气温<br>
+    <strong>传统淡季（通常为春秋部分月份）</strong>：需求与检修安排具有地域差异。若淡季日耗仍强、库存仍降，通常说明供需比季节规律更紧。
+  </div>
+</section>
+
+<!-- 第9章 库存 -->
+<section class="section" id="sec-9">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 09</span>
+    <h3>库存：<span class="hl">供需平衡</span>的蓄水池</h3>
+  </div>
+
+  <p class="para fade-in">库存是判断供需平衡的"温度计"。就好比水库的水位——水位下降说明来水不够用，水位上升说明来水超过需求。</p>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">⛏️</span>
+      <h4>坑口库存</h4>
+      <p>统一样本矿、煤种和统计频率，结合产量与发运判断库存变化原因</p>
+      <span class="ct">MINE · UPDATE WEEKLY</span>
+    </div>
+    <div class="diagram-card">
+      <span class="ci">⚓</span>
+      <h4>港口库存</h4>
+      <p>同时观察调入、吞吐、锚地船舶和结构性煤种短缺，不只看总量</p>
+      <span class="ct">PORT · FLOW + STOCK</span>
+    </div>
+    <div class="diagram-card full-width">
+      <span class="ci">🏭</span>
+      <h4>电厂库存</h4>
+      <p>核心看<strong>可用天数的季节分位</strong>：低于往年同期且继续下降，通常表示终端缓冲正在变薄</p>
+      <span class="ct">POWER PLANT · DAYS + INFLOW</span>
+    </div>
+  </div>
+
+  <div class="insight-box fade-in">
+    <span class="label">INVENTORY CYCLE</span>
+    最值得关注的是<strong>需求增强 + 库存下降</strong>：通常表示供需趋紧；<strong>需求转弱 + 库存上升</strong>通常表示供需转松。另两种组合多处于补库或去库过渡期，可再看港口调入量判断是供给还是需求在主导。
+  </div>
+
+</section>
+
+<!-- 第10章 价格体系 -->
+<section class="section" id="sec-10">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 10</span>
+    <h3>价格体系：先分清<span class="hl">交易类型</span>与<span class="hl2">价格口径</span></h3>
+  </div>
+
+  <p class="para fade-in">煤炭不是一个全国统一价。新手读到任何报价时，先问四件事：<strong>什么煤、在哪里、什么交易类型、哪一天</strong>。其中动力煤还常用热值区分品质。</p>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>价格口径</th><th>用途</th><th>配套信息</th><th>新手理解</th></tr></thead>
+    <tbody>
+      <tr><td>中长期交易价</td><td>观察合同履约与政策机制</td><td>地区、热值、基准年度和公式</td><td>像“批发合同价”，通常更稳定</td></tr>
+      <tr><td>港口现货价</td><td>观察沿海边际交易</td><td>交货地、品质、含税与日期</td><td>像“沿海即时价”，对短期供需更敏感</td></tr>
+      <tr><td>产地坑口价</td><td>观察矿区供需与发运利润</td><td>矿区、煤种、车板/坑口口径</td><td>加上铁路、港杂等费用后才接近港口成本</td></tr>
+      <tr><td>进口到岸价</td><td>观察进口替代</td><td>热值折算、汇率、税费和运费</td><td>与国内同品质价比较，判断进口吸引力</td></tr>
+    </tbody>
+  </table>
+
+  <figure class="data-figure fade-in" id="figure-policy-range" aria-labelledby="policy-range-title">
+    <figcaption class="viz-header">
+      <span class="viz-eyebrow">DATA STORY 02 · POLICY RANGE</span>
+      <h4 class="viz-title" id="policy-range-title">秦皇岛港5500千卡下水煤中长期交易合理区间</h4>
+      <p class="viz-subtitle">单位：元/吨，含税价；政策自2022-05-01起执行。下图采用500—800的聚焦刻度，只用于清楚读取政策区间。</p>
+    </figcaption>
+
+    <div class="range-chart" role="img" aria-label="秦皇岛港5500千卡下水煤中长期交易含税价格合理区间为每吨570元至770元，中点为670元">
+      <div class="range-track">
+        <div class="range-band"><span class="range-band-label">570—770</span></div>
+        <span class="range-mid"></span>
+      </div>
+      <div class="range-axis" aria-hidden="true">
+        <span class="a500">500</span>
+        <span class="a570">570</span>
+        <span class="a770">770</span>
+        <span class="a800">800</span>
+      </div>
+    </div>
+
+    <div class="reader-takeaway">
+      <div class="reader-note">
+        <strong>这张图能说明</strong>
+        <p>政策文件为特定地点、热值和交易类型给出了合理价格区间。</p>
+      </div>
+      <div class="reader-note caution">
+        <strong>怎样理解区间</strong>
+        <p>这是特定地点、热值和中长期交易的政策区间；其他煤价会因品质、地点和交易类型不同而变化。</p>
+      </div>
+      <div class="reader-note next">
+        <strong>真正比较价格时</strong>
+        <p>找同热值、同地点、同日期的数据，再区分长协与现货。</p>
+      </div>
+    </div>
+
+    <a class="appendix-jump" href="#source-price-policy">政策原文与边界：附录D · D1</a>
+  </figure>
+
+  <p class="para fade-in" style="margin-top:32px;">企业成本会影响供给曲线，但上市公司披露口径并不统一。横向比较前应先重构口径：</p>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>步骤</th><th>需要统一</th><th>建议记录</th><th>目的</th></tr></thead>
+    <tbody>
+      <tr><td>1. 分母</td><td>原煤/商品煤、产量/销量</td><td>销量口径和洗选率</td><td>避免单位成本失真</td></tr>
+      <tr><td>2. 范围</td><td>自产/贸易、煤炭分部/合并</td><td>外购煤与内部交易</td><td>隔离业务结构差异</td></tr>
+      <tr><td>3. 费用</td><td>税费、运输、期间费用</td><td>含税和到岸边界</td><td>得到可比成本</td></tr>
+      <tr><td>4. 资本</td><td>维持性/扩张性资本开支</td><td>矿井寿命与复垦义务</td><td>连接成本与自由现金流</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">BEGINNER METRIC · PRICE CUSHION</span>
+    新手可以用<strong>市场价格－行业边际成本</strong>理解价格安全垫：差额越厚，高成本矿越愿意生产；差额持续变薄，部分高成本供给会减产。资源税、安全投入、人工、技术和运输共同改变这条成本曲线。
+  </div>
+</section>
+
+<!-- 第11章 量化先行指标体系 -->
+<section class="section" id="sec-11">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 11</span>
+    <h3>观察指标：<span class="hl">四类10项</span> + <span class="hl2">精简3+1</span></h3>
+  </div>
+
+  <p class="para fade-in">判断煤价走势，先用“3+1”抓主线，再用下列10项解释原因。新手不需要给每个指标设置固定阈值，优先看方向、季节位置以及多个指标是否同向。</p>
+
+  <div class="indicator-grid fade-in">
+    <div class="indicator-card">
+      <div class="ic-cat">PRICE SPREADS</div>
+      <div class="ic-name">同品质区域价差</div>
+      <div class="ic-signal">统一热值、税费和交货条件，观察产地—港口价差能否覆盖运费</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">PRICE SPREADS</div>
+      <div class="ic-name">进口到岸价差</div>
+      <div class="ic-signal">按同热值折算进口到岸成本与国内价格，并加入汇率、关税和运费</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">PHYSICAL BALANCE</div>
+      <div class="ic-name">六大电厂可用天数</div>
+      <div class="ic-signal">与同季历史分位比较，并结合未来到货；绝对天数不直接等于价格方向</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">PHYSICAL BALANCE</div>
+      <div class="ic-name">环渤海港口库存</div>
+      <div class="ic-signal">结合调入、吞吐、锚地船舶和煤种结构解释；库存去化不自动等于需求增强</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">PHYSICAL BALANCE</div>
+      <div class="ic-name">原煤产能利用率</div>
+      <div class="ic-signal">看季度趋势与历史位置；利用率持续上升表示供给端正在加力</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">PHYSICAL BALANCE</div>
+      <div class="ic-name">停产矿井数/产能</div>
+      <div class="ic-signal">记录涉及核定产能、停产原因、预计期限和复产进度</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">DEMAND</div>
+      <div class="ic-name">沿海八省日耗</div>
+      <div class="ic-signal">做温度和日历调整，并与库存、到货和非煤电源出力交叉验证</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">DEMAND</div>
+      <div class="ic-name">化工开工率</div>
+      <div class="ic-signal">开工率上升且产品利润改善时，原料煤需求通常更有支撑</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">EXTERNAL VARIABLES</div>
+      <div class="ic-name">国际油价</div>
+      <div class="ic-signal">与煤价和化工产品价格一起看，油价主要通过产品价差间接影响煤化工</div>
+    </div>
+    <div class="indicator-card">
+      <div class="ic-cat">EXTERNAL VARIABLES</div>
+      <div class="ic-name">厄尔尼诺指数</div>
+      <div class="ic-signal">作为气候背景，重点观察其是否改变温度、来水、风光出力和电厂日耗</div>
+    </div>
+  </div>
+
+  <div class="insight-box fade-in">
+    <span class="label">SIMPLIFIED 3+1</span>
+    对于非全职跟踪煤炭的投资者，聚焦最核心的"3+1"指标：<br>
+    <strong>① 电厂可用天数与到货</strong>：使用同口径历史分位，并结合季节、日耗和长协到货<br>
+    <strong>② 同品质区域/进口价差</strong>：比较产地—港口利润与进口吸引力；先看热值、交货地、税费、运费与汇率<br>
+    <strong>③ 行业产能利用率/停复产矿井</strong>：区分季度统计口径与矿井事件数据<br>
+    <strong>④ [辅助]煤—油气—化工品价差</strong>：判断化工装置利润与开工方向
+  </div>
+
+  <figure class="data-figure fade-in" id="figure-zc-liquidity" aria-labelledby="liquidity-viz-title">
+    <figcaption class="viz-header">
+      <span class="viz-eyebrow">DATA STORY 03 · LIQUIDITY GATE</span>
+      <h4 class="viz-title" id="liquidity-viz-title">动力煤期货：先看流动性，再谈“基差”</h4>
+      <p class="viz-subtitle">郑商所2026-08-31日行情；下列12个ZC合约的成交量和持仓量均为0。</p>
+    </figcaption>
+
+    <div class="liquidity-summary">
+      <strong>12 / 12</strong>
+      <span>当日合约均为<br>零成交 · 零持仓</span>
+    </div>
+
+    <div class="liquidity-grid" role="img" aria-label="ZC609至ZC612以及ZC701至ZC708共12个动力煤期货合约，2026年8月31日成交量和持仓量全部为0">
+      <div class="contract-cell"><strong>ZC609</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC610</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC611</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC612</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC701</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC702</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC703</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC704</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC705</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC706</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC707</strong><span>成交 0 · 持仓 0</span></div>
+      <div class="contract-cell"><strong>ZC708</strong><span>成交 0 · 持仓 0</span></div>
+    </div>
+
+    <div class="reader-takeaway">
+      <div class="reader-note">
+        <strong>先做的判断</strong>
+        <p>成交量和持仓量是第一指标；两者为零时，屏幕字段不代表当日市场交易价格。</p>
+      </div>
+      <div class="reader-note caution">
+        <strong>怎样读取结算字段</strong>
+        <p>页面显示801.40元，但当日零成交、零持仓，因此更适合作为历史字段理解，而非实时价格。</p>
+      </div>
+      <div class="reader-note next">
+        <strong>改看哪些数据</strong>
+        <p>使用同品质区域价差、进口到岸价差、港口库存和电厂日耗做交叉验证。</p>
+      </div>
+    </div>
+
+    <a class="appendix-jump" href="#source-zc">来源与口径：附录B · B2</a>
+  </figure>
+
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     第四篇  企业评估与选股
+     =================================================================== -->
+<div class="part-header" id="part4">
+  <span class="part-num fade-in">PART 04</span>
+  <h2 class="part-title fade-in">企业评估与选股</h2>
+  <p class="part-goal fade-in">能看懂煤企报表，会对比选股，从"看行业"升级到"选公司"。</p>
+</div>
+
+<!-- 第12章 财务分析框架 -->
+<section class="section" id="sec-12">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 12</span>
+    <h3>财务分析：从<span class="hl">三个入口</span>开始</h3>
+  </div>
+
+  <p class="para fade-in">通用财务指标（ROE/净利率/资产负债率）请参考《财报与基本面投资手册》。本章只讲煤炭行业的<strong>特殊财务看点</strong>。</p>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">COAL-SPECIFIC</span>
+    分析煤炭企业先从三个单位指标入手，再沿着下方链条走到现金流：<br>
+    <strong>① 吨煤售价</strong>：长协比例高的公司售价稳定，现货占比高的弹性大<br>
+    <strong>② 吨煤成本</strong>：决定盈利安全垫的厚度，成本越低越不怕煤价跌<br>
+    <strong>③ 吨煤贡献利润</strong>：吨煤售价减去可比的吨煤成本与税费，代表每销售一吨煤对经营利润的贡献
+  </div>
+
+  <div class="learning-bridge fade-in">
+    <span class="bridge-eyebrow">BEGINNER BRIDGE · FROM PRICE TO CASH</span>
+    <h4>市场煤价上涨，不会一键变成股东分红</h4>
+    <p>新手最容易跳过中间环节。沿着下面四步，就能把行业判断翻译成公司判断。</p>
+    <div class="flow-diagram">
+      <div class="flow-step"><span class="fn">01</span><div class="fc"><h5>市场价格 → 公司实际售价</h5><p>煤种、长协/现货比例、热值和交货地决定公司售价对市场报价的敏感度。</p></div></div>
+      <div class="flow-step"><span class="fn">02</span><div class="fc"><h5>实际售价 × 自产销量 → 煤炭收入</h5><p>自产煤通常贡献主要利润，销量受产量、洗选率和停复产影响。</p></div></div>
+      <div class="flow-step"><span class="fn">03</span><div class="fc"><h5>收入 − 可比成本税费 → 经营利润</h5><p>统一生产成本、运输、资源税和期间费用口径，同时考虑成本随售价或产量变化。</p></div></div>
+      <div class="flow-step"><span class="fn">04</span><div class="fc"><h5>经营利润 → 自由现金流 → 可分红空间</h5><p>继续扣除维持性资本开支、利息和必要偿债，并考虑营运资金变化与董事会分红方案。</p></div></div>
+    </div>
+  </div>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">📊</span>
+      <h4>长协 vs 现货</h4>
+      <p><strong>长协</strong>：按合同和政策机制定期调整，稳定性通常较强，但具体基准、指数权重和兑现率各不相同。<br><strong>现货</strong>：波动通常更大。比较前还要统一热值、交货地、税费和运输口径。</p>
+      <span class="ct">PRICING STRUCTURE</span>
+    </div>
+    <div class="diagram-card ember">
+      <span class="ci">💰</span>
+      <h4>自产 vs 贸易</h4>
+      <p><strong>自产煤</strong>通常比贸易煤具有更高单位利润。自产占比之外，再看矿井寿命、煤质、洗选率、运输距离和维持性资本开支，才能判断利润质量。</p>
+      <span class="ct">PROFIT QUALITY</span>
+    </div>
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>成本项</th><th>内容</th><th>比较口径</th><th>怎样理解</th></tr></thead>
+    <tbody>
+      <tr><td>生产成本</td><td>材料/人工/折旧/安全费/维简费</td><td>自产商品煤还是原煤；销量还是产量</td><td>不同披露口径直接排名</td></tr>
+      <tr><td>期间费用</td><td>管理/销售/财务费用</td><td>煤炭分部还是公司整体；是否含运输</td><td>把公司费用全部机械摊到煤炭销量</td></tr>
+      <tr><td>资源税</td><td>通常按销售额和地区税率计征</td><td>省份、煤种、售价和优惠政策</td><td>把从价税长期写成固定元/吨</td></tr>
+      <tr><td>可比完全成本</td><td>统一生产、税费、运输及分摊口径</td><td>自行重构并保留计算表</td><td>混用“开采成本”“销售成本”“完全成本”</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">💡 ANALOGY</span>
+    单位成本越低，通常越能承受煤价下行。为了看清真实安全垫，把<strong>吨煤成本 + 维持性资本开支 + 运输成本</strong>放在一起比较。
+  </div>
+
+  <div class="insight-box fade-in">
+    <span class="label">CASH FLOW MATTERS</span>
+    新手先用<strong>自由现金流 ≈ 经营现金流－资本开支</strong>观察分红能力。再把资本开支拆成“维持现有生产”和“扩张新项目”：前者是持续经营所需，后者决定未来增长与资金压力。
+  </div>
+</section>
+
+<!-- 第13章 上市公司画像 -->
+<section class="section" id="sec-13">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 13</span>
+    <h3>上市公司画像：<span class="hl">四类模式</span>与<span class="hl2">样本清单</span></h3>
+  </div>
+
+  <p class="para fade-in">煤炭公司的煤种、矿区、运输和一体化结构不同。以下公司仅作为商业模式观察样本，不构成推荐、排名或完整可比组；涉及估值与股息率的历史数值均需按使用日更新。</p>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>类型</th><th>观察样本</th><th>主要特征</th><th>核心指标</th></tr></thead>
+    <tbody>
+      <tr><td>纯煤炭型</td><td>陕煤/山煤国际</td><td>煤价敞口较直接</td><td>长协比例、煤种与单位成本</td></tr>
+      <tr><td>煤电一体化型</td><td>神华/新集能源</td><td>上下游利润可能对冲</td><td>分部价格、内部交易与电价机制</td></tr>
+      <tr><td>煤化双轮型</td><td>兖矿/中煤/广汇</td><td>同时暴露于煤和化工品价差</td><td>产品结构、装置负荷与资本开支</td></tr>
+      <tr><td>焦煤专业型</td><td>平煤/淮北矿业/山西焦煤</td><td>与钢铁和进口焦煤相关</td><td>精煤率、铁水、进口与矿井条件</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 核心公司卡片 -->
+  <div class="company-grid fade-in">
+    <div class="company-card">
+      <div class="cc-rank">01</div>
+      <span class="cc-tag gold">INTEGRATED COAL · POWER · TRANSPORT</span>
+      <h4>中国神华</h4>
+      <span class="cc-code">601088.SH / 01088.HK</span>
+      <div class="cc-stats">
+        <div class="cc-stat"><div class="csv">年报</div><div class="csl">更新单位成本</div></div>
+        <div class="cc-stat"><div class="csv">公告</div><div class="csl">更新分红政策</div></div>
+        <div class="cc-stat"><div class="csv">同日</div><div class="csl">比较A/H估值</div></div>
+      </div>
+      <div class="cc-analogy">研究角度：煤电运港航一体化与资本回报</div>
+      <p>观察煤电运港航一体化对成本与现金流稳定性的作用，核心看自产煤单位利润、维持性资本开支和股东回报规划。</p>
+    </div>
+    <div class="company-card">
+      <div class="cc-rank">02</div>
+      <span class="cc-tag gold">THERMAL COAL · POWER INVESTMENTS</span>
+      <h4>陕西煤业</h4>
+      <span class="cc-code">601225.SH</span>
+      <div class="cc-stats">
+        <div class="cc-stat"><div class="csv">年报</div><div class="csl">更新可比成本</div></div>
+        <div class="cc-stat"><div class="csv">规划</div><div class="csl">跟踪电力项目</div></div>
+        <div class="cc-stat"><div class="csv">公告</div><div class="csl">更新分红政策</div></div>
+      </div>
+      <div class="cc-analogy">研究角度：煤炭主业与电力投资的资本配置</div>
+      <p>重点看煤质、吨煤售价与成本，以及电力项目从审批、建设到投产后的回报率。</p>
+    </div>
+    <div class="company-card">
+      <div class="cc-rank">03</div>
+      <span class="cc-tag ember">DOMESTIC + OVERSEAS · COAL + CHEM</span>
+      <h4>兖矿能源</h4>
+      <span class="cc-code">600188.SH / 01171.HK</span>
+      <div class="cc-stats">
+        <div class="cc-stat"><div class="csv">分部</div><div class="csl">境内外成本</div></div>
+        <div class="cc-stat"><div class="csv">价差</div><div class="csl">煤化工盈利</div></div>
+        <div class="cc-stat"><div class="csv">汇率</div><div class="csl">海外资产影响</div></div>
+      </div>
+      <div class="cc-analogy">研究角度：境内外资产、汇率与煤化工价差</div>
+      <p>分别看境内外煤炭利润、煤化工产品价差和汇率；扩产项目按审批、投产和爬坡三阶段观察兑现率。</p>
+    </div>
+    <div class="company-card">
+      <div class="cc-rank">04</div>
+      <span class="cc-tag ice">COAL + CHEMICALS · SEGMENT ANALYSIS</span>
+      <h4>中煤能源</h4>
+      <span class="cc-code">601898.SH / 01898.HK</span>
+      <div class="cc-stats">
+        <div class="cc-stat"><div class="csv">自产</div><div class="csl">剔除贸易煤</div></div>
+        <div class="cc-stat"><div class="csv">化工</div><div class="csl">分产品价差</div></div>
+        <div class="cc-stat"><div class="csv">公告</div><div class="csl">更新资本回报</div></div>
+      </div>
+      <div class="cc-analogy">研究角度：自产与贸易煤拆分、煤化工分部现金流</div>
+      <p>把煤炭与煤化工、自产煤与贸易煤分别观察，核心落在各分部利润、自由现金流和分红政策。</p>
+    </div>
+  </div>
+
+  <div class="company-grid fade-in" style="margin-top:0">
+    <div class="company-card">
+      <div class="cc-rank">05</div>
+      <span class="cc-tag ember">COKING COAL · WASHING YIELD</span>
+      <h4>平煤股份</h4>
+      <span class="cc-code">601666.SH</span>
+      <div class="cc-stats">
+        <div class="cc-stat"><div class="csv">精煤</div><div class="csl">跟踪洗选率</div></div>
+        <div class="cc-stat"><div class="csv">矿井</div><div class="csl">跟踪整改资本开支</div></div>
+      </div>
+      <div class="cc-analogy">研究角度：精煤产率、矿井治理与维持性投入</div>
+      <p>核心指标是<strong>精煤产率 × 焦煤售价－单位成本</strong>，矿井整改和资本开支会影响产量与现金流。</p>
+    </div>
+    <div class="company-card">
+      <span class="cc-tag green">EASTERN CHINA · COAL + CHEMICALS</span>
+      <h4>淮北矿业</h4>
+      <span class="cc-code">600985.SH</span>
+      <div class="cc-analogy">研究角度：区域销售、焦煤产品与新矿兑现</div>
+      <p>按审批、建设、投产和爬坡四阶段观察在建矿井，并把煤炭与化工业务分部分析。</p>
+    </div>
+    <div class="company-card">
+      <span class="cc-tag green">XINJIANG · MULTI-ENERGY EXPOSURE</span>
+      <h4>广汇能源</h4>
+      <span class="cc-code">600256.SH</span>
+      <div class="cc-analogy">研究角度：煤炭、煤化工及其他能源业务的分部风险</div>
+      <p>按分部看产销量和产品价差，再看运输能力与资本开支，判断区域资源能否转化为公司现金流。</p>
+    </div>
+    <div class="company-card">
+      <span class="cc-tag ice">ANTHRACITE + CHEMICAL</span>
+      <h4>兰花科创</h4>
+      <span class="cc-code">600123.SH</span>
+      <div class="cc-analogy">研究角度：无烟煤售价与尿素产品价差</div>
+      <p>分别分析煤炭和化肥业务的销量、成本、装置负荷与库存，核心指标是无烟煤与尿素两条产品价差。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 第14章 估值与选股逻辑 -->
+<section class="section" id="sec-14">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 14</span>
+    <h3>估值与选股：<span class="hl">四大主线</span></h3>
+  </div>
+
+  <p class="para fade-in">通用估值方法（PE/PB/DCF）请参考《估值指标投资手册》。本章聚焦煤炭行业的特殊估值视角和选股主线。</p>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">期权估值法</span>
+      <h4>把上行弹性放入情景估值</h4>
+      <p>最简单的方法是做熊市、基准、牛市三组煤价情景，分别计算自由现金流。公司在上行情景中增加的价值，就是可以观察的“上行弹性”。</p>
+      <span class="ct">OPTION VALUE</span>
+    </div>
+    <div class="diagram-card green">
+      <span class="ci">红利估值法</span>
+      <h4>股息率不是债券收益率</h4>
+      <p>先看<strong>可持续股息率 = 可持续每股分红 ÷ 当前股价</strong>。可持续分红来自中周期盈利和自由现金流，并受资本开支、负债与派息政策影响。</p>
+      <span class="ct">DIVIDEND VALUE</span>
+    </div>
+  </div>
+
+  <div class="takeaway fade-in">
+    <div class="takeaway-line">
+      <div class="ln">01</div>
+      <div class="lc"><h4>红利逻辑 · 看可持续现金流</h4><p>历史分红体现意愿，自由现金流体现能力，净负债与未来资本开支体现约束。三者共同决定股息率能否持续。</p></div>
+    </div>
+    <div class="takeaway-line">
+      <div class="ln">02</div>
+      <div class="lc"><h4>弹性逻辑 · 看煤价敏感性</h4><p>按煤种测算价格变化对收入、税费、成本和现金流的影响；现货敞口和经营杠杆越高，通常弹性越大。</p></div>
+    </div>
+    <div class="takeaway-line">
+      <div class="ln">03</div>
+      <div class="lc"><h4>化工逻辑 · 跟踪产品价差</h4><p>把煤价与甲醇、烯烃等产品价格放在一起，再看装置负荷；价差扩大通常带来更好的盈利与开工动力。</p></div>
+    </div>
+    <div class="takeaway-line">
+      <div class="ln">04</div>
+      <div class="lc"><h4>成长逻辑 · 看项目兑现率</h4><p>把项目分成审批、建设、投产、爬坡四阶段，实际产量和现金流增量会比规划投资额更接近股东回报。</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     第五篇  政策、地缘与长期趋势
+     =================================================================== -->
+<div class="part-header" id="part5">
+  <span class="part-num fade-in">PART 05</span>
+  <h2 class="part-title fade-in">政策、地缘与长期趋势</h2>
+  <p class="part-goal fade-in">理解超越供需的系统性变量，建立长期投资视角。</p>
+</div>
+
+<!-- 第15章 政策 -->
+<section class="section" id="sec-15">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 15</span>
+    <h3>政策：<span class="hl">四把钥匙</span>理解监管棋局</h3>
+  </div>
+
+  <div class="power-map fade-in">
+    <div class="power-layer">
+      <div class="lr">01</div>
+      <div class="lb">
+        <h4>🔒 安监常态化</h4>
+        <p>核心指标是<strong>停产产能与复产进度</strong>。监管趋严通常先影响整改周期、合规成本和短期产量。</p>
+      </div>
+    </div>
+    <div class="power-layer">
+      <div class="lr">02</div>
+      <div class="lb">
+        <h4>📦 产能储备制度</h4>
+        <p>核心指标是<strong>常态产量与应急可释放量</strong>。保供核增、储备产能、在建项目与退出产能分别影响不同时间尺度。</p>
+      </div>
+    </div>
+    <div class="power-layer">
+      <div class="lr">03</div>
+      <div class="lb">
+        <h4>🚢 进口政策与通关</h4>
+        <p>核心指标是<strong>实际装船与通关量</strong>。产量计划、出口政策、关税和口岸能力通过这两个结果指标影响国内供给。</p>
+      </div>
+    </div>
+    <div class="power-layer">
+      <div class="lr">04</div>
+      <div class="lb">
+        <h4>🌿 双碳政策</h4>
+        <p>先看政策影响哪一项：能源总量、碳排放、能效、环保还是项目准入；再落到公司的产量、成本和资本开支。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box green fade-in">
+    <span class="label">POLICY INSIGHT</span>
+    对新手最实用的政策阅读法是<strong>政策条款 → 受影响项目 → 产量/成本/资本开支</strong>。以原料用能政策为例，它主要改变能源消费核算，但项目仍会受到碳排放、环保、水资源与审批条件影响。
+  </div>
+
+  <a class="appendix-jump fade-in" href="#source-energy-policy">政策原文索引：附录D · D2—D3</a>
+</section>
+
+<!-- 第16章 地缘 -->
+<section class="section" id="sec-16">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 16</span>
+    <h3>地缘政治：<span class="hl">中东冲突</span>的<span class="hl2">煤炭传导链</span></h3>
+  </div>
+
+  <p class="para fade-in">地缘事件对煤炭的影响要沿着传导链看：<strong>油气与运费 → 能源替代和化工价差 → 进口成本 → 国内煤价</strong>。若前两步的价格和数量没有变化，事件对煤炭往往只是市场叙事。</p>
+
+  <div class="flow-diagram fade-in">
+    <div class="flow-step"><span class="fn">01</span><div class="fc"><h5>事件 → 油气与运费</h5><p>先验证油价、LNG、航线和保险费是否实际变化，以及持续时间</p></div></div>
+    <div class="flow-step"><span class="fn">02</span><div class="fc"><h5>能源替代 → 发电结构</h5><p>检查不同地区燃料切换能力、碳价、电厂可用性和库存，而非预设“气转煤”</p></div></div>
+    <div class="flow-step"><span class="fn">03</span><div class="fc"><h5>化工供应 → 产品价差</h5><p>验证甲醇、烯烃等实际出口、库存、开工率与利润，不用名义产能代替有效供应</p></div></div>
+    <div class="flow-step"><span class="fn">04</span><div class="fc"><h5>国际煤价 → 国内到岸成本</h5><p>统一煤质、汇率、税费和运费后再判断进口替代与国内价格影响</p></div></div>
+  </div>
+
+  <div class="insight-box ember fade-in">
+    <span class="label">GEOPOLITICAL INSIGHT</span>
+    能源安全可能提高国内资源与多元供应的政策价值，但“国产”不自动等于低成本、低风险或高回报。研究应比较国内增产、进口多元化、储备、替代能源和需求侧管理的成本与约束，并把政策重要性和上市公司估值分开。
+  </div>
+</section>
+
+<!-- 第17章 长期趋势 -->
+<section class="section" id="sec-17">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 17</span>
+    <h3>长期趋势：<span class="hl">从燃料到原料</span>的<span class="hl2">百年转型</span></h3>
+  </div>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">🧹</span>
+      <h4>清洁化</h4>
+      <p>洗选与排放标准可能增加合规投入，也可能改善产品质量和运营效率；影响取决于公司存量设施、改造资本开支与执行节奏。</p>
+      <span class="ct">CLEAN</span>
+    </div>
+    <div class="diagram-card ember">
+      <span class="ci">🤖</span>
+      <h4>智能化</h4>
+      <p>核心指标是<strong>智能化覆盖率与单位成本变化</strong>。覆盖率提升同时伴随成本下降，才说明技术正在转化为经营效率。</p>
+      <span class="ct">SMART</span>
+    </div>
+    <div class="diagram-card full-width green">
+      <span class="ci">🧪</span>
+      <h4>高效化 · 从"初级燃料"到高附加值产品</h4>
+      <p>核心指标是<strong>已投产装置负荷 × 单位耗煤</strong>。规划项目按审批、建设、投产和爬坡阶段逐步计入，能更直观地观察真实需求增量。</p>
+      <span class="ct">EFFICIENT · COAL TO CHEMICALS</span>
+    </div>
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>研究情景</th><th>重点变量</th><th>估值方法</th><th>主要风险</th></tr></thead>
+    <tbody>
+      <tr><td>价格下行情景</td><td>单位售价、可变成本、资本开支和负债</td><td>压力测试后的现金流/PB</td><td>利润与分红同时收缩</td></tr>
+      <tr><td>中枢稳定情景</td><td>长协兑现、自由现金流与资本配置</td><td>周期中枢盈利+股东回报</td><td>把阶段高分红当永续</td></tr>
+      <tr><td>价格上行情景</td><td>现货敞口、税费、增产能力与政策反应</td><td>敏感性分析/分部估值</td><td>线性外推高点利润</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">💡 KEY POINT</span>
+    新能源既会替代部分煤电电量，也会提高系统对调节与容量资源的需求。新手分开看<strong>煤电发电量</strong>与<strong>煤电容量收入</strong>：前者影响耗煤，后者影响煤电资产回报。
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     第六篇  实操指南与工具箱
+     =================================================================== -->
+<div class="part-header" id="part6">
+  <span class="part-num fade-in">PART 06</span>
+  <h2 class="part-title fade-in">实操指南与工具箱</h2>
+  <p class="part-goal fade-in">看完就能上手——资金面、分红、风险识别、组合构建。</p>
+</div>
+
+<!-- 第18章 资金面 -->
+<section class="section" id="sec-18">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 18</span>
+    <h3>资金面：<span class="hl">谁在买煤炭</span>？</h3>
+  </div>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-item"><div class="sv">份额</div><div class="sl">区分ETF份额变化<br>与二级市场成交额</div></div>
+    <div class="stat-item"><div class="sv">区间</div><div class="sl">用同一起止日<br>比较行业与大盘</div></div>
+    <div class="stat-item"><div class="sv">持仓</div><div class="sl">机构季报看配置方向<br>ETF份额看更高频资金</div></div>
+  </div>
+
+  <p class="para fade-in">资金面是价格与基本面的放大器。新手先看<strong>ETF份额变化</strong>：价格上涨且份额增加，通常代表增量资金进入；价格上涨但份额下降，可能更多来自存量筹码重估。</p>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">STYLE SWITCH</span>
+    <strong>弹性风格</strong>：现货敞口和经营杠杆较高，对煤价变化通常更敏感。<br>
+    <strong>红利风格</strong>：长协占比、自由现金流和分红约束较强，盈利与股东回报通常更稳定。
+  </div>
+</section>
+
+<!-- 第19章 分红 -->
+<section class="section" id="sec-19">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 19</span>
+    <h3>分红：从<span class="hl">历史股息率</span>到<span class="hl2">可持续现金流</span></h3>
+  </div>
+
+  <p class="para fade-in">股息率的公式很简单：<strong>每股现金分红 ÷ 当前股价</strong>。投资判断更关键的是分子能否持续，因此继续看自由现金流、资本开支、净负债和公司的分红政策。</p>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>公司</th><th>现行规划/方案</th><th>计算分红比例</th><th>计算股息率</th><th>更新要求</th></tr></thead>
+    <tbody>
+      <tr><td>中国神华</td><td>更新2025—2027年度股东回报规划及当年方案</td><td>现金分红÷可比归母净利润</td><td>每股分红÷除息前同日价格</td><td>区分中期与末期分红</td></tr>
+      <tr><td>陕西煤业</td><td>旧规划期已结束，更新最新年度方案或新规划</td><td>按当年公告分母计算</td><td>注明价格日</td><td>历史比例用于观察分红意愿</td></tr>
+      <tr><td>兖矿能源</td><td>更新2026—2028年度股东回报规划及当年方案</td><td>按公告口径计算</td><td>A/H使用同一时点与汇率</td><td>区分规划下限与实际方案</td></tr>
+      <tr><td>中煤能源</td><td>更新年度、中期及特别分红公告</td><td>分别列示后汇总</td><td>A/H使用同一时点与汇率</td><td>重点看现金流与派息方案</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">💡 AH VALUATION GAP ≠ ARBITRAGE</span>
+    同一公司的A股与H股可能长期存在估值和股息率差异。新手比较时先把<strong>汇率、分红税和交易费用</strong>折算到同一币种，再看两地流动性和投资者结构；价差反映的是不同市场定价，不是自动收敛的套利空间。
+  </div>
+</section>
+
+<!-- 第20章 风险识别 -->
+<section class="section" id="sec-20">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 20</span>
+    <h3>风险识别：<span class="hl">七大风险</span> + <span class="hl2">黑天鹅应对</span></h3>
+  </div>
+
+  <div class="risk-grid fade-in">
+    <div class="risk-card" style="border-left:3px solid #ef4444;">
+      <span class="rc-icon">⚡</span>
+      <h5>新能源超预期</h5>
+      <p class="rc-trigger">煤电发电量与利用小时持续低于基准情景</p>
+      <p class="rc-impact" style="color:var(--accent-ember);">主要压力：动力煤需求与煤电利用小时</p>
+      <span class="rc-prob mid">需评估</span>
+    </div>
+    <div class="risk-card" style="border-left:3px solid var(--accent-ember);">
+      <span class="rc-icon">🏗️</span>
+      <h5>地产持续深度下行</h5>
+      <p class="rc-trigger">铁水、钢材需求和焦化利润持续走弱</p>
+      <p class="rc-impact" style="color:var(--accent-ember);">主要压力：钢铁链焦煤需求</p>
+      <span class="rc-prob high">需评估</span>
+    </div>
+    <div class="risk-card" style="border-left:3px solid var(--accent-ember);">
+      <span class="rc-icon">🇲🇳</span>
+      <h5>蒙煤通关量超预期</h5>
+      <p class="rc-trigger">同品质进口增量超过下游需求增量</p>
+      <p class="rc-impact" style="color:var(--accent-ember);">主要压力：同品质焦煤价格</p>
+      <span class="rc-prob mid">需评估</span>
+    </div>
+    <div class="risk-card" style="border-left:3px solid #ef4444;">
+      <span class="rc-icon">📜</span>
+      <h5>煤价触发政策调控</h5>
+      <p class="rc-trigger">价格显著偏离当期政策机制并出现正式监管行动</p>
+      <p class="rc-impact" style="color:#ef4444;">主要压力：现货敞口与估值</p>
+      <span class="rc-prob low">需评估</span>
+    </div>
+    <div class="risk-card" style="border-left:3px solid var(--accent-gold);">
+      <span class="rc-icon">🛢️</span>
+      <h5>地缘冲突缓和</h5>
+      <p class="rc-trigger">煤化工产品价差与装置利润持续收缩</p>
+      <p class="rc-impact" style="color:var(--accent-ember);">关注：油气、化工品价差与需求</p>
+      <span class="rc-prob low">需评估</span>
+    </div>
+    <div class="risk-card" style="border-left:3px solid var(--accent-green);">
+      <span class="rc-icon">🔓</span>
+      <h5>安监政策转向宽松</h5>
+      <p class="rc-trigger">核定能力、执法尺度或停复产节奏发生正式变化</p>
+      <p class="rc-impact" style="color:var(--accent-ember);">关注：合规供给与成本曲线变化</p>
+      <span class="rc-prob low">需评估</span>
+    </div>
+    <div class="risk-card" style="border-left:3px solid var(--accent-ice);">
+      <span class="rc-icon">📉</span>
+      <h5>全球经济衰退</h5>
+      <p class="rc-trigger">工业、钢铁、化工和电力需求同步走弱</p>
+      <p class="rc-impact" style="color:#ef4444;">主要压力：需求、价格与信用风险</p>
+      <span class="rc-prob low">需评估</span>
+    </div>
+  </div>
+
+  <div class="insight-box ember fade-in">
+    <span class="label">BLACK SWAN PROTOCOL</span>
+    <strong>安全事故</strong>：先看人员与治理责任，再看停产范围、整改时长和公司现金流影响<br>
+    <strong>地缘冲突升级</strong>：沿油气价格、化工品价差、运费和进口成本观察传导<br>
+    <strong>极端天气</strong>：看温度、来水、风光出力如何改变电厂日耗和库存
+  </div>
+</section>
+
+<!-- 第21章 投资组合构建 -->
+<section class="section" id="sec-21">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">CHAPTER 21</span>
+    <h3>组合研究：<span class="hl">三类观察篮子</span> + <span class="hl2">风险预算</span></h3>
+  </div>
+
+  <div class="portfolio-grid fade-in">
+    <div class="portfolio-card">
+      <span class="pc-label conservative">CONSERVATIVE</span>
+      <h4>红利质量观察篮子</h4>
+      <div class="pc-alloc">低成本<br>长协稳定<br>现金流与分红约束</div>
+      <div class="pc-return" style="color:var(--accent-green);">不承诺收益</div>
+      <div class="pc-risk">单一行业集中风险仍高</div>
+    </div>
+    <div class="portfolio-card">
+      <span class="pc-label balanced">BALANCED</span>
+      <h4>多驱动观察篮子</h4>
+      <div class="pc-alloc">动力煤<br>焦煤<br>煤电/煤化一体化</div>
+      <div class="pc-return" style="color:var(--accent-gold);">情景压力测试</div>
+      <div class="pc-risk">相关性在压力期可能上升</div>
+    </div>
+    <div class="portfolio-card">
+      <span class="pc-label aggressive">AGGRESSIVE</span>
+      <h4>高弹性研究篮子</h4>
+      <div class="pc-alloc">现货敞口<br>高经营杠杆<br>建设项目兑现</div>
+      <div class="pc-return" style="color:var(--accent-ember);">先定义最大损失</div>
+      <div class="pc-risk">煤价、建设与融资风险高</div>
+    </div>
+  </div>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">ETF + DYNAMIC REBALANCE</span>
+    <strong>工具选择</strong>：ETF分散单一公司风险，主要看指数前十大权重、费用、流动性和跟踪误差；行业本身的周期风险仍然保留。<br>
+    <strong>风险预算</strong>：用个人最大可承受回撤反推仓位，并提前设定再平衡规则。比猜“煤价顶部”更重要的是知道判断失效时减多少仓。
+  </div>
+
+  <!-- SVG: 库存周期四阶段 -->
+  <div class="svg-diagram fade-in" style="margin:32px 0; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:10px; padding:24px 16px 12px;">
+    <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;" role="img" aria-label="需求变化与库存变化形成的四种研究组合">
+      <text x="300" y="24" text-anchor="middle" fill="#e8edf0" font-size="14" font-weight="700" font-family="Noto Serif SC">需求—库存四种组合（非固定循环）</text>
+      <!-- 四象限 -->
+      <rect x="80" y="45" width="200" height="100" rx="8" fill="rgba(74,222,128,0.08)" stroke="rgba(74,222,128,0.3)" stroke-width="1"/>
+      <text x="180" y="78" text-anchor="middle" fill="#4ade80" font-size="13" font-weight="700" font-family="Noto Serif SC">需求增强 · 库存下降</text>
+      <text x="180" y="98" text-anchor="middle" fill="rgba(232,237,240,0.5)" font-size="10">需求↑ 库存↓</text>
+      <text x="180" y="118" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="600">通常对应供需趋紧</text>
+      <text x="180" y="136" text-anchor="middle" fill="rgba(232,237,240,0.3)" font-size="9">同时检查供给与运输</text>
+
+      <rect x="320" y="45" width="200" height="100" rx="8" fill="rgba(212,160,23,0.08)" stroke="rgba(212,160,23,0.3)" stroke-width="1"/>
+      <text x="420" y="78" text-anchor="middle" fill="#d4a017" font-size="13" font-weight="700" font-family="Noto Serif SC">需求增强 · 库存上升</text>
+      <text x="420" y="98" text-anchor="middle" fill="rgba(232,237,240,0.5)" font-size="10">需求↑ 库存↑</text>
+      <text x="420" y="118" text-anchor="middle" fill="#d4a017" font-size="11" font-weight="600">区分补库与供应宽松</text>
+      <text x="420" y="136" text-anchor="middle" fill="rgba(232,237,240,0.3)" font-size="9">观察到货与成交价格</text>
+
+      <rect x="320" y="165" width="200" height="100" rx="8" fill="rgba(232,93,38,0.08)" stroke="rgba(232,93,38,0.3)" stroke-width="1"/>
+      <text x="420" y="198" text-anchor="middle" fill="#e85d26" font-size="13" font-weight="700" font-family="Noto Serif SC">需求转弱 · 库存上升</text>
+      <text x="420" y="218" text-anchor="middle" fill="rgba(232,237,240,0.5)" font-size="10">需求↓ 库存↑</text>
+      <text x="420" y="238" text-anchor="middle" fill="#e85d26" font-size="11" font-weight="600">通常对应供需转松</text>
+      <text x="420" y="256" text-anchor="middle" fill="rgba(232,237,240,0.3)" font-size="9">检查价格与利润响应</text>
+
+      <rect x="80" y="165" width="200" height="100" rx="8" fill="rgba(125,211,252,0.08)" stroke="rgba(125,211,252,0.3)" stroke-width="1"/>
+      <text x="180" y="198" text-anchor="middle" fill="#7dd3fc" font-size="13" font-weight="700" font-family="Noto Serif SC">需求转弱 · 库存下降</text>
+      <text x="180" y="218" text-anchor="middle" fill="rgba(232,237,240,0.5)" font-size="10">需求↓ 库存↓</text>
+      <text x="180" y="238" text-anchor="middle" fill="#7dd3fc" font-size="11" font-weight="600">区分减产与主动降库</text>
+      <text x="180" y="256" text-anchor="middle" fill="rgba(232,237,240,0.3)" font-size="9">观察供给收缩与现金流</text>
+
+      <!-- 示例阶段标注 -->
+      <rect x="200" y="282" width="200" height="18" rx="3" fill="rgba(74,222,128,0.12)" stroke="rgba(74,222,128,0.3)" stroke-width="0.5"/>
+      <text x="300" y="294" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="600">组合用于提出问题，不直接产生买卖信号</text>
+    </svg>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================================================================
+     附录
+     =================================================================== -->
+<div class="part-header" id="appendix">
+  <span class="part-num fade-in">APPENDIX</span>
+  <h2 class="part-title fade-in">附录</h2>
+</div>
+
+<!-- 附录A 术语速查 -->
+<section class="section" id="sec-app-a">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">APPENDIX A</span>
+    <h3>术语速查表</h3>
+  </div>
+
+  <div class="glossary-grid fade-in">
+    <div class="glossary-item"><div class="gi-term">长协</div><div class="gi-def">中长期合同；定价公式、调整频率、数量与履约要求以具体合同和当期政策为准</div></div>
+    <div class="glossary-item"><div class="gi-term">现货</div><div class="gi-def">相对近期交付的实物交易；价格必须注明煤质、地点、税费、交付期与数据来源</div></div>
+    <div class="glossary-item"><div class="gi-term">基差</div><div class="gi-def">同一时点、可比品质和地点下的现货价减期货价；还受交割与持有成本影响</div></div>
+    <div class="glossary-item"><div class="gi-term">Backwardation</div><div class="gi-def">近月价格高于远月；可能反映现货偏紧或风险溢价，需结合成交与交割条件解释</div></div>
+    <div class="glossary-item"><div class="gi-term">Contango</div><div class="gi-def">远月价格高于近月；可能包含库存、资金和持有成本，不自动等于供给充裕</div></div>
+    <div class="glossary-item"><div class="gi-term">Q5500</div><div class="gi-def">发热量约5,500千卡/千克的表述；仍需说明收到基/空气干燥基及灰硫等指标</div></div>
+    <div class="glossary-item"><div class="gi-term">平仓价</div><div class="gi-def">货物在港口装船交付的价格口径，需说明港口、煤质、税费与日期</div></div>
+    <div class="glossary-item"><div class="gi-term">库提价</div><div class="gi-def">从指定仓库提货的价格口径，需说明仓库、煤质、税费与日期</div></div>
+    <div class="glossary-item"><div class="gi-term">铁水产量</div><div class="gi-def">高炉日出铁水量，焦煤需求代理变量</div></div>
+    <div class="glossary-item"><div class="gi-term">日耗</div><div class="gi-def">电厂日度耗煤量，电力需求高频指标</div></div>
+    <div class="glossary-item"><div class="gi-term">可用天数</div><div class="gi-def">库存÷日耗，库存充裕度指标</div></div>
+    <div class="glossary-item"><div class="gi-term">产能利用率</div><div class="gi-def">实际产出与统计能力的比值；分子、分母与统计周期必须来自同一口径</div></div>
+    <div class="glossary-item"><div class="gi-term">坑口价</div><div class="gi-def">煤矿出矿价格，产地价格指标</div></div>
+    <div class="glossary-item"><div class="gi-term">发运倒挂</div><div class="gi-def">运到港口成本高于港口售价，港口调入减少信号</div></div>
+    <div class="glossary-item"><div class="gi-term">DMO</div><div class="gi-def">印尼国内市场义务，研究时核验适用主体、数量、价格与执行期</div></div>
+    <div class="glossary-item"><div class="gi-term">RKAB</div><div class="gi-def">印尼矿业年度工作计划和预算审批，不是煤炭基准价</div></div>
+    <div class="glossary-item"><div class="gi-term">HBA</div><div class="gi-def">印尼煤炭基准价格体系；使用时核验煤质类别、计算规则与生效期</div></div>
+  </div>
+</section>
+
+<!-- 附录B 数据渠道 -->
+<section class="section" id="sec-app-b">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">APPENDIX B</span>
+    <h3>数据获取渠道</h3>
+  </div>
+
+  <p class="para fade-in">正文仅保留图表与结论；精确数据、计算口径和原始链接统一收录在这里。</p>
+
+  <div class="source-record" id="source-macro">
+    <div class="source-record-head">
+      <span class="source-code">B1</span>
+      <h4>2024—2025年煤炭相关官方数据</h4>
+    </div>
+    <table class="compare-table">
+      <thead><tr><th>指标</th><th>单位</th><th>2024</th><th>2025</th><th>官方同比/变化</th></tr></thead>
+      <tbody>
+        <tr><td>煤炭占能源消费总量比重</td><td>%</td><td>53.2</td><td>51.4</td><td>−1.8个百分点</td></tr>
+        <tr><td>全国原煤产量</td><td>亿吨</td><td>47.8</td><td>48.5</td><td>+1.4%</td></tr>
+        <tr><td>煤及褐煤进口量</td><td>亿吨</td><td>5.4270</td><td>4.9027</td><td>−9.6%</td></tr>
+      </tbody>
+    </table>
+    <p>来源：国家统计局<a class="source-link" href="https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html">《2024年国民经济和社会发展统计公报》</a>、<a class="source-link" href="https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html">《2025年国民经济和社会发展统计公报》</a>。图中“其他能源合计”为100%减去公报披露的煤炭占比，受原始数据四舍五入影响。</p>
+    <a class="back-link" href="#figure-macro">← 返回正文图表</a>
+  </div>
+
+  <div class="source-record" id="source-zc">
+    <div class="source-record-head">
+      <span class="source-code">B2</span>
+      <h4>郑商所动力煤期货流动性检查</h4>
+    </div>
+    <table class="compare-table">
+      <thead><tr><th>数据日</th><th>合约范围</th><th>成交量</th><th>持仓量</th><th>结论</th></tr></thead>
+      <tbody><tr><td>2026-08-31</td><td>ZC609—ZC612、ZC701—ZC708</td><td>全部为0</td><td>全部为0</td><td>不具备可交易基差的价格基础</td></tr></tbody>
+    </table>
+    <p>来源：<a class="source-link" href="https://www.czce.com.cn/cn/DFSStaticFiles/Future/2026/20260831/FutureDataDaily.txt">郑州商品交易所2026-08-31期货每日行情</a>。相关合约的开盘、最高、最低、收盘、成交量、持仓量和成交额均为0；801.40元/吨结算字段并非当日成交形成。</p>
+    <a class="back-link" href="#figure-zc-liquidity">← 返回正文图表</a>
+  </div>
+
+  <div class="chapter-header source-directory-header fade-in">
+    <span class="ch-num">SOURCE DIRECTORY</span>
+    <h3>常用数据渠道</h3>
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>渠道</th><th>数据类型</th><th>获取方式</th><th>费用</th></tr></thead>
+    <tbody>
+      <tr><td><a class="source-link" href="https://www.stats.gov.cn/sj/zxfbhjd/202602/t20260228_1962662.html">国家统计局</a></td><td>年度能源、产量与进出口统计</td><td>统计公报/数据库</td><td>免费；优先引用原表与口径注释</td></tr>
+      <tr><td><a class="source-link" href="https://www.ndrc.gov.cn/xxgk/zcfb/tz/202202/t20220225_1317003.html">国家发展改革委</a></td><td>价格机制、能耗与产业政策</td><td>正式通知/发布会实录</td><td>免费；记录文号与适用边界</td></tr>
+      <tr><td><a class="source-link" href="https://www.mem.gov.cn/gk/zfxxgkpt/fdzdgknr/202605/t20260528_605335.shtml">应急管理部/矿山安监局</a></td><td>安全法规、执法与事故通报</td><td>部门规章/官方通报</td><td>免费；区分生效日与事件范围</td></tr>
+      <tr><td><a class="source-link" href="https://www.czce.com.cn/cn/DFSStaticFiles/Future/2026/20260831/FutureDataDaily.txt">郑州商品交易所</a></td><td>动力煤合约日行情、成交和持仓</td><td>官方日行情文件</td><td>免费；先做流动性检查</td></tr>
+      <tr><td><a class="source-link" href="https://www.sse.com.cn/disclosure/listedinfo/announcement/">证券交易所公告</a></td><td>年报、经营数据、项目与分红</td><td>公司公告原文</td><td>免费；引用公告日与页码</td></tr>
+      <tr><td>NeoData</td><td>行情/财务/研报</td><td>API/工具调用</td><td>订阅制</td></tr>
+      <tr><td>Wind</td><td>全品种金融数据</td><td>终端/API</td><td>订阅制</td></tr>
+      <tr><td>CCTD</td><td>煤炭日耗/库存/价格</td><td>网站/APP</td><td>部分免费</td></tr>
+      <tr><td>Mysteel</td><td>钢材/焦煤/焦炭</td><td>网站/APP</td><td>部分免费</td></tr>
+      <tr><td>中国煤炭工业协会</td><td>行业数据/政策</td><td>官网</td><td>免费</td></tr>
+      <tr><td>海关总署</td><td>进出口数据</td><td>官网</td><td>免费</td></tr>
+      <tr><td>郑商所/大商所</td><td>合约、持仓、风险控制与日行情</td><td>官网</td><td>免费；先检查成交量和持仓，零成交合约不能充当价格信号</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box fade-in">
+    <span class="kb-label">SOURCE PROTOCOL</span>
+    每个可变数字至少记录：<strong>来源机构、原始链接、发布日期、数据期、单位、统计范围和提取日期</strong>。优先使用政府统计、监管文件、交易所和公司公告；第三方高频数据必须注明样本与方法。无法回到一手来源的精确数字应删除或明确标为“待核验”，不能用“Wind/Mysteel”等平台名称代替引用。
+  </div>
+
+  <div class="tip-box fade-in">
+    <span class="tb-label">FULL SOURCE AUDIT</span>
+    本页关键数字、政策边界、公司成本与分红口径的逐项核验，见<a class="source-link" href="./coal-handbook-source-audit.md">《煤炭行业投资手册：关键事实一手来源核验与修订依据》</a>。
+  </div>
+</section>
+
+<!-- 附录C 公司财务速查 -->
+<section class="section" id="sec-app-c">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">APPENDIX C</span>
+    <h3>重点公司数据更新清单</h3>
+  </div>
+
+  <table class="compare-table fade-in">
+    <thead><tr><th>公司</th><th>代码</th><th>优先更新</th><th>主要一手资料</th><th>比较注意</th></tr></thead>
+    <tbody>
+      <tr><td>中国神华</td><td>601088.SH / 01088.HK</td><td>商品煤销量、自产煤单位成本、资本开支、分红方案</td><td>年报、经营数据公告、利润分配公告</td><td>煤电运化分部与合并口径</td></tr>
+      <tr><td>兖矿能源</td><td>600188.SH / 01171.HK</td><td>境内外产销量、汇率、煤化工价差、在建项目</td><td>年报、季度经营数据、项目公告</td><td>海外资产和币种差异</td></tr>
+      <tr><td>陕西煤业</td><td>601225.SH</td><td>自产销量、长协比例、电力投资、分红政策</td><td>年报、经营数据、股东回报规划</td><td>投资收益和主业利润分开</td></tr>
+      <tr><td>中煤能源</td><td>601898.SH / 01898.HK</td><td>自产煤成本、煤化工产销、资本开支、分红</td><td>年报、生产经营公告、利润分配公告</td><td>自产煤与贸易煤分开</td></tr>
+      <tr><td>平煤股份</td><td>601666.SH</td><td>精煤产率、焦煤价格、矿井整改、维持性资本开支</td><td>年报、经营公告、矿井相关公告</td><td>原煤与精煤销量口径</td></tr>
+      <tr><td>山西焦煤</td><td>000983.SZ</td><td>资源整合、焦煤销量、关联交易、分红</td><td>年报、重大资产公告、利润分配公告</td><td>并购前后可比口径</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 附录D 研究口径与政策节点 -->
+<section class="section" id="sec-app-d">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">APPENDIX D</span>
+    <h3>研究口径与政策节点</h3>
+  </div>
+
+  <div class="timeline fade-in">
+    <div class="timeline-item" id="source-price-policy">
+      <div class="ty">2022.05</div>
+      <h4><span class="source-code">D1</span> 煤炭市场价格形成机制实施</h4>
+      <p>秦皇岛港5500千卡下水煤570—770元/吨是中长期交易含税合理区间，不是全部现货限价。原文：国家发展改革委<a class="source-link" href="https://www.ndrc.gov.cn/xxgk/zcfb/tz/202202/t20220225_1317003.html">《关于进一步完善煤炭市场价格形成机制的通知》</a>（发改价格〔2022〕303号）。</p>
+      <a class="back-link" href="#figure-policy-range">← 返回正文图表</a>
+    </div>
+    <div class="timeline-item" id="source-energy-policy">
+      <div class="ty">2024.10</div>
+      <h4><span class="source-code">D2</span> 原料用能核算边界重申</h4>
+      <p>符合定义的原料用能按政策扣除，不等于煤化工项目整体不受能效、环保或碳约束。原文：<a class="source-link" href="https://www.ndrc.gov.cn/fzggw/wld/zb/zyhd/202410/t20241008_1393508.html">国家发展改革委2024-10-08专题新闻发布会文字实录</a>。</p>
+      <a class="back-link" href="#sec-15">← 返回政策章节</a>
+    </div>
+    <div class="timeline-item">
+      <div class="ty">2025</div>
+      <h4>国家统计公报口径</h4>
+      <p>煤炭占能源消费总量51.4%，原煤产量48.5亿吨，“煤及褐煤”进口4.9027亿吨。精确数据与原始链接见<a class="source-link" href="#source-macro">附录B · B1</a>。</p>
+    </div>
+    <div class="timeline-item" id="source-safety-policy">
+      <div class="ty">2026.07</div>
+      <h4><span class="source-code">D3</span> 新版重大事故隐患判定标准实施</h4>
+      <p>应急管理部令第21号施行；影响需结合执法、停复产范围与实际产量评估。原文：<a class="source-link" href="https://www.mem.gov.cn/gk/zfxxgkpt/fdzdgknr/202605/t20260528_605335.shtml">《煤矿重大事故隐患判定标准》</a>。</p>
+      <a class="back-link" href="#sec-15">← 返回政策章节</a>
+    </div>
+    <div class="timeline-item">
+      <div class="ty">2026.08</div>
+      <h4>动力煤期货流动性检查</h4>
+      <p>郑商所可核验日行情显示相关ZC合约零成交、零持仓，不宜与现货机械计算可交易基差。原始行情与口径见<a class="source-link" href="#source-zc">附录B · B2</a>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 附录E 进一步阅读 -->
+<section class="section" id="sec-app-e">
+  <div class="chapter-header fade-in">
+    <span class="ch-num">APPENDIX E</span>
+    <h3>进一步阅读：观点不能替代一手数据</h3>
+  </div>
+
+  <div class="structure-diagram fade-in">
+    <div class="diagram-card">
+      <span class="ci">📊</span>
+      <h4>券商研报</h4>
+      <p>信达证券：能源产能周期系列，长期看多<br>开源证券：动力煤价格四阶段框架<br>华源证券：煤炭企业成本深度研究，期权估值法<br>中金公司：煤炭行业季度回顾与展望</p>
+      <span class="ct">RESEARCH</span>
+    </div>
+    <div class="diagram-card">
+      <span class="ci">📡</span>
+      <h4>数据与快报</h4>
+      <p>中国煤炭工业协会：年度行业发展报告<br>Mysteel/CCTD：每日市场快报与库存数据<br>卓创资讯：化工品/煤化工高频数据</p>
+      <span class="ct">DAILY DATA</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="fl"></div>
+  <p>本页仅供学习，不构成收益承诺、个股推荐或资产配置建议。<br><br>煤炭投资入门手册 · 黑金读懂 · 2026</p>
+</div>
+
+</main><!-- content-wrapper -->
+
+<!-- ===================================================================
+     JAVASCRIPT
+     =================================================================== -->
+<script>
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Background canvas - particle effect
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  if(prefersReducedMotion) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for(let i = 0; i < 40; i++){
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.5 + 0.5,
+      a: Math.random() * 0.15 + 0.05
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < 0) p.x = w;
+      if(p.x > w) p.x = 0;
+      if(p.y < 0) p.y = h;
+      if(p.y > h) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(212,160,23,' + p.a + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Scroll progress bar
+window.addEventListener('scroll', function(){
+  const st = document.documentElement.scrollTop;
+  const sh = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = sh > 0 ? (st / sh) * 100 : 0;
+  document.getElementById('scroll-progress').style.width = pct + '%';
+});
+
+// Section visibility (Intersection Observer)
+const sections = document.querySelectorAll('.section, .part-header, .learning-map, .reading-guide, .section-divider');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+sections.forEach(s => observer.observe(s));
+
+// Fade-in elements
+const fadeEls = document.querySelectorAll('.fade-in');
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+fadeEls.forEach(el => fadeObs.observe(el));
+
+// Side nav dots
+const navDots = document.querySelectorAll('.nav-dot');
+navDots.forEach(dot => {
+  dot.addEventListener('click', function(){
+    const targetId = this.getAttribute('data-section');
+    const target = document.getElementById(targetId);
+    if(target) target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  });
+});
+
+const navSections = Array.from(navDots).map(dot => document.getElementById(dot.getAttribute('data-section')));
+window.addEventListener('scroll', function(){
+  const scrollY = window.scrollY + window.innerHeight / 3;
+  navDots.forEach((dot, index) => {
+    const sec = navSections[index];
+    if(!sec) return;
+    const top = sec.offsetTop;
+    const next = navSections[index + 1];
+    const bottom = next ? next.offsetTop : document.documentElement.scrollHeight;
+    if(scrollY >= top && scrollY < bottom){
+      dot.classList.add('active');
+      dot.setAttribute('aria-current', 'true');
+    } else {
+      dot.classList.remove('active');
+      dot.removeAttribute('aria-current');
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
