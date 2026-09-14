@@ -7,10 +7,16 @@ Thumbs.db
 .cursor/
 .idea/
 .superpowers/
+.trae/
 .vscode/
 .codegraph/
+.pnpm-store/
+AGENTS.md
 *.local
 *.sw?
+
+# Local scratch area for unrelated tasks (see AGENTS.md)
+workspace/
 
 # Generated files
 coverage/
