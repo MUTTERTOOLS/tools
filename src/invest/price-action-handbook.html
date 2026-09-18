@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>裸K与价格行为 — Price Action 101</title>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js" defer></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="../../cdn/echarts/5.5.0/echarts.min.js" defer></script>
+<link href="../../cdn/fonts/noto-sans-sc.css" rel="stylesheet">
+<link href="../../cdn/fonts/jetbrains-mono.css" rel="stylesheet">
 <style>
 :root {
   --bg-deep: #0B0E14;
@@ -220,6 +220,18 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 .callout p, .callout ul, .callout ol { font-size:13.5px; color:var(--text-secondary); line-height:1.7; margin-bottom:6px; }
 .callout p:last-child { margin-bottom:0; }
 
+/* === 流程图（决策链） === */
+.flow-chart { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin:28px 0; }
+.flow-chart .flow-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:16px; text-align:center; }
+.flow-node { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px; font-size:13.5px; color:var(--text-secondary); text-align:center; line-height:1.7; }
+.flow-node strong { color:var(--text-primary); }
+.flow-arrow { text-align:center; color:var(--accent); font-size:14px; margin:8px 0; line-height:1.5; }
+.flow-split { display:flex; gap:12px; margin:8px 0 0; flex-wrap:wrap; }
+.flow-no { flex:1; min-width:220px; border:1px dashed rgba(239,68,68,0.4); background:var(--red-dim); border-radius:var(--radius-sm); padding:10px 12px; font-size:12.5px; color:var(--red); line-height:1.7; }
+.flow-no strong { font-weight:700; }
+.flow-final { border:1px solid var(--accent); background:var(--accent-dim); border-radius:var(--radius-sm); padding:14px 16px; font-size:13.5px; color:var(--text-primary); line-height:1.8; }
+.flow-final strong { color:var(--accent); }
+
 /* === RULE BOX === */
 .rule-box {
   background: var(--bg-card); border:1px solid var(--border-accent); border-radius:var(--radius-sm);
@@ -241,6 +253,21 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 }
 .chart-box .chart-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:12px; text-align:center; }
 .chart-box .chart-container { width:100%; height:360px; }
+
+/* === CHART TABS（图集：Tab切换，节省纵向空间） === */
+.chart-tabs { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); margin:28px 0; overflow:hidden; }
+.chart-tabs-bar { display:flex; overflow-x:auto; border-bottom:1px solid var(--border); background:var(--bg-card-alt); scrollbar-width:thin; }
+.chart-tab-btn { flex:none; padding:10px 16px; font-size:13px; color:var(--text-muted); cursor:pointer; border:none; background:transparent; border-bottom:2px solid transparent; font-family:var(--font-body); white-space:nowrap; transition:color .15s; }
+.chart-tab-btn:hover { color:var(--text-primary); }
+.chart-tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+.chart-tab-panel { display:none; padding:16px 16px 8px; }
+.chart-tab-panel.active { display:block; }
+.chart-tab-panel .chart-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:8px; text-align:center; }
+.chart-tab-panel .chart-container { width:100%; height:320px; }
+
+/* === 附录B 迷你K线图例 === */
+.data-table td.mini-cell { width:64px; padding:4px 6px; }
+.data-table td.mini-cell svg { display:block; }
 
 /* === INTERACTIVE WIDGETS === */
 .calc-widget {
@@ -313,6 +340,10 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
   .cover .map-arrow { transform:rotate(90deg); }
   .data-table { display:block; max-width:100%; overflow-x:auto; }
 }
+
+/* === TERM REFERENCE LINKS（首现术语→附录E词条锚点） === */
+.term-ref { color:inherit; text-decoration:underline dotted var(--text-muted); text-underline-offset:3px; }
+.term-ref:hover { color:var(--accent); text-decoration-color:var(--accent); }
 </style>
 </head>
 <body>
@@ -467,12 +498,12 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 
 <div class="section">
-<h3>1.2 为什么指标会"骗人"——滞后的本质</h3>
-<p>所有指标的数学本质都一样：<strong>对历史价格做数学变换</strong>。MACD是均线的均线，RSI是涨跌幅的平滑平均，布林带是标准差的投影。它们共同的致命缺陷：</p>
+<h3>1.2 为什么指标不可靠——三个结构性缺陷</h3>
+<p>所有指标的数学本质都一样：<strong>对历史价格做数学变换</strong>。MACD是均线的均线，RSI是涨跌幅的平滑平均，布林带由价格标准差构造。它们共同的结构性缺陷：</p>
 <ul>
 <li><strong>滞后性</strong>：指标永远比价格慢半拍。当MACD金叉时，价格已经涨了3天；当RSI超卖时，价格可能还在加速下跌。</li>
 <li><strong>钝化</strong>：趋势行情中RSI可以80以上持续数周，震荡市中金叉死叉反复出现。指标在需要它的时候恰恰失效。</li>
-<li><strong>自参考</strong>：指标指向的信号，取决于参数设置。同一只股票，(12,26,9)的MACD和(8,21,5)的MACD可能给出完全相反的信号。</li>
+<li><strong>参数依赖</strong>：指标给出的信号取决于参数设置，而非市场本身。同一只股票，(12,26,9)的MACD和(8,21,5)的MACD可能给出完全相反的信号——两者不可能都对，说明信号来源是参数选择而非市场事实。</li>
 </ul>
 <p>这不是说指标无用，而是说<strong>指标不是答案，价格才是</strong>。指标是辅助工具，不应该成为决策主体。</p>
 </div>
@@ -484,8 +515,9 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>1.3 价格行为的核心假设：价格包含一切信息</h3>
-<p>这是裸K的哲学基础，继承自道氏理论：<strong>所有已知信息——基本面、政策面、资金面、情绪面——都已经反映在价格中</strong>。你不需要知道"为什么涨"，你只需要读懂"价格在做什么"。</p>
-<p>这不是假设，这是市场的客观规律。2024年某消费股突发利空，开盘暴跌8%——这个"8%"本身就是所有参与者用真金白银投出的票。你在K线上看到的一切，都是真实成交的结果，不是模型推算。</p>
+<p>这是裸K的哲学基础，继承自道氏理论：<strong>所有已知信息——基本面、政策面、资金面、情绪面——最终都要通过下单成交才能影响市场</strong>。所以价格是所有因素汇合后的"净结果"。你不需要知道"为什么涨"，你只需要读懂"价格在做什么"。</p>
+<p>但要说清楚，这里假设的是<strong>"价格记录一切"，而不是"价格永远正确"</strong>。2024年某消费股突发利空，开盘暴跌8%——这个"8%"是所有参与者用真金白银投出的票，它真实记录了"市场在恐慌"；但市场可能恐慌过头，也可能反应不足。小作文驱动的暴涨暴跌就是典型：价格如实记录了"参与者对谣言的反应"，但不保证"谣言本身是真的"。</p>
+<p>所以裸K对价格的正确姿态是：<strong>价格永远真实，但不永远正确</strong>。非理性不是噪音——<a class="term-ref" href="#term-fakeout">假突破</a>、恐慌抛售、追涨高潮，都是群体行为留下的、有结构的、可读的痕迹（第16、19、22章展开）。同时，你永远无法完全分辨"这次下跌是市场集体错了，还是你不知道的利空"——所以错了就认，这是第17章止损的哲学根源。</p>
 </div>
 
 <div class="section">
@@ -493,20 +525,20 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>"猜涨跌"是预测，"读多空"是解读。区别在于：</p>
 <ul>
 <li><strong>预测思维</strong>："明天一定涨"——你在赌一个方向，错了不认。</li>
-<li><strong>解读思维</strong>："当前多方主导，结构向上，如果关键位不破就持有多头"——你跟随现实，现实变了你就变。</li>
+<li><strong>解读思维</strong>："当前多方主导，结构向上，如果<a class="term-ref" href="#term-key-level">关键位</a>不破就持有多头"——你跟随现实，现实变了你就变。</li>
 </ul>
-<p>裸K交易者从不说"一定会涨"或"一定会跌"。他们说的是：<strong>"如果价格维持HH/HL结构，我持多头；如果结构反转，我离场或翻空。"</strong>这不是预测，是条件应对。</p>
+<p>裸K交易者从不说"一定会涨"或"一定会跌"。他们说的是：<strong>"如果价格维持<a class="term-ref" href="#term-swing">HH/HL</a>结构，我持有多头；如果结构反转，我离场。"</strong>这不是预测，是条件应对。</p>
 </div>
 
 <div class="callout callout-tip">
 <div class="callout-title">💡 视角切换</div>
-<p>从今天起，把"会涨还是会跌"这个问题从脑中删除。替换为："当前谁在主导？关键位在哪？如果XXX被破坏，我怎么做？"——这三个问题就是裸K的全部。</p>
+<p>从今天起，把"会涨还是会跌"这个问题从脑中删除。替换为："当前谁在主导？关键位在哪？如果关键位被破坏，我怎么做？"——这三个问题就是裸K的全部。</p>
 </div>
 
 <div class="section">
 <h3>1.5 裸K的三大优势：纯粹、普适、直接</h3>
 <p><strong>纯粹</strong>：没有参数可以调，没有指标可以怪。你的判断只基于价格，对了是你的能力，错了也是你的责任。这逼你真正理解价格，而不是躲在"指标没给信号"后面。</p>
-<p><strong>普适</strong>：裸K适用于任何市场、任何时间框架。沪深300日线、纳斯达克5分钟、原油期货周线——高低点排列的规律是相同的，因为人类交易行为的底层模式相同。</p>
+<p><strong>普适</strong>：裸K适用于任何市场、任何<a class="term-ref" href="#term-mtfa">时间框架</a>。沪深300日线、纳斯达克5分钟、原油期货周线——高低点排列的规律是相同的，因为人类交易行为的底层模式相同。</p>
 <p><strong>直接</strong>：当你去掉所有指标，图表上只剩价格时，你的眼睛会开始"看到"以前被指标遮挡的东西——关键位的反应、量能的变化、结构的转折。这就像把一扇脏窗户擦干净。</p>
 </div>
 
@@ -554,7 +586,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>2.3 流动性：支撑阻力的真实身份</h3>
-<p>传统教程告诉你"支撑是买方聚集的地方，阻力是卖方聚集的地方"。这话没错，但太浅了。裸K从流动性视角重新定义：</p>
+<p>传统教程告诉你"支撑是买方聚集的地方，阻力是卖方聚集的地方"。这话没错，但太浅了。裸K从流动性视角重新定义。<strong>流动性</strong>，指市场上当前可供成交的订单总量：买盘订单构成买方流动性，卖盘订单构成卖方流动性。它看不见摸不着，却决定支撑阻力的真实强度：</p>
 <p><strong>支撑位=大量未成交买单聚集的价格区域</strong>。当价格跌到这里，这些买单被触发，提供买盘支撑。</p>
 <p><strong>阻力位=大量未成交卖单聚集的价格区域</strong>。当价格涨到这里，这些卖单被触发，提供卖盘压力。</p>
 <p>但更重要的洞察是：<strong>散户的止损单也是"流动性"</strong>。大量散户把止损设在前期低点下方——这些止损单本质上是<strong>卖出指令的集中地</strong>。机构知道这一点，所以他们会故意把价格推到那里，触发你的止损，然后反手买入。这就是<strong>流动性猎取</strong>。</p>
@@ -570,11 +602,12 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>你一定注意过：价格接近前期高点时，像被磁铁吸住一样——要么一触即发（真突破），要么碰一下就弹回来（假突破）。这不是巧合。</p>
 <p>原因：前期高点附近聚集着三类订单：</p>
 <ol>
-<li><strong>突破买单</strong>："如果突破前高我就买"——挂在突破位的止损买单</li>
-<li><strong>止损卖单</strong>："如果突破前高我就止损离场"——前期做空者的止损</li>
-<li><strong>获利了结卖单</strong>："到前高附近我就卖"——前期多头的止盈单</li>
+<li><strong>突破买单</strong>："如果突破前高我就买"——挂在突破位的止损买单（Buy Stop：高于现价的触发式买单，涨到触发价才自动成交）</li>
+<li><strong>空头止损买单</strong>："如果突破前高我就止损离场"——前期做空者的止损。注意：空头止损的动作是<strong>买入平仓</strong>，挂在前高上方同样是止损买单——与第1类同方向（A股散户无法裸做空，此处对应的是踏空者的追买盘，方向同样是买）</li>
+<li><strong>获利了结卖单</strong>："到前高附近我就卖"——前期多头的止盈单（Limit Sell，方向是卖）</li>
 </ol>
-<p>这三类订单在同一个价格区域叠加，形成巨大的流动性池。价格被"吸引"过去，因为那里有大量待成交的订单。到了之后，是第1类+第2类推动价格突破，还是第3类把价格压回来？<strong>这才是你需要观察的博弈</strong>。</p>
+<p>这三类订单在同一个价格区域叠加，形成巨大的流动性池。价格被"吸引"过去，因为那里有大量待成交的订单。到了之后，是第1类+第2类的<strong>买盘火力</strong>吃掉第3类的<strong>止盈卖压</strong>（真突破），还是卖压占优（假突破）？<strong>这才是你需要观察的博弈</strong>。</p>
+<p style="color:var(--text-muted);font-size:13px;">这就是<a class="term-ref" href="#term-smc">SMC</a>所说的"前高上方=买方流动性（Buy-side Liquidity）"：池子里多数是买单，价格更容易被"吸"上去扫一遍——扫完之后多空谁赢，看量能和收盘位置。</p>
 </div>
 
 <div class="section">
@@ -585,7 +618,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li><strong>吸筹阶段</strong>：机构要买大量股票，但直接买会推高价格。所以他们会制造恐慌（假跌破），触发散户的止损卖出，然后他们在下方大量接盘。</li>
 <li><strong>出货阶段</strong>：机构要卖大量股票，但直接卖会砸崩价格。所以他们会制造兴奋（假突破），吸引散户追涨买入，然后他们在上方大量出货。</li>
 </ul>
-<p>这就是为什么<strong>假突破和假跌破是最重要的信号</strong>——它们暴露了机构的真实意图。第19章会深度拆解。</p>
+<p>这就是为什么<strong>假突破和<a class="term-ref" href="#term-fakeout">假跌破</a>是最重要的信号</strong>——它们暴露了机构的真实意图。第19章会深度拆解。</p>
 </div>
 
 <div class="section">
@@ -600,15 +633,15 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <p><strong>涨跌停板</strong>：涨停=极端需求区但无法成交，跌停=极端供应区但流动性枯竭。这导致：</p>
 <ul>
-<li>涨停板造成的跳空不等于正常缺口——它反映了被压抑的流动性，次日可能释放也可能回吐。</li>
-<li>连续涨停的股票，其供需区域会发生偏移——正常的回测逻辑可能失效。</li>
+<li>涨停板造成的跳空不等于正常<a class="term-ref" href="#term-gap">缺口</a>——它反映了被压抑的流动性，次日可能释放也可能回吐。</li>
+<li>连续涨停的股票，其<a class="term-ref" href="#term-supply-demand">供需区域</a>会发生偏移——正常的回测逻辑可能失效。</li>
 </ul>
 
-<p><strong>集合竞价</strong>：9:15-9:25形成的开盘价本身就是一种"微型威科夫"——大量订单在短时间内撮合，形成的跳空（高开/低开）反映了隔夜信息的定价。</p>
+<p><strong>集合竞价</strong>：9:15-9:25形成的开盘价本身就是一种"微型<a class="term-ref" href="#term-wyckoff">威科夫</a>"——大量订单在短时间内撮合，形成的跳空（高开/低开）反映了隔夜信息的定价。</p>
 
 <p><strong>T+1下的止损困境</strong>：当日买入后跌破止损位，你只能次日处理。这意味着：</p>
 <ul>
-<li>止损位必须留有余量——不是"前低下方0.5%"，而是"前低下方1个ATR"。</li>
+<li>止损位必须留有余量——不是"前低下方0.5%"，而是"前低下方1个<a class="term-ref" href="#term-atr">ATR</a>"。</li>
 <li>仓位必须更保守——因为你承担的"不可退出风险"比T+0市场大。</li>
 </ul>
 </div>
@@ -628,8 +661,8 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="practice-box">
 <div class="practice-header">📋 本周练习</div>
 <p><strong>任务</strong>：找3只近一个月内出现"假突破"的A股，记录突破当天的量能、K线形态和后续走势。对比3只"真突破"的案例，总结两者的量能差异。</p>
-<p><strong>预期产出</strong>：6个案例的对比表格（假突破3个+真突破3个），每个含：日期/量比/收盘位置/次日走势</p>
-<p><strong>自检</strong>：是否能通过量能差异提前区分真假突破？假突破的量比是否普遍<1.2？</p>
+<p><strong>预期产出</strong>：6个案例的对比表格（假突破3个+真突破3个），每个含：日期/<a class="term-ref" href="#term-volume-ratio">量比</a>/收盘位置/次日走势</p>
+<p><strong>自检</strong>：是否能通过量能差异提前区分真假突破？假突破的<a class="term-ref" href="#term-volume-ratio">量比</a>是否普遍<1.2？</p>
 </div>
 </div>
 
@@ -664,7 +697,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>3.3 下降趋势：更低的高点（LH）+ 更低的低点（LL）</h3>
 <p>下降趋势：<strong>每一浪的高点比上一浪低（LH），每一浪的低点也比上一浪低（LL）</strong>。</p>
-<p>在下降趋势中，你的操作逻辑也只有一个：<strong>找反弹高点做空（或空仓）</strong>。散户最容易犯的错就是在下降趋势中抄底——"已经跌这么多了，该涨了吧"。这不是分析，是愿望。</p>
+<p>在下降趋势中，你的操作逻辑也只有一个：<strong>空仓回避，不参与</strong>。散户最容易犯的错就是在下降趋势中抄底——"已经跌这么多了，该涨了吧"。这不是分析，是愿望。</p>
 </div>
 
 <div class="callout callout-danger">
@@ -675,7 +708,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>3.4 震荡结构：无延续的高低点</h3>
 <p>既不是HH/HL，也不是LH/LL——高低点在一个区间内反复。这就是震荡市（区间市）。</p>
-<p>震荡市的操作逻辑完全不同：<strong>区间下沿做多，区间上沿做空，中段不动</strong>。A股约60%时间处于震荡——这是你的主战场，不是例外。</p>
+<p>震荡市的操作逻辑完全不同：<strong>区间下沿做多，区间上沿减仓/回避，中段不动</strong>。A股约60%时间处于震荡——这是你的主战场，不是例外。</p>
 </div>
 
 <div class="section">
@@ -692,7 +725,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>3.6 为什么"结构是骨架，K线是火花"</h3>
-<p>一根Pin Bar在上升趋势的回调低点出现=看涨信号。同一根Pin Bar在下降趋势中出现=噪音。同样的形态，因为结构不同，意义完全不同。</p>
+<p>一根<a class="term-ref" href="#term-pin-bar">Pin Bar</a>在上升趋势的回调低点出现=看涨信号。同一根Pin Bar在下降趋势中出现=噪音。同样的形态，因为结构不同，意义完全不同。</p>
 <p><strong>结构决定方向，K线决定入场时机</strong>。先定骨架，再看火花。如果你不看结构就根据K线形态入场，就像不看天气就出门——可能没事，也可能淋成落汤鸡。</p>
 </div>
 
@@ -717,7 +750,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="rule-title">第3章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>我打开任何一只股票的图表时，<span class="action">我将首先标注最近5个波峰和波谷，判断当前是HH/HL、LH/LL还是震荡结构，再决定操作方向。</span></div>
 <div class="rule-item"><span class="trigger">当</span>价格处于LH/LL下降结构时，<span class="action">我将绝不抄底做多。我要等CHOCH出现（LH被突破）后才能考虑。</span></div>
-<div class="rule-item"><span class="trigger">当</span>价格处于震荡结构时，<span class="action">我将只在区间边界操作，中段不动。上沿做空、下沿做多。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格处于震荡结构时，<span class="action">我将只在区间边界操作，中段不动。上沿减仓/回避、下沿做多。</span></div>
 </div>
 
 <div class="practice-box">
@@ -736,6 +769,12 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <h3>4.1 K线四要素：开、收、高、低</h3>
 <p>你已经知道K线由开盘价、收盘价、最高价、最低价构成。但你知道<strong>这四个数字的排列方式本身就是信息</strong>吗？</p>
 <p>收盘价高于开盘价=阳线=该时段内买方最终出价更高。收盘价低于开盘价=阴线=卖方最终出价更低。这不是"涨和跌"这么简单——它告诉你<strong>在该时段结束时，谁站在了更高处</strong>。</p>
+<p style="color:var(--text-muted);font-size:13px;">表述规范：这四个价格即K线的四个<strong>价格锚点</strong>——<strong>最高价/最低价</strong>（影线端点）与<strong>实体顶/实体底</strong>（实体端点）。本手册涉及止损、挂单等具体价位时，统一使用锚点表述（定义见<a class="term-ref" href="#appa">附录A</a>）。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图4-1 阳线与阴线：开、收、高、低四要素</div>
+<div class="chart-container" id="chart-k-anatomy"></div>
 </div>
 
 <div class="section">
@@ -750,11 +789,21 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>Marubozu在关键位出现时，信号极强——它说明该方向的力量是"不犹豫的"。但注意：<strong>在趋势末端出现的Marubozu可能是最后的狂欢</strong>（耗竭式运动），不是启动信号。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图4-2 Marubozu：光头光脚的大实体（无影线）</div>
+<div class="chart-container" id="chart-k-marubozu"></div>
+</div>
+
 <div class="section">
 <h3>4.4 锤子线与倒锤子线</h3>
-<p>锤子线（小实体在上方+长下影线）：空方曾经大幅打压，但多方收回了大部分阵地。在下降趋势的回调低点出现=潜在反转信号。</p>
-<p>倒锤子线（小实体在下方+长上影线）：多方曾经大幅推升，但空方收回了大部分阵地。在上升趋势的反弹高点出现=潜在反转信号。</p>
+<p>锤子线（小实体在上方+长下影线）：空方曾经大幅打压，但多方收回了大部分阵地。在下降趋势的关键支撑位（阶段性低点）出现=潜在看涨反转信号。</p>
+<p>倒锤子线（小实体在下方+长上影线）：多方曾经大幅推升，但空方收回了大部分阵地。同一形态，位置不同含义相反：<strong>在下降趋势末端的支撑位出现=潜在看涨反转</strong>（买方首次试探成功，与附录B口径一致）；<strong>在上升趋势的反弹高点出现=潜在看跌反转</strong>（上方卖压沉重，多头久攻不克）。取哪种读法，由趋势与位置决定。</p>
 <p>记住：<strong>形态本身不是信号，形态+位置才是信号</strong>。锤子线在上升趋势的中途出现=无意义。锤子线在下降趋势的关键支撑位出现=重要信号。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图4-3 锤子线（长下影+小实体在上）与倒锤子线（长上影+小实体在下）</div>
+<div class="chart-container" id="chart-k-hammer"></div>
 </div>
 
 <div class="section">
@@ -763,15 +812,30 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>但十字星在震荡市中随处可见=噪音。只有在<strong>趋势+关键位+十字星</strong>三者重合时，才是有效信号。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图4-4 十字星：开盘≈收盘，多空打成平手</div>
+<div class="chart-container" id="chart-k-doji"></div>
+</div>
+
 <div class="section">
 <h3>4.6 纺锤线（Spinning Top）：小实体短影线，市场无方向</h3>
 <p>和十字星类似，但实体稍大。含义相同：犹豫、平衡、无方向。纺锤线连成一片=横盘区间。纺锤线出现在单边趋势末端=趋势可能要歇了。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图4-5 纺锤线：小实体短影线，市场无方向</div>
+<div class="chart-container" id="chart-k-spinning"></div>
 </div>
 
 <div class="section">
 <h3>4.7 长上影与长下影：试攻与试守</h3>
 <p>长上影=多方曾经攻到很高，但被打了回来。<strong>试攻失败</strong>。长下影=空方曾经打压到很低，但被推了回来。<strong>试守成功</strong>。</p>
 <p>博弈论视角：长上影线在阻力位=卖方在该价位布置了足够的火力，买方的冲锋被打退。长下影线在支撑位=买方在该价位布置了足够的火力，卖方的攻击被击退。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图4-6 长上影（试攻失败）与长下影（试守成功）</div>
+<div class="chart-container" id="chart-k-shadow"></div>
 </div>
 
 <div class="section">
@@ -786,10 +850,15 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p><strong>同样的K线形态，在不同位置含义完全相反</strong>。位置永远优先于形态。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图4-7 放量长阳与量能验证：力量宣示</div>
+<div class="chart-container" id="chart-k-volume"></div>
+</div>
+
 <div class="section">
 <h3>4.9 单K的局限：一根K线不能定方向</h3>
 <p>这是裸K交易者最重要的认知：<strong>永远不要根据一根K线做交易决策</strong>。一根K线只能告诉你"这根K线发生了什么"，不能告诉你"接下来会发生什么"。</p>
-<p>你需要的是：结构（方向）→ 位置（盈亏比）→ 形态（触发）→ <strong>确认</strong>（下一根K线）。单K只是第一步，不是最后一步。</p>
+<p>你需要的是：结构（方向）→ 位置（<a class="term-ref" href="#term-rrr">盈亏比</a>）→ 形态（触发）→ <strong>确认</strong>（下一根K线）。单K只是第一步，不是最后一步。</p>
 </div>
 
 <div class="callout callout-warn">
@@ -799,7 +868,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="rule-box">
 <div class="rule-title">第4章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>你看到一根"完美锤子线"时，<span class="action">我将先检查：结构是上升还是下降？位置是关键支撑还是无人区？如果没有结构+位置支持，锤子线无效。</span></div>
+<div class="rule-item"><span class="trigger">当</span>你看到一根"完美锤子线"时，<span class="action">我将先检查：结构是上升还是下降？位置是关键支撑还是<a class="term-ref" href="#term-no-man-land">无人区</a>？如果没有结构+位置支持，锤子线无效。</span></div>
 <div class="rule-item"><span class="trigger">当</span>K线在关键位出现长上影/长下影时，<span class="action">我将等待下一根K线确认——如果下一根继续沿影线方向运动，信号有效；如果反包影线，信号作废。</span></div>
 </div>
 
@@ -819,6 +888,12 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <h3>5.1 Pin Bar长什么样：小实体+长影线</h3>
 <p>Pin Bar（Pinocchio Bar，"匹诺曹线"）是裸K交易中最经典的信号。它的特征：<strong>实体很小（占整根K线的1/3以内），影线很长（≥2-3倍实体）</strong>。影线像一根鼻子，"说谎"后伸长了——价格曾试图去某个方向，但被"打回来"了。</p>
 <p>这不是普通的"有影线的K线"。Pin Bar的关键在于<strong>影线与实体的比例</strong>和<strong>出现的位置</strong>。</p>
+<p>说明：第4章的锤子线/倒锤子线就是看涨/看跌Pin Bar的传统叫法，两者是同一族形态。本书统一使用"Pin Bar"，并采用更严格的判定标准（见5.3的5条标准）。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图5-1 形态解剖：实体 ≤ 整根K线的1/3，影线 ≥ 2倍实体</div>
+<div class="chart-container" id="chart-pin-anatomy"></div>
 </div>
 
 <div class="section">
@@ -826,6 +901,21 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p><strong>看涨Pin Bar</strong>（在支撑位出现）：长下影线+小实体在上方。价格曾大幅下探，但买方强烈拒绝——"这个价位我不卖，你也不许再往下"。</p>
 <p><strong>看跌Pin Bar</strong>（在阻力位出现）：长上影线+小实体在下方。价格曾大幅上攻，但卖方强烈拒绝——"这个价位我不买，你也不许再往上"。</p>
 <p>博弈论视角：Pin Bar的本质是<strong>一方"试探性进攻"被另一方"坚决打回"</strong>。影线越长，拒绝越坚决。</p>
+</div>
+
+<div class="chart-tabs">
+<div class="chart-tabs-bar">
+<button class="chart-tab-btn active" data-panel="pt-a">看涨 Pin Bar</button>
+<button class="chart-tab-btn" data-panel="pt-b">看跌 Pin Bar</button>
+</div>
+<div class="chart-tab-panel active" id="pt-a">
+<div class="chart-title">图5-2a 看涨Pin Bar：长下影试探支撑位被坚决打回（绿色区=需求区）</div>
+<div class="chart-container" id="chart-pin-bull"></div>
+</div>
+<div class="chart-tab-panel" id="pt-b">
+<div class="chart-title">图5-2b 看跌Pin Bar：长上影试探阻力位被坚决打回（红色区=供应区）</div>
+<div class="chart-container" id="chart-pin-bear"></div>
+</div>
 </div>
 
 <div class="section">
@@ -837,12 +927,17 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li><strong>收盘价接近实体</strong>——如果收盘在影线中间，说明拒绝不够坚决</li>
 <li><strong>出现在关键位</strong>——没有位置支持的Pin Bar只是"一根有影线的K线"</li>
 </ol>
-<p>满足5个标准=高质量信号。满足3-4个=可用但需更多确认。满足<3个=忽略。</p>
+<p>计分规则：<strong>第5条（关键位）是一票否决的门槛，不参与计分</strong>——不在关键位，前4条全中也是噪音。前4条是形态质量计分：满足4条=极强信号；满足3条=可用；≤2条=忽略。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图5-3 完美Pin Bar（影线突出于近期K线）vs 失败形态（影线被包裹）</div>
+<div class="chart-container" id="chart-pin-perfect"></div>
 </div>
 
 <div class="callout callout-key">
 <div class="callout-title">🔑 位置决定一切</div>
-<p>同一根完美的看涨Pin Bar：<br>出现在上升趋势的回调低点 + 供需区域 = <strong>黄金入场信号</strong><br>出现在下降趋势的中途 + 无人区 = <strong>噪音，可能继续跌</strong><br>出现在震荡区间的中段 = <strong>无意义</strong></p>
+<p>同一根完美的看涨Pin Bar：<br>出现在上升趋势的回调低点 + <a class="term-ref" href="#term-supply-demand">供需区域</a> = <strong>黄金入场信号</strong><br>出现在下降趋势的中途 + <a class="term-ref" href="#term-no-man-land">无人区</a> = <strong>噪音，可能继续跌</strong><br>出现在震荡区间的中段 = <strong>无意义</strong></p>
 <p>形态不选位置，位置选择形态。位置>形态，永远如此。</p>
 </div>
 
@@ -860,38 +955,49 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <tr><td>下降趋势回调高点</td><td>⚠️ 只是超跌反弹</td><td class="highlight">✅ 强卖出/空仓信号</td></tr>
 <tr><td>下降趋势创新低</td><td class="highlight">✅ 可能是底部反转</td><td>⚠️ 趋势继续</td></tr>
 <tr><td>震荡区间下沿</td><td class="highlight">✅ 区间做多信号</td><td>⚠️ 可能跌破区间</td></tr>
-<tr><td>震荡区间上沿</td><td>⚠️ 可能突破区间</td><td class="highlight">✅ 区间做空信号</td></tr>
+<tr><td>震荡区间上沿</td><td>⚠️ 可能突破区间</td><td class="highlight">✅ 减仓/离场信号</td></tr>
 <tr><td>无人区（无关键位）</td><td>❌ 无意义</td><td>❌ 无意义</td></tr>
 </tbody>
 </table>
+
+<p>特别注意"下降趋势创新低"一格：此时做的是<strong>逆势反弹单</strong>（短周期、目标=最近LH/前高、到价止盈），不是趋势多——头顶的LH下方全是套牢卖压，反弹到前高就有人解套出货。从"反弹"升级为"反转"需要结构确认（CHOCH，见第3/20章）：<strong>形态只负责触发，交易周期长短由结构决定</strong>。</p>
+<p style="color:var(--text-muted);font-size:13px;">读表说明：两列是"同一位置、两种不同K线"的对比；且每个 ✅ 的背面都对应一个失败分支（即同一位置反向的 ⚠️/❌ 格）。同一根K线在同一位置的两种结局无法在当下消除，靠收盘确认与止损应对（见5.5）。</p>
 </div>
 
 <div class="section">
 <h3>5.5 Pin Bar的入场与止损逻辑</h3>
 <p><strong>入场方式</strong>：</p>
 <ul>
-<li><strong>右侧入场</strong>（推荐新手）：等Pin Bar收盘确认后，在下一根K线开盘时入场。安全，但可能损失一部分利润。</li>
-<li><strong>左侧入场</strong>（需经验）：在Pin Bar影线50%回撤位挂单入场。如果价格回测到影线中部就反弹，你拿到了更好的价格。但如果Pin Bar失效，你也更早被止损。</li>
+<li><strong><a class="term-ref" href="#term-lr-entry">右侧入场</a></strong>（推荐新手）：等Pin Bar收盘确认后，在下一根K线开盘时入场。安全，但可能损失一部分利润。注意：右侧确认的是<strong>信号K线本身成立</strong>，不要求下一根先涨——下一根低开但未跌破Pin Bar最低价时，确认仍然有效，可按规则执行；A股T+1下也可把执行点后移到收盘前15分钟（见第12章）。</li>
+<li><strong><a class="term-ref" href="#term-lr-entry">左侧入场</a></strong>（需经验）：在Pin Bar影线50%回撤位挂<strong>限价单</strong>。示例：影线区间为最低价9.60至实体底10.20，50%位=(9.60+10.20)/2=9.90，挂单等价格回踩成交；若价格不回踩则放弃这笔交易，<strong>不追</strong>。左侧的本质是<strong>信号未确认就先持仓</strong>——价格更好，但要承担"信号失效全程在场内"的风险，因此仓位应小于右侧（见第13章）。</li>
 </ul>
-<p><strong>止损位置</strong>：设在Pin Bar影线尖端下方（看涨）或上方（看跌），留1个ATR余量。绝不能刚好设在影线尖端——那是算法猎杀的位置。</p>
+<p><strong>止损位置</strong>：设在Pin Bar长影线端点外侧1个ATR——看涨=最低价下方，看跌=最高价上方（锚点定义见<a class="term-ref" href="#appa">附录A</a>）。绝不刚好设在最低价/最高价上——那是算法猎杀的位置。</p>
+<p><strong>边界情形</strong>：下一根K线跳空直接<strong>跌破Pin Bar最低价</strong>，入场逻辑已失效，不买入——若盘中收回按假跌破剧本重新评估（第16/22章），收不回则信号作废。另外，50%回撤位与1个ATR均为<strong>行业约定而非定律</strong>，实际阈值应结合品种与周期回测校准。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图5-4 入场与止损：左侧影线50%挂单 / 右侧次日开盘，止损=最低价-1ATR</div>
+<div class="chart-container" id="chart-pin-entry"></div>
 </div>
 
 <div class="section">
 <h3>5.6 Pin Bar失败——最常见的误用</h3>
-<p>Pin Bar失败的3个经典原因：</p>
+<p>Pin Bar失败的5个经典原因，前两条在入场前就能逐项检验：</p>
 <ol>
-<li><strong>位置不对</strong>：在无人区看到Pin Bar就冲——没有流动性支撑，Pin Bar只是噪音。</li>
-<li><strong>止损太紧</strong>：把止损设在影线尖端——被猎杀后价格就涨了。</li>
+<li><strong>位置不对</strong>：Pin Bar出现处不挨着任何关键位（前高/前低、供需区域、斐波那契位均不沾边——即距最近关键位超过2个ATR的<a class="term-ref" href="#term-no-man-land">无人区</a>，见第11章）。检验方法：这根K线是否至少与一个关键位重合或相邻？不沾边=噪音，与形态是否漂亮无关。</li>
+<li><strong>量能不配合</strong>：Pin Bar当根缩量（<a class="term-ref" href="#term-volume-ratio">量比</a>&lt;1）="拒绝"没有真实火力；下一根确认K线也应放量（量比≥1.5）。当根与确认根连续缩量=信号降级，按第12章C级信号处理（减仓或不做）。</li>
+<li><strong>止损太紧</strong>：把止损刚好设在最低价（影线端点）——被猎杀后价格就涨了。正确做法：最低价下方留1个ATR（见5.5）。</li>
 <li><strong>忽视结构</strong>：在下降趋势中看到看涨Pin Bar就做多——结构不支持，大概率继续跌。</li>
+<li><strong>不等确认</strong>：Pin Bar尚未收盘就抢入，或下一根反包影线了仍持仓。确认规则：下一根收在信号方向=有效；反包影线=作废（见第4章行动规则）。</li>
 </ol>
-<p>记住：Pin Bar是触发器，不是预测器。它告诉你"这里有人拒绝了价格"，但不保证拒绝一定成功。<strong>必须结合结构+位置才能交易</strong>。</p>
+<p>记住：Pin Bar是<a class="term-ref" href="#term-trigger">触发器</a>，不是预测器。它告诉你"这里有人拒绝了价格"，但不保证拒绝一定成功。<strong>必须通过结构、位置、量能三道检验才能交易</strong>。</p>
 </div>
 
 <div class="rule-box">
 <div class="rule-title">第5章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>我识别出一根Pin Bar时，<span class="action">我将先检查5个标准是否满足≥3个，再检查是否出现在关键位，最后检查结构方向是否一致——三者缺一不可。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我识别出一根Pin Bar时，<span class="action">我将先确认它出现在关键位（一票否决），再检查前4条形态标准是否满足≥3条，最后检查结构方向是否一致——三者缺一不可。</span></div>
 <div class="rule-item"><span class="trigger">当</span>Pin Bar出现在无人区时，<span class="action">我将忽略它，不管形态多完美。</span></div>
-<div class="rule-item"><span class="trigger">当</span>基于Pin Bar入场时，<span class="action">我将止损设在影线尖端±1个ATR，绝不刚好设在影线尖端。</span></div>
+<div class="rule-item"><span class="trigger">当</span>基于Pin Bar入场时，<span class="action">我将止损设在长影线端点外侧±1个ATR（看涨=最低价下方，看跌=最高价上方），绝不刚好设在最低价/最高价上。</span></div>
 </div>
 
 <div class="practice-box">
@@ -911,12 +1017,25 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>Inside Bar的定义：<strong>子线的最高价≤母线的最高价，且子线的最低价≥母线的最低价</strong>——子线完全被母线"包裹"在内。</p>
 <p>含义：在母线形成后，市场突然"安静"了——价格不再创新高也不创新低。这种安静不是放松，是<strong>蓄势</strong>。就像弹簧被压缩——压缩得越紧，弹出时越猛。</p>
 <p>博弈论视角：Inside Bar说明多空双方暂时达成平衡。但这个平衡是暂时的——<strong>母线方向的突破概率更高</strong>，因为母线代表了之前的方向惯性。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ Inside Bar是高频形态——常见但大多是噪音</div>
+<p>Inside Bar在震荡期会成片出现，单独出现几乎没有信息量。它的价值不在形态本身，而在"波动收缩"出现的位置。只有通过势位形三重过滤才值得交易：</p>
+<p>①<strong>势</strong>：突破方向与大周期趋势一致（上升趋势只做向上突破；母线方向与趋势冲突时，以趋势为准）；<br>②<strong>位</strong>：出现在关键位附近——回调至HL/供需区域、突破后的回踩位；<br>③<strong>形</strong>：收缩要极端——子线明显小于母线、量能萎缩，连续多个Inside Bar叠加=蓄势更强。</p>
+<p>三者缺一=忽略，无论形态多"标准"。它是触发器（见第12章），不是发现机会的扫描器。</p>
+<p><strong>形态分级</strong>：Inside Bar 的证据链弱于"放量大涨+回踩不破支撑"——放量=买盘已兑现，回踩不破=支撑已实测（见16.3突破-回踩-确认、11.3供需区域）。它的角色仅限关键位预警与入场时机精化，不要当作独立的入场信号扫描。</p>
+</div>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图6-1 Inside Bar：子线完全被母线包裹，蓄势待突破</div>
+<div class="chart-container" id="chart-cb-inside"></div>
 </div>
 
 <div class="section">
 <h3>6.2 Inside Bar的三种交易方式</h3>
 <ul>
-<li><strong>突破跟随</strong>（最常用）：子线突破母线高点的方向入场。止损设在母线另一端。</li>
+<li><strong>突破跟随</strong>（最常用）：在趋势方向的关键位出现合格Inside Bar（见6.1三重过滤）后，子线突破母线高点入场。止损设在母线最低价下方。</li>
 <li><strong>反向交易</strong>（需确认）：子线突破后快速反转——如果母线在关键位且突破方向与趋势相反，可能是假突破，反向入场。</li>
 <li><strong>区间内挂单</strong>：在母线范围内挂买卖单——风险较大，不推荐新手。</li>
 </ul>
@@ -935,12 +1054,32 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>在关键位出现的吞没线，是裸K交易中<strong>可靠性最高的反转信号之一</strong>——因为它直接展示了"一方完胜"的力量变化。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图6-2 吞没线：后K实体完全包裹前K实体（看涨吞没 / 看跌吞没）</div>
+<div class="chart-container" id="chart-cb-engulfing"></div>
+</div>
+
 <div class="section">
 <h3>6.5-6.8 其他组合形态速览</h3>
 <p><strong>Outside Bar vs Engulfing</strong>：Outside Bar是整根K线（含影线）包裹前K，比Engulfing更严格。Outside Bar在关键位=极强信号。</p>
 <p><strong>刺透形态与乌云盖顶</strong>：比吞没更温和的反转信号。阳线深入前阴线实体50%以上=刺透（看涨），阴线深入前阳线实体50%以上=乌云盖顶（看跌）。</p>
 <p><strong>早晨之星与黄昏之星</strong>：三K反转形态。中间的十字星/纺锤线+两侧方向相反的大实体。可靠性高于双K形态。</p>
 <p><strong>平头顶部/底部（Tweezer）</strong>：两根K线的高点/低点精确相同。说明该价位存在精确的卖压/买压——支撑阻力验证信号。</p>
+</div>
+
+<div class="chart-tabs">
+<div class="chart-tabs-bar">
+<button class="chart-tab-btn active" data-panel="ct-a">刺透 / 乌云盖顶</button>
+<button class="chart-tab-btn" data-panel="ct-b">早晨 / 黄昏之星</button>
+</div>
+<div class="chart-tab-panel active" id="ct-a">
+<div class="chart-title">图6-3a 刺透形态（看涨）与乌云盖顶（看跌）：深入前K实体>50%</div>
+<div class="chart-container" id="chart-cb-piercing"></div>
+</div>
+<div class="chart-tab-panel" id="ct-b">
+<div class="chart-title">图6-3b 早晨之星与黄昏之星：三K反转形态</div>
+<div class="chart-container" id="chart-cb-star"></div>
+</div>
 </div>
 
 <div class="section">
@@ -955,16 +1094,26 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>缺少确认的"双底"经常变成"继续下跌的中继"。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图6-4 双底（W底）与双顶（M顶）：颈线突破+回踩确认才算成立</div>
+<div class="chart-container" id="chart-cb-wm"></div>
+</div>
+
 <div class="section">
 <h3>6.10 头肩形态与旗形整理</h3>
 <p><strong>头肩顶</strong>：左肩→头→右肩，颈线跌破=反转确认。可靠性最高的顶部反转形态之一。<strong>头肩底</strong>反之。</p>
-<p><strong>旗形整理</strong>：趋势中的短暂停顿，价格在倾斜的平行通道内运行。旗形是<strong>趋势延续信号</strong>，不是反转信号。在上升趋势的旗形整理末期做多，比在趋势顶部做空更安全。</p>
+<p><strong>旗形整理</strong>：趋势中的短暂停顿，价格在倾斜的平行通道内运行。旗形是<strong>趋势延续信号</strong>，不是反转信号。在上升趋势的旗形整理末期做多，比在趋势顶部追高更安全。</p>
 </div>
 
 <div class="section">
 <h3>6.11 颈线与测量目标位（Measured Move）</h3>
 <p>头肩顶的颈线跌破后，<strong>理论目标位=头顶到颈线的距离，从颈线往下等量投射</strong>。这不是精确预测，是"如果形态成立，大致能走多远"的估算。</p>
 <p>实战用法：用测量目标位计算<strong>潜在盈亏比</strong>。如果理论目标位给出的盈亏比<2:1，这个形态不值得交易——风险收益不划算。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图6-5 头肩顶/头肩底：颈线与测量目标位（等量投射）</div>
+<div class="chart-container" id="chart-cb-hns"></div>
 </div>
 
 <div class="callout callout-tip">
@@ -975,14 +1124,14 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>6.12 组合信号永远强于单K</h3>
 <p>一根Pin Bar+一根吞没线出现在同一个关键位=比两根单独的Pin Bar强5倍。为什么？因为它们在<strong>同一个位置</strong>发出了<strong>两次拒绝信号</strong>。组合信号的可靠性远高于任何单K形态。</p>
-<p>这引出一个重要原则：<strong>信号越"拥挤"（多个因素在同一个价格区域重合），越值得交易</strong>。第27章"复合信号"会深度展开。</p>
+<p>这引出一个重要原则：<strong>信号越"拥挤"（多个因素在同一个价格区域重合），越值得交易</strong>。第27章"<a class="term-ref" href="#term-composite">复合信号</a>"会深度展开。</p>
 </div>
 
 <div class="rule-box">
 <div class="rule-title">第6章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>Inside Bar出现时，<span class="action">我将等子线突破母线方向后再入场，止损设在母线另一端±1个ATR。</span></div>
-<div class="rule-item"><span class="trigger">当</span>吞没线出现在关键位时，<span class="action">我将在下一根K线开盘入场，止损设在吞没线影线尖端±1个ATR。如果吞没线无影线，止损设在吞没线实体的反方向端。</span></div>
-<div class="rule-item"><span class="trigger">当</span>双底/双顶出现时，<span class="action">我将不猜颈线是否突破，而是等颈线突破+回踩确认后入场，止损设在形态的极值点。</span></div>
+<div class="rule-item"><span class="trigger">当</span>Inside Bar出现时，<span class="action">我将先过三重过滤：突破方向与趋势一致？出现在关键位？收缩足够极端（子线小、量缩）？三者全满足才等子线突破母线高点入场，止损设在母线最低价下方±1个ATR，否则忽略。子线跌破母线低点=看空信号，A股现货对应离场或观望。</span></div>
+<div class="rule-item"><span class="trigger">当</span>吞没线出现在关键位时，<span class="action">我将在下一根K线开盘入场，止损设在吞没线最低价（看涨）或最高价（看跌）外侧±1个ATR——该锚点恒有定义，无影线时即实体端。</span></div>
+<div class="rule-item"><span class="trigger">当</span>双底/双顶出现时，<span class="action">我将不猜颈线是否突破：双底=做多机会，等颈线放量突破+回踩确认后入场，止损设在形态低点下方1个ATR；双顶=离场信号，清仓离场，不参与。</span></div>
 </div>
 </div>
 
@@ -1005,7 +1154,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>7.2 势（趋势）：先定方向</h3>
 <p>问自己：<strong>当前的HH/HL或LH/LL结构指向哪个方向？</strong></p>
-<p>如果是HH/HL，你的交易方向=做多。如果是LH/LL，你的方向=做空或空仓。如果是震荡，你的方向=区间交易。</p>
+<p>如果是HH/HL，你的交易方向=做多。如果是LH/LL，你的方向=空仓回避。如果是震荡，你的方向=区间交易。</p>
 <p>不要"逆势找形态"。在下降趋势中找看涨Pin Bar，就像逆水行舟——你偶尔能成功，但长期概率不利于你。</p>
 </div>
 
@@ -1023,10 +1172,29 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>关键：<strong>没有触发器就不动</strong>。即使方向对、位置好，如果没有出现形态信号，你就等待。等待不是"错失机会"，等待是"拒绝低概率入场"。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图7-1 势位形三步法实战标注：势（HH/HL结构）→ 位（回调至供需区域）→ 形（看涨吞没触发）</div>
+<div class="chart-container" id="chart-slw"></div>
+</div>
+
 <div class="callout callout-key">
 <div class="callout-title">🔑 势位形公式</div>
 <p><strong>势</strong>（方向）× <strong>位</strong>（盈亏比）× <strong>形</strong>（触发）= 交易决策</p>
 <p>三个条件同时满足=入场。缺少任何一个=等待。这不是"尽量满足"，是<strong>必须全部满足</strong>。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-title">图7-2 势位形三步决策流程——三道门全部通过才入场</div>
+<div class="flow-node"><strong>① 势</strong>：标注最近5个波峰波谷，判断当前结构（HH/HL 上升 / LH/LL 下降 / 震荡）</div>
+<div class="flow-split"><div class="flow-no">LH/LL 下降 → <strong>空仓回避</strong>，等CHOCH出现后重走本流程；震荡且价格在中段 → 等回到区间下沿</div></div>
+<div class="flow-arrow">↓ 通过：HH/HL 上升，或震荡价格到达区间下沿</div>
+<div class="flow-node"><strong>② 位</strong>：价格是否处于关键位附近（供需区域 / 前高前低 / FVG）？入场后盈亏比能否达成 2:1？</div>
+<div class="flow-split"><div class="flow-no">距最近关键位&gt;2个ATR（<a class="term-ref" href="#term-no-man-land">无人区</a>），或止损距离太远、目标太近导致盈亏比&lt;2:1 → <strong>等待，不交易</strong></div></div>
+<div class="flow-arrow">↓ 通过：处于关键位附近，且盈亏比 ≥ 2:1</div>
+<div class="flow-node"><strong>③ 形</strong>：出现反转K线且收盘确认（Pin Bar / 吞没线 / Inside Bar突破）？量能配合（确认根<a class="term-ref" href="#term-volume-ratio">量比</a>≥1.5）？</div>
+<div class="flow-split"><div class="flow-no">无信号或未收盘 → <strong>设价格提醒，等待</strong>；确认根缩量 → 降为C级信号，减仓执行（见12.5）</div></div>
+<div class="flow-arrow">↓ 三道门全部通过</div>
+<div class="flow-final"><strong>入场执行</strong>：左侧在关键位挂限价单试仓1/3，或右侧确认后入场（第13章）；止损=入场逻辑失效位下方1个ATR（第17章）；首个目标位≥2:1，到达平半仓、剩余跟踪止损（第18章）。</div>
 </div>
 
 <div class="section">
@@ -1205,7 +1373,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <ul>
 <li><strong>浅回调（38.2%）</strong>：趋势非常强劲，买盘迫不及待。浅回调后的入场点可能需要用限价单在回调过程中埋伏。</li>
 <li><strong>正常回调（50%）</strong>：最常见的回调幅度。回调到50%后出现反转K线=标准入场信号。</li>
-<li><strong>深回调（61.8%）</strong>：趋势偏弱，但如果61.8%位+供需区域+反转K线三者共振，反而是盈亏比最好的入场点——止损距离小、目标空间大。</li>
+<li><strong>深回调（61.8%）</strong>：趋势偏弱，但如果61.8%位+供需区域+反转K线三者<a class="term-ref" href="#term-composite">共振</a>，反而是盈亏比最好的入场点——止损距离小、目标空间大。</li>
 </ul>
 </div>
 
@@ -1271,7 +1439,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li><strong>地量地价=底部信号</strong>——没人愿意卖了，供应枯竭，反弹一触即发</li>
 </ol>
 <p><strong>量在价先</strong>：成交量是领先指标，价格是滞后确认。量能异动往往先于价格转折——"量先动，价后跟"。</p>
-<p><strong>量价背离</strong>：价格创新高但成交量低于前高=量价背离=反转预警。这不是"可能反转"，是"反转的概率在增加"——你需要收紧止损，但不一定立刻翻空。</p>
+<p><strong>量价背离</strong>：价格创新高但成交量低于前高=量价背离=反转预警。这不是"可能反转"，是"反转的概率在增加"——你需要收紧止损，但不一定立刻清仓。</p>
 </div>
 
 <div class="section">
@@ -1287,7 +1455,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>10.5 趋势破坏的信号：关键低点/高点失守</h3>
-<p>上升趋势中，最近一个HL（更高的低点）被跌破=趋势破坏的第一个信号。如果下一个HH也无法创新高=双重确认。此时必须离场或翻空。</p>
+<p>上升趋势中，最近一个HL（更高的低点）被跌破=趋势破坏的第一个信号。如果下一个HH也无法创新高=双重确认。此时必须离场。</p>
 <p>不要"等等看"。趋势破坏后的"等等看"，通常变成"深度套牢"。</p>
 </div>
 
@@ -1351,7 +1519,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <h3>11.4 供需区域的5步识别法</h3>
 <ol>
 <li><strong>找快速运动</strong>：价格在某区域快速离开，几乎不盘整（连续阳线或连续阴线）</li>
-<li><strong>回溯起源</strong>：快速运动前最后一根反向K线=订单块（OB），整个盘整区间=供需区域</li>
+<li><strong>回溯起源</strong>：快速运动前最后一根反向K线=<a class="term-ref" href="#term-ob">订单块（OB）</a>，整个盘整区间=供需区域</li>
 <li><strong>画矩形区域</strong>：从起源K线的低点到快速运动起涨点=需求区；从起源K线的高点到快速运动起跌点=供应区</li>
 <li><strong>确认新鲜度</strong>：该区域是否被回测过？首次回测最强</li>
 <li><strong>标记优先级</strong>：大级别（日线/周线）的供需区域 > 小级别（1小时）的供需区域</li>
@@ -1524,6 +1692,11 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>如果左侧未成交（价格没到关键位）=等右侧信号出现后再入场。没有遗憾——不属于你的交易就不要硬做。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图13-1 左右结合入场：左侧试仓1/3（关键位挂单）→ 右侧加仓2/3（信号确认）→ 止损=信号K线最低价-1ATR</div>
+<div class="chart-container" id="chart-lr"></div>
+</div>
+
 <div class="section">
 <h3>13.4 为什么纯左侧和纯右侧都不完美</h3>
 <p>纯左侧=赌方向，胜率低但盈亏比好。纯右侧=追确认，胜率高但盈亏比差。左右结合=兼顾胜率和盈亏比，是数学上的最优解。</p>
@@ -1580,7 +1753,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>14.5-14.6 趋势跟随的止损与止盈</h3>
-<p><strong>止损</strong>：设在最近一个HL下方（上升趋势）或LH上方（下降趋势），留1个ATR余量。结构止损，不是固定百分比止损。</p>
+<p><strong>止损</strong>：设在最近一个HL下方，留1个ATR余量。结构止损，不是固定百分比止损（下降趋势中空仓回避，不涉及持仓止损）。</p>
 <p><strong>止盈</strong>：两种方式——</p>
 <ol>
 <li><strong>结构止盈</strong>：趋势结构被破坏时离场（HL被跌破）</li>
@@ -1605,14 +1778,14 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 
 <div class="section">
-<h3>15.2 下沿做多，上沿做空</h3>
-<p>区间交易的核心=在边界操作。价格到达下边界+反转K线=做多。价格到达上边界+反转K线=做空。</p>
-<p>止损设在区间边界外侧1个ATR。目标位=区间对侧边界。盈亏比通常为1:1.5-2。</p>
+<h3>15.2 下沿做多，上沿回避</h3>
+<p>区间交易的核心=在边界操作。价格到达下边界+反转K线=做多。价格到达上边界=减仓/回避区（A股现货无做空，上沿只卖不买）。</p>
+<p>止损设在区间下边界外侧1个ATR。目标位=区间上边界。盈亏比通常为1:1.5-2。</p>
 </div>
 
 <div class="section">
 <h3>15.3 区间中段是最危险的区域</h3>
-<p>价格在区间中段=离上下边界都远=没有盈亏比优势。在中段做多，止损在区间下沿太远；在中段做空，止损在区间上沿太远。盈亏比<1:1=不值得做。</p>
+<p>价格在区间中段=离上下边界都远=没有盈亏比优势。在中段做多，止损在区间下沿太远、目标在区间上沿太近，盈亏比<1:1=不值得做。</p>
 <p><strong>区间中段=观望区</strong>。只有在边界附近才操作。</p>
 </div>
 
@@ -1622,11 +1795,11 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 
 <div class="section">
-<h3>15.5 箱体突破的处理：止损后反手还是观望</h3>
+<h3>15.5 箱体突破的处理：离场后观望还是跟随</h3>
 <p>箱体被突破后，你有两个选择：</p>
 <ol>
 <li><strong>止损离场+观望</strong>（推荐新手）：等突破-回踩-确认后再决定方向</li>
-<li><strong>止损+反手</strong>（需经验）：如果突破放量+大实体K线，可能趋势启动，可以反手跟随</li>
+<li><strong>顺势跟随</strong>（需经验）：向上突破且放量+大实体K线=可能趋势启动，等回踩确认后做多；向下突破则观望</li>
 </ol>
 </div>
 
@@ -1653,9 +1826,9 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="rule-box">
 <div class="rule-title">第15章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>价格到达区间边界+出现反转K线时，<span class="action">我将入场，仓位≤趋势交易的2/3，止损设在边界外1个ATR，目标位为区间对侧。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格到达区间下边界+出现反转K线时，<span class="action">我将做多入场，仓位≤趋势交易的2/3，止损设在边界外1个ATR，目标位为区间上边界；到达上边界=减仓/回避，不入场。</span></div>
 <div class="rule-item"><span class="trigger">当</span>价格在区间中段时，<span class="action">我将不交易，即使出现K线信号——没有位置支持的信号=噪音。</span></div>
-<div class="rule-item"><span class="trigger">当</span>箱体被放量突破时，<span class="action">我将先止损离场，再等突破-回踩-确认后决定是否反手跟随新方向。</span></div>
+<div class="rule-item"><span class="trigger">当</span>箱体被放量突破时，<span class="action">我将先止损离场，再等突破-回踩-确认后决定是否顺新方向做多（向下突破则观望）。</span></div>
 </div>
 </div>
 
@@ -1700,6 +1873,11 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p>三步完成=入场。止损设在回踩低点下方1个ATR。目标位=测量目标位（突破距离的等量投射）。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图16-1 突破-回踩-确认三步法：放量突破关键位 → 回踩不破 → 反转K确认入场</div>
+<div class="chart-container" id="chart-brk"></div>
+</div>
+
 <div class="section">
 <h3>16.4 没有回测支撑的突破不追</h3>
 <p>追突破=最危险的入场方式。因为你不知道是真突破还是假突破。等回踩=让市场替你验证。如果回踩不破=真突破确认，你安全入场。如果回踩跌破=假突破，你避免了亏损。</p>
@@ -1707,30 +1885,29 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 
 <div class="section">
-<h3>16.5 假突破反杀：如何识别和操作</h3>
-<p>假突破=机构诱多/诱空的杰作。当价格突破关键位后收盘回落=假突破确认。此时：</p>
+<h3>16.5 假突破的处置：识别与应对</h3>
+<p>假突破=机构诱多的杰作。当价格突破关键位后收盘回落=假突破确认。A股现货的应对：</p>
 <ul>
-<li>做多假突破反杀=在收盘回落确认后做空</li>
-<li>做空假突破反杀=在收盘回升确认后做多</li>
+<li>向上假突破（冲高回落）=<strong>不追多</strong>；若因追突破而持仓，收盘确认后按规则离场，不等"解套"</li>
+<li>向下假跌破（跌破后收回）=<strong>做多机会</strong>，见16.6假跌破低吸</li>
 </ul>
-<p>止损设在假突破极值点±1个ATR。目标位=区间对侧边界。</p>
 </div>
 
 <div class="section">
 <h3>16.6 假跌破低吸：诱空后的最佳买点</h3>
-<p>假跌破=价格跌破支撑后快速收回。这是机构吸筹的经典手法（威科夫Spring）。假跌破确认后做多，是裸K交易中<strong>盈亏比最高的入场点</strong>——因为止损距离极小（就在假跌破低点下方）。</p>
+<p>假跌破=价格跌破支撑后快速收回。这是机构吸筹的经典手法（威科夫<a class="term-ref" href="#term-spring">Spring</a>）。假跌破确认后做多，是裸K交易中<strong>盈亏比最高的入场点</strong>——因为止损距离极小（就在假跌破最低价下方）。</p>
 </div>
 
 <div class="section">
 <h3>16.7 突破交易的止损与仓位规则</h3>
-<p>止损=设在突破位下方1个ATR（真突破入场）或假突破极值点±1个ATR（反杀入场）。仓位=从止损距离反推（详见第18章和风控手册第3章）。</p>
+<p>止损=设在突破位下方1个ATR（真突破入场）或假跌破最低价下方1个ATR（假跌破低吸入场）。仓位=从止损距离反推（详见第18章和风控手册第3章）。</p>
 </div>
 
 <div class="rule-box">
 <div class="rule-title">第16章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>价格突破关键位时，<span class="action">我将不追入，而是等回踩-确认三步法完成后再入场。没有回踩支撑的突破不追。</span></div>
-<div class="rule-item"><span class="trigger">当</span>假突破确认（收盘回落至突破位下方）时，<span class="action">我将在下一交易日开盘反杀入场，止损设在假突破极值点±1个ATR。</span></div>
-<div class="rule-item"><span class="trigger">当</span>假跌破确认（跌破支撑后收盘收回）时，<span class="action">我将做多，止损设在假跌破最低点下方1个ATR——这是盈亏比最高的入场点。</span></div>
+<div class="rule-item"><span class="trigger">当</span>假突破确认（收盘回落至突破位下方）时，<span class="action">我将不追多；若因追突破而持仓，收盘确认后离场，不等"解套"。</span></div>
+<div class="rule-item"><span class="trigger">当</span>假跌破确认（跌破支撑后收盘收回）时，<span class="action">我将做多，止损设在假跌破最低价下方1个ATR——这是盈亏比最高的入场点。</span></div>
 </div>
 </div>
 
@@ -1756,8 +1933,8 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 
 <div class="section">
-<h3>17.3 绝不设在影线尖端——ATR动态止损法</h3>
-<p>散户最常犯的止损错误：<strong>把止损精确地设在Pin Bar影线尖端或前低/前高</strong>。这就是在告诉算法："我就在这里，请来猎杀我。"</p>
+<h3>17.3 绝不设在锚点价位上——ATR动态止损法</h3>
+<p>散户最常犯的止损错误：<strong>把止损精确地设在Pin Bar最低价（影线端点）或前低/前高</strong>。这就是在告诉算法："我就在这里，请来猎杀我。"</p>
 <p>ATR止损法：</p>
 <ul>
 <li>计算14日ATR（平均真实波幅）</li>
@@ -1783,6 +1960,11 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <p><strong>太紧</strong>（<0.5个ATR）：被正常波动频繁触发，胜率低。<strong>太松</strong>（>2个ATR）：单笔亏损过大，破坏盈亏比。<strong>刚好</strong>（1-1.5个ATR）：在"不被猎杀"和"单笔可控"之间取得平衡。</p>
 </div>
 
+<div class="chart-box">
+<div class="chart-title">图17-1 止损宽度对比：太紧（被噪音扫掉）vs 刚好（1-1.5ATR存活）vs 太松（单笔亏损过大）</div>
+<div class="chart-container" id="chart-stopw"></div>
+</div>
+
 <div class="section">
 <h3>17.6 单笔风险铁律：≤2%</h3>
 <p>每笔交易的亏损不超过总账户的2%。公式：<strong>仓位=账户×2%÷止损距离</strong>（详见风控手册第3章）。</p>
@@ -1796,7 +1978,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="rule-box">
 <div class="rule-title">第17章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>我要设止损时，<span class="action">我将设在入场逻辑失效位±1个ATR，绝不精确设在关键位上或影线尖端。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我要设止损时，<span class="action">我将设在入场逻辑失效位±1个ATR，绝不精确设在关键位上或最低价/最高价等锚点价位上。</span></div>
 <div class="rule-item"><span class="trigger">当</span>盘中价格穿透止损位但收盘收回时，<span class="action">我将不触发止损（使用收盘价确认原则），等次日再判断。</span></div>
 <div class="rule-item"><span class="trigger">当</span>连续3次止损被触发后，<span class="action">我将暂停交易2天，复盘最近的止损位置是否合理——可能是ATR参数需要调整，也可能是我在错误的市场环境中交易。</span></div>
 </div>
@@ -1957,13 +2139,13 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li><strong>次日确认</strong>：次日继续回落=假突破确认</li>
 <li><strong>结构矛盾</strong>：突破方向与更大周期结构方向相反=高概率假突破</li>
 </ol>
-<p>满足3个以上=高概率假突破，可以反杀入场。</p>
+<p>满足3个以上=高概率假突破，持仓者离场、场外者回避。</p>
 </div>
 
 <div class="section">
-<h3>19.5-19.6 假突破反杀与假跌破低吸</h3>
-<p><strong>假突破反杀</strong>：收盘确认假突破后，下一交易日做空。止损设在假突破最高点上方1个ATR。目标位=区间对侧。</p>
-<p><strong>假跌破低吸</strong>：收盘确认假跌破后，下一交易日做多。止损设在假跌破最低点下方1个ATR。这是裸K交易中盈亏比最高的入场——止损距离极小，目标空间极大。</p>
+<h3>19.5-19.6 假突破的处置与假跌破低吸</h3>
+<p><strong>向上假突破</strong>：收盘确认后不追多，持仓者离场。对A股现货，它是风险信号而非交易机会。</p>
+<p><strong>假跌破低吸</strong>：收盘确认假跌破后，下一交易日做多。止损设在假跌破最低价下方1个ATR。这是裸K交易中盈亏比最高的入场——止损距离极小，目标空间极大。</p>
 </div>
 
 <div class="section">
@@ -1974,8 +2156,13 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>19.8 2B法则的实战应用与止损设置</h3>
-<p>2B法则入场：在价格跌回前高/前低之下时入场。止损设在假突破极值点±1个ATR。目标位至少2:1盈亏比。</p>
+<p>2B法则的A股应用：<strong>底部2B</strong>（创新低后收回前低上方）=做多入场，止损设在假跌破最低价下方1个ATR，目标位至少2:1盈亏比；<strong>顶部2B</strong>（创新高后跌回前高下方）=持仓离场信号，不做空。</p>
 <p>注意：2B法则在<strong>大周期（日线/周线）</strong>上比小周期可靠得多。5分钟图上的2B=噪音，日线上的2B=重要反转信号。</p>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图19-1 顶部2B法则：创新高后无法维持、跌回前高之下=反转/离场信号</div>
+<div class="chart-container" id="chart-2b"></div>
 </div>
 
 <div class="section">
@@ -1985,8 +2172,8 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="rule-box">
 <div class="rule-title">第19章 行动规则</div>
-<div class="rule-item"><span class="trigger">当</span>价格突破关键位但量能<1.2倍均量+收盘长上影时，<span class="action">我将标记为"疑似假突破"，次日如果继续回落，反杀入场。</span></div>
-<div class="rule-item"><span class="trigger">当</span>2B法则在日线级别出现时，<span class="action">我将入场，止损设在假突破极值点±1个ATR，目标位至少2:1。5分钟级别的2B我将忽略。</span></div>
+<div class="rule-item"><span class="trigger">当</span>价格突破关键位但量能<1.2倍均量+收盘长上影时，<span class="action">我将标记为"疑似假突破"，次日如果继续回落=确认，我将不追多，持仓者离场。</span></div>
+<div class="rule-item"><span class="trigger">当</span>底部2B（创新低后收回前低上方）在日线级别出现时，<span class="action">我将做多，止损设在假跌破最低价下方1个ATR，目标位至少2:1；顶部2B=离场信号。5分钟级别的2B我将忽略。</span></div>
 </div>
 </div>
 
@@ -2036,7 +2223,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li>但无法维持在新区域（收盘回到原区间）</li>
 <li>随后反向运动（机构完成了反向建仓）</li>
 </ol>
-<p>三步确认=高概率反杀机会。</p>
+<p>三步确认=高概率反转信号（顶部=离场，底部=做多参考）。</p>
 </div>
 
 <div class="section">
@@ -2045,7 +2232,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <ul>
 <li>对初学者太复杂——容易过度分析</li>
 <li>OB/FVG的识别有主观性——不同人可能画出不同的OB</li>
-<li>需要与威科夫和Volume Profile互补——SMC提供精确位，威科夫提供全局阶段，VP提供量能验证</li>
+<li>需要与威科夫和<a class="term-ref" href="#term-vp">Volume Profile</a>互补——SMC提供精确位，威科夫提供全局阶段，VP提供量能验证</li>
 </ul>
 </div>
 
@@ -2175,7 +2362,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </thead>
 <tbody>
 <tr><td class="highlight">Spring</td><td>吸筹区底部</td><td>做多</td><td>Spring低点-1ATR</td><td>高（70%+）</td></tr>
-<tr><td class="highlight">UTAD</td><td>派发区顶部</td><td>做空/离场</td><td>UTAD高点+1ATR</td><td>高（70%+）</td></tr>
+<tr><td class="highlight">UTAD</td><td>派发区顶部</td><td>离场/清仓</td><td>—（现货无空单）</td><td>高（70%+）</td></tr>
 </tbody>
 </table>
 </div>
@@ -2184,7 +2371,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <h3>22.5 威科夫与裸K势位形的结合</h3>
 <p>威科夫不是替代势位形，而是给势位形加上<strong>阶段维度</strong>：</p>
 <ul>
-<li><strong>威科夫定阶段（势的升级）</strong>：不在吸筹末期做空，不在派发末期做多</li>
+<li><strong>威科夫定阶段（势的升级）</strong>：不在吸筹末期离场，不在派发末期追多</li>
 <li><strong>供需区域/FVG/OB定位置（位的升级）</strong>：Spring点=最强的需求区</li>
 <li><strong>反转K线定信号（形的升级）</strong>：Spring日的长下影线=最精确的入场触发</li>
 </ul>
@@ -2210,7 +2397,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="rule-box">
 <div class="rule-title">第22章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>我识别出Spring（假跌破+快速收回+量缩回测）时，<span class="action">我将做多，止损设在Spring低点下方1个ATR，目标位=SOS突破位。</span></div>
-<div class="rule-item"><span class="trigger">当</span>我识别出UTAD（假突破+快速回落+量缩回测）时，<span class="action">我将做空或离场，止损设在UTAD高点上方1个ATR。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我识别出UTAD（假突破+快速回落+量缩回测）时，<span class="action">我将离场/清仓，不再新建多头。</span></div>
 <div class="rule-item"><span class="trigger">当</span>威科夫阶段不清晰时，<span class="action">我将不强行套框架，回到基础势位形分析。宁可不识别，不可误识别。</span></div>
 </div>
 </div>
@@ -2278,7 +2465,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <h3>24.4-24.6 裸K+VP、HFT时代下形态可靠性变化、利用算法行为</h3>
-<p>Volume Profile是算法时代最有价值的补充工具——它不受时间框架限制，直接告诉你"哪里有流动性"。<br>传统形态的可靠性在降低——双底双顶等经典形态被算法"研究透了"，它们会故意制造或破坏这些形态。<br>利用算法行为：当算法扫止损后快速反转=你的假突破反杀机会。算法是你的对手，也是你的猎物。</p>
+<p>Volume Profile是算法时代最有价值的补充工具——它不受时间框架限制，直接告诉你"哪里有流动性"。<br>传统形态的可靠性在降低——双底双顶等经典形态被算法"研究透了"，它们会故意制造或破坏这些形态。<br>利用算法行为：当算法扫止损后快速反转=重要反转信号——顶部假突破=离场，底部假跌破=做多参考。算法是你的对手，读懂它就是你的优势。</p>
 </div>
 
 <div class="callout callout-tip">
@@ -2289,7 +2476,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="rule-box">
 <div class="rule-title">第24章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>重大宏观数据公布前后30分钟时，<span class="action">我将不开新仓、不调整止损，让市场先消化信息。</span></div>
-<div class="rule-item"><span class="trigger">当</span>盘中出现"闪击式"长影线后快速反转时，<span class="action">我将识别为算法止损猎杀，等收盘确认后决定是否反杀入场。</span></div>
+<div class="rule-item"><span class="trigger">当</span>盘中出现"闪击式"长影线后快速反转时，<span class="action">我将识别为算法止损猎杀，等收盘确认后按假突破/假跌破剧本处置（顶部=离场，底部=做多参考）。</span></div>
 </div>
 </div>
 
@@ -2316,7 +2503,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>25.2 三重时间框架法：D1定方向→H4找位置→H1找信号</h3>
 <ul>
-<li><strong>D1（日线）</strong>：判断大方向。HH/HL=做多方向，LH/LL=做空方向。</li>
+<li><strong>D1（日线）</strong>：判断大方向。HH/HL=做多方向，LH/LL=空仓回避。</li>
 <li><strong>H4（4小时）</strong>：找关键位置。供需区域、前高低点、FVG等在H4图上标注。</li>
 <li><strong>H1（1小时）</strong>：找入场信号。Pin Bar、吞没线等在H1图上等待触发。</li>
 </ul>
@@ -2386,7 +2573,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <ul>
 <li>斐波那契回调位 + 供需区域 + Pin Bar = 三重共振做多</li>
 <li>威科夫Spring + FVG回填 + 放量反转 = 极强做多</li>
-<li>UTAD + 量价背离 + 供应区 = 三重共振做空</li>
+<li>UTAD + 量价背离 + 供应区 = 三重共振离场信号</li>
 <li>BOS + 回踩突破位 + Index配合 = 趋势跟随</li>
 </ul>
 </div>
@@ -2474,7 +2661,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <li>供需区域只交易首次和二次回测</li>
 <li>5-8个关键位足够，多了是噪音</li>
 <li>信号越弱仓位越小，C级1/3、B级1/2、A级标准</li>
-<li>假突破=反杀机会，真突破=等回踩确认</li>
+<li>假突破=离场/回避（假跌破=做多机会），真突破=等回踩确认</li>
 <li>三个周期方向一致=多周期确认更完整</li>
 <li>大盘破位=减仓第一，个股分析第二</li>
 <li>复合信号3个因素重合=强信号，4个以上=过度</li>
@@ -2516,6 +2703,18 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <div class="section">
 <p>本附录为五本手册的统一术语规范，确保跨手册阅读时表述一致。其他手册首次出现相关术语时引用"详见裸K手册·附录A全局术语表"。</p>
+
+<h3>〇、K线价格锚点（全书统一表述）</h3>
+<table class="data-table">
+<thead><tr><th>首选表述</th><th>同义表述</th><th>定义</th><th>主要使用手册</th></tr></thead>
+<tbody>
+<tr><td>最高价</td><td>影线上端点/高点</td><td>该K线时段内的最高成交价；有上影线时=上影线端点，无上影线时=实体顶</td><td>裸K</td></tr>
+<tr><td>最低价</td><td>影线下端点/低点</td><td>该K线时段内的最低成交价；有下影线时=下影线端点，无下影线时=实体底</td><td>裸K</td></tr>
+<tr><td>实体顶</td><td>实体上端/实体上沿</td><td>max(开盘价, 收盘价)：阳线=收盘价，阴线=开盘价</td><td>裸K</td></tr>
+<tr><td>实体底</td><td>实体下端/实体下沿</td><td>min(开盘价, 收盘价)：阳线=开盘价，阴线=收盘价</td><td>裸K</td></tr>
+</tbody>
+</table>
+<p style="color:var(--text-muted);font-size:13px;">表述约定：①凡涉及止损、挂单、入场价的单根K线锚点，一律用"最高价/最低价/实体顶/实体底"并写明上/下方，不使用"尖端/另一端/反方向端"等模糊说法；②"影线端点/实体端点"仅作为类别称呼（影线端点=最高价或最低价，实体端点=实体顶或实体底），不单独指价；③跨多根K线的结构位（前高/前低、Spring低点、回踩低点等）不适用本表，按结构位名称表述。</p>
 
 <h3>一、价格位置类</h3>
 <table class="data-table">
@@ -2576,24 +2775,37 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="section">
 <h3>单K速查</h3>
 <table class="data-table">
-<thead><tr><th>形态</th><th>一句话定义</th><th>适用位置</th><th>失败条件</th></tr></thead>
+<thead><tr><th>图例</th><th>形态</th><th>一句话定义</th><th>适用位置</th><th>失败条件</th><th>详见</th></tr></thead>
 <tbody>
-<tr><td>锤子线</td><td>小实体+长下影（≥2倍实体）</td><td>下降趋势的支撑位</td><td>出现在无人区或上升趋势中</td></tr>
-<tr><td>倒锤子</td><td>小实体+长上影</td><td>下降趋势的支撑位</td><td>后续K线未确认</td></tr>
-<tr><td>十字星</td><td>开盘≈收盘，实体极小</td><td>趋势末端的关键位</td><td>震荡市中无意义</td></tr>
-<tr><td>Marubozu</td><td>无影线大实体</td><td>趋势启动位</td><td>趋势末端=耗竭</td></tr>
-<tr><td>纺锤线</td><td>小实体短影线</td><td>趋势末端=犹豫</td><td>震荡中=常态</td></tr>
+<tr id="term-pin-bar"><td class="mini-cell" data-mini="pinbar"></td><td>Pin Bar</td><td>小实体（≤1/3）+长影线（≥2倍实体）的拒绝信号</td><td>关键位（趋势回调低点/高点）</td><td>影线被前K包裹；出现在无人区</td><td><a class="term-ref" href="#ch5">第5章</a></td></tr>
+<tr><td class="mini-cell" data-mini="marubozu"></td><td>Marubozu</td><td>无影线大实体</td><td>趋势启动位</td><td>趋势末端=耗竭</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr><td class="mini-cell" data-mini="hammer"></td><td>锤子线</td><td>小实体+长下影（≥2倍实体）</td><td>下降趋势的支撑位</td><td>出现在无人区或上升趋势中</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr><td class="mini-cell" data-mini="invhammer"></td><td>倒锤子</td><td>小实体+长上影</td><td>下降趋势的支撑位</td><td>后续K线未确认</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr><td class="mini-cell" data-mini="doji"></td><td>十字星</td><td>开盘≈收盘，实体极小</td><td>趋势末端的关键位</td><td>震荡市中无意义</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr><td class="mini-cell" data-mini="spinning"></td><td>纺锤线</td><td>小实体短影线</td><td>趋势末端=犹豫</td><td>震荡中=常态</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
 </tbody>
 </table>
 
 <h3>双K速查</h3>
 <table class="data-table">
-<thead><tr><th>形态</th><th>一句话定义</th><th>适用位置</th><th>失败条件</th></tr></thead>
+<thead><tr><th>图例</th><th>形态</th><th>一句话定义</th><th>适用位置</th><th>失败条件</th><th>详见</th></tr></thead>
 <tbody>
-<tr><td>吞没线</td><td>后K实体完全包裹前K实体</td><td>关键位反转</td><td>实体未完全包裹</td></tr>
-<tr><td>Inside Bar</td><td>子线完全在母线范围内</td><td>趋势回调位</td><td>突破方向与趋势相反</td></tr>
-<tr><td>刺透形态</td><td>阳线深入前阴实体>50%</td><td>下降趋势支撑位</td><td>深入<50%</td></tr>
-<tr><td>乌云盖顶</td><td>阴线深入前阳实体>50%</td><td>上升趋势阻力位</td><td>深入<50%</td></tr>
+<tr><td class="mini-cell" data-mini="inside"></td><td>Inside Bar</td><td>子线完全在母线范围内</td><td>趋势回调位</td><td>突破方向与趋势相反</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr><td class="mini-cell" data-mini="engulf"></td><td>吞没线</td><td>后K实体完全包裹前K实体</td><td>关键位反转</td><td>实体未完全包裹</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr><td class="mini-cell" data-mini="piercing"></td><td>刺透形态</td><td>阳线深入前阴实体>50%</td><td>下降趋势支撑位</td><td>深入<50%</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr><td class="mini-cell" data-mini="darkcloud"></td><td>乌云盖顶</td><td>阴线深入前阳实体>50%</td><td>上升趋势阻力位</td><td>深入<50%</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+</tbody>
+</table>
+
+<h3>多K结构形态速查</h3>
+<p>多K结构形态的蜡烛图可视化见第6章图6-4/图6-5。</p>
+<table class="data-table">
+<thead><tr><th>形态</th><th>一句话定义</th><th>确认要点</th><th>详见</th></tr></thead>
+<tbody>
+<tr><td>双底（W底）</td><td>两个低点大致相同+中间反弹，底部反转形态</td><td>第二低点现反转K+量能萎缩+颈线放量突破</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr><td>双顶（M顶）</td><td>两个高点大致相同+中间回落，顶部反转形态</td><td>颈线跌破+回踩不破确认</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr><td>头肩顶</td><td>左肩-头-右肩，可靠性最高的顶部反转形态之一</td><td>颈线跌破确认；目标位=头顶到颈线的等量投射</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr><td>头肩底</td><td>头肩顶的镜像，底部反转形态</td><td>突破颈线+回踩确认；目标位等量投射</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -2604,14 +2816,14 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <h2 class="chapter-title"><span class="ch-num">附录C</span>关键位识别速查</h2>
 <div class="section">
 <table class="data-table">
-<thead><tr><th>关键位类型</th><th>识别方法</th><th>优先级</th><th>回测规则</th></tr></thead>
+<thead><tr><th>关键位类型</th><th>识别方法</th><th>优先级</th><th>回测规则</th><th>详见</th></tr></thead>
 <tbody>
-<tr><td>供需区域</td><td>5步法：快速运动→回溯起源→画矩形→确认新鲜度→标记优先级</td><td class="highlight">最高</td><td>首次70%/二次50%/三次放弃</td></tr>
-<tr><td>前高低点</td><td>至少2次触及的波峰/波谷</td><td>高</td><td>越多次越强</td></tr>
-<tr><td>FVG</td><td>三K间价格真空区</td><td>高</td><td>首次回填最强</td></tr>
-<tr><td>OB</td><td>机构建仓最后一根反向K线</td><td>高</td><td>首次回测最强</td></tr>
-<tr><td>斐波那契位</td><td>38.2%/50%/61.8%回撤位</td><td>中</td><td>与其他位共振时有效</td></tr>
-<tr><td>整数关口</td><td>100/200/500等心理价位</td><td>低</td><td>仅作辅助参考</td></tr>
+<tr><td>供需区域</td><td>5步法：快速运动→回溯起源→画矩形→确认新鲜度→标记优先级</td><td class="highlight">最高</td><td>首次70%/二次50%/三次放弃</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr><td>前高低点</td><td>至少2次触及的波峰/波谷</td><td>高</td><td>越多次越强</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr><td>整数关口</td><td>100/200/500等心理价位</td><td>低</td><td>仅作辅助参考</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr><td>OB</td><td>机构建仓最后一根反向K线</td><td>高</td><td>首次回测最强</td><td><a class="term-ref" href="#ch20">第20章</a></td></tr>
+<tr><td>FVG</td><td>三K间价格真空区</td><td>高</td><td>首次回填最强</td><td><a class="term-ref" href="#ch20">第20章</a></td></tr>
+<tr><td>斐波那契位</td><td>38.2%/50%/61.8%回撤位</td><td>中</td><td>与其他位共振时有效</td><td><a class="term-ref" href="#ch21">第21章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -2647,31 +2859,39 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <div class="chapter" id="appe">
 <h2 class="chapter-title"><span class="ch-num">附录E</span>术语速查表</h2>
 <div class="section">
-<p>全书核心术语按拼音排序，每条含：中文 → 英文 → 一句话定义 → 首次详细解释章节</p>
+<p>全书核心术语按<strong>正文首次出现顺序</strong>排序（读到哪章，前面的词条就是已学过的），每条含：中文 → 英文 → 一句话定义 → 详细介绍章节。正文中<strong>首次出现</strong>的术语（虚线下划线）可点击跳转至本表简要定义；本表"章节"列可点击跳转回详细介绍章节（无详细介绍者仅保留简要定义）。K线形态类词条（Pin Bar、吞没线、双底/双顶、头肩等）收录于附录B速查表。</p>
 <table class="data-table">
 <thead><tr><th>术语</th><th>英文</th><th>定义</th><th>章节</th></tr></thead>
 <tbody>
-<tr><td>2B法则</td><td>2B Rule</td><td>突破前高/低后无法维持，趋势反转信号</td><td>第19章</td></tr>
-<tr><td>CHOCH</td><td>Change of Character</td><td>反趋势方向的关键高低点被突破</td><td>第3章</td></tr>
-<tr><td>BOS</td><td>Break of Structure</td><td>趋势方向的关键高低点被突破</td><td>第3章</td></tr>
-<tr><td>FVG</td><td>Fair Value Gap</td><td>三根K线间的价格真空区</td><td>第20章</td></tr>
-<tr><td>HVN/LVN</td><td>High/Low Volume Node</td><td>高/低成交量节点</td><td>第23章</td></tr>
-<tr><td>Inside Bar</td><td>Inside Bar</td><td>子线完全在母线范围内</td><td>第6章</td></tr>
-<tr><td>Marubozu</td><td>Marubozu</td><td>无影线的大实体K线</td><td>第4章</td></tr>
-<tr><td>OB</td><td>Order Block</td><td>机构大单进场的最后一根反向K线</td><td>第20章</td></tr>
-<tr><td>Pin Bar</td><td>Pin Bar</td><td>小实体+长影线的拒绝信号</td><td>第5章</td></tr>
-<tr><td>POC</td><td>Point of Control</td><td>成交量最大的价格位</td><td>第23章</td></tr>
-<tr><td>Spring</td><td>Spring</td><td>威科夫吸筹区的假跌破信号</td><td>第22章</td></tr>
-<tr><td>UTAD</td><td>Upthrust After Distribution</td><td>威科夫派发区的假突破信号</td><td>第22章</td></tr>
-<tr><td>Volume Profile</td><td>Volume Profile</td><td>价格轴上的成交量分布</td><td>第23章</td></tr>
-<tr><td>威科夫</td><td>Wyckoff</td><td>市场阶段论：吸筹/趋势/派发循环</td><td>第3/22章</td></tr>
-<tr><td>供需区域</td><td>Supply/Demand Zone</td><td>机构大量建仓/出货的起源区域</td><td>第11章</td></tr>
-<tr><td>假突破</td><td>Fakeout</td><td>突破关键位后收盘回落</td><td>第16/19章</td></tr>
-<tr><td>流动性猎取</td><td>Liquidity Sweep</td><td>机构扫掉散户止损后反向操作</td><td>第2/19章</td></tr>
-<tr><td>势位形</td><td>Trend-Level-Trigger</td><td>趋势方向×关键位置×入场信号</td><td>第7章</td></tr>
-<tr><td>推动浪/回调浪</td><td>Impulse/Corrective</td><td>沿趋势/逆趋势方向的价格段</td><td>第9章</td></tr>
-<tr><td>无人区</td><td>No Man's Land</td><td>远离所有关键位的区域</td><td>第11章</td></tr>
-<tr><td>新鲜度</td><td>Freshness</td><td>供需区域被回测的次数</td><td>第11章</td></tr>
+<tr id="term-fakeout"><td>假突破</td><td>Fakeout</td><td>突破/跌破关键位后收盘收回（假跌破=向下的假突破）</td><td><a class="term-ref" href="#ch19">第16/19章</a></td></tr>
+<tr id="term-key-level"><td>关键位</td><td>Key Level</td><td>支撑/阻力/供需区域/FVG等价格区域的总称，决定盈亏比与信号有效性</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-swing"><td>HH/HL/LH/LL</td><td>Higher High/Higher Low · LH/LL</td><td>高低点依次抬高（上升趋势）或依次降低（下降趋势）的结构标记，判断趋势方向的依据</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-mtfa"><td>多时间框架</td><td>MTFA/Multi-Timeframe Analysis</td><td>大周期定方向、中周期找位置、小周期找信号的分层分析法</td><td><a class="term-ref" href="#ch25">第25章</a></td></tr>
+<tr><td>流动性猎取</td><td>Liquidity Sweep</td><td>机构扫掉散户止损后反向操作</td><td><a class="term-ref" href="#ch19">第2/19章</a></td></tr>
+<tr id="term-smc"><td>SMC</td><td>Smart Money Concepts</td><td>机构（聪明钱）视角的价格行为体系：BOS/CHOCH/FVG/OB等工具的统称</td><td><a class="term-ref" href="#ch20">第20章</a></td></tr>
+<tr id="term-gap"><td>缺口</td><td>Gap</td><td>价格跳空形成的无成交区间，暴露情绪突变；3日内回补的普通缺口是噪音</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-supply-demand"><td>供需区域</td><td>Supply/Demand Zone</td><td>机构大量建仓/出货的起源区域</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-wyckoff"><td>威科夫</td><td>Wyckoff</td><td>市场阶段论：吸筹/趋势/派发循环</td><td><a class="term-ref" href="#ch22">第3/22章</a></td></tr>
+<tr id="term-atr"><td>ATR</td><td>Average True Range</td><td>平均真实波幅：一定周期内价格真实波幅的平均值，衡量日常波动量级，常用14日周期</td><td><a class="term-ref" href="#ch17">第17章</a></td></tr>
+<tr id="term-volume-ratio"><td>量比</td><td>Volume Ratio</td><td>当日每分钟平均成交量与过去5日每分钟平均成交量之比，>1为放量，<1为缩量</td><td>第2章</td></tr>
+<tr><td>BOS</td><td>Break of Structure</td><td>趋势方向的关键高低点被突破</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr><td>CHOCH</td><td>Change of Character</td><td>反趋势方向的关键高低点被突破</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-rrr"><td>盈亏比</td><td>Risk-Reward Ratio</td><td>潜在盈利÷潜在亏损的比率；本手册以2:1为入场最低门槛</td><td><a class="term-ref" href="#ch18">第18章</a></td></tr>
+<tr id="term-no-man-land"><td>无人区</td><td>No Man's Land</td><td>远离所有关键位的区域</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-lr-entry"><td>左侧入场/右侧入场</td><td>Left-side/Right-side Entry</td><td>左侧=到达关键位前挂单（价格优、胜率低）；右侧=信号确认后跟进（更安全）</td><td><a class="term-ref" href="#ch13">第13章</a></td></tr>
+<tr id="term-trigger"><td>触发器</td><td>Trigger</td><td>提示"现在可入场"的形态信号，只解决时机问题，不保证成功，必须配合势与位使用</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-composite"><td>复合信号（共振）</td><td>Confluence</td><td>多个独立因素（势/位/形/量）在同一关键位重合=高概率信号；各因素须来自不同维度才算独立</td><td><a class="term-ref" href="#ch27">第27章</a></td></tr>
+<tr><td>势位形</td><td>Trend-Level-Trigger</td><td>趋势方向×关键位置×入场信号</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr><td>推动浪/回调浪</td><td>Impulse/Corrective</td><td>沿趋势/逆趋势方向的价格段</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-ob"><td>OB</td><td>Order Block</td><td>机构大单进场的最后一根反向K线</td><td><a class="term-ref" href="#ch20">第20章</a></td></tr>
+<tr><td>新鲜度</td><td>Freshness</td><td>供需区域被回测的次数</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-spring"><td>Spring</td><td>Spring</td><td>威科夫吸筹区的假跌破信号</td><td><a class="term-ref" href="#ch22">第22章</a></td></tr>
+<tr><td>2B法则</td><td>2B Rule</td><td>突破前高/低后无法维持，趋势反转信号</td><td><a class="term-ref" href="#ch19">第19章</a></td></tr>
+<tr><td>FVG</td><td>Fair Value Gap</td><td>三根K线间的价格真空区</td><td><a class="term-ref" href="#ch20">第20章</a></td></tr>
+<tr id="term-vp"><td>Volume Profile</td><td>Volume Profile</td><td>价格轴上的成交量分布</td><td><a class="term-ref" href="#ch23">第23章</a></td></tr>
+<tr><td>UTAD</td><td>Upthrust After Distribution</td><td>威科夫派发区的假突破信号</td><td><a class="term-ref" href="#ch22">第22章</a></td></tr>
+<tr><td>POC</td><td>Point of Control</td><td>成交量最大的价格位</td><td><a class="term-ref" href="#ch23">第23章</a></td></tr>
+<tr><td>HVN/LVN</td><td>High/Low Volume Node</td><td>高/低成交量节点</td><td><a class="term-ref" href="#ch23">第23章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -2865,12 +3085,13 @@ function initCharts() {
   };
 
   // Chart 1: Market Structure
+  const kStyle = { color:'#22C55E', color0:'#EF4444', borderColor:'#22C55E', borderColor0:'#EF4444' };
   const c1 = document.getElementById('chart-market-structure');
   if (c1 && c1.offsetParent !== null) {
     const ch1 = echarts.init(c1);
-    const upData = [100, 108, 103, 112, 107, 118, 113, 125];
-    const downData = [125, 120, 124, 116, 120, 110, 115, 105];
-    const rangeData = [100, 108, 102, 107, 103, 108, 104, 107];
+    const upK = [[100,102.5,99,103],[102.5,102,100.5,104],[102,105.5,101.5,106.5],[105.5,104.5,103.5,107],[104.5,108,104,109.5],[108,107,106.5,110],[107,111,107,112.5],[111,112.5,110,113]];
+    const dnK = [[125,122.5,122,126],[122.5,123,121,124.5],[123,119.5,118.5,123.5],[119.5,120.5,117.5,121],[120.5,117,116,121],[117,118,115.5,118.5],[118,114,113.5,118.5],[114,112.5,112,114.5]];
+    const rgK = [[101,103,100.5,103.5],[103,106,102.5,106.5],[106,104,103.5,106.8],[104,107,103.8,107.5],[107,105,104.5,107.8],[105,102.5,102,105.5],[102.5,103.5,102,104],[103.5,104.5,103,105]];
     ch1.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
@@ -2884,11 +3105,18 @@ function initCharts() {
               { type: 'value', gridIndex:1, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
               { type: 'value', gridIndex:2, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
       series: [
-        { name:'上升趋势', type:'line', data:upData, xAxisIndex:0, yAxisIndex:0, lineStyle:{color:'#22C55E',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#22C55E'},
-          markPoint:{data:[{coord:['D2',108],name:'HH'},{coord:['D3',103],name:'HL'},{coord:['D4',112],name:'HH'},{coord:['D5',107],name:'HL'},{coord:['D6',118],name:'HH'}],label:{color:'#fff',fontSize:10}}},
-        { name:'下降趋势', type:'line', data:downData, xAxisIndex:1, yAxisIndex:1, lineStyle:{color:'#EF4444',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#EF4444'},
-          markPoint:{data:[{coord:['D2',120],name:'LH'},{coord:['D3',124],name:'LL'},{coord:['D4',116],name:'LH'},{coord:['D5',120],name:'LL'},{coord:['D6',110],name:'LH'}],label:{color:'#fff',fontSize:10}}},
-        { name:'震荡', type:'line', data:rangeData, xAxisIndex:2, yAxisIndex:2, lineStyle:{color:'#EAB308',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#EAB308'},
+        { name:'上升趋势', type:'candlestick', data:upK, xAxisIndex:0, yAxisIndex:0, itemStyle:kStyle, barWidth:'60%',
+          markPoint:{symbol:'circle',symbolSize:1,label:{show:true,formatter:'{b}',fontSize:10,fontWeight:600,color:'#E8ECF1'},data:[
+            {name:'HH',coord:['D1',103],label:{position:'top'}},{name:'HL',coord:['D2',100.5],label:{position:'bottom'}},
+            {name:'HH',coord:['D3',106.5],label:{position:'top'}},{name:'HL',coord:['D4',103.5],label:{position:'bottom'}},
+            {name:'HH',coord:['D5',109.5],label:{position:'top'}},{name:'HL',coord:['D6',106.5],label:{position:'bottom'}},
+            {name:'HH',coord:['D7',112.5],label:{position:'top'}}]}},
+        { name:'下降趋势', type:'candlestick', data:dnK, xAxisIndex:1, yAxisIndex:1, itemStyle:kStyle, barWidth:'60%',
+          markPoint:{symbol:'circle',symbolSize:1,label:{show:true,formatter:'{b}',fontSize:10,fontWeight:600,color:'#E8ECF1'},data:[
+            {name:'LH',coord:['D2',124.5],label:{position:'top'}},{name:'LL',coord:['D3',118.5],label:{position:'bottom'}},
+            {name:'LH',coord:['D4',121],label:{position:'top'}},{name:'LL',coord:['D5',116],label:{position:'bottom'}},
+            {name:'LH',coord:['D6',118.5],label:{position:'top'}},{name:'LL',coord:['D7',113.5],label:{position:'bottom'}}]}},
+        { name:'震荡', type:'candlestick', data:rgK, xAxisIndex:2, yAxisIndex:2, itemStyle:kStyle, barWidth:'60%',
           markLine:{data:[{yAxis:102,lineStyle:{color:'#22C55E',type:'dashed'}},{yAxis:108,lineStyle:{color:'#EF4444',type:'dashed'}}],label:{color:'#8B95A5',fontSize:10}}}
       ]
     });
@@ -2899,7 +3127,7 @@ function initCharts() {
   const c2 = document.getElementById('chart-gap-types');
   if (c2 && c2.offsetParent !== null) {
     const ch2 = echarts.init(c2);
-    const gapData = [50, 52, 51, 53, null, 58, 60, 59, 61, 60, null, 63, 62, 64, 65, null, 67, 66, 64, 62];
+    const gapK = [[50,51,49.5,51.5],[51,52,50.5,52.5],[52,51.5,51,52.5],[51.5,52.5,51.2,53],[54,55,53.8,55.5],[58,60,57.5,60.5],[60,61.5,59.5,62],[61.5,60.5,60,62],[60.5,61,59.8,61.5],[61,62.5,60.8,63],[64.5,65.5,64,66],[65.5,64.5,64,66],[64.5,65.2,64,65.5],[65.2,66,64.8,66.3],[67,67.5,66.5,68],[67.5,64.5,64,67.8],[64.5,63,62.5,65],[63,61.5,61,63.5],[61.5,60,59.5,62],[60,58.5,58,60.8]];
     const dates = Array.from({length:20},(_,i)=>'T'+(i+1));
     ch2.setOption({
       ...darkTheme,
@@ -2908,8 +3136,7 @@ function initCharts() {
       xAxis: { type: 'category', data: dates, axisLine:{lineStyle:{color:'#5A6478'}} },
       yAxis: { type: 'value', splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
       series: [{
-        type: 'line', data: gapData, connectNulls: false,
-        lineStyle: { color: '#F97316', width: 2 }, symbol: 'circle', symbolSize: 6, itemStyle: { color: '#F97316' },
+        type: 'candlestick', data: gapK, itemStyle: kStyle, barWidth: '60%',
         markArea: {
           silent: true,
           data: [
@@ -2928,8 +3155,8 @@ function initCharts() {
   const cImpulse = document.getElementById('chart-impulse-corrective');
   if (cImpulse && cImpulse.offsetParent !== null) {
     const impulseChart = echarts.init(cImpulse);
-    const healthyTrend = [100, 112, 106, 121, 114, 130, 122, 138];
-    const exhaustedTrend = [100, 112, 106, 117, 112, 119, 115, 118];
+    const healthyK = [[100,104,99,104.5],[104,103,102,105],[103,109,102.5,109.5],[109,108,107,110],[108,114,107.5,114.5],[114,113,112,115],[113,119,112.5,119.5],[119,121,118,122]];
+    const exhaustedK = [[100,106,99,106.5],[106,104,102,107],[104,108,103,108.5],[108,105,103.5,108.8],[105,107.5,104,108],[107.5,105.5,104,108],[105.5,107,104.5,107.5],[107,105.5,104,107.5]];
     const waveLabels = Array.from({length:8},(_,i)=>'W'+(i+1));
     impulseChart.setOption({
       ...darkTheme,
@@ -2941,10 +3168,8 @@ function initCharts() {
       yAxis: [{ type: 'value', gridIndex:0, min:95, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
               { type: 'value', gridIndex:1, min:95, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
       series: [
-        { name:'健康趋势：推动强、回调浅', type:'line', data:healthyTrend, xAxisIndex:0, yAxisIndex:0,
-          lineStyle:{color:'#22C55E',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#22C55E'} },
-        { name:'衰竭趋势：推动缩短、回调加深', type:'line', data:exhaustedTrend, xAxisIndex:1, yAxisIndex:1,
-          lineStyle:{color:'#EF4444',width:2}, symbol:'circle', symbolSize:6, itemStyle:{color:'#EF4444'} }
+        { name:'健康趋势：推动强、回调浅', type:'candlestick', data:healthyK, xAxisIndex:0, yAxisIndex:0, itemStyle:kStyle, barWidth:'55%' },
+        { name:'衰竭趋势：推动缩短、回调加深', type:'candlestick', data:exhaustedK, xAxisIndex:1, yAxisIndex:1, itemStyle:kStyle, barWidth:'55%' }
       ]
     });
     window.addEventListener('resize', () => impulseChart.resize());
@@ -2954,7 +3179,8 @@ function initCharts() {
   const c3 = document.getElementById('chart-supply-demand');
   if (c3 && c3.offsetParent !== null) {
     const ch3 = echarts.init(c3);
-    const priceData = [45, 48, 46, 50, 53, 51, 48, 44, 42, 43, 46, 50, 55, 58, 56, 52, 48, 45, 43, 42, 44, 48, 52, 56, 60];
+    const sdCloses = [45, 48, 46, 50, 53, 51, 48, 44, 42, 43, 46, 50, 55, 58, 56, 52, 48, 45, 43, 42, 44, 48, 52, 56, 60];
+    const sdData = sdCloses.map((c,i)=>{ const o=i?sdCloses[i-1]:44.5; return [o,c,Math.min(o,c)-0.4,Math.max(o,c)+0.4]; });
     ch3.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
@@ -2962,8 +3188,7 @@ function initCharts() {
       xAxis: { type: 'category', data: Array.from({length:25},(_,i)=>'D'+(i+1)), axisLine:{lineStyle:{color:'#5A6478'}} },
       yAxis: { type: 'value', min: 38, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
       series: [{
-        type: 'line', data: priceData,
-        lineStyle: { color: '#F97316', width: 2 }, symbol: 'none',
+        type: 'candlestick', data: sdData, itemStyle: kStyle, barWidth: '60%',
         markArea: {
           silent: true,
           data: [
@@ -2980,30 +3205,32 @@ function initCharts() {
   const c4 = document.getElementById('chart-fibonacci');
   if (c4 && c4.offsetParent !== null) {
     const ch4 = echarts.init(c4);
-    const fibData = [100, 108, 115, 105, 110, 102, 98, 95, 100, 110, 120, 128];
+    const fibCloses = [103,106,110,114,115,113,110,107.5,105.8,107,109.5,112];
+    const fibData = fibCloses.map((c,i)=>{ const o=i?fibCloses[i-1]:100; return [o,c,Math.min(o,c)-0.3,Math.max(o,c)+0.3]; });
+    fibData[4][3] = 115.5;   // 波段高点
+    fibData[8][2] = 105.4;   // 回调触及61.8%位
     ch4.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
       grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
       xAxis: { type: 'category', data: Array.from({length:12},(_,i)=>'D'+(i+1)), axisLine:{lineStyle:{color:'#5A6478'}} },
-      yAxis: { type: 'value', min: 85, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+      yAxis: { type: 'value', min: 98, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
       series: [{
-        type: 'line', data: fibData,
-        lineStyle: { color: '#F97316', width: 2 }, symbol: 'circle', symbolSize: 6, itemStyle: { color: '#F97316' },
+        type: 'candlestick', data: fibData, itemStyle: kStyle, barWidth: '60%',
         markLine: {
           data: [
             { yAxis: 115, name:'波段高点', lineStyle:{color:'#EF4444',type:'dashed'}, label:{color:'#EF4444',fontSize:10} },
-            { yAxis: 95, name:'61.8%', lineStyle:{color:'#A855F7',type:'dashed'}, label:{color:'#A855F7',fontSize:10} },
-            { yAxis: 98, name:'50%', lineStyle:{color:'#3B82F6',type:'dashed'}, label:{color:'#3B82F6',fontSize:10} },
-            { yAxis: 102, name:'38.2%', lineStyle:{color:'#22C55E',type:'dashed'}, label:{color:'#22C55E',fontSize:10} },
+            { yAxis: 109.3, name:'38.2%', lineStyle:{color:'#22C55E',type:'dashed'}, label:{color:'#22C55E',fontSize:10} },
+            { yAxis: 107.5, name:'50%', lineStyle:{color:'#3B82F6',type:'dashed'}, label:{color:'#3B82F6',fontSize:10} },
+            { yAxis: 105.7, name:'61.8%', lineStyle:{color:'#A855F7',type:'dashed'}, label:{color:'#A855F7',fontSize:10} },
             { yAxis: 100, name:'波段起点', lineStyle:{color:'#8B95A5',type:'dashed'}, label:{color:'#8B95A5',fontSize:10} }
           ]
         },
         markArea: {
           silent: true,
           data: [[
-            { name:'扩展161.8%', xAxis:'D10', yAxis:128, itemStyle:{color:'rgba(249,115,22,0.08)'} },
-            { xAxis:'D12', yAxis:135 }
+            { name:'扩展161.8%', xAxis:'D10', yAxis:116, itemStyle:{color:'rgba(249,115,22,0.08)'} },
+            { xAxis:'D12', yAxis:122 }
           ]]
         }
       }]
@@ -3015,10 +3242,13 @@ function initCharts() {
   const c5 = document.getElementById('chart-wyckoff');
   if (c5 && c5.offsetParent !== null) {
     const ch5 = echarts.init(c5);
-    // Accumulation: decline → base → spring → breakout
-    const accData = [80, 72, 65, 60, 55, 52, 48, 50, 53, 51, 49, 52, 55, 53, 51, 53, 56, 58, 55, 57, 60, 63, 66, 70, 75];
+    // Accumulation: decline → base → spring → breakout（由收盘价序列合成OHLC，并给Spring/UTAD加长影线）
+    const mkOHLC = (closes, base) => closes.map((c,i)=>{ const o=i?closes[i-1]:base; return [o,c,Math.min(o,c)-0.5,Math.max(o,c)+0.5]; });
+    const accK = mkOHLC([80,72,65,60,55,52,48,50,53,51,49,52,55,53,51,53,56,58,55,57,60,63,66,70,75], 82);
+    accK[13][2] = 46;  accK[13][1] = 49.5; accK[13][0] = 50;   // W14 Spring长下影
     // Distribution: rise → top → UTAD → breakdown
-    const distData = [50, 55, 60, 65, 70, 75, 80, 78, 76, 79, 82, 80, 78, 81, 83, 81, 78, 76, 73, 75, 72, 68, 64, 60, 55];
+    const distK = mkOHLC([50,55,60,65,70,75,80,78,76,79,82,80,78,81,83,81,78,76,73,75,72,68,64,60,55], 48);
+    distK[10][3] = 84.5; distK[10][1] = 80.5; distK[10][0] = 80; // W11 UTAD长上影
     ch5.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
@@ -3030,7 +3260,7 @@ function initCharts() {
       yAxis: [{ type: 'value', gridIndex:0, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
               { type: 'value', gridIndex:1, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
       series: [
-        { name:'吸筹区', type:'line', data:accData, xAxisIndex:0, yAxisIndex:0, lineStyle:{color:'#22C55E',width:2}, symbol:'none',
+        { name:'吸筹区', type:'candlestick', data:accK, xAxisIndex:0, yAxisIndex:0, itemStyle:kStyle, barWidth:'60%',
           markArea:{silent:true,data:[
             [{name:'Phase A: PS',xAxis:'W5',itemStyle:{color:'rgba(59,130,246,0.1)'}},{xAxis:'W7'}],
             [{name:'Phase B: SC→ST',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.1)'}},{xAxis:'W14'}],
@@ -3038,9 +3268,9 @@ function initCharts() {
             [{name:'Phase D: SOS',xAxis:'W16',itemStyle:{color:'rgba(34,197,94,0.1)'}},{xAxis:'W20'}],
             [{name:'Phase E: 突破',xAxis:'W20',itemStyle:{color:'rgba(168,85,247,0.1)'}},{xAxis:'W25'}]
           ]},
-          markPoint:{data:[{coord:['W8',48],name:'Spring',symbol:'triangle',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
+          markPoint:{data:[{coord:['W14',46],name:'Spring',symbol:'triangle',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
         },
-        { name:'派发区', type:'line', data:distData, xAxisIndex:1, yAxisIndex:1, lineStyle:{color:'#EF4444',width:2}, symbol:'none',
+        { name:'派发区', type:'candlestick', data:distK, xAxisIndex:1, yAxisIndex:1, itemStyle:kStyle, barWidth:'60%',
           markArea:{silent:true,data:[
             [{name:'Phase A: PSY',xAxis:'W5',itemStyle:{color:'rgba(59,130,246,0.1)'}},{xAxis:'W7'}],
             [{name:'Phase B: BC→ST',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.1)'}},{xAxis:'W14'}],
@@ -3048,13 +3278,327 @@ function initCharts() {
             [{name:'Phase D: LPSY',xAxis:'W16',itemStyle:{color:'rgba(34,197,94,0.1)'}},{xAxis:'W20'}],
             [{name:'Phase E: 下跌',xAxis:'W20',itemStyle:{color:'rgba(168,85,247,0.1)'}},{xAxis:'W25'}]
           ]},
-          markPoint:{data:[{coord:['W11',82],name:'UTAD',symbol:'diamond',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
+          markPoint:{data:[{coord:['W11',84.5],name:'UTAD',symbol:'diamond',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
         }
       ]
     });
     window.addEventListener('resize', () => ch5.resize());
   }
 }
+
+// ===== 新增图集：注册表 + 懒加载 + Tab切换 =====
+const KP = { up:'#22C55E', dn:'#EF4444', ax:'#5A6478', mut:'#8B95A5', grid:'rgba(255,255,255,0.04)', blue:'#3B82F6', yel:'#EAB308', pur:'#A855F7', org:'#F97316' };
+const extraInitFns = {}, extraInited = {};
+let extraTotal = 0, extraDone = 0;
+function regChart(id, fn){ extraInitFns[id] = fn; extraTotal++; }
+function lazyInitChart(id){
+  if (extraInited[id]) return;
+  if (typeof echarts === 'undefined') { setTimeout(()=>lazyInitChart(id), 400); return; }
+  const el = document.getElementById(id);
+  if (!el || !extraInitFns[id]) return;
+  extraInitFns[id]();
+  extraInited[id] = true;
+  extraDone++;
+}
+function initExtraCharts(){
+  if (typeof echarts === 'undefined' || extraDone >= extraTotal) return;
+  for (const id in extraInitFns) {
+    if (extraInited[id]) continue;
+    const el = document.getElementById(id);
+    if (el && el.offsetParent !== null) lazyInitChart(id);
+  }
+}
+// Tab 切换：显示面板并懒加载其中的图表
+document.querySelectorAll('.chart-tabs-bar').forEach(bar => {
+  bar.addEventListener('click', e => {
+    const btn = e.target.closest('.chart-tab-btn');
+    if (!btn) return;
+    const wrap = bar.closest('.chart-tabs');
+    wrap.querySelectorAll('.chart-tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+    wrap.querySelectorAll('.chart-tab-panel').forEach(p => p.classList.toggle('active', p.id === btn.dataset.panel));
+    const c = wrap.querySelector('.chart-tab-panel.active .chart-container');
+    if (c) lazyInitChart(c.id);
+  });
+});
+
+// --- 蜡烛图绘制助手 ---
+const K_T = n => Array.from({length:n},(_,i)=>'D'+(i+1));
+function kCat(n, gi){ return { type:'category', data:K_T(n), gridIndex:gi, axisLine:{lineStyle:{color:KP.ax}}, axisLabel:{color:KP.mut, fontSize:10} }; }
+function kVal(gi, extra){ return Object.assign({ type:'value', gridIndex:gi, splitLine:{lineStyle:{color:KP.grid}}, axisLine:{lineStyle:{color:KP.ax}}, axisLabel:{color:KP.mut, fontSize:10} }, extra||{}); }
+function kSeries(data, extra){ return Object.assign({ type:'candlestick', data:data, itemStyle:{color:KP.up, color0:KP.dn, borderColor:KP.up, borderColor0:KP.dn}, barWidth:'50%' }, extra||{}); }
+function mp(name, coord, pos){ return { name:name, coord:coord, label:{show:true, formatter:'{b}', position:pos||'top', fontSize:10, fontWeight:600, color:'#E8ECF1'} }; }
+function mps(items){ return { symbol:'circle', symbolSize:1, data:items }; }
+function ml(y, txt, color, pos){
+  const label = {formatter:txt, fontSize:10, color:color, position:pos||'end'};
+  if (pos) { label.backgroundColor='rgba(11,14,20,0.72)'; label.padding=[1,4]; label.borderRadius=3; }
+  return { yAxis:y, lineStyle:{color:color, type:'dashed', width:1.2}, label:label };
+}
+function twinGrids(){ return [{left:'6%',right:'4%',top:'16%',bottom:'12%',width:'40%'},{left:'54%',right:'4%',top:'16%',bottom:'12%',width:'40%'}]; }
+function twinTitles(t1, t2){ return [{text:t1,left:'16%',top:'3%',textStyle:{color:'#E8ECF1',fontSize:12,fontWeight:600}},{text:t2,left:'64%',top:'3%',textStyle:{color:'#E8ECF1',fontSize:12,fontWeight:600}}]; }
+function kInit(id, opt){
+  return function(){
+    const el = document.getElementById(id);
+    if (!el) return;
+    const c = echarts.init(el);
+    c.setOption(Object.assign({}, { backgroundColor:'transparent', textStyle:{color:KP.mut, fontFamily:'Noto Sans SC'}, tooltip:{trigger:'axis'} }, opt));
+    window.addEventListener('resize', ()=>c.resize());
+  };
+}
+
+// --- 图4-1 单K形态图鉴 ---
+regChart('chart-k-anatomy', kInit('chart-k-anatomy', {
+  title: twinTitles('阳线（收盘 > 开盘）','阴线（收盘 < 开盘）'),
+  grid: twinGrids(),
+  xAxis: [kCat(1,0), kCat(1,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[10,12,9.5,12.5]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%',
+      markPoint: mps([mp('最高 12.5',['D1',12.5],'top'), mp('收盘 12',['D1',12],'right'), mp('开盘 10',['D1',10],'left'), mp('最低 9.5',['D1',9.5],'bottom')])}),
+    kSeries([[12,10,9.5,12.5]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%',
+      markPoint: mps([mp('最高 12.5',['D1',12.5],'top'), mp('开盘 12',['D1',12],'right'), mp('收盘 10',['D1',10],'left'), mp('最低 9.5',['D1',9.5],'bottom')])})
+  ]
+}));
+regChart('chart-k-marubozu', kInit('chart-k-marubozu', {
+  title: twinTitles('光头光脚大阳线','光头光脚大阴线'),
+  grid: twinGrids(),
+  xAxis: [kCat(1,0), kCat(1,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[10,12.5,10,12.5]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('无影线',['D1',12.5],'top')])}),
+    kSeries([[12.5,10,10,12.5]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('无影线',['D1',10],'bottom')])})
+  ]
+}));
+regChart('chart-k-hammer', kInit('chart-k-hammer', {
+  title: twinTitles('锤子线（长下影+小实体在上）','倒锤子线（长上影+小实体在下）'),
+  grid: twinGrids(),
+  xAxis: [kCat(1,0), kCat(1,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[10.8,11,9.2,11.15]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('小实体在上',['D1',11],'top'), mp('长下影 ≥2倍实体',['D1',9.2],'bottom')])}),
+    kSeries([[10.6,10.8,10.45,12.2]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('长上影 ≥2倍实体',['D1',12.2],'top'), mp('小实体在下',['D1',10.45],'bottom')])})
+  ]
+}));
+regChart('chart-k-doji', kInit('chart-k-doji', {
+  grid: {left:'20%',right:'20%',top:'10%',bottom:'10%'},
+  xAxis: [kCat(1,0)], yAxis: [kVal(0)],
+  series: [kSeries([[11,11.05,10.3,11.7]], {barWidth:'30%', markPoint: mps([mp('开盘≈收盘，实体极小',['D1',11.7],'top'), mp('多空打成平手',['D1',10.3],'bottom')])})]
+}));
+regChart('chart-k-spinning', kInit('chart-k-spinning', {
+  grid: {left:'20%',right:'20%',top:'10%',bottom:'10%'},
+  xAxis: [kCat(1,0)], yAxis: [kVal(0)],
+  series: [kSeries([[10.7,11,10.4,11.3]], {barWidth:'30%', markPoint: mps([mp('小实体短影线',['D1',11.3],'top'), mp('犹豫、无方向',['D1',10.4],'bottom')])})]
+}));
+regChart('chart-k-shadow', kInit('chart-k-shadow', {
+  title: twinTitles('长上影：试攻失败','长下影：试守成功'),
+  grid: twinGrids(),
+  xAxis: [kCat(1,0), kCat(1,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[10.5,10.8,10.3,12.3]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('攻到高位被打了回来',['D1',12.3],'top')])}),
+    kSeries([[10.7,11,9.0,11.15]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('打压到低位被推回来',['D1',9.0],'bottom')])})
+  ]
+}));
+regChart('chart-k-volume', kInit('chart-k-volume', {
+  grid: [{left:'8%',right:'4%',top:'8%',height:'56%'},{left:'8%',right:'4%',top:'74%',height:'18%'}],
+  xAxis: [kCat(4,0), Object.assign(kCat(4,1), {axisLabel:{show:false}})],
+  yAxis: [kVal(0), Object.assign(kVal(1), {axisLabel:{show:false}, splitLine:{show:false}})],
+  series: [
+    kSeries([[10,10.2,9.8,10.3],[10.2,10.4,10.0,10.5],[10.4,11.6,10.3,11.7],[11.6,12.0,11.5,12.1]],
+      {xAxisIndex:0, yAxisIndex:0, markPoint: mps([mp('放量长阳：力量宣示',['D3',11.7],'top')])}),
+    { type:'bar', data:[90,110,340,180], xAxisIndex:1, yAxisIndex:1, itemStyle:{color:'rgba(59,130,246,0.65)'}, barWidth:'50%' }
+  ]
+}));
+
+// --- 图5-1 Pin Bar图鉴 ---
+regChart('chart-pin-anatomy', kInit('chart-pin-anatomy', {
+  grid: {left:'18%',right:'18%',top:'12%',bottom:'10%'},
+  xAxis: [kCat(1,0)], yAxis: [kVal(0)],
+  series: [kSeries([[10.4,10.55,9.5,10.6]], {barWidth:'28%',
+    markPoint: mps([mp('小实体：≤整根K线的1/3',['D1',10.6],'top'), mp('长影线：≥2倍实体',['D1',9.5],'bottom'), mp('收盘贴近实体顶',['D1',10.475],'right')])})]
+}));
+const pinBullK = [[12.0,11.6,11.5,12.1],[11.6,11.2,11.1,11.7],[11.2,10.8,10.7,11.3],[10.8,10.5,10.3,10.9],[10.4,10.55,9.5,10.6],[10.55,10.9,10.5,10.95],[10.9,11.3,10.85,11.4],[11.3,11.7,11.25,11.8]];
+const pinBearK = [[10,10.4,9.9,10.5],[10.4,10.8,10.3,10.9],[10.8,11.2,10.7,11.3],[11.2,11.5,11.1,11.6],[11.6,11.45,11.5,12.5],[11.45,11.1,11.0,11.5],[11.1,10.7,10.65,11.2],[10.7,10.3,10.25,10.8]];
+regChart('chart-pin-bull', kInit('chart-pin-bull', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(8,0)], yAxis: [kVal(0)],
+  series: [kSeries(pinBullK, {markArea:{silent:true,itemStyle:{color:'rgba(34,197,94,0.1)'},data:[[{name:'需求区/支撑',yAxis:9.4},{yAxis:10.4}]]},
+    markPoint: mps([mp('Pin Bar：长下影=买方坚决拒绝',['D5',9.5],'bottom'), mp('反转上行',['D8',11.8],'top')]),
+    markLine: {data:[ml(8.9,'止损=最低价9.5-1ATR≈8.9',KP.dn,'insideEndTop')]}})]
+}));
+regChart('chart-pin-bear', kInit('chart-pin-bear', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(8,0)], yAxis: [kVal(0)],
+  series: [kSeries(pinBearK, {markArea:{silent:true,itemStyle:{color:'rgba(239,68,68,0.1)'},data:[[{name:'供应区/阻力',yAxis:11.6},{yAxis:12.6}]]},
+    markPoint: mps([mp('Pin Bar：长上影=卖方坚决拒绝',['D5',12.5],'top'), mp('反转下行',['D8',10.25],'bottom')]),
+    markLine: {data:[ml(13.1,'止损=最高价12.5+1ATR≈13.1',KP.dn,'insideEndTop')]}})]
+}));
+regChart('chart-pin-perfect', kInit('chart-pin-perfect', {
+  title: twinTitles('✅ 完美：影线突出于近期K线','❌ 失败：影线被前K包裹'),
+  grid: twinGrids(),
+  xAxis: [kCat(5,0), kCat(5,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[10.8,10.4,10.3,10.9],[10.4,10.1,10.0,10.5],[10.1,10.3,9.9,10.4],[10.05,10.2,9.4,10.3],[10.2,10.6,10.15,10.65]],
+      {xAxisIndex:0, yAxisIndex:0, markPoint: mps([mp('影线9.4 突出于近期低点',['D4',9.4],'bottom')])}),
+    kSeries([[10.6,10.2,9.7,10.7],[10.2,9.9,9.5,10.3],[9.9,10.1,9.6,10.2],[10.1,10.25,9.5,10.3],[10.25,10.5,10.2,10.55]],
+      {xAxisIndex:1, yAxisIndex:1, markPoint: mps([mp('影线9.5 未低于前K低点',['D4',9.5],'bottom')])})
+  ]
+}));
+regChart('chart-pin-entry', kInit('chart-pin-entry', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(8,0)], yAxis: [kVal(0)],
+  series: [kSeries(pinBullK, {
+    markPoint: mps([mp('右侧：次日开盘10.55入场',['D6',10.9],'top'), mp('Pin Bar',['D5',9.5],'bottom')]),
+    markLine: {data:[ml(9.95,'左侧：影线50%回撤位挂单',KP.blue,'insideEndBottom'), ml(8.9,'止损 8.9',KP.dn,'insideEndTop'), ml(12.05,'左侧2:1目标 12.05',KP.up,'insideEndTop'), ml(13.85,'右侧2:1目标 13.85',KP.up,'insideEndTop')]}})]
+}));
+
+// --- 图6-1 组合形态图鉴 ---
+regChart('chart-cb-engulfing', kInit('chart-cb-engulfing', {
+  title: twinTitles('看涨吞没：阳线包裹前阴','看跌吞没：阴线包裹前阳'),
+  grid: twinGrids(),
+  xAxis: [kCat(2,0), kCat(2,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[11,10.6,10.4,11.1],[10.5,11.5,10.35,11.6]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('吞没阳线',['D2',11.6],'top')])}),
+    kSeries([[10.6,11,10.5,11.2],[11.1,10.1,10.0,11.25]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('吞没阴线',['D2',10.0],'bottom')])})
+  ]
+}));
+regChart('chart-cb-inside', kInit('chart-cb-inside', {
+  grid: {left:'15%',right:'15%',top:'10%',bottom:'10%'},
+  xAxis: [kCat(2,0)], yAxis: [kVal(0)],
+  series: [kSeries([[10,11.2,9.8,11.4],[10.6,10.9,10.1,11.1]], {barWidth:'30%',
+    markPoint: mps([mp('母线',['D1',11.4],'top'), mp('子线：完全被包裹',['D2',11.1],'top')])})]
+}));
+regChart('chart-cb-piercing', kInit('chart-cb-piercing', {
+  title: twinTitles('刺透形态（看涨）','乌云盖顶（看跌）'),
+  grid: twinGrids(),
+  xAxis: [kCat(2,0), kCat(2,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[11,10.4,10.3,11.1],[10.2,10.9,10.1,11.0]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('阳线深入前阴实体>50%',['D2',11.0],'top')])}),
+    kSeries([[10.4,11,10.3,11.1],[11.2,10.5,10.4,11.3]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('阴线深入前阳实体>50%',['D2',10.4],'bottom')])})
+  ]
+}));
+regChart('chart-cb-star', kInit('chart-cb-star', {
+  title: twinTitles('早晨之星（底部反转）','黄昏之星（顶部反转）'),
+  grid: twinGrids(),
+  xAxis: [kCat(3,0), kCat(3,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[11.2,10.7,10.6,11.3],[10.45,10.5,10.3,10.65],[10.7,11.3,10.65,11.4]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('星线',['D2',10.3],'bottom')])}),
+    kSeries([[10.8,11.3,10.7,11.4],[11.35,11.3,11.15,11.5],[11.2,10.6,10.5,11.25]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('星线',['D2',11.5],'top')])})
+  ]
+}));
+regChart('chart-cb-wm', kInit('chart-cb-wm', {
+  title: twinTitles('双底（W底）','双顶（M顶）'),
+  grid: twinGrids(),
+  xAxis: [kCat(9,0), kCat(9,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[11,10.5,10.4,11.1],[10.5,10.1,9.9,10.6],[10.1,10.7,10.05,10.8],[10.7,10.4,10.2,10.8],[10.4,10.0,9.85,10.5],[10.0,10.6,9.95,10.7],[10.6,10.9,10.55,11.0],[10.9,11.3,10.85,11.4],[11.3,11.7,11.25,11.8]],
+      {xAxisIndex:0, yAxisIndex:0, markLine:{data:[ml(10.8,'颈线 10.8',KP.blue,'insideEndTop')]},
+       markPoint: mps([mp('低点1',['D2',9.9],'bottom'), mp('低点2',['D5',9.85],'bottom'), mp('放量突破颈线',['D8',11.4],'top')])}),
+    kSeries([[10.4,10.9,10.3,11.0],[10.9,11.5,10.85,11.6],[11.5,11.1,11.0,11.6],[11.1,11.45,11.05,11.55],[11.45,11.0,10.95,11.6],[11.0,10.5,10.45,11.05],[10.5,10.2,10.1,10.6],[10.2,9.8,9.7,10.3],[9.8,9.5,9.4,9.9]],
+      {xAxisIndex:1, yAxisIndex:1, markLine:{data:[ml(11.0,'颈线 11.0',KP.blue,'insideEndTop')]},
+       markPoint: mps([mp('顶1',['D2',11.6],'top'), mp('顶2',['D5',11.6],'top'), mp('跌破颈线',['D7',10.1],'bottom')])})
+  ]
+}));
+regChart('chart-cb-hns', kInit('chart-cb-hns', {
+  title: twinTitles('头肩顶（含测量目标位）','头肩底'),
+  grid: twinGrids(),
+  xAxis: [kCat(9,0), kCat(9,1)],
+  yAxis: [kVal(0), kVal(1)],
+  series: [
+    kSeries([[10.5,11,10.4,11.1],[11,11.6,10.9,11.7],[11.6,11.2,11.1,11.7],[11.2,12.3,11.1,12.4],[12.3,11.6,11.5,12.4],[11.6,11.9,11.1,12.0],[11.9,11.4,11.3,11.8],[11.4,10.7,10.6,11.5],[10.7,10.2,10.1,10.8]],
+      {xAxisIndex:0, yAxisIndex:0, markLine:{data:[ml(11.1,'颈线 11.1',KP.blue,'insideEndTop'), ml(9.8,'测量目标位=11.1-(12.4-11.1)',KP.pur,'insideEndTop')]},
+       markPoint: mps([mp('左肩',['D2',11.7],'top'), mp('头',['D4',12.4],'top'), mp('右肩',['D7',11.8],'top'), mp('跌破颈线',['D8',10.6],'bottom')])}),
+    kSeries([[11.5,11,11.4,11.6],[11,10.4,10.3,11.1],[10.4,10.8,10.3,10.5],[10.8,9.7,9.6,10.9],[9.7,10.4,9.6,10.5],[10.4,10.1,10.0,10.5],[10.1,10.6,10.2,10.7],[10.6,11.3,10.5,11.4],[11.3,11.8,11.25,11.9]],
+      {xAxisIndex:1, yAxisIndex:1, markLine:{data:[ml(10.5,'颈线 10.5',KP.blue,'insideEndTop'), ml(11.4,'测量目标位=10.5+(10.5-9.6)',KP.pur,'insideEndTop')]},
+       markPoint: mps([mp('左肩',['D2',10.3],'bottom'), mp('头',['D4',9.6],'bottom'), mp('右肩',['D7',10.2],'bottom'), mp('突破颈线',['D8',11.4],'top')])})
+  ]
+}));
+
+// --- 交易决策篇单图 ---
+regChart('chart-slw', kInit('chart-slw', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(9,0)], yAxis: [kVal(0)],
+  series: [kSeries([[10,10.6,9.9,10.7],[10.6,11.2,10.5,11.3],[11.2,11.8,11.1,11.9],[11.8,11.4,11.3,11.9],[11.4,11.1,11.0,11.5],[11.1,10.9,10.8,11.2],[10.85,11.4,10.8,11.5],[11.4,11.9,11.35,12.0],[11.9,12.4,11.85,12.5]],
+    {markArea:{silent:true,itemStyle:{color:'rgba(34,197,94,0.1)'},data:[[{name:'位：供需区域（需求区）',yAxis:10.7},{yAxis:11.15}]]},
+     markPoint: mps([mp('势：HH/HL 上升结构',['D3',11.9],'top'), mp('形：看涨吞没=触发',['D7',11.5],'top'), mp('HL',['D7',10.8],'bottom')])})]
+}));
+regChart('chart-lr', kInit('chart-lr', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(6,0)], yAxis: [kVal(0)],
+  series: [kSeries([[11.5,11.2,11.1,11.6],[11.2,10.9,10.8,11.3],[10.9,10.7,10.55,11.0],[10.65,10.8,10.1,10.9],[10.8,11.2,10.75,11.3],[11.2,11.6,11.15,11.7]],
+    {markArea:{silent:true,itemStyle:{color:'rgba(34,197,94,0.1)'},data:[[{name:'关键位（支撑）',yAxis:10.4},{yAxis:11.0}]]},
+     markPoint: mps([mp('反转K确认',['D4',10.1],'bottom'), mp('右侧：确认后加仓2/3',['D5',11.3],'top')]),
+     markLine: {data:[ml(10.75,'左侧：限价单挂10.75（试仓1/3）',KP.blue,'insideEndTop'), ml(9.55,'止损=信号最低价10.1-1ATR≈9.55',KP.dn,'insideEndTop')]}})]
+}));
+regChart('chart-brk', kInit('chart-brk', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(10,0)], yAxis: [kVal(0)],
+  series: [kSeries([[10.1,10.3,10.0,10.4],[10.3,10.2,10.05,10.4],[10.2,10.4,10.1,10.5],[10.4,10.3,10.15,10.5],[10.3,10.45,10.2,10.5],[10.45,11.2,10.4,11.3],[11.2,10.9,10.6,11.25],[10.9,10.65,10.5,10.95],[10.7,11.1,10.65,11.15],[11.1,11.5,11.05,11.6]],
+    {markPoint: mps([mp('① 放量突破',['D6',11.3],'top'), mp('② 回踩不破',['D8',10.5],'bottom'), mp('③ 反转K确认·入场',['D9',11.15],'top')]),
+     markLine: {data:[ml(10.5,'关键位/突破位 10.5',KP.yel,'insideEndTop'), ml(10.0,'止损=回踩低点-1ATR≈10.0',KP.dn,'insideEndTop')]}})]
+}));
+regChart('chart-stopw', kInit('chart-stopw', {
+  title: [{text:'太紧 <0.5ATR',left:'12%',top:'3%',textStyle:{color:'#EF4444',fontSize:12,fontWeight:600}},
+          {text:'刚好 1-1.5ATR',left:'45%',top:'3%',textStyle:{color:'#22C55E',fontSize:12,fontWeight:600}},
+          {text:'太松 >2ATR',left:'78%',top:'3%',textStyle:{color:'#F97316',fontSize:12,fontWeight:600}}],
+  grid: [{left:'6%',right:'4%',top:'14%',bottom:'12%',width:'25%'},{left:'36%',right:'4%',top:'14%',bottom:'12%',width:'25%'},{left:'66%',right:'4%',top:'14%',bottom:'12%',width:'25%'}],
+  xAxis: [kCat(5,0), kCat(5,1), kCat(5,2)],
+  yAxis: [kVal(0), kVal(1), kVal(2)],
+  series: [
+    kSeries([[10.4,10.6,10.3,10.7],[10.6,10.8,10.5,10.9],[10.8,10.7,10.38,10.9],[10.9,11.1,10.8,11.2],[11.1,11.3,11.0,11.4]],
+      {xAxisIndex:0, yAxisIndex:0, markLine:{data:[ml(10.4,'止损(太紧)',KP.dn,'insideEndTop')]},
+       markPoint: mps([mp('噪音波动即被扫掉',['D3',10.38],'bottom')])}),
+    kSeries([[10.4,10.6,10.3,10.7],[10.6,10.8,10.5,10.9],[10.8,10.7,10.38,10.9],[10.9,11.1,10.8,11.2],[11.1,11.3,11.0,11.4]],
+      {xAxisIndex:1, yAxisIndex:1, markLine:{data:[ml(10.0,'止损=关键位-1ATR',KP.up,'insideEndTop')]},
+       markPoint: mps([mp('未被猎杀，趋势延续',['D5',11.4],'top')])}),
+    kSeries([[10.4,10.6,10.3,10.7],[10.6,10.8,10.5,10.9],[10.8,10.7,10.38,10.9],[10.9,11.1,10.8,11.2],[11.1,11.3,11.0,11.4]],
+      {xAxisIndex:2, yAxisIndex:2, markLine:{data:[ml(9.0,'止损(太松)',KP.org,'insideEndTop')]},
+       markPoint: mps([mp('单笔亏损过大',['D5',11.0],'bottom')])})
+  ]
+}));
+regChart('chart-2b', kInit('chart-2b', {
+  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
+  xAxis: [kCat(7,0)], yAxis: [kVal(0)],
+  series: [kSeries([[10.0,10.4,9.9,10.5],[10.4,10.8,10.3,10.9],[10.8,11.1,10.7,11.2],[11.1,11.4,11.0,11.5],[11.55,11.45,11.2,11.75],[11.45,10.9,10.8,11.5],[10.9,10.5,10.4,11.0]],
+    {markPoint: mps([mp('创新高11.75后无法维持',['D5',11.75],'top'), mp('跌回前高之下=离场信号',['D6',10.8],'bottom')]),
+     markLine: {data:[ml(11.5,'前高 11.5',KP.blue,'insideEndTop')]}})]
+}));
+
+// ===== 附录B：迷你K线图例（内联SVG，无额外依赖） =====
+function miniK(spec){
+  const W = 56, H = 40, pad = 4;
+  const lo = Math.min.apply(null, spec.map(k=>k[2])), hi = Math.max.apply(null, spec.map(k=>k[3]));
+  const y = v => pad + (hi - v) / (hi - lo || 1) * (H - 2*pad);
+  const step = W / (spec.length + 1), bw = Math.min(9, step * 0.5);
+  let s = '<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  spec.forEach((k, i) => {
+    const x = +(step * (i + 1)).toFixed(1), up = k[1] >= k[0], col = up ? '#22C55E' : '#EF4444';
+    s += '<line x1="'+x+'" y1="'+y(k[3]).toFixed(1)+'" x2="'+x+'" y2="'+y(k[2]).toFixed(1)+'" stroke="'+col+'" stroke-width="1.2"/>';
+    const top = +y(Math.max(k[0], k[1])).toFixed(1), bot = +y(Math.min(k[0], k[1])).toFixed(1);
+    s += '<rect x="'+(x - bw/2).toFixed(1)+'" y="'+top+'" width="'+bw+'" height="'+Math.max(1.5, bot - top).toFixed(1)+'" fill="'+col+'"/>';
+  });
+  return s + '</svg>';
+}
+const MINI_SPECS = {
+  pinbar: [[10.4,10.55,9.5,10.6]],
+  hammer: [[10.8,11,9.2,11.15]],
+  invhammer: [[10.6,10.8,10.45,12.2]],
+  doji: [[11,11.05,10.3,11.7]],
+  marubozu: [[10,12.5,10,12.5]],
+  spinning: [[10.7,11,10.4,11.3]],
+  engulf: [[11,10.6,10.4,11.1],[10.5,11.5,10.35,11.6]],
+  inside: [[10,11.2,9.8,11.4],[10.6,10.9,10.1,11.1]],
+  piercing: [[11,10.4,10.3,11.1],[10.2,10.9,10.1,11.0]],
+  darkcloud: [[10.4,11,10.3,11.1],[11.2,10.5,10.4,11.3]]
+};
+document.querySelectorAll('td.mini-cell').forEach(td => {
+  const spec = MINI_SPECS[td.dataset.mini];
+  if (spec) td.innerHTML = miniK(spec);
+});
 
 // Init charts on scroll (lazy load)
 let chartsInitialized = false;
@@ -3073,11 +3617,12 @@ window.addEventListener('scroll', function() {
     });
     if (anyVisible) initializeCharts();
   }
+  initExtraCharts();
 }, { passive: true });
 
 // Also try init on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-  setTimeout(initializeCharts, 1000);
+  setTimeout(function(){ initializeCharts(); initExtraCharts(); }, 1000);
 });
 </script>
 </body>
