@@ -1,36 +1,3 @@
-# System files
-.DS_Store
-Thumbs.db
-
-# Editors and local tooling
-.claude/
-.cursor/
-.idea/
-.superpowers/
-.trae/
-.vscode/
-.codegraph/
-.pnpm-store/
-AGENTS.md
-*.local
-*.sw?
-
-# Local scratch area for unrelated tasks (see AGENTS.md)
-workspace/
-
-# Generated files
-coverage/
-dist/
-dist-ssr/
+```
 node_modules/
-out/
-test-results/
-*.tsbuildinfo
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+```
