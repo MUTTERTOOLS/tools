@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第 2 册 财报与基本面 - 投资者教育手册系列</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --secondary-color: #3182ce;
+            --accent-color: #e53e3e;
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+            --border-color: #e2e8f0;
+            --code-bg: #edf2f7;
+            --success-color: #38a169;
+            --warning-color: #d69e2e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab:hover {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .nav-tab.active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            font-size: 2em;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            margin: 25px 0 15px;
+        }
+        
+        h4 {
+            color: var(--text-color);
+            font-size: 1.2em;
+            margin: 20px 0 10px;
+        }
+        
+        p {
+            margin: 15px 0;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: #fffaf0;
+            border-left: 4px solid var(--warning-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: #f0fff4;
+            border-left: 4px solid var(--success-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .action-criteria {
+            background: #fff5f5;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .action-criteria h4 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+        }
+        
+        code {
+            font-family: "Courier New", Courier, monospace;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: var(--bg-color);
+        }
+        
+        .echarts-container {
+            width: 100%;
+            height: 400px;
+            margin: 30px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #718096;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .content-section {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>第 2 册 财报与基本面</h1>
+        <div class="subtitle">从财务报表到投资决策的完整分析框架</div>
+    </header>
+    
+    <div class="container">
+        <nav class="nav-tabs">
+            <a href="../index.html" class="nav-tab">📚 系列首页</a>
+            <a href="01-裸 K 与价格行为.html" class="nav-tab">第 1 册 裸 K</a>
+            <a href="02-财报与基本面.html" class="nav-tab {active}">第 2 册 财报</a>
+            <a href="03-宏观经济分析.html" class="nav-tab {}">第 3 册 宏观</a>
+            <a href="04-交易系统与实战.html" class="nav-tab {}">第 4 册 交易</a>
+            <a href="05-风险管理与交易心理.html" class="nav-tab {}">第 5 册 风控</a>
+        </nav>
+        
+        <main id="content">
+            <h1>2. 财报与基本面 —— 完整手册</h1>
+<div class="info-box">系列：《投资者教育手册系列》（全五册）· 第 2 册</div>
+<div class="info-box">本册定位：从财报数字读懂生意本质，建立基本面排雷与选股能力</div>
+<div class="info-box">适用市场：A 股现货（T+1）｜难度：★★★☆☆｜建议学时：40-60 小时</div>
+<h2>封面：五册学习地图与生存契约</h2>
+<pre><code>五册学习路径：
+第 1 册《裸 K 与价格行为》→ 第 2 册《财报与基本面》→ 第 3 册《宏观经济分析》
+→ 第 4 册《交易系统与实战》→ 第 5 册《风险管理与交易心理》</code></pre>
+<strong>本册位置</strong>：八轮学习路径的第 3 轮。完成第 1 册前四篇后进入本册。
+<strong>Day 0 生存契约</strong>（开始任何学习之前先读）：
+<div class="info-box">① 不借钱炒股  ② 不用生活必需资金  ③ 月亏损超月收入 10% 必须暂停</div>
+<div class="info-box">"没有红线的交易，是赌博。"——详见《风险管理与交易心理》第 6 章</div>
+<strong>本册阅读路径</strong>：
+<li><strong>快速上手</strong>：第 1-2 章（财报认知）→ 第 18 章（十项排雷清单）→ 附录 C（排雷卡片）</li>
+<li><strong>系统学习</strong>：按顺序通读七篇 24 章</li>
+<li><strong>已有基础</strong>：直接第三篇（指标体系）和第五篇（财务排雷），查漏补缺</li>
+<p>---</p>
+<h2>目录</h2>
+<strong>第一篇 财报认知</strong>
+<li>第 1 章 为什么必须读财报</li>
+<li>第 2 章 三大报表全景速览</li>
+<strong>第二篇 三表精读</strong>
+<li>第 3 章 资产负债表</li>
+<li>第 4 章 利润表</li>
+<li>第 5 章 现金流量表</li>
+<li>第 6 章 勾稽关系</li>
+<strong>第三篇 分析指标体系</strong>
+<li>第 7 章 杜邦分析</li>
+<li>第 8 章 盈利能力指标</li>
+<li>第 9 章 偿债能力与运营效率</li>
+<li>第 10 章 现金流质量指标</li>
+<li>第 11 章 成长能力与趋势</li>
+<strong>第四篇 生意与行业</strong>
+<li>第 12 章 商业模式与护城河</li>
+<li>第 13 章 行业分析框架</li>
+<li>第 14 章 六大行业财务特征</li>
+<li>第 15 章 季度财报与单季分析</li>
+<strong>第五篇 财务排雷</strong>
+<li>第 16 章 造假底层逻辑</li>
+<li>第 17 章 六大造假手法与识别信号</li>
+<li>第 18 章 十项排雷清单</li>
+<li>第 19 章 经典案例复盘</li>
+<strong>第六篇 从财报到投资决策</strong>
+<li>第 20 章 预期差</li>
+<li>第 21 章 财报阅读实战</li>
+<li>第 22 章 管理层质量与资本运作</li>
+<li>第 23 章 估值速成</li>
+<li>第 24 章 综合案例：从财报到买入决策</li>
+<strong>第七篇 系统整合</strong>
+<li>（衔接第 4 册八步全链路）</li>
+<strong>附录</strong>
+<li>附录 A 财务指标速查表</li>
+<li>附录 B 六大行业特征对比</li>
+<li>附录 C 排雷清单卡片</li>
+<li>附录 D 术语速查</li>
+<li>附录 E 财报阅读自检清单</li>
+<li>附录 F 结构化练习任务 5 项</li>
+<p>---</p>
+<h2>第一篇 财报认知</h2>
+<h3>第 1 章 为什么必须读财报</h3>
+<div class="info-box"><strong>本章一句话</strong>：财报是企业的体检报告，不读财报买股票如同不体检就开药。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能说出财报能告诉你的五件事和不能告诉你的四件事</div>
+<div class="info-box">2. 理解"财报是后视镜"的含义并建立正确期待</div>
+<div class="info-box">3. 掌握巴菲特式读法的核心：从数字到生意</div>
+<h4>1.1 财报是企业的"体检报告"</h4>
+<p>想象你要招聘一名管家打理你的财产。你会怎么判断他是否可靠？看他的过往履历、看他管理过的资产规模、看他的收支记录。财报就是上市公司定期向股东提交的"管家报告"。</p>
+<strong>三张表的比喻</strong>：
+<li><strong>资产负债表</strong> = 骨架照片（某一天有多少家底）</li>
+<li><strong>利润表</strong> = 运动能力测试（一段时间能赚多少钱）</li>
+<li><strong>现金流量表</strong> = 血液检测（一段时间现金流是否健康）</li>
+<p>不看财报就买股票，等于不体检就给陌生人开巨额支票。</p>
+<h4>1.2 巴菲特式读法：从数字到生意</h4>
+<p>散户看财报的典型方式：
+<li>净利润多少？增速多少？</li>
+<li>每股收益（EPS）是多少？</li>
+<li>市盈率（PE）高不高？</li></p>
+<p>巴菲特的读法完全不同：
+<li><strong>护城河在哪里</strong>？是什么阻止竞争对手抢走它的利润？</li>
+<li><strong>利润来源是否可持续</strong>？是一次性收益还是主业赚钱？</li>
+<li><strong>管理层如何配置资本</strong>？赚了钱是乱投资还是回馈股东？</li>
+<li><strong>生意模式是什么</strong>？靠什么赚钱、客户是谁、定价权在谁手里？</li></p>
+<strong>关键洞察</strong>：数字只是入口，生意才是终点。财报分析的最终目的不是算出某个指标的精确值，而是理解这家公司是怎么赚钱的、这种赚钱方式能否持续。
+<h4>1.3 财报能告诉你的五件事</h4>
+<li><strong>赚钱能力</strong>：毛利率、净利率、ROE（净资产收益率）告诉你产品竞争力和综合盈利水平</li>
+<li><strong>家底厚度</strong>：总资产、净资产、负债结构告诉你公司有多少资源、债务压力大不大</li>
+<li><strong>现金健康</strong>：经营现金流、自由现金流告诉你利润有没有变成真金白银</li>
+<li><strong>成长轨迹</strong>：营收增速、利润增速、现金流增速告诉你公司在变大还是萎缩</li>
+<li><strong>风险信号</strong>：应收账款激增、存货堆积、商誉过高、担保过多都是危险红旗</li>
+<h4>1.4 财报不能告诉你的四件事</h4>
+<li><strong>不预测股价</strong>：好财报≠股价涨。股价短期是投票机，长期是称重机。财报告诉你公司价值，但市场情绪决定短期价格。</li>
+<li><strong>不替代商业判断</strong>：财报是历史记录，不会告诉你技术颠覆、监管变化、竞争格局突变。你需要自己判断行业趋势。</li>
+<li><strong>不告诉你管理层真实想法</strong>：财报是管理层想让你看到的版本。要结合高管增减持、承诺兑现率、资本配置行为综合判断。</li>
+<li><strong>不反映实时经营</strong>：财报有 1-3 个月滞后。一季报 4 月底披露但反映的是 1-3 月情况。等你看到时，情况可能已变化。</li>
+<h4>1.5 财报是"后视镜"：正确的期待</h4>
+<strong>核心原则</strong>：用财报验证假设，不是用财报预测未来。
+<p>错误做法：看到某公司去年净利润增长 50%，就认为今年也会增长 50%，于是追高买入。</p>
+<p>正确做法：
+<li>你先基于行业研究、竞争格局、公司战略形成假设："我认为这家公司今年能增长 30%"</li>
+<li>然后用财报验证：实际增长是否符合预期？毛利率是否稳定？现金流是否匹配？</li>
+<li>如果验证通过，假设强化；如果验证失败，修正假设或放弃</li></p>
+<strong>例 1-1｜后视镜的正确用法</strong>：
+假设你研究光伏行业，认为"硅料价格下跌将利好组件厂商"。然后你看隆基绿能的财报：
+<li>如果毛利率确实提升、出货量增加 → 假设验证，可继续跟踪</li>
+<li>如果毛利率没变甚至下降 → 假设被证伪，需重新思考逻辑</li>
+<p>不要问"这份财报说明什么"，而要问"这份财报对我的假设意味着什么"。</p>
+<strong>要点小结</strong>
+<li>财报是体检报告，三张表分别是骨架、运动能力、血液</li>
+<li>巴菲特读法核心：从数字到生意，关注护城河、可持续性、资本配置</li>
+<li>财报能告诉你赚钱能力、家底、现金健康、成长轨迹、风险信号</li>
+<li>财报不能预测股价、替代商业判断、反映管理层真实想法、实时经营</li>
+<li>正确用法：用财报验证假设，不是用财报预测未来</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果你无法用一句话说清一家公司的赚钱模式 → 那么先别买，读完本册第 12 章再决策</li>
+<li>如果看到净利润增长但经营现金流为负 → 那么必须查第 18 章排雷清单</li>
+<li>如果发现应收增速远超营收增速 → 那么标记为"存疑"，未完成验证前不买</li>
+<strong>本章练习</strong>
+<li>任选一家你持有的股票，下载其最新年报，尝试回答：这家公司靠什么赚钱？护城河是什么？去年赚的钱有多少变成了现金？</li>
+<li>找出三家不同行业的公司（如制造业、互联网、银行），对比它们的毛利率、净利率、ROE，思考为什么差异这么大。</li>
+<li>写下你对某公司的一个假设（如"原材料降价将提升其利润"），然后等下一份财报发布时验证。</li>
+<p>---</p>
+<h3>第 2 章 三大报表全景速览</h3>
+<div class="info-box"><strong>本章一句话</strong>：一分钟看懂三张表的核心公式与关系，建立财报阅读的全景地图。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能默写三张表的核心公式</div>
+<div class="info-box">2. 理解时点概念（资产负债表）与期间概念（利润表、现金流量表）的区别</div>
+<div class="info-box">3. 掌握权责发生制下"利润≠现金"的根本原因</div>
+<h4>2.1 资产负债表：某一天的"家底照片"</h4>
+<strong>核心公式</strong>：
+<pre><code>资产 = 负债 + 所有者权益</code></pre>
+<p>这是会计学的第一性原理，永远成立。</p>
+<strong>比喻</strong>：你买了一套 500 万的房子，首付 200 万，贷款 300 万。
+<li>资产：房子 500 万</li>
+<li>负债：房贷 300 万</li>
+<li>所有者权益：你的净资产 200 万</li>
+<strong>关键特征</strong>：
+<li><strong>时点概念</strong>：只反映某一天（如 12 月 31 日）的状态，像一张照片</li>
+<li><strong>存量概念</strong>：显示积累了多少，不显示怎么来的</li>
+<li><strong>左右平衡</strong>：左边是钱的去向（变成了什么资产），右边是钱的来源（借来的还是自己的）</li>
+<h4>2.2 利润表：一段时间的"成绩单"</h4>
+<strong>核心公式</strong>：
+<pre><code>净利润 = 营业收入 - 营业成本 - 税金及附加 - 三费 + 其他收益 ± 投资收益等</code></pre>
+<p>层层剥壳的过程：
+<li>营业收入 - 营业成本 = <strong>毛利润</strong></li>
+<li>毛利润 - 税金及附加 - 销售费用 - 管理费用 - 研发费用 = <strong>营业利润</strong></li>
+<li>营业利润 + 营业外收入 - 营业外支出 = <strong>利润总额</strong></li>
+<li>利润总额 - 所得税 = <strong>净利润</strong></li>
+<li>净利润 - 少数股东损益 = <strong>归母净利润</strong>（真正属于股东的部分）</li></p>
+<strong>关键特征</strong>：
+<li><strong>期间概念</strong>：反映一段时间（如一年、一季度）的经营成果，像一段视频</li>
+<li><strong>流量概念</strong>：显示这段时间发生了多少，不显示积累多少</li>
+<li><strong>权责发生制</strong>：只要交易完成就确认收入，不管钱有没有收到</li>
+<h4>2.3 现金流量表：一段时间的"血液检测"</h4>
+<strong>核心公式</strong>：
+<pre><code>现金净增加额 = 经营活动现金流 + 投资活动现金流 + 筹资活动现金流</code></pre>
+<p>三类活动：
+<li><strong>经营活动现金流</strong>：卖货收到的钱 - 买原料付的钱 - 发工资付的钱（造血能力）</li>
+<li><strong>投资活动现金流</strong>：买理财/建厂房付的钱 - 卖资产收到的钱（扩张或收缩）</li>
+<li><strong>筹资活动现金流</strong>：借款/增发收到的钱 - 还债/分红付的钱（输血或回血）</li></p>
+<strong>关键特征</strong>：
+<li><strong>最难造假</strong>：现金进出银行有记录，比利润难操纵</li>
+<li><strong>期间概念</strong>：同样反映一段时间的流量</li>
+<li><strong>收付实现制</strong>：只有真金白银进出才记录</li>
+<h4>2.4 三张表的关系：一个故事的三面</h4>
+<strong>比喻</strong>：同一个人的健康状况
+<li>资产负债表 = 体检当天的身体指标（身高体重血压）</li>
+<li>利润表 = 过去一年的运动表现（跑了多少公里、消耗多少卡路里）</li>
+<li>现金流量表 = 过去一年的饮食摄入（吃了多少、吸收多少）</li>
+<strong>三表联动示例</strong>：
+一家公司净利润 1 亿（利润表好看），但经营现金流 -5000 万（现金流量表难看）。这意味着什么？
+<li>利润是账面的，钱没收回来</li>
+<li>可能是应收账款激增（客户赊账）</li>
+<li>也可能是存货积压（货没卖出去）</li>
+<li>需要结合资产负债表看应收和存货的变化</li>
+<h4>2.5 一分钟速读法：先看哪三个数字</h4>
+<p>拿到一份年报，第一分钟只看这三个数字：</p>
+<li><strong>归母净利润</strong>（利润表最后一行）：今年赚了多少属于股东的钱</li>
+<li><strong>经营现金流净额</strong>（现金流量表第一行）：主业真收到多少钱</li>
+<li><strong>资产负债率</strong>（资产负债表计算：负债÷资产）：债务压力大不大</li>
+<strong>快速判断</strong>：
+<li>净利润 > 0 且经营现金流 > 净利润 → 健康</li>
+<li>净利润 > 0 但经营现金流 < 0 → 警惕（查应收和存货）</li>
+<li>资产负债率 > 70% → 高风险（金融地产除外）</li>
+<h4>2.6 权责发生制：理解"利润≠现金"的根基</h4>
+<strong>定义</strong>：权责发生制（Accrual Basis）是指收入和费用在实际发生时确认，而不是在现金收付时确认。
+<strong>例子</strong>：
+<li>12 月卖了 100 万货，客户说"明年 3 月付款"</li>
+<li>利润表：今年确认 100 万收入（因为货已交付）</li>
+<li>现金流量表：今年经营现金流为 0（因为钱没收到）</li>
+<li>资产负债表：应收账款增加 100 万</li>
+<p>这就是为什么 profitable company（盈利公司）可能 bankrupt（破产）——有利润没现金，发不出工资。</p>
+<strong>例 2-1｜权责发生制 vs 收付实现制</strong>：
+<p>小王开奶茶店：
+<li>1 月：进货花 1 万（现金支付），卖出 2 万（一半赊账）</li>
+<li>权责发生制：收入 2 万，成本 1 万，利润 1 万</li>
+<li>收付实现制：收入 1 万（只收到一半），成本 1 万，利润 0</li></p>
+<p>财报用权责发生制，所以你必须看现金流量表验证利润质量。</p>
+<strong>要点小结</strong>
+<li>资产负债表是时点照片，公式：资产=负债 + 所有者权益</li>
+<li>利润表是期间视频，公式：净利润=收入 - 成本 - 费用</li>
+<li>现金流量表最难造假，分经营/投资/筹资三类活动</li>
+<li>三表是一个故事的三面，必须联动阅读</li>
+<li>一分钟速读：归母净利润、经营现金流、资产负债率</li>
+<li>权责发生制导致利润≠现金，必须用现金流量表验证</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果经营现金流连续两年低于净利润 → 那么深入查应收和存货</li>
+<li>如果资产负债率>70% 且不是金融地产 → 那么标记为高风险</li>
+<li>如果看不懂三张表的关系 → 那么重读本章 2.4 节，找一家公司年报对照练习</li>
+<strong>本章练习</strong>
+<li>下载贵州茅台 2023 年年报，找到三个关键数字：归母净利润、经营现金流净额、资产负债率，计算净现比（经营现金流÷净利润）。</li>
+<li>找一家净利润为正但经营现金流为负的公司，查看其资产负债表中应收账款和存货的变化。</li>
+<li>用 Excel 画出三张表的关系图，标注关键勾稽关系（如净利润如何影响未分配利润）。</li>
+<p>---</p>
+<h2>第二篇 三表精读</h2>
+<h3>第 3 章 资产负债表</h3>
+<div class="info-box"><strong>本章一句话</strong>：读懂企业的家底结构，识别资产水分与负债风险。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能说出货币资金、应收账款、存货、商誉的正常与异常特征</div>
+<div class="info-box">2. 区分经营性负债与金融性负债</div>
+<div class="info-box">3. 掌握识别资产负债表"水分"的五种方法</div>
+<h4>3.1 资产端重点科目：货币资金、应收账款、存货</h4>
+<strong>货币资金</strong>：
+<li>包括：库存现金、银行存款、其他货币资金</li>
+<li><strong>正常特征</strong>：与经营规模匹配，有合理利息收入</li>
+<li><strong>异常信号</strong>：</li>
+  - 货币资金很多但利息收入极低 → 可能资金被占用或虚构（存贷双高）
+  - 货币资金多但同时大举借债 → 不合逻辑（除非有特定用途限制）
+<strong>应收账款</strong>：
+<li>定义：卖了货但还没收到的钱</li>
+<li><strong>正常特征</strong>：增速与营收增速基本同步</li>
+<li><strong>异常信号</strong>：</li>
+  - 应收增速 > 营收增速×1.5 → 客户付款变慢或提前压货
+  - 应收账款周转天数 > 90 天 → 回款慢，坏账风险上升
+  - 账龄结构中 1 年以上占比提升 → 回收难度加大
+<strong>存货</strong>：
+<li>定义：还没卖出去的货（原材料、在产品、产成品）</li>
+<li><strong>正常特征</strong>：与营收规模匹配，周转稳定</li>
+<li><strong>异常信号</strong>：</li>
+  - 存货增速 > 营收增速 → 可能滞销或备货过度
+  - 存货周转天数 > 90 天（制造业） → 周转慢，跌价风险
+  - 产成品占比突然提升 → 销售不畅
+<h4>3.2 资产端重点科目：固定资产、在建工程、无形资产、商誉</h4>
+<strong>固定资产</strong>：
+<li>定义：厂房、设备等长期使用的资产</li>
+<li><strong>关注点</strong>：折旧政策（年限越长，当期利润越高）、产能利用率</li>
+<strong>在建工程</strong>：
+<li>定义：正在建设、尚未转固的资产</li>
+<li><strong>异常信号</strong>：连续 3 年不转固 → 可能推迟转固以少提折旧、虚增利润（一票否决项）</li>
+<strong>无形资产</strong>：
+<li>定义：专利、商标、土地使用权等</li>
+<li><strong>关注点</strong>：摊销政策、是否存在减值风险</li>
+<strong>商誉</strong>：
+<li>定义：收购时支付的对价超过被收购方可辨认净资产公允价值的部分</li>
+<li><strong>风险</strong>：商誉减值会直接冲减利润</li>
+<li><strong>警戒线</strong>：商誉/净资产 > 30% → 高风险</li>
+<li><strong>规则</strong>：每年必须做减值测试，但不需要摊销（容易藏雷）</li>
+<h4>3.3 负债端：经营性负债 vs 金融性负债</h4>
+<strong>经营性负债</strong>（通常无息）：
+<li>应付账款：欠供应商的货款</li>
+<li>预收账款/合同负债：客户提前付的钱（越多越好，说明产品紧俏）</li>
+<li>应付职工薪酬：欠员工的工资</li>
+<strong>金融性负债</strong>（通常有息）：
+<li>短期借款：1 年内要还的银行贷款</li>
+<li>长期借款：1 年后到期的银行贷款</li>
+<li>应付债券：发行的债券</li>
+<strong>关键洞察</strong>：
+<li>经营性负债占比高 → 对上下游议价能力强（占用别人资金）</li>
+<li>金融性负债占比高 → 利息压力大，抗风险能力弱</li>
+<h4>3.4 所有者权益：实收资本、资本公积、未分配利润</h4>
+<strong>实收资本</strong>：股东实际投入的本金
+<strong>资本公积</strong>：股本溢价等（如 IPO 时发行价高于面值的部分）
+<strong>未分配利润</strong>：历年累积的、还没分给股东的利润
+<strong>重要关系</strong>：
+<pre><code>净资产 = 所有者权益 = 实收资本 + 资本公积 + 盈余公积 + 未分配利润 + 其他</code></pre>
+<strong>ROE（净资产收益率）</strong> = 净利润 ÷ 净资产，衡量股东投入资本的回报率。
+<h4>3.5 合并报表 vs 母公司报表</h4>
+<strong>合并报表</strong>：把上市公司及其控股子公司的财务数据合并在一起（抵消内部交易）
+<strong>母公司报表</strong>：仅上市公司本部的财务数据
+<strong>阅读规则</strong>：
+<li><strong>主要看合并报表</strong>：反映整个集团的经营状况</li>
+<li>母公司报表辅助看：了解本部情况，特别是分红能力（分红来自母公司可供分配利润）</li>
+<h4>3.6 资产负债表"水分"识别五法</h4>
+<li><strong>应收账款水分</strong>：账龄长、集中度低、与营收背离</li>
+<li><strong>存货水分</strong>：周转慢、库龄长、跌价准备不足</li>
+<li><strong>固定资产水分</strong>：折旧年限过长、产能利用率低、在建工程长期不转固</li>
+<li><strong>商誉水分</strong>：收购溢价过高、被收购方业绩不达预期</li>
+<li><strong>货币资金水分</strong>：存贷双高、利息收入异常低、受限资金未披露</li>
+<strong>例 3-1｜康美药业存贷双高</strong>：
+<li>2018 年三季报：货币资金 342 亿，短期借款 257 亿</li>
+<li>质疑：既然有 342 亿现金，为什么要借 257 亿付利息？</li>
+<li>后续：2019 年承认货币资金虚增 299 亿</li>
+<strong>要点小结</strong>
+<li>货币资金异常：存贷双高、利息收入低</li>
+<li>应收账款异常：增速远超营收、周转天数>90 天</li>
+<li>存货异常：增速超营收、周转慢、产成品占比提升</li>
+<li>商誉/净资产>30% 为高风险</li>
+<li>在建工程连续 3 年不转固是一票否决项</li>
+<li>主要看合并报表</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果商誉/净资产 > 30% → 那么直接排除，不浪费时间</li>
+<li>如果在建工程连续 3 年不转固 → 那么一票否决</li>
+<li>如果应收增速 > 营收增速×1.5 → 那么查附注看账龄和客户集中度</li>
+<strong>本章练习</strong>
+<li>选一家制造业公司，计算其应收账款周转天数和存货周转天数，与同行业对比。</li>
+<li>找一家有高商誉的公司，查看其历年商誉减值情况，计算商誉/净资产比例。</li>
+<li>对比某公司的合并报表和母公司报表，找出差异最大的三个科目并分析原因。</li>
+<p>---</p>
+<h3>第 4 章 利润表</h3>
+<div class="info-box"><strong>本章一句话</strong>：层层剥开利润的外衣，识别真实盈利能力。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能复述从营收到净利润的完整计算链条</div>
+<div class="info-box">2. 理解毛利、营业利润、净利润的本质区别</div>
+<div class="info-box">3. 掌握扣非净利润的意义和使用场景</div>
+<h4>4.1 从营收到净利润：利润的层层剥壳</h4>
+<strong>完整链条</strong>：
+<pre><code>营业收入
+<li>营业成本</li>
+= 毛利润
+<li>税金及附加</li>
+<li>销售费用</li>
+<li>管理费用</li>
+<li>研发费用</li>
+<li>财务费用</li>
++ 其他收益
++ 投资收益
++ 公允价值变动收益
+= 营业利润
++ 营业外收入
+<li>营业外支出</li>
+= 利润总额
+<li>所得税</li>
+= 净利润
+<li>少数股东损益</li>
+= 归母净利润</code></pre>
+<strong>关键洞察</strong>：每一层都可能藏猫腻，必须逐层分析。
+<h4>4.2 营业收入：确认时点与口径</h4>
+<strong>收入确认原则</strong>：控制权转移时确认（新收入准则）
+<strong>常见操纵手法</strong>：
+<li>提前确认收入：货还没发出就确认</li>
+<li>延后确认收入：货已发出但不确认（平滑利润）</li>
+<li>虚构收入：伪造合同、发货单、发票</li>
+<strong>验证方法</strong>：
+<li>收入增速 vs 经营现金流增速：应该大致同步</li>
+<li>收入增速 vs 应收账款增速：应收不应远超收入</li>
+<li>收入增速 vs 同行业：偏离过大需解释</li>
+<h4>4.3 营业成本与毛利</h4>
+<strong>毛利率</strong> = （营业收入 - 营业成本）÷ 营业收入
+<strong>意义</strong>：
+<li>反映产品竞争力和定价权</li>
+<li>毛利率高且稳定 = 护城河深</li>
+<li>毛利率突然提升：可能是产品结构优化，也可能是成本资本化</li>
+<strong>异常信号</strong>：
+<li>毛利率远高于同行且无合理解释 → 可能虚构收入或低估成本</li>
+<li>毛利率波动大 → 定价权弱或成本传导不畅</li>
+<h4>4.4 三费：销售费用、管理费用、研发费用</h4>
+<strong>销售费用</strong>：广告费、销售人员工资、运输费等
+<li>销售费用率 = 销售费用 ÷ 营收</li>
+<li>高销售费用率：可能是品牌驱动型（如白酒），也可能是获客困难</li>
+<strong>管理费用</strong>：管理人员工资、办公费、折旧等
+<li>管理费用率 = 管理费用 ÷ 营收</li>
+<li>趋势应稳中有降（规模效应）</li>
+<strong>研发费用</strong>：研发投入
+<li>研发费用率 = 研发费用 ÷ 营收</li>
+<li>科技企业通常>10%，传统企业 3-5%</li>
+<li><strong>注意</strong>：研发费用可以资本化（计入资产）或费用化（计入当期费用），资本化会提升当期利润但增加未来摊销压力</li>
+<strong>财务费用</strong>：利息支出 - 利息收入 + 汇兑损益
+<li>财务费用率为正 → 利息支出大于收入（正常）</li>
+<li>财务费用率为负 → 利息收入大于支出（现金充裕）</li>
+<h4>4.5 营业利润 vs 利润总额 vs 净利润</h4>
+<strong>营业利润</strong>：主业经营赚的钱（最核心）
+<strong>利润总额</strong>：营业利润 + 营业外收支（含政府补助、资产处置等一次性收益）
+<strong>净利润</strong>：利润总额 - 所得税
+<strong>关键规则</strong>：分析盈利能力时，优先看营业利润，因为它反映主业的持续性。
+<h4>4.6 扣非净利润与 EPS</h4>
+<strong>扣非净利润</strong>：扣除非经常性损益后的净利润
+<strong>非经常性损益包括</strong>：
+<li>政府补助</li>
+<li>资产处置收益</li>
+<li>投资收益（非主业）</li>
+<li>公允价值变动收益</li>
+<li>其他一次性收益或损失</li>
+<strong>意义</strong>：扣非净利润反映主业的真实盈利能力，排除了一次性因素干扰。
+<strong>EPS（每股收益）</strong> = 归母净利润 ÷ 总股本
+<strong>用途</strong>：计算市盈率（PE = 股价 ÷ EPS）
+<strong>例 4-1｜扣非的重要性</strong>：
+某公司 2023 年数据：
+<li>净利润：5 亿</li>
+<li>扣非净利润：2 亿</li>
+<li>差额 3 亿来自：出售子公司股权收益 2.5 亿 + 政府补助 0.5 亿</li>
+<strong>分析</strong>：主业只赚了 2 亿，3 亿是一次性收益，不可持续。如果用 5 亿净利润给估值，会高估。
+<strong>要点小结</strong>
+<li>利润表是层层剥壳的过程，从营收到归母净利润共 7 层</li>
+<li>毛利率反映产品竞争力，应稳定且与同行可比</li>
+<li>三费中研发费用资本化需警惕</li>
+<li>营业利润比净利润更能反映主业盈利能力</li>
+<li>扣非净利润排除一次性因素，是估值的核心依据</li>
+<li>EPS 用于计算 PE，但要用扣非 EPS 更准确</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果净利润 >> 扣非净利润 → 那么利润主要来自一次性收益，估值要打折扣</li>
+<li>如果毛利率远高于同行且无合理解释 → 那么深入查收入确认和成本核算</li>
+<li>如果研发费用大量资本化 → 那么调整为全部费用化重新计算利润</li>
+<strong>本章练习</strong>
+<li>选一家公司，计算其近 5 年的毛利率、净利率、扣非净利润占比，画出趋势图。</li>
+<li>找一家净利润和扣非净利润差异巨大的公司，分析差异来源。</li>
+<li>对比两家同行业公司的三费结构，思考为什么有差异。</li>
+<p>---</p>
+<h3>第 5 章 现金流量表</h3>
+<div class="info-box"><strong>本章一句话</strong>：现金为王，读懂企业的造血能力和资金链安全。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能解释为什么现金流量表最难造假</div>
+<div class="info-box">2. 掌握六种现金流模式的含义</div>
+<div class="info-box">3. 理解自由现金流的概念和计算方法</div>
+<h4>5.1 为什么现金流量表最难造假</h4>
+<strong>原因</strong>：
+<li>现金进出银行有第三方记录，难以伪造</li>
+<li>现金流量表与资产负债表、利润表存在勾稽关系，容易交叉验证</li>
+<li>操纵现金流成本高（需要真实资金流转）</li>
+<strong>注意</strong>：虽然最难造假，但不是完全不能造假。常见手法包括：
+<li>期末临时借钱充实现金流，期初再还回去</li>
+<li>将投资活动现金流出包装成经营活动</li>
+<li>通过关联方交易虚构现金流</li>
+<h4>5.2 经营活动现金流</h4>
+<strong>定义</strong>：企业日常经营活动产生的现金流入和流出
+<strong>计算公式（间接法）</strong>：
+<pre><code>经营现金流净额 = 净利润 + 折旧摊销 + 营运资本变动 + 其他调整</code></pre>
+<strong>关键指标</strong>：
+<li><strong>净现比</strong> = 经营现金流净额 ÷ 净利润</li>
+  - >1.2：优秀（利润含金量高）
+  - 0.8-1.2：健康
+  - 0.5-0.8：关注
+  - <0.5：危险（利润可能虚构）
+<li><strong>收现比</strong> = 销售商品提供劳务收到的现金 ÷ 营业收入</li>
+  - >1.1：良好（部分预收款）
+  - 1.0 左右：正常
+  - <1：应收增加，回款变慢
+<h4>5.3 投资活动现金流</h4>
+<strong>定义</strong>：企业购建或处置长期资产、对外投资产生的现金流
+<strong>典型模式</strong>：
+<li><strong>扩张期</strong>：投资现金流为负（花钱建厂、买设备、并购）</li>
+<li><strong>成熟期</strong>：投资现金流接近零或小幅为正（维持性资本开支）</li>
+<li><strong>收缩期</strong>：投资现金流为正（变卖资产）</li>
+<strong>关注点</strong>：
+<li>资本开支（CAPEX） = 购建固定资产等支付的现金</li>
+<li><strong>自由现金流</strong> = 经营现金流 - 资本开支（见 5.5 节）</li>
+<h4>5.4 筹资活动现金流</h4>
+<strong>定义</strong>：企业借款、还款、增发、回购、分红产生的现金流
+<strong>典型模式</strong>：
+<li><strong>融资期</strong>：筹资现金流为正（借钱或增发）</li>
+<li><strong>还债期</strong>：筹资现金流为负（还债或分红）</li>
+<strong>关注点</strong>：
+<li>如果经营现金流为负、投资现金流为负、筹资现金流为正 → 靠输血维持，危险</li>
+<li>如果经营现金流为正、筹资现金流为负 → 自我造血并回馈股东，健康</li>
+<h4>5.5 自由现金流（FCF）</h4>
+<strong>定义</strong>：企业经营产生的、扣除维持和发展业务所需资本开支后、可自由分配给股东的现金。
+<strong>计算公式</strong>：
+<pre><code>自由现金流 = 经营活动现金流净额 - 资本开支</code></pre>
+<strong>意义</strong>：
+<li>自由现金流是企业真实可支配的现金</li>
+<li>可用于分红、回购、还债、再投资</li>
+<li>巴菲特最看重的指标之一："一家公司的价值等于其未来自由现金流的折现"</li>
+<strong>例 5-1｜自由现金流计算</strong>：
+某公司 2023 年数据：
+<li>经营现金流净额：10 亿</li>
+<li>购建固定资产支付现金：3 亿</li>
+<li>自由现金流 = 10 - 3 = 7 亿</li>
+<p>这 7 亿可以用于：
+<li>分红 3 亿</li>
+<li>回购股票 2 亿</li>
+<li>还债 1 亿</li>
+<li>留存 1 亿用于未来投资</li></p>
+<h4>5.6 六种现金流模式</h4>
+<strong>三种健康模式</strong>：
+<li><strong>+, -, -</strong>（奶牛型）：经营造血、投资扩张、适度还债 → 最理想</li>
+<li><strong>+, +, -</strong>（收缩型）：经营造血、变卖资产、还债分红 → 成熟期或转型期</li>
+<li><strong>+, -, +</strong>（激进扩张型）：经营造血、大幅投资、同时融资 → 高速成长期，需监控资金链</li>
+<strong>三种危险模式</strong>：
+<li><strong>-, -, +</strong>（输血型）：经营失血、投资扩张、靠融资续命 → 烧钱模式，危险</li>
+<li><strong>-, -, -</strong>（全面失血型）：经营失血、投资扩张、还在还债 → 资金链随时断裂</li>
+<li><strong>-, +, -</strong>（败家型）：经营失血、变卖资产、还债 → 坐吃山空</li>
+<strong>例 5-2｜乐视网的现金流模式</strong>：
+2015-2016 年乐视模式：-, -, +
+<li>经营现金流：负（生态化反没赚到钱）</li>
+<li>投资现金流：负（疯狂投资造车、体育、手机）</li>
+<li>筹资现金流：正（不断借钱、增发）</li>
+<p>结局：2017 年资金链断裂，退市。</p>
+<strong>要点小结</strong>
+<li>现金流量表最难造假，因为有银行流水验证</li>
+<li>净现比>1.2 优秀，<0.5 危险</li>
+<li>收现比>1.1 良好，<1 应收增加</li>
+<li>自由现金流=经营现金流 - 资本开支，是巴菲特最看重的指标</li>
+<li>六种模式中"+,-,-"最理想，"-,-,+"最危险</li>
+<li>乐视网是典型的输血型模式最终崩盘</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果净现比<0.5 → 那么深入查利润质量和应收存货</li>
+<li>如果连续三年自由现金流为负 → 那么评估其扩张是否能产生回报</li>
+<li>如果模式是"-,-,+"且融资渠道收窄 → 那么直接排除，避免踩雷</li>
+<strong>本章练习</strong>
+<li>选一家公司，计算其近 5 年的净现比和自由现金流，画出趋势图。</li>
+<li>找出三种健康模式和三种危险模式的代表公司各一家，对比其股价长期表现。</li>
+<li>用自由现金流模型估算一家公司的内在价值（假设永续增长率 3%，折现率 10%）。</li>
+<p>---</p>
+<h3>第 6 章 勾稽关系</h3>
+<div class="info-box"><strong>本章一句话</strong>：三张表不是孤立的，通过勾稽关系验证财报真实性。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能说出三条核心勾稽关系</div>
+<div class="info-box">2. 掌握小王的奶茶店案例，理解三表如何联动</div>
+<div class="info-box">3. 识别勾稽关系断裂的危险信号</div>
+<h4>6.0 一个故事讲三张表：小王的奶茶店</h4>
+<p>小王 2023 年开了一家奶茶店：</p>
+<strong>初始投入</strong>（资产负债表起点）：
+<li>自己出资 10 万</li>
+<li>向朋友借 5 万</li>
+<li>买设备花 8 万，剩余现金 7 万</li>
+<li>资产负债表：资产 15 万（现金 7 万 + 设备 8 万）= 负债 5 万 + 所有者权益 10 万</li>
+<strong>第一年经营</strong>（利润表）：
+<li>卖奶茶收入 20 万</li>
+<li>原料成本 8 万，房租 3 万，人工 5 万</li>
+<li>净利润 = 20 - 8 - 3 - 5 = 4 万</li>
+<strong>现金流</strong>（现金流量表）：
+<li>经营现金流：收到现金 18 万（有 2 万赊账），支付现金 16 万</li>
+<li>经营现金流净额 = 18 - 16 = 2 万</li>
+<li>投资现金流：无</li>
+<li>筹资现金流：还朋友借款 2 万</li>
+<li>现金净增加 = 2 - 2 = 0</li>
+<strong>年末资产负债表</strong>：
+<li>现金：7 万（年初）+ 0（本年变化）= 7 万</li>
+<li>设备：8 万（假设不计折旧）</li>
+<li>应收账款：2 万</li>
+<li>总资产：17 万</li>
+<li>负债：3 万（5 万 -2 万）</li>
+<li>所有者权益：10 万 + 4 万（净利润）= 14 万</li>
+<li>验证：17 万 = 3 万 + 14 万 ✓</li>
+<h4>6.1 利润表→资产负债表的勾稽</h4>
+<strong>核心关系</strong>：
+<pre><code>期末未分配利润 = 期初未分配利润 + 本期净利润 - 本期分红</code></pre>
+<strong>验证方法</strong>：
+<li>查看资产负债表"未分配利润"科目的变化</li>
+<li>应该等于利润表"净利润"减去当年分红</li>
+<strong>断裂信号</strong>：
+<li>净利润大幅增加但未分配利润没变 → 可能利润虚构或大额分红未披露</li>
+<h4>6.2 现金流量表→资产负债表的勾稽</h4>
+<strong>核心关系</strong>：
+<pre><code>期末货币资金 = 期初货币资金 + 现金净增加额</code></pre>
+<strong>验证方法</strong>：
+<li>现金流量表最后一行"现金及现金等价物净增加额"</li>
+<li>应该等于资产负债表货币资金的期末数 - 期初数</li>
+<strong>断裂信号</strong>：
+<li>两者不一致且无合理解释 → 可能现金流虚构</li>
+<h4>6.3 利润表↔现金流量表的勾稽</h4>
+<strong>核心关系（间接法）</strong>：
+<pre><code>经营现金流净额 = 净利润 + 折旧摊销 - 营运资本增加 + 其他调整</code></pre>
+<strong>营运资本</strong> = 应收账款 + 存货 - 应付账款
+<strong>理解</strong>：
+<li>折旧摊销是非现金费用，要加回</li>
+<li>应收账款增加意味着收入确认了但钱没收到，要减去</li>
+<li>存货增加意味着现金变成了货，要减去</li>
+<li>应付账款增加意味着占用了供应商资金，要加上</li>
+<strong>例 6-1｜勾稽关系验算</strong>：
+某公司 2023 年数据：
+<li>净利润：1 亿</li>
+<li>折旧摊销：0.3 亿</li>
+<li>应收账款增加：0.5 亿</li>
+<li>存货增加：0.2 亿</li>
+<li>应付账款增加：0.1 亿</li>
+<p>经营现金流净额 = 1 + 0.3 - 0.5 - 0.2 + 0.1 = 0.7 亿</p>
+<p>验证：如果财报披露的经营现金流是 0.7 亿 → 勾稽一致；如果是 1.5 亿 → 有猫腻。</p>
+<h4>6.4 勾稽验证实战</h4>
+<strong>三步验证法</strong>：
+<li><strong>验证未分配利润</strong>：</li>
+   - 查资产负债表未分配利润变化
+   - 对比利润表净利润和分红公告
+   - 不一致则追问原因
+<li><strong>验证货币资金</strong>：</li>
+   - 查现金流量表现金净增加额
+   - 对比资产负债表货币资金变化
+   - 不一致则追问原因
+<li><strong>验证经营现金流</strong>：</li>
+   - 用间接法公式自行计算
+   - 对比财报披露的经营现金流
+   - 差异>20% 则深入分析
+<h4>6.5 勾稽关系断裂信号</h4>
+<strong>危险信号汇总</strong>：
+<p>| 断裂类型 | 表现 | 可能原因 |
+|---------|------|---------|
+| 利润与未分配利润断裂 | 净利润增但未分配利润不增 | 利润虚构、隐性分红 |
+| 现金流与货币资金断裂 | 现金净增加≠货币资金变化 | 现金流虚构、受限资金未披露 |
+| 经营现金流与利润断裂 | 净现比持续<0.5 | 利润质量差、应收存货异常 |
+| 三表整体不匹配 | 多处勾稽关系不符 | 系统性造假 |</p>
+<strong>例 6-2｜康得新勾稽断裂</strong>：
+<li>2015-2018 年：账面货币资金 100-150 亿</li>
+<li>但：无法支付 10 亿债券利息</li>
+<li>断裂：货币资金与现金流严重不匹配</li>
+<li>真相：153 亿银行存款被大股东占用，财报虚构</li>
+<h4>6.6 一张表读不懂时，换一张表看</h4>
+<strong>核心方法论</strong>：当某张表显示异常时，用另外两张表交叉验证。
+<strong>场景 1</strong>：利润表很好看（净利润大增）
+<li>查现金流量表：经营现金流是否同步增长？</li>
+<li>查资产负债表：应收账款和存货是否异常增加？</li>
+<strong>场景 2</strong>：资产负债表货币资金很多
+<li>查现金流量表：利息收入是否匹配？</li>
+<li>查利润表：财务费用中的利息收入是否与货币资金规模匹配？</li>
+<strong>场景 3</strong>：现金流量表经营现金流很好
+<li>查利润表：净利润是否也向好？</li>
+<li>查资产负债表：应收和存货是否稳定？</li>
+<strong>要点小结</strong>
+<li>三条核心勾稽关系：利润→未分配利润、现金流→货币资金、利润↔经营现金流</li>
+<li>小王奶茶店案例展示了三表如何从同一笔业务衍生</li>
+<li>间接法公式：经营现金流=净利润 + 折旧摊销 - 营运资本增加</li>
+<li>勾稽断裂是造假的强烈信号</li>
+<li>康得新 153 亿货币资金虚构是典型案例</li>
+<li>一张表读不懂时，用另外两张表交叉验证</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果净现比<0.5 且无合理解释 → 那么深入查应收和存货</li>
+<li>如果货币资金很多但利息收入很低 → 那么怀疑存贷双高</li>
+<li>如果三处以上勾稽关系断裂 → 那么直接排除，不浪费时间</li>
+<strong>本章练习</strong>
+<li>选一家公司，用间接法公式自行计算经营现金流，与财报披露值对比。</li>
+<li>找出康美药业、康得新、獐子岛三家公司的勾稽断裂点，总结共同特征。</li>
+<li>用小王的奶茶店案例框架，自己编一个三年的完整财报故事，确保三表勾稽。</li>
+<p>---</p>
+<h2>第三篇 分析指标体系</h2>
+<h3>第 7 章 杜邦分析</h3>
+<div class="info-box"><strong>本章一句话</strong>：用杜邦分析法拆解 ROE，识别盈利的真正驱动力。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能默写杜邦分析的三因子公式</div>
+<div class="info-box">2. 理解三种 ROE 驱动模式的优劣</div>
+<div class="info-box">3. 掌握 ROE 提升的"真假"判断方法</div>
+<h4>7.1 为什么 ROE 是最重要的财务指标</h4>
+<strong>ROE（Return on Equity，净资产收益率）</strong> = 净利润 ÷ 净资产
+<strong>意义</strong>：
+<li>衡量股东投入资本的回报率</li>
+<li>巴菲特："如果只能用一个指标选股，我会选 ROE"</li>
+<li>长期来看，股价涨幅≈ROE（假设估值不变）</li>
+<strong>标准</strong>：
+<li>ROE > 15% 连续多年 = 好公司基准</li>
+<li>ROE < 10% = 回报偏低（除非周期性底部）</li>
+<li>ROE > 30% 且不可持续 = 警惕（可能高杠杆或一次性收益）</li>
+<h4>7.2 杜邦分解：ROE 的三个引擎</h4>
+<strong>三因子杜邦公式</strong>：
+<pre><code>ROE = 净利率 × 总资产周转率 × 权益乘数</code></pre>
+<p>其中：
+<li><strong>净利率</strong> = 净利润 ÷ 营业收入（盈利能力）</li>
+<li><strong>总资产周转率</strong> = 营业收入 ÷ 总资产（运营效率）</li>
+<li><strong>权益乘数</strong> = 总资产 ÷ 净资产（财务杠杆）</li></p>
+<strong>理解</strong>：ROE 可以由三种方式驱动：
+<li>卖得贵（高净利率）</li>
+<li>卖得快（高周转）</li>
+<li>借得多（高杠杆）</li>
+<h4>7.3 三个引擎详解</h4>
+<strong>引擎 1：净利率（盈利能力）</strong>
+<li>驱动因素：产品定价权、成本控制、规模效应</li>
+<li>代表行业：高端白酒（茅台净利率~50%）、软件 SaaS</li>
+<li>特点：最可持续的 ROE 驱动方式</li>
+<strong>引擎 2：总资产周转率（运营效率）</strong>
+<li>驱动因素：供应链管理、库存周转、资产利用率</li>
+<li>代表行业：零售（沃尔玛周转率~2.5）、制造业</li>
+<li>特点：需要精细化管理，较可持续</li>
+<strong>引擎 3：权益乘数（财务杠杆）</strong>
+<li>驱动因素：借钱经营、放大收益</li>
+<li>代表行业：银行（权益乘数~10）、房地产</li>
+<li>特点：风险最高，经济下行时反向放大亏损</li>
+<h4>7.4 三种 ROE 驱动模式</h4>
+<strong>模式 1：高净利率驱动（最优）</strong>
+<li>特征：净利率>20%，周转率中等，杠杆低</li>
+<li>代表：贵州茅台、片仔癀、海天味业</li>
+<li>优势：盈利质量高，抗风险能力强</li>
+<li>风险：护城河被侵蚀（如竞争加剧、替代品出现）</li>
+<strong>模式 2：高周转驱动（次优）</strong>
+<li>特征：净利率低（3-5%），周转率高（>2），杠杆中等</li>
+<li>代表：沃尔玛、Costco、京东方</li>
+<li>优势：规模效应强，市场份额稳固</li>
+<li>风险：需求下滑导致周转放缓、价格战压缩利润</li>
+<strong>模式 3：高杠杆驱动（高危）</strong>
+<li>特征：净利率中等，周转率中等，权益乘数高（>5）</li>
+<li>代表：银行、房地产、保险公司</li>
+<li>优势：ROE 看似很高</li>
+<li>风险：经济下行时不良率上升、资产减值、杠杆反向放大亏损</li>
+<h4>7.5 不同行业 ROE 结构差异</h4>
+<strong>消费行业</strong>：高净利率 + 中周转 + 低杠杆
+<strong>制造业</strong>：中净利率 + 中高周转 + 中杠杆
+<strong>零售业</strong>：低净利率 + 高周转 + 中杠杆
+<strong>金融业</strong>：中高净利率 + 低周转 + 高杠杆
+<strong>互联网</strong>：早期低净利率 + 中周转 + 低杠杆（追求规模），成熟期高净利率
+<strong>关键洞察</strong>：跨行业比较 ROE 绝对值没有意义，必须拆解结构。
+<h4>7.6 ROE 提升的"真假"</h4>
+<strong>真提升</strong>：
+<li>净利率提升：产品涨价、成本下降、规模效应</li>
+<li>周转率提升：库存管理优化、资产利用率提高</li>
+<li>适度加杠杆：在安全范围内提升权益乘数</li>
+<strong>假提升</strong>：
+<li>一次性收益推高净利率（如卖资产）</li>
+<li>减少必要资本开支短期提升周转率（损害长期竞争力）</li>
+<li>过度加杠杆超出安全边界</li>
+<strong>验证方法</strong>：
+<li>看扣非净利润：排除一次性收益</li>
+<li>看资本开支：是否牺牲长期投入</li>
+<li>看资产负债率：是否超过安全线</li>
+<h4>7.7 杜邦分析的局限</h4>
+<li><strong>不反映现金流</strong>：ROE 高但自由现金流可能为负</li>
+<li><strong>不反映成长性</strong>：ROE 高但可能已见顶</li>
+<li><strong>不反映风险</strong>：高杠杆推高的 ROE 隐含巨大风险</li>
+<li><strong>周期性强</strong>：周期股 ROE 波动大，不能用单一时点判断</li>
+<strong>补充工具</strong>：
+<li>结合 ROIC（投入资本回报率）：剔除杠杆影响，更纯粹反映经营效率</li>
+<li>结合自由现金流：验证盈利质量</li>
+<li>结合行业生命周期：判断 ROE 可持续性</li>
+<strong>例 7-1｜某房企 ROE 拆解</strong>：
+某房企 2020 年 ROE=25%，拆解：
+<li>净利率 = 10%</li>
+<li>周转率 = 0.3</li>
+<li>权益乘数 = 8.3</li>
+<p>分析：
+<li>ROE 主要靠高杠杆（8.3 倍）驱动</li>
+<li>净利率和周转率都一般</li>
+<li>风险：一旦销售下滑或融资收紧，高杠杆会反向放大亏损</li></p>
+<p>结局：2021-2022 年房地产行业调控，该公司资金链断裂。</p>
+<strong>要点小结</strong>
+<li>ROE=净利率×周转率×权益乘数，三个引擎</li>
+<li>ROE>15% 连续多年是好公司基准</li>
+<li>高净利率驱动最优，高周转次之，高杠杆最危险</li>
+<li>跨行业比 ROE 绝对值无意义，必须拆解结构</li>
+<li>ROE 提升要看是否可持续，排除一次性因素</li>
+<li>杜邦分析不反映现金流和成长性，需结合其他指标</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果 ROE>20% 但主要来自高杠杆 → 那么深入查负债结构和融资环境</li>
+<li>如果 ROE 提升但扣非净利润没增 → 那么可能是一次性收益，不可持续</li>
+<li>如果 ROIC<WACC → 那么即使 ROE 高也在毁灭价值</li>
+<strong>本章练习</strong>
+<li>选三家不同行业的公司，分别拆解其 ROE 的三个因子，对比驱动模式。</li>
+<li>找一家 ROE 连续 5 年>20% 的公司，分析其驱动因素是否可持续。</li>
+<li>计算某公司的 ROIC 和 WACC，判断其是否在创造价值。</li>
+<p>---</p>
+<h3>第 8 章 盈利能力指标</h3>
+<div class="info-box"><strong>本章一句话</strong>：用毛利率、净利率、ROE、ROA、ROIC 全方位评估赚钱能力。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能解释五个盈利能力指标的定义和意义</div>
+<div class="info-box">2. 理解毛利率与净利率剪刀差的含义</div>
+<div class="info-box">3. 掌握趋势重于绝对值的原则</div>
+<h4>8.1 毛利率：产品竞争力的一面镜子</h4>
+<strong>公式</strong>：毛利率 = （营业收入 - 营业成本）÷ 营业收入
+<strong>意义</strong>：
+<li>反映产品或服务的定价权和竞争力</li>
+<li>毛利率高且稳定 = 护城河深</li>
+<li>毛利率提升 = 产品结构优化或成本下降</li>
+<strong>行业对比</strong>：
+<li>高端白酒：50-90%</li>
+<li>软件 SaaS：70-80%</li>
+<li>医药：60-80%</li>
+<li>制造业：20-40%</li>
+<li>零售业：15-25%</li>
+<li>大宗商品贸易：<10%</li>
+<strong>异常信号</strong>：
+<li>毛利率远高于同行且无合理解释 → 可能虚构收入或低估成本</li>
+<li>毛利率突然大幅提升 → 查是否有一次性因素或会计变更</li>
+<h4>8.2 净利率：综合盈利水平</h4>
+<strong>公式</strong>：净利率 = 净利润 ÷ 营业收入
+<strong>意义</strong>：
+<li>反映扣除所有费用后的综合盈利能力</li>
+<li>净利率与毛利率的差距 = 费用控制能力</li>
+<strong>行业对比</strong>：
+<li>高端白酒：30-50%</li>
+<li>互联网平台：20-30%</li>
+<li>医药：15-25%</li>
+<li>制造业：5-15%</li>
+<li>零售业：2-5%</li>
+<li>银行业：25-35%</li>
+<strong>关键洞察</strong>：净利率受费用率影响大，需结合三费分析。
+<h4>8.3 ROE、ROA 与 ROIC</h4>
+<strong>ROE（净资产收益率）</strong> = 净利润 ÷ 净资产
+<li>衡量股东投入资本的回报</li>
+<li>受杠杆影响大</li>
+<strong>ROA（总资产收益率）</strong> = 净利润 ÷ 总资产
+<li>衡量全部资产（含借来的）的回报</li>
+<li>不受杠杆影响，更适合跨行业对比</li>
+<strong>ROIC（投入资本回报率）</strong> = 税后经营利润 ÷ 投入资本
+<li>投入资本 = 有息负债 + 股东权益</li>
+<li>最纯粹反映经营效率的指标</li>
+<li><strong>黄金法则</strong>：ROIC > WACC（加权平均资本成本）= 创造价值</li>
+<strong>三者关系</strong>：
+<li>ROE 包含杠杆效应</li>
+<li>ROA 剔除杠杆影响</li>
+<li>ROIC 进一步剔除非经营性资产影响</li>
+<h4>8.4 毛利率与净利率剪刀差</h4>
+<strong>剪刀差</strong> = 毛利率 - 净利率
+<strong>意义</strong>：
+<li>反映费用控制能力</li>
+<li>剪刀差扩大：费用率上升或一次性损失</li>
+<li>剪刀差缩小：费用率下降或规模效应</li>
+<strong>例 8-1｜剪刀差分析</strong>：
+某公司 2022-2023 年数据：
+<li>2022 年：毛利率 40%，净利率 20%，剪刀差 20pp</li>
+<li>2023 年：毛利率 42%，净利率 18%，剪刀差 24pp</li>
+<p>分析：
+<li>毛利率提升 2pp（好事）</li>
+<li>净利率下降 2pp（坏事）</li>
+<li>剪刀差扩大 4pp → 费用率上升</li>
+<li>查三费：销售费用率从 12% 升至 16%</li>
+<li>原因：公司为抢占市场加大营销投入</li></p>
+<p>判断：短期利润承压，但如果换来市场份额提升，长期可能值得。</p>
+<h4>8.5 趋势重于绝对值</h4>
+<strong>核心原则</strong>：单个时点的指标绝对值不如趋势重要。
+<strong>为什么</strong>：
+<li>绝对值受行业特性影响大（跨行业不可比）</li>
+<li>趋势反映公司竞争力的变化方向</li>
+<li>趋势可以提前预警拐点</li>
+<strong>分析方法</strong>：
+<li>至少看 5 年趋势</li>
+<li>关注拐点（由升转降或由降转升）</li>
+<li>结合行业周期判断（周期底部 ROE 低不代表公司差）</li>
+<strong>要点小结</strong>
+<li>毛利率反映产品竞争力，净利率反映综合盈利能力</li>
+<li>ROE 含杠杆效应，ROA 剔除杠杆，ROIC 最纯粹</li>
+<li>ROIC>WACC 才创造价值</li>
+<li>剪刀差扩大提示费用率上升或一次性损失</li>
+<li>趋势重于绝对值，至少看 5 年</li>
+<li>拐点比绝对值更重要，提前预警竞争力变化</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果毛利率远高于同行但净利率低 → 那么查费用率是否异常</li>
+<li>如果 ROIC<WACC → 那么即使 ROE 高也在毁灭价值</li>
+<li>如果 ROE 连续 3 年下降 → 那么深入分析是周期因素还是竞争力丧失</li>
+<strong>本章练习</strong>
+<li>选一家公司，计算其近 5 年的毛利率、净利率、ROE、ROA、ROIC，画出趋势图。</li>
+<li>对比两家同行业公司的剪刀差变化，分析原因。</li>
+<li>估算一家公司的 WACC，与其 ROIC 对比判断是否创造价值。</li>
+<p>---</p>
+<h3>第 9 章 偿债能力与运营效率</h3>
+<div class="info-box"><strong>本章一句话</strong>：评估企业活下去的能力和跑得快不快。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 掌握流动比率、速动比率、利息保障倍数的计算和标准</div>
+<div class="info-box">2. 理解三周转率（存货、应收、应付）的含义</div>
+<div class="info-box">3. 掌握周转与盈利的权衡关系</div>
+<h4>9.1 短期偿债能力</h4>
+<strong>流动比率</strong> = 流动资产 ÷ 流动负债
+<strong>标准</strong>：
+<li>>2：健康</li>
+<li>1.5-2：关注</li>
+<li><1：警惕（短期偿债压力大）</li>
+<strong>速动比率</strong> = （流动资产 - 存货）÷ 流动负债
+<strong>标准</strong>：
+<li>>1：安全</li>
+<li><1：依赖存货变现还债，有风险</li>
+<strong>现金比率</strong> = 货币资金 ÷ 流动负债
+<strong>标准</strong>：
+<li>>0.5：非常安全</li>
+<li><0.2：紧张</li>
+<strong>关键洞察</strong>：流动比率高不一定好，可能是存货积压或应收回收慢。
+<h4>9.2 长期偿债能力</h4>
+<strong>资产负债率</strong> = 负债 ÷ 资产
+<strong>标准</strong>：
+<li><50%：安全</li>
+<li>50-70%：关注</li>
+<li>>70%：高风险（金融地产除外）</li>
+<strong>权益乘数</strong> = 资产 ÷ 净资产 = 1 ÷ （1 - 资产负债率）
+<strong>利息保障倍数</strong> = 息税前利润（EBIT）÷ 利息费用
+<strong>标准</strong>：
+<li>>5：安全</li>
+<li>3-5：关注</li>
+<li><3：压力大，有违约风险</li>
+<h4>9.3 负债质量分析</h4>
+<strong>有息负债率</strong> = 有息负债 ÷ 总资产
+<p>有息负债包括：短期借款、长期借款、应付债券</p>
+<strong>意义</strong>：有息负债率比资产负债率更能反映真实债务压力。
+<strong>债务期限结构</strong>：
+<li>短期债务占比高 → 流动性压力大</li>
+<li>长期债务占比高 → 稳定性好但成本高</li>
+<strong>融资成本</strong>：
+<li>利息费用 ÷ 有息负债平均余额 = 平均融资成本</li>
+<li>融资成本上升 → 信用风险上升或货币政策收紧</li>
+<h4>9.4 运营效率：存货周转率</h4>
+<strong>存货周转率</strong> = 营业成本 ÷ 平均存货
+<strong>存货周转天数</strong> = 365 ÷ 存货周转率
+<strong>标准（制造业）</strong>：
+<li><60 天：快</li>
+<li>60-90 天：正常</li>
+<li>>90 天：警惕（可能滞销）</li>
+<strong>分析要点</strong>：
+<li>与同行对比</li>
+<li>看趋势（加快还是变慢）</li>
+<li>结合毛利率（降价去库存会压低毛利率）</li>
+<h4>9.5 运营效率：应收账款周转率</h4>
+<strong>应收账款周转率</strong> = 营业收入 ÷ 平均应收账款
+<strong>应收账款周转天数</strong> = 365 ÷ 应收账款周转率
+<strong>标准</strong>：
+<li><60 天：健康</li>
+<li>60-90 天：关注</li>
+<li>>90 天：慢</li>
+<li>>180 天：坏账风险高</li>
+<strong>分析要点</strong>：
+<li>与信用政策对比（如给予客户 60 天账期，周转天数应在 60 天左右）</li>
+<li>看账龄结构（1 年以上占比）</li>
+<li>看坏账准备计提是否充分</li>
+<h4>9.6 运营效率：应付账款周转率</h4>
+<strong>应付账款周转率</strong> = 营业成本 ÷ 平均应付账款
+<strong>应付账款周转天数</strong> = 365 ÷ 应付账款周转率
+<strong>意义</strong>：
+<li>周转天数长 = 占用供应商资金（议价能力强）</li>
+<li>周转天数短 = 被供应商催款（议价能力弱）</li>
+<strong>平衡</strong>：
+<li>太长：可能损害供应商关系</li>
+<li>太短：资金利用效率低</li>
+<h4>9.7 周转与盈利的权衡</h4>
+<strong>核心洞察</strong>：周转率和利润率往往存在 trade-off（权衡）。
+<strong>两种策略</strong>：
+<li><strong>高利润低周转</strong>：奢侈品、高端白酒</li>
+   - 毛利率 50%+，周转率 0.5
+   - ROE = 50% × 0.5 × 杠杆 = 取决于杠杆
+<li><strong>低利润高周转</strong>：零售、超市</li>
+   - 毛利率 20%，周转率 2.5
+   - ROE = 20% × 2.5 × 杠杆 = 可能更高
+<strong>例 9-1｜沃尔玛 vs 蒂芙尼</strong>：
+<li>沃尔玛：净利率 3%，周转率 2.5，ROE≈20%</li>
+<li>蒂芙尼：净利率 15%，周转率 0.5，ROE≈10%</li>
+<p>虽然沃尔玛净利率低，但靠高周转实现了更高 ROE。</p>
+<strong>要点小结</strong>
+<li>流动比率>2 健康，速动比率>1 安全</li>
+<li>利息保障倍数>5 安全，<3 压力大</li>
+<li>资产负债率>70% 高风险（金融地产除外）</li>
+<li>存货周转天数制造业<60 天正常，>90 天警惕</li>
+<li>应收周转天数<60 天健康，>180 天坏账风险</li>
+<li>应付周转天数长反映对上游议价能力强</li>
+<li>周转与盈利存在权衡，不同策略都可实现高 ROE</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果流动比率<1 且速动比率<0.5 → 那么短期偿债风险高</li>
+<li>如果利息保障倍数<3 → 那么有违约风险，谨慎</li>
+<li>如果存货周转天数突然延长且毛利率下降 → 那么可能滞销 + 降价去库存</li>
+<strong>本章练习</strong>
+<li>选一家制造业公司，计算其流动比率、速动比率、利息保障倍数，与同行对比。</li>
+<li>计算某公司的存货、应收、应付周转天数，分析其营运资本管理效率。</li>
+<li>找一家高利润低周转和一家低利润高周转的公司，对比其 ROE 驱动模式。</li>
+<p>---</p>
+<h3>第 10 章 现金流质量指标</h3>
+<div class="info-box"><strong>本章一句话</strong>：利润可以有水分，现金流更难造假。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 掌握净现比和收现比的计算和标准</div>
+<div class="info-box">2. 理解自由现金流的意义和计算方法</div>
+<div class="info-box">3. 能识别"有利润没现金"的五种原因</div>
+<h4>10.1 净现比：利润的含金量</h4>
+<strong>公式</strong>：净现比 = 经营活动现金流净额 ÷ 净利润
+<strong>全局统一口径</strong>（第 6.4 节）：
+<li>>1.2：优秀（利润含金量高，可能还有预收款）</li>
+<li>0.8-1.2：健康（利润基本变成现金）</li>
+<li>0.5-0.8：关注（部分利润是账面的）</li>
+<li><0.5：危险（利润可能虚构或回款极慢）</li>
+<strong>为什么重要</strong>：
+<li>净利润可以用会计手法调节</li>
+<li>经营现金流更难操纵</li>
+<li>长期看，净现比<0.5 的公司大多暴雷</li>
+<strong>例 10-1｜净现比警示</strong>：
+某公司 2020-2023 年数据：
+<li>净利润：2 亿、3 亿、4 亿、5 亿（持续增长）</li>
+<li>经营现金流：1.5 亿、1 亿、0.5 亿、-0.2 亿（持续恶化）</li>
+<li>净现比：0.75、0.33、0.125、-0.04</li>
+<p>分析：利润在增长，但现金流越来越差，说明：
+<li>可能是应收大幅增加（货卖了但钱没收回来）</li>
+<li>可能是存货积压（现金变成了货）</li>
+<li>结论：利润质量极差，2024 年很可能暴雷</li></p>
+<h4>10.2 收现比：回款健康度</h4>
+<strong>公式</strong>：收现比 = 销售商品提供劳务收到的现金 ÷ 营业收入
+<strong>全局统一口径</strong>：
+<li>>1.1：良好（部分预收款，产品紧俏）</li>
+<li>1.0 左右：正常（一手交钱一手交货）</li>
+<li><1：应收增加，回款变慢</li>
+<li><0.8：危险（大量赊账）</li>
+<strong>与净现比的区别</strong>：
+<li>收现比只看销售回款，更聚焦</li>
+<li>净现比看整体经营现金流，包含采购付款等</li>
+<h4>10.3 自由现金流：股东真正能拿到的钱</h4>
+<strong>公式</strong>：自由现金流 = 经营活动现金流净额 - 资本开支
+<strong>资本开支</strong> = 购建固定资产、无形资产等支付的现金
+<strong>意义</strong>：
+<li>自由现金流是企业扣除再投资后、可自由分配给股东的现金</li>
+<li>可用于分红、回购、还债</li>
+<li>巴菲特估值法的核心：公司价值 = 未来自由现金流折现</li>
+<strong>判断标准</strong>：
+<li>连续多年自由现金流为正：自我造血能力强</li>
+<li>连续多年自由现金流为负：需要外部融资维持扩张</li>
+<strong>注意</strong>：成长期公司自由现金流为负不一定坏，关键是投资能否产生回报。
+<h4>10.4 行业差异</h4>
+<p>不同行业的现金流特征差异很大：</p>
+<strong>消费行业</strong>：
+<li>净现比通常>1（先款后货或现款现货）</li>
+<li>自由现金流稳定为正</li>
+<li>代表：贵州茅台、海天味业</li>
+<strong>制造业</strong>：
+<li>净现比 0.8-1.2 正常</li>
+<li>资本开支大，自由现金流波动</li>
+<li>代表：美的集团、格力电器</li>
+<strong>互联网</strong>：
+<li>早期净现比可能<1（补贴换增长）</li>
+<li>成熟期净现比>1.5（轻资产、高毛利）</li>
+<li>代表：腾讯、阿里</li>
+<strong>房地产</strong>：
+<li>净现比波动大（受预售和竣工节奏影响）</li>
+<li>资本开支巨大，自由现金流常年为负</li>
+<li>需结合负债率和销售情况综合判断</li>
+<h4>10.5 "有利润没现金"的五种原因</h4>
+<li><strong>应收账款激增</strong>：货卖了但钱没收回来</li>
+   - 信号：应收增速>>营收增速
+   - 风险：坏账、资金链紧张
+<li><strong>存货积压</strong>：现金变成了卖不出去的货</li>
+   - 信号：存货增速>>营收增速
+   - 风险：跌价损失、资金占用
+<li><strong>预付账款增加</strong>：提前付钱给供应商</li>
+   - 信号：预付账款大幅增长
+   - 风险：供应商履约风险、资金被占用
+<li><strong>资本开支过大</strong>：赚的钱都拿去买设备建厂</li>
+   - 信号：投资现金流大幅为负
+   - 风险：如果投资不能产生回报，会拖垮公司
+<li><strong>利润本身是虚构的</strong>：最危险的情况</li>
+   - 信号：净现比持续<0.5、勾稽关系断裂
+   - 风险：退市、血本无归
+<strong>例 10-2｜獐子岛"扇贝跑了"</strong>：
+<li>利润表：净利润看似正常</li>
+<li>现金流量表：经营现金流持续为负</li>
+<li>资产负债表：存货（扇贝）莫名消失</li>
+<li>真相：存货造假，利润虚构</li>
+<strong>要点小结</strong>
+<li>净现比>1.2 优秀，<0.5 危险</li>
+<li>收现比>1.1 良好，<0.8 危险</li>
+<li>自由现金流=经营现金流 - 资本开支</li>
+<li>不同行业现金流特征差异大，需横向对比</li>
+<li>"有利润没现金"五种原因：应收激增、存货积压、预付增加、资本开支大、利润虚构</li>
+<li>獐子岛是典型的存货造假案例</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果净现比连续两年<0.5 → 那么深入排查五种原因</li>
+<li>如果自由现金流连续五年为负且 ROIC<WACC → 那么可能在毁灭价值</li>
+<li>如果经营现金流为负但融资渠道收窄 → 那么警惕资金链断裂风险</li>
+<strong>本章练习</strong>
+<li>选一家公司，计算其近 5 年的净现比、收现比、自由现金流，画出趋势图。</li>
+<li>找一家"有利润没现金"的公司，分析具体是五种原因中的哪一种。</li>
+<li>用自由现金流折现法估算一家成熟公司的内在价值。</li>
+<p>---</p>
+<h3>第 11 章 成长能力与趋势</h3>
+<div class="info-box"><strong>本章一句话</strong>：方向比位置重要，成长的质量比速度更重要。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 理解三种增长类型（内生、外延、财务技巧）</div>
+<div class="info-box">2. 掌握基数效应和增速交叉验证方法</div>
+<div class="info-box">3. 建立"方向比位置重要"的分析框架</div>
+<h4>11.1 营收增长率</h4>
+<strong>公式</strong>：营收增长率 = （本期营收 - 上期营收）÷ 上期营收 × 100%
+<strong>意义</strong>：
+<li>反映公司业务扩张速度</li>
+<li>持续高增长 = 市场需求旺盛或份额提升</li>
+<li>负增长 = 市场萎缩或竞争力下降</li>
+<strong>标准</strong>：
+<li>>30%：高速成长（通常是小公司或新业务）</li>
+<li>15-30%：中速成长</li>
+<li>5-15%：稳健增长（成熟公司正常水平）</li>
+<li><5%：低速增长或停滞</li>
+<li><0%：萎缩</li>
+<strong>注意</strong>：增长率必须结合基数看。10 亿基数增长 30% 比 100 亿基数增长 10% 更难。
+<h4>11.2 净利润增速</h4>
+<strong>公式</strong>：净利润增速 = （本期净利润 - 上期净利润）÷ 上期净利润 × 100%
+<strong>与营收增速的关系</strong>：
+<li>净利润增速 > 营收增速 → 净利率提升（规模效应或成本下降）</li>
+<li>净利润增速 < 营收增速 → 净利率下降（竞争加剧或成本上升）</li>
+<li>两者背离过大需警惕（可能有一次性因素）</li>
+<strong>关键洞察</strong>：短期看营收，长期看利润。没有利润增长的营收增长不可持续。
+<h4>11.3 经营现金流增速</h4>
+<strong>公式</strong>：经营现金流增速 = （本期经营现金流 - 上期经营现金流）÷ 上期经营现金流 × 100%
+<strong>为什么重要</strong>：
+<li>检验利润增长的质量</li>
+<li>经营现金流增速应大致同步于净利润增速</li>
+<li>长期背离预示风险</li>
+<strong>三者关系</strong>：
+<li>理想状态：营收增速 ≈ 净利润增速 ≈ 经营现金流增速</li>
+<li>危险信号：营收和利润增长，但经营现金流负增长</li>
+<h4>11.4 增长的三种类型</h4>
+<strong>类型 1：内生增长（最优质）</strong>
+<li>驱动因素：产品销量增加、单价提升、市场份额扩大</li>
+<li>特征：营收、利润、现金流同步增长</li>
+<li>可持续性：强</li>
+<li>代表：贵州茅台（量价齐升）、海天味业（渠道下沉）</li>
+<strong>类型 2：外延增长（并购驱动）</strong>
+<li>驱动因素：收购兼并并表</li>
+<li>特征：营收突然跳增，但商誉增加、整合风险</li>
+<li>可持续性：取决于并购质量</li>
+<li>风险：商誉减值、文化冲突、协同效应不达预期</li>
+<strong>类型 3：财务技巧增长（最危险）</strong>
+<li>驱动因素：会计变更、一次性收益、放宽信用政策</li>
+<li>特征：利润增长但现金流恶化</li>
+<li>可持续性：无</li>
+<li>风险：迟早回归真实水平，甚至反噬</li>
+<strong>例 11-1｜三种增长对比</strong>：
+<li>公司 A（内生）：营收 +20%，净利 +25%，经营现金流 +22% → 优质增长</li>
+<li>公司 B（外延）：营收 +50%（并购），净利 +30%，商誉 +10 亿 → 需观察整合效果</li>
+<li>公司 C（技巧）：营收 +15%，净利 +40%，经营现金流 -10% → 危险信号</li>
+<h4>11.5 基数效应</h4>
+<strong>定义</strong>：增长率受前期基数影响，基数越低越容易实现高增长。
+<strong>例子</strong>：
+<li>第 1 年：净利润 100 万</li>
+<li>第 2 年：净利润 500 万 → 增速 400%（看起来惊人）</li>
+<li>第 3 年：净利润 800 万 → 增速 60%（依然很高）</li>
+<li>第 4 年：净利润 1000 万 → 增速 25%（开始放缓）</li>
+<li>第 5 年：净利润 1100 万 → 增速 10%（回归常态）</li>
+<strong>关键洞察</strong>：
+<li>小公司容易实现高增速，但难以持续</li>
+<li>大公司增速放缓是自然规律</li>
+<li>不要简单线性外推高增速</li>
+<h4>11.6 增速交叉验证</h4>
+<strong>原则</strong>：单一指标的增长不可信，需要多个指标交叉验证。
+<strong>验证矩阵</strong>：
+<p>| 指标组合 | 含义 | 判断 |
+|---------|------|------|
+| 营收 +、利润 +、现金流 + | 全面健康增长 | 可信 |
+| 营收 +、利润 +、现金流 - | 增长质量存疑 | 查应收存货 |
+| 营收 +、利润 - | 增收不增利 | 查毛利率和费用率 |
+| 营收 -、利润 + | 收缩中盈利 | 可能是一次性收益或裁员降本 |
+| 三者皆 - | 全面衰退 | 规避 |</p>
+<strong>例 11-2｜某公司增速分析</strong>：
+2020-2023 年数据：
+<li>营收增速：+25%、+18%、+10%、+5%（持续放缓）</li>
+<li>利润增速：+30%、+15%、+8%、+12%（波动）</li>
+<li>现金流增速：+20%、-5%、-15%、-20%（持续恶化）</li>
+<p>分析：
+<li>营收增速持续放缓 → 成长见顶</li>
+<li>利润增速波动 → 可能有非经常性因素</li>
+<li>现金流持续恶化 → 增长质量差，可能是应收堆积</li></p>
+<p>结论：该公司处于成长末期，需谨慎。</p>
+<h4>11.7 方向比位置重要</h4>
+<strong>核心原则</strong>：趋势方向比当前绝对值更重要。
+<strong>为什么</strong>：
+<li>股市是预期的游戏，趋势决定未来</li>
+<li>当前位置低但趋势向上 > 当前位置高但趋势向下</li>
+<li>拐点是最有价值的信号</li>
+<strong>图 11-1｜趋势比位置重要</strong>
+<div id="chart-1" class="echarts-container"></div>
+<p>上图中：
+<li>公司 A：ROE 从 28% 降至 15%，虽然仍高于 B，但趋势向下</li>
+<li>公司 B：ROE 从 8% 升至 19%，虽然仍低于 A，但趋势向上</li></p>
+<strong>投资启示</strong>：公司 B 更具投资价值，因为趋势向上反映基本面改善。
+<strong>要点小结</strong>
+<li>营收、利润、现金流增速应同步，背离需警惕</li>
+<li>增长分三类：内生（最优）、外延（中性）、财务技巧（危险）</li>
+<li>基数效应导致小公司容易高增长但难持续</li>
+<li>用增速交叉验证矩阵判断增长质量</li>
+<li>趋势方向比当前绝对值更重要</li>
+<li>拐点是最有价值的信号</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果营收和利润增长但现金流负增长 → 那么深入查应收和存货</li>
+<li>如果增速连续 3 个季度放缓 → 那么重新评估成长逻辑是否还在</li>
+<li>如果 ROE 趋势向下即使绝对值仍高 → 那么谨慎，可能基本面在恶化</li>
+<strong>本章练习</strong>
+<li>选一家成长股，计算其近 5 年营收、利润、现金流增速，判断属于哪种增长类型。</li>
+<li>找一家增速拐点公司，分析拐点出现的原因和后续股价表现。</li>
+<li>对比两家同行业公司，一家高位下滑、一家低位上升，思考哪家的估值应该更高。</li>
+<p>---</p>
+<h2>第四篇 生意与行业</h2>
+<h3>第 12 章 商业模式与护城河</h3>
+<div class="info-box"><strong>本章一句话</strong>：从财报数字回到生意本质，理解公司靠什么赚钱以及能否持续。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 掌握六种经典商业模式及其财务特征</div>
+<div class="info-box">2. 理解巴菲特五种护城河的内涵和识别方法</div>
+<div class="info-box">3. 能从财报反推公司的商业模式和护城河</div>
+<h4>12.1 什么是商业模式</h4>
+<strong>定义</strong>：商业模式是公司创造价值、传递价值、获取价值的逻辑。
+<strong>通俗理解</strong>：
+<li>靠什么赚钱？（价值创造）</li>
+<li>怎么把产品/服务卖给客户？（价值传递）</li>
+<li>怎么把钱收回来？（价值获取）</li>
+<strong>商业模式画布九要素</strong>（简化版）：
+<li>客户是谁？</li>
+<li>解决什么痛点？</li>
+<li>提供什么产品/服务？</li>
+<li>如何触达客户？</li>
+<li>收入来源是什么？</li>
+<li>核心资源是什么？</li>
+<li>关键业务是什么？</li>
+<li>成本结构如何？</li>
+<li>竞争优势在哪里？</li>
+<h4>12.2 六种经典商业模式</h4>
+<strong>模式 1：制造销售型</strong>
+<li>代表：美的集团、格力电器、富士康</li>
+<li>特征：采购原料→生产加工→销售产品</li>
+<li>财务特征：固定资产占比高、存货周转中等、毛利率 20-40%</li>
+<li>关键成功因素：规模效应、成本控制、渠道管理</li>
+<strong>模式 2：品牌溢价型</strong>
+<li>代表：贵州茅台、爱马仕、苹果</li>
+<li>特征：强大品牌支撑高定价</li>
+<li>财务特征：高毛利率（50%+）、高净利率、预收款多</li>
+<li>关键成功因素：品牌建设、品质控制、稀缺性营造</li>
+<strong>模式 3：平台撮合型</strong>
+<li>代表：阿里巴巴、美团、滴滴</li>
+<li>特征：连接供需双方，收取佣金或广告费</li>
+<li>财务特征：轻资产、高毛利、网络效应</li>
+<li>关键成功因素：用户规模、双边网络效应、转化率</li>
+<strong>模式 4：订阅服务型</strong>
+<li>代表：Netflix、Adobe、微软 Office 365</li>
+<li>特征：用户按周期付费，持续获得服务</li>
+<li>财务特征：高续费率、稳定现金流、前期获客成本高</li>
+<li>关键成功因素：产品粘性、转换成本、持续创新</li>
+<strong>模式 5：金融杠杆型</strong>
+<li>代表：银行、保险、券商</li>
+<li>特征：用别人的钱赚钱，赚取利差或管理费</li>
+<li>财务特征：高杠杆（权益乘数>5）、ROE 较高、周期性</li>
+<li>关键成功因素：风控能力、资金成本、监管套利</li>
+<strong>模式 6：资源垄断型</strong>
+<li>代表：长江电力、中国神华、盐湖股份</li>
+<li>特征：控制稀缺资源，坐地收钱</li>
+<li>财务特征：高毛利率、稳定现金流、资本开支大</li>
+<li>关键成功因素：资源禀赋、政策许可、进入壁垒</li>
+<h4>12.3 巴菲特的护城河框架</h4>
+<strong>护城河定义</strong>：阻止竞争对手抢走公司利润的结构性优势。
+<strong>五种护城河</strong>：
+<strong>1. 无形资产</strong>
+<li>包括：品牌、专利、政府许可、特许经营权</li>
+<li>例子：茅台（品牌）、恒瑞医药（专利）、上海机场（特许经营）</li>
+<li>财务体现：高毛利率、高定价权</li>
+<strong>2. 转换成本</strong>
+<li>定义：客户换供应商的成本很高</li>
+<li>例子：企业软件（替换系统成本高）、医疗器械（医生使用习惯）</li>
+<li>财务体现：高续费率、低客户流失率、稳定现金流</li>
+<strong>3. 网络效应</strong>
+<li>定义：用户越多，产品价值越大</li>
+<li>例子：微信（社交网络）、淘宝（电商平台）、Visa（支付网络）</li>
+<li>财务体现：赢家通吃、高市占率、边际成本低</li>
+<strong>4. 成本优势</strong>
+<li>定义：能以更低成本提供相同产品</li>
+<li>来源：规模效应、独特工艺、资源优势</li>
+<li>例子：沃尔玛（采购规模）、海螺水泥（石灰石矿山）</li>
+<li>财务体现：毛利率高于同行、价格战中有优势</li>
+<strong>5. 有效规模</strong>
+<li>定义：市场太小，只能容纳一两家玩家</li>
+<li>例子：某些细分化工品、区域垄断企业</li>
+<li>财务体现：稳定盈利、增长有限、分红率高</li>
+<h4>12.4 护城河的财务映射</h4>
+<strong>从财报读护城河</strong>：
+<p>| 护城河类型 | 财务特征 |
+|-----------|---------|
+| 品牌 | 毛利率>50%、预收款多、销售费用率低 |
+| 转换成本 | 续费率>90%、客户流失率<10%、应收账款少 |
+| 网络效应 | 市占率>50%、边际成本递减、研发费用率高 |
+| 成本优势 | 毛利率高于同行 10pp+、存货周转快 |
+| 有效规模 | 营收增长慢但稳定、分红率高、负债率低 |</p>
+<strong>例 12-1｜从财报读茅台的护城河</strong>：
+<li>毛利率 90%+ → 品牌溢价极强</li>
+<li>预收款（合同负债）常年百亿 → 经销商先打款后拿货</li>
+<li>销售费用率<5% → 不需要大量营销就有需求</li>
+<li>存货（基酒）越放越值钱 → 独特的时间壁垒</li>
+<p>结论：茅台拥有极宽的品牌护城河。</p>
+<h4>12.5 护城河的宽度、深度与消亡信号</h4>
+<strong>宽度</strong>：护城河能保护多大范围的业务
+<li>宽护城河：保护整个公司（如茅台）</li>
+<li>窄护城河：只保护部分业务（如某产品线有专利）</li>
+<strong>深度</strong>：护城河能抵御多强的竞争
+<li>深护城河：竞争对手几乎无法突破（如微信的社交网络）</li>
+<li>浅护城河：可能被资本或技术突破（如某些互联网补贴战）</li>
+<strong>消亡信号</strong>：
+<li>毛利率持续下降 → 定价权丧失</li>
+<li>市占率持续下滑 → 竞争优势被侵蚀</li>
+<li>销售费用率大幅上升 → 需要更多投入维持地位</li>
+<li>核心技术人才流失 → 创新能力下降</li>
+<li>替代品出现且快速渗透 → 护城河被绕过</li>
+<h4>12.6 没有护城河不等于不能买</h4>
+<strong>重要澄清</strong>：护城河理论适合长期价值投资，但不是唯一策略。
+<strong>没有护城河的公司也可能值得投资</strong>：
+<li><strong>周期反转</strong>：行业底部、公司成本低、等待周期回升</li>
+<li><strong>困境反转</strong>：一次性利空导致低估，问题解决后恢复</li>
+<li><strong>成长早期</strong>：护城河尚未形成，但成长空间大</li>
+<li><strong>事件驱动</strong>：并购、重组、政策变化等带来机会</li>
+<strong>关键</strong>：明确你的投资策略，匹配相应的选股标准。
+<h4>12.7 从财报读出商业模式</h4>
+<strong>实战方法</strong>：
+<li><strong>看收入结构</strong>：</li>
+   - 产品销售 vs 服务收入 vs 授权收入
+   - 单一客户依赖度（前五大客户占比）
+<li><strong>看成本结构</strong>：</li>
+   - 原材料占比高 → 制造业
+   - 人工成本占比高 → 服务业
+   - 研发费用占比高 → 科技业
+<li><strong>看资产结构</strong>：</li>
+   - 固定资产占比高 → 重资产模式
+   - 轻资产、高现金 → 平台或软件模式
+<li><strong>看现金流特征</strong>：</li>
+   - 先款后货（预收款多）→ 强势地位
+   - 先货后款（应收多）→ 弱势地位
+<strong>例 12-2｜对比两家公司商业模式</strong>：
+<li>公司 A：毛利率 35%、固定资产占比 40%、应收周转 60 天 → 传统制造业</li>
+<li>公司 B：毛利率 70%、固定资产占比 5%、预收款多 → 软件 SaaS 模式</li>
+<strong>要点小结</strong>
+<li>商业模式回答"靠什么赚钱、怎么卖、怎么收钱"</li>
+<li>六种经典模式：制造销售、品牌溢价、平台撮合、订阅服务、金融杠杆、资源垄断</li>
+<li>五种护城河：无形资产、转换成本、网络效应、成本优势、有效规模</li>
+<li>护城河会在财报中留下痕迹（毛利率、周转率、现金流等）</li>
+<li>护城河会消亡，需持续跟踪消亡信号</li>
+<li>没有护城河的公司也可能有其他投资机会</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果无法用一句话说清公司靠什么赚钱 → 那么不买，先研究清楚</li>
+<li>如果毛利率连续 3 年下降 → 那么警惕护城河被侵蚀</li>
+<li>如果发现替代品快速渗透 → 那么重新评估护城河宽度</li>
+<strong>本章练习</strong>
+<li>选一家公司，用商业模式画布九要素分析其商业模式。</li>
+<li>判断该公司拥有哪些护城河，宽度深度如何。</li>
+<li>找出三家不同商业模式的公司，对比其财务特征差异。</li>
+<p>---</p>
+<h3>第 13 章 行业分析框架</h3>
+<div class="info-box"><strong>本章一句话</strong>：不跨行业比指标，在正确的坐标系中评估公司。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 理解为什么不能跨行业比较财务指标</div>
+<div class="info-box">2. 掌握行业生命周期分析方法</div>
+<div class="info-box">3. 学会分析行业竞争格局和景气度</div>
+<h4>13.1 为什么不能跨行业比指标</h4>
+<strong>核心原因</strong>：不同行业的商业模式、资本结构、盈利模式完全不同。
+<strong>错误示例</strong>：
+<li>比较贵州茅台（毛利率 90%）和沃尔玛（毛利率 25%）→ 无意义</li>
+<li>比较银行（资产负债率 90%）和制造业（资产负债率 50%）→ 无意义</li>
+<li>比较软件公司（市盈率 50 倍）和钢铁公司（市盈率 10 倍）→ 无意义</li>
+<strong>正确做法</strong>：
+<li>同行业内横向对比（茅台 vs 五粮液）</li>
+<li>跨行业时理解差异原因（为什么白酒毛利率高、零售毛利率低）</li>
+<h4>13.2 行业生命周期</h4>
+<strong>四个阶段</strong>：
+<strong>1. 导入期</strong>
+<li>特征：技术不成熟、用户教育中、亏损普遍</li>
+<li>财务特征：营收低、费用率高、现金流为负</li>
+<li>投资风险：极高，多数公司会死亡</li>
+<li>机会：选中最终赢家回报惊人</li>
+<li>例子：2010 年的新能源车、2020 年的元宇宙</li>
+<strong>2. 成长期</strong>
+<li>特征：需求爆发、玩家涌入、高速增长</li>
+<li>财务特征：营收高增、开始盈利、现金流改善</li>
+<li>投资风险：中高，竞争格局未定</li>
+<li>机会：享受行业 β 红利</li>
+<li>例子：2020-2022 年的光伏、当前的 AI 应用</li>
+<strong>3. 成熟期</strong>
+<li>特征：增速放缓、格局稳定、龙头胜出</li>
+<li>财务特征：稳健增长、高 ROE、自由现金流充沛</li>
+<li>投资风险：中低，可预测性强</li>
+<li>机会：稳定回报 + 分红</li>
+<li>例子：白酒、家电、银行</li>
+<strong>4. 衰退期</strong>
+<li>特征：需求萎缩、产能过剩、退出加速</li>
+<li>财务特征：负增长、利润率压缩、现金流恶化</li>
+<li>投资风险：高，价值陷阱多</li>
+<li>机会：周期反转或转型成功</li>
+<li>例子：传统纸媒、功能手机、煤炭（部分）</li>
+<strong>图 13-1｜行业生命周期曲线</strong>
+<div id="chart-2" class="echarts-container"></div>
+<h4>13.3 竞争格局分析</h4>
+<strong>市场集中度</strong>：
+<li>CR3（前三名市占率之和）>70% → 寡头垄断</li>
+<li>CR3 在 30-70% → 竞争格局</li>
+<li>CR3<30% → 完全竞争</li>
+<strong>竞争格局类型</strong>：
+<li><strong>一家独大</strong>：市占率>50%，其他玩家跟随（如腾讯在社交）</li>
+<li><strong>双寡头</strong>：两家合计>70%（如可口可乐 vs 百事）</li>
+<li><strong>多强争霸</strong>：3-5 家势均力敌（如家电行业）</li>
+<li><strong>碎片化</strong>：无数小玩家（如餐饮）</li>
+<strong>关键洞察</strong>：
+<li>竞争格局越好（集中度高），龙头企业定价权越强</li>
+<li>成长期行业格局未定，成熟期格局固化</li>
+<li>关注格局变化信号（并购、价格战、新玩家进入）</li>
+<h4>13.4 行业景气度分析</h4>
+<strong>景气度指标</strong>：
+<li><strong>需求端</strong>：下游出货量、终端零售数据、消费者信心</li>
+<li><strong>供给端</strong>：产能利用率、库存水平、新进入者数量</li>
+<li><strong>价格端</strong>：产品价格走势、原材料价格走势</li>
+<li><strong>盈利端</strong>：行业整体毛利率、ROE 变化</li>
+<strong>景气周期</strong>：
+<li>上行期：需求>供给→价格上涨→盈利改善→产能扩张</li>
+<li>下行期：供给>需求→价格下跌→盈利恶化→产能出清</li>
+<strong>应用</strong>：
+<li>周期股投资核心：在景气底部买入、顶部卖出</li>
+<li>成长股也要看景气：再好的公司也怕行业逆风</li>
+<h4>13.5 定价权分析</h4>
+<strong>定价权定义</strong>：公司能否在不显著损失销量的情况下提价。
+<strong>定价权来源</strong>：
+<li>产品差异化（如苹果手机）</li>
+<li>转换成本高（如企业软件）</li>
+<li>品牌溢价（如奢侈品）</li>
+<li>供给受限（如高端白酒）</li>
+<strong>测试方法</strong>：
+<li>历史提价记录：能否成功提价？提价后销量是否下滑？</li>
+<li>毛利率变化：能否将成本上涨转嫁给下游？</li>
+<li>预收款变化：经销商是否愿意先打款？</li>
+<strong>财务体现</strong>：
+<li>有定价权：毛利率稳中有升、预收款多、现金流好</li>
+<li>无定价权：毛利率波动大、应收多、现金流差</li>
+<h4>13.6 产业链位置分析</h4>
+<strong>上游</strong>：资源、原材料
+<li>特征：周期性强、资本开支大、受大宗商品价格影响</li>
+<li>例子：矿业、石油、农产品</li>
+<strong>中游</strong>：制造、加工
+<li>特征：赚加工费、受上下游挤压、拼成本和效率</li>
+<li>例子：零部件制造、代工厂</li>
+<strong>下游</strong>：品牌、渠道、服务
+<li>特征：直接面对消费者、品牌溢价、渠道为王</li>
+<li>例子：消费品、零售、互联网平台</li>
+<strong>关键洞察</strong>：
+<li>产业链不同位置，盈利模式和估值逻辑不同</li>
+<li>关注公司在产业链中的议价能力（应付 vs 应收）</li>
+<li>纵向一体化可能改变产业链地位</li>
+<strong>例 13-1｜光伏产业链分析</strong>：
+<li>上游：硅料（周期性强、价格波动大）</li>
+<li>中游：硅片、电池片、组件（竞争激烈、毛利率低）</li>
+<li>下游：电站运营（稳定现金流、收益率固定）</li>
+<p>2022 年硅料价格暴涨，上游大赚，中游亏损 → 产业链位置决定命运。</p>
+<strong>要点小结</strong>
+<li>不跨行业比指标，要在同行业内横向对比</li>
+<li>行业生命周期：导入期→成长期→成熟期→衰退期</li>
+<li>竞争格局越好，龙头定价权越强</li>
+<li>景气度分析看需求、供给、价格、盈利四维度</li>
+<li>定价权是能提价且不丢份额的能力</li>
+<li>产业链位置决定盈利模式和估值逻辑</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果要跨行业比较 → 那么先理解商业模式差异</li>
+<li>如果行业处于导入期 → 那么只用小仓位博弈，做好归零准备</li>
+<li>如果公司毛利率持续低于同行 → 那么警惕缺乏定价权</li>
+<strong>本章练习</strong>
+<li>选一个行业，判断其处于生命周期的哪个阶段，依据是什么。</li>
+<li>分析该行业的竞争格局（CR3、主要玩家、竞争态势）。</li>
+<li>画出该行业的产业链图谱，标注各环节的代表公司和盈利特征。</li>
+<p>---</p>
+<h3>第 14 章 六大行业财务特征</h3>
+<div class="info-box"><strong>本章一句话</strong>：同一套报表，不同的生意——理解六大行业的财务密码。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 掌握制造业、零售业、地产、互联网、金融、医药六大行业的财务特征与关键指标；</div>
+<div class="info-box">2. 能针对不同类型公司选择正确的分析框架；</div>
+<div class="info-box">3. 能识别跨行业误用指标的典型错误。</div>
+<h4>14.1 为什么不能跨行业比指标</h4>
+<p>银行 ROE 12%，软件公司 ROE 25%——软件公司更好吗？不一定。银行靠 12 倍权益乘数的杠杆，软件靠 30%+ 净利率。再如存货周转天数：制造业 60 天正常，零售业 60 天可能就是滞销。<strong>不先建立行业基准，数字就没有锚点。</strong></p>
+<h4>14.2 制造业：重资产＋周期性强</h4>
+<strong>核心资产</strong>：固定资产＋存货。
+<strong>关键指标</strong>：
+<li>毛利率：25%-40% 常见，>50% 需有技术壁垒解释；</li>
+<li>存货周转天数：约 60 天正常，>90 天警惕；</li>
+<li>产能利用率：>80% 为健康，<60% 可能产能闲置；</li>
+<li>折旧政策：年限与同业是否一致（第 17 章手法二）。</li>
+<strong>特殊关注</strong>：
+<li>折旧口径统一性：不同折旧年限会显著影响利润；</li>
+<li>产能利用率敏感：固定成本高，利用率下降会快速侵蚀利润；</li>
+<li>周期性明显：需求波动放大盈利波动。</li>
+<strong>例 2-14-1｜制造业分析（示例数据）</strong>：某家电公司：营收 500 亿元，固定资产 180 亿元，存货 60 亿元，营业成本 350 亿元。毛利率＝（500-350）÷500＝30%；存货周转天数＝365÷（350÷60）≈63 天。两者均处于制造业正常区间。若次年毛利率降至 24% 而存货周转天数升至 85 天 → 标记"竞争加剧＋产品滞销"双杀信号。
+<h4>14.3 零售业：薄利高周转</h4>
+<strong>核心资产</strong>：存货。
+<strong>关键指标</strong>：
+<li>毛利率：<25% 常见（薄利多销）；</li>
+<li>存货周转天数：30-60 天健康，>75 天警惕；</li>
+<li><strong>同店增长（Same Store Sales Growth）</strong>：剔除新开店后老店的收入增长，比总营收更重要；</li>
+<li>坪效：每平方米年销售额，衡量门店效率。</li>
+<strong>特殊关注</strong>：
+<li>同店增长比总营收重要：总营收增长可能全靠新开店，老店可能在下滑；</li>
+<li>周转是生命线：一旦周转放缓，ROE 立刻坍塌（杜邦分析：低毛利×高周转）；</li>
+<li>应付账款周期：占用供应商资金的能力（经营性负债占比高是议价权）。</li>
+<strong>例 2-14-2｜零售业陷阱（示例数据）</strong>：某连锁超市：总营收增速 15%，但同店增长 -3%，新开店贡献 18% 增长。结论：老店在流失顾客，增长靠扩张掩盖。若同时存货周转天数从 35 天升至 55 天 → 标记"滞销＋老店衰退"双重危险信号。
+<h4>14.4 房地产：高杠杆＋预收账款</h4>
+<strong>核心资产</strong>：土地储备＋在建开发产品。
+<strong>关键指标</strong>（地产四指标）：
+<li>净负债率＝（有息负债 - 货币资金）÷净资产：<strong><100% 为健康参考线</strong>；</li>
+<li>现金短债比＝货币资金÷短期有息债务：<strong>>1 为安全</strong>；</li>
+<li>剔除预收后的资产负债率＝（总负债 - 合同负债）÷（总资产 - 合同负债）：<strong><70% 为监管参考线</strong>；</li>
+<li>销售回款率＝销售商品收到的现金÷合约销售额：<strong>>85% 为健康</strong>。</li>
+<strong>特殊关注</strong>：
+<li>预收账款/合同负债是营收蓄水池：预售制下，预收高意味着未来 1-2 年业绩有保障；</li>
+<li>高杠杆常态：资产负债率 70%+ 常见，但要区分经营性负债（应付工程款）与金融性负债（借款）；</li>
+<li>"三道红线"监管（2020 年 8 月起）：同时踩中三条红线的房企融资受限。</li>
+<strong>例 2-14-3｜地产三红线测算（示例数据）</strong>：某房企：有息负债 2000 亿元，货币资金 600 亿元，净资产 800 亿元 → 净负债率＝（2000-600）÷800＝175%（超标）；短期有息债务 500 亿元 → 现金短债比＝600÷500＝1.2（达标）；总负债 5000 亿元，合同负债 1200 亿元，总资产 7000 亿元 → 剔除预收后资产负债率＝（5000-1200）÷（7000-1200）≈65.5%（达标）。结论：三条红线中仅净负债率超标，属于"黄档"房企（示例分类）。
+<h4>14.5 互联网：轻资产＋用户指标先行</h4>
+<strong>核心资产</strong>：现金＋无形资产（技术、品牌、用户关系）。
+<strong>关键指标</strong>：
+<li>毛利率：50%-80% 常见（边际成本低）；</li>
+<li><strong>DAU/MAU</strong>（日活/月活）：衡量用户粘性，>30% 为健康；</li>
+<li><strong>ARPU</strong>（Average Revenue Per User，每用户平均收入）：衡量变现能力；</li>
+<li><strong>LTV/CAC</strong>（用户生命周期价值÷获客成本）：<strong>>3 健康，<1 亏钱获客</strong>；</li>
+<li>研发费用率：15%-25% 常见（技术驱动）。</li>
+<strong>特殊关注</strong>：
+<li>用户指标先于财务指标：DAU 下滑通常领先营收下滑 2-3 个季度；</li>
+<li>资本化率口径：研发投入资本化还是费用化，对利润影响巨大（第 17 章手法二）；</li>
+<li>网络效应：用户越多越值钱，赢家通吃逻辑。</li>
+<strong>例 2-14-4｜互联网估值（示例数据）</strong>：某社交平台：DAU 2 亿，MAU 6 亿 → DAU/MAU＝33%（健康）；年营收 300 亿元 → ARPU＝150 元/年；获客成本 CAC＝120 元，用户平均贡献 LTV＝400 元 → LTV/CAC≈3.3（健康）。若 DAU 连续两季下滑 → 即使营收仍在增长，也要标记"用户基础松动"预警。
+<h4>14.6 金融业（银行）：特殊分析框架</h4>
+<strong>核心资产</strong>：贷款＋投资。
+<strong>关键指标</strong>（银行四指标，五册统一口径）：
+<li>资本充足率：<strong>>10.5% 为监管底线</strong>；</li>
+<li>不良贷款率：<strong><2% 为健康，≥2% 进入压力区</strong>；</li>
+<li>拨备覆盖率＝贷款损失准备÷不良贷款：<strong>>150% 为健康，<150% 缓冲不足</strong>；</li>
+<li>净息差（NIM，Net Interest Margin）：<strong>>2% 健康，<1.5% 压力线</strong>。</li>
+<strong>特殊关注</strong>：
+<li><strong>不能用普通企业指标分析银行</strong>：流动比率、资产负债率对银行无意义（银行天生高杠杆）；</li>
+<li>资产质量是核心：不良贷款的认定标准是否严格（关注"关注类贷款"占比）；</li>
+<li>表外业务风险：理财、信托等表外敞口。</li>
+<strong>例 2-14-5｜银行对比（示例数据）</strong>：银行 A：资本充足率 13.5%，不良率 1.2%，拨备覆盖率 220%，NIM 2.3% → 四项全健康。银行 B：资本充足率 11.0%，不良率 2.3%，拨备覆盖率 130%，NIM 1.4% → 后三项进入压力区。结论：银行 A 抗风险能力显著优于银行 B。
+<h4>14.7 医药：高毛利＋研发管线</h4>
+<strong>核心资产</strong>：研发管线＋品牌（专利药、独家品种）。
+<strong>关键指标</strong>：
+<li>毛利率：50%-90% 常见（专利药更高）；</li>
+<li>研发费用率：10%-25% 常见（创新药企更高）；</li>
+<li>销售费用率：30%-50% 常见（带金销售模式）；</li>
+<li>集采中标情况：集采后价格降幅与销量变化。</li>
+<strong>特殊关注</strong>：
+<li><strong>集采政策冲击</strong>：仿制药集采后价格降幅可达 50%-90%，毛利率断崖式下跌；</li>
+<li>研发管线进度：临床 I/II/III 期、审批阶段，决定未来 3-5 年增长；</li>
+<li>专利悬崖：核心专利到期后仿制药冲击。</li>
+<strong>例 2-14-6｜集采影响（示例数据）</strong>：某仿制药企：核心产品 A 年收入 40 亿元，毛利率 85%。集采中标后价格降 70%，销量增 2 倍 → 新收入＝40×0.3×2＝24 亿元，毛利率降至 40% → 毛利从 34 亿元降至 9.6 亿元。结论：集采后收入略降、毛利暴跌，必须靠新产品填补。
+<h4>14.8 六大行业对比速查表</h4>
+<p>| 行业 | 核心资产 | 关键指标 | 常见区间（示例值） | 特殊关注 |
+|---|---|---|---|---|
+| 制造业 | 固定资产＋存货 | 存货周转、毛利率、产能利用率 | 周转约 60 天、毛利率 25%-40% | 折旧口径统一；产能利用率敏感 |
+| 零售业 | 存货 | 存货周转天数、同店增长、毛利率 | 周转 30-60 天、毛利率<25% | 同店增长比总营收重要；周转是生命线 |
+| 房地产 | 土地储备＋在建 | 净负债率、销售回款率、预收账款 | 净负债率<100% 为健康参考线 | 预收是营收蓄水池；高杠杆常态 |
+| 互联网 | 现金＋无形资产 | DAU/MAU、ARPU、LTV/CAC、毛利率 | 毛利率 50%-80%、LTV/CAC>3 | 用户指标先于财务；资本化率口径 |
+| 金融业（银行） | 贷款＋投资 | 资本充足率、不良率、拨备覆盖率、净息差 | 充足率>10.5%、不良<2%、拨备>150%、NIM>2% | 不用普通企业指标分析 |
+| 医药 | 研发管线＋品牌 | 毛利率、研发占比、管线进度 | 毛利率 50%-90%、研发 10%-25% | 集采政策冲击毛利率 |</p>
+<strong>使用方法</strong>：分析任何公司前，先在本表定位其行业，抄出该行业的关键指标作为基准，再读财报数字。多业务公司额外看分部报告（第 14.9 节）。
+<h4>14.9 多业务公司的分部报告</h4>
+<p>很多大公司是跨行业经营的（如某集团同时做地产、物业、零售）。此时要读年报中的<strong>分部报告</strong>（Segment Report）：</p>
+<li>各业务板块的收入、成本、利润分别披露；</li>
+<li>各板块的资产、负债分别披露；</li>
+<li>板块间关联交易单独列示。</li>
+<strong>分析方法</strong>：把多业务公司拆成几个"单一业务公司"分别分析，再加权汇总。例如某公司 60% 收入来自制造业、30% 来自房地产、10% 来自物业 → 分别用制造业、地产、服务业的基准评估各板块，再综合判断。
+<strong>例 2-14-7｜分部分析（示例数据）</strong>：某多元化集团：制造板块营收 300 亿元（毛利率 28%）、地产板块 150 亿元（毛利率 35%）、物业板块 50 亿元（毛利率 42%）。整体毛利率＝（300×28%+150×35%+50×42%）÷500≈31.6%。若地产板块净负债率 150% 超标，而制造、物业板块健康 → 结论：集团整体风险取决于地产业务能否降杠杆。
+<h4>14.10 行业错配的典型案例</h4>
+<strong>错误 1</strong>：用 PE 给亏损互联网公司估值 → 应改用 PS 或用户价值法（第 23 章）；
+<strong>错误 2</strong>：用流动比率评判银行 → 银行天生高杠杆，此指标无意义；
+<strong>错误 3</strong>：用制造业存货周转 benchmark 评判零售业 → 零售周转天然更快；
+<strong>错误 4</strong>：忽视集采对医药毛利率的结构性冲击 → 用历史毛利率线性外推，严重误判。
+<strong>要点小结</strong>
+<li>六大行业各有财务密码：制造看周转、零售看同店、地产看三红线、互联网看用户、银行看四指标、医药看管线。</li>
+<li>跨行业比指标是典型错误，要先定位行业再用对应基准。</li>
+<li>多业务公司要读分部报告，分板块评估再加权。</li>
+<li>行业错配会导致估值方法错误、阈值误用、结论失真。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果分析一家公司 → 那么先在六大行业定位，抄出对应关键指标作为基准。</li>
+<li>如果公司跨多个行业 → 那么读分部报告，分板块评估后再综合。</li>
+<li>如果用错行业基准（如用制造业周转评判零售） → 那么重新校准，避免误判。</li>
+<strong>本章练习</strong>
+<li>选一家制造业公司和一家零售业公司，分别计算存货周转天数，对照行业基准给出评价。</li>
+<li>找一家多元化经营的上市公司，读其年报分部报告，分析各板块的盈利贡献与风险特征。</li>
+<p>---</p>
+<h3>第 15 章 季度财报与单季分析——跟踪业绩拐点</h3>
+<div class="info-box"><strong>本章一句话</strong>：年度财报看方向，季度财报找拐点——单季同比与环比的交叉验证，提前捕捉业绩变盘信号。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能拆取单季数据并计算同比/环比；</div>
+<div class="info-box">2. 能识别 Q4 单季下滑而年报增长的"温水煮青蛙"信号；</div>
+<div class="info-box">3. 能理解业绩预告/快报的披露规则与信息价值。</div>
+<h4>15.1 为什么需要单季分析</h4>
+<p>年报是"全年总分"，季报是"季度小分"。全年增长 20% 看似不错，但如果 Q4 单季同比下滑 10% → 可能是<strong>拐点信号</strong>。等年报披露时已经滞后，季报能更早发现问题。</p>
+<strong>单季数据的价值</strong>：
+<li>提前捕捉拐点（增长加速或减速）；</li>
+<li>识别季节性规律（某些行业旺季淡季明显）；</li>
+<li>验证管理层指引（第 20 章）。</li>
+<h4>15.2 如何拆取单季数据</h4>
+<p>A 股披露规则：一季报（4 月底前）、半年报（8 月底前）、三季报（10 月底前）、年报（次年 4 月底前）。其中：
+<li>一季报＝Q1 单季；</li>
+<li>半年报＝Q1+Q2，需做减法得 Q2 单季；</li>
+<li>三季报＝Q1+Q2+Q3，需做减法得 Q3 单季；</li>
+<li>年报＝全年，需做减法得 Q4 单季。</li></p>
+<strong>公式</strong>：
+<li>Q2 单季＝半年报累计 - 一季报；</li>
+<li>Q3 单季＝三季报累计 - 半年报；</li>
+<li>Q4 单季＝年报 - 三季报。</li>
+<strong>注意</strong>：现金流量表单季拆分需谨慎（季节性因素大），优先拆利润表与资产负债表。
+<strong>例 2-15-1｜Q4 单季拆取（示例数据）</strong>：某公司全年营收 120 亿元，前三季度累计营收 95 亿元 → Q4 单季营收＝120-95＝25 亿元。去年 Q4 单季营收 30 亿元 → Q4 单季同比＝（25-30）÷30≈-16.7%。虽然全年增长 8%，但 Q4 单季下滑 → 标记"增长动能减弱"。
+<h4>15.3 同比 vs 环比：两种视角</h4>
+<li><strong>同比（Year-over-Year，YoY）</strong>：与去年同期比，消除季节性影响，看趋势；</li>
+<li><strong>环比（Quarter-over-Quarter，QoQ）</strong>：与上一季度比，看短期动能。</li>
+<strong>使用场景</strong>：
+<li>同比适合判断长期趋势（增长加速还是减速）；</li>
+<li>环比适合捕捉短期拐点（尤其 Q4 环比 Q3 突然下滑）。</li>
+<strong>注意基数效应</strong>：去年同期基数低 → 今年同比容易高增长；去年同期基数高 → 今年同比容易"被放缓"（第 11 章）。
+<h4>15.4 "温水煮青蛙"信号：Q4 单季下滑而年报增长</h4>
+<p>这是最常见的隐蔽拐点：全年看仍增长，但 Q4 单季已下滑。等投资者发现时，往往已经晚了两个季度。</p>
+<strong>典型路径</strong>：
+<li>年报披露：全年营收 +15%（看起来不错）；</li>
+<li>拆 Q4 单季：Q4 同比 -10%（拐点已现）；</li>
+<li>次年一季报：Q1 同比 -18%（确认下行趋势）。</li>
+<strong>判据</strong>：Q4 单季同比下滑而年报仍增长 → 标记"温水煮青蛙"信号，下调次年预期。
+<h4>15.5 业绩预告与快报</h4>
+<strong>业绩预告</strong>：定期报告发布前的预披露，披露时间有明确规定（如沪深交易所规则）。内容包括预计净利润区间、同比变动幅度等。
+<strong>业绩快报</strong>：比预告更精确，接近正式报告的数据。
+<strong>信息价值</strong>：
+<li>预告/快报大幅超预期 → 股价可能提前反应；</li>
+<li>预告/快报不及预期 → 即使正式报告"增长"，股价也可能跌（预期差逻辑，第 20 章）。</li>
+<strong>注意</strong>：预告/快报数据可能与正式报告有差异，以正式报告为准。
+<h4>15.6 单季分析的陷阱</h4>
+<li><strong>季节性误读</strong>：某些行业 Q4 天然淡季（如建筑、空调），环比下滑不一定是恶化；</li>
+<li><strong>一次性损益干扰</strong>：单季确认大额资产处置收益，扭曲主业真实表现（要看扣非）；</li>
+<li><strong>会计调整</strong>：年底集中确认收入或计提费用，单季数据失真。</li>
+<strong>应对方法</strong>：
+<li>看多年同期数据，建立季节性基准；</li>
+<li>优先用扣非净利润而非净利润；</li>
+<li>结合经营现金流验证。</li>
+<strong>例 2-15-2｜拐点识别（示例数据）</strong>：某消费品公司：
+<li>2022 年全年营收 100 亿元（+12%），扣非净利润 12 亿元（+10%）；</li>
+<li>拆单季：Q4 单季营收 22 亿元（同比 -5%），扣非净利润 1.8 亿元（同比 -15%）；</li>
+<li>2023 年 Q1：营收 20 亿元（同比 -12%），扣非净利润 1.5 亿元（同比 -20%）。</li>
+<p>结论：2022 年报看似增长，但 Q4 单季已下滑，2023 年 Q1 确认下行趋势。若在 2022 年报后拆单季发现拐点 → 可提前减仓避开 2023 年的下跌。</p>
+<strong>要点小结</strong>
+<li>单季数据能提前捕捉拐点，Q4 单季下滑而年报增长是典型"温水煮青蛙"信号。</li>
+<li>同比看趋势，环比看动能，两者结合使用。</li>
+<li>业绩预告/快报有信息价值，但以正式报告为准。</li>
+<li>警惕季节性误读与一次性损益干扰。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果读年报 → 那么必须拆 Q4 单季数据，检查是否出现"温水煮青蛙"信号。</li>
+<li>如果 Q4 单季同比下滑超过 10% → 那么下调次年预期，标记"观察减仓"。</li>
+<li>如果业绩预告大幅偏离一致预期 → 那么按预期差逻辑对待（第 20 章），不等正式报告。</li>
+<strong>本章练习</strong>
+<li>选一家已披露年报的公司，拆取 Q4 单季营收与扣非净利润，计算同比，判断是否有拐点信号。</li>
+<li>找出该公司近 8 个季度的单季营收序列，画出折线图，观察季节性与趋势。</li>
+<p>---</p>
+<h3>第 16 章 财务造假的底层逻辑——虚增资产，粉饰利润</h3>
+<div class="info-box"><strong>本章一句话</strong>：所有造假都绕不开一个恒等式——虚增的利润必须在资产负债表上找到"容器"，而应收与存货就是最常用的容器。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能用会计恒等式推导"虚增利润必然伴随虚增资产或隐匿负债"；</div>
+<div class="info-box">2. 能解释为什么应收和存货是造假重灾区；</div>
+<div class="info-box">3. 能说出四大造假动机并识别存贷双高。</div>
+<h4>16.1 造假的核心公式</h4>
+<strong>虚增资产 ＝ 虚增利润</strong>。这是财务造假的第一性原理。
+<p>推导：资产＝负债＋所有者权益。想让利润多 5 亿元，期末所有者权益就多 5 亿元，报表必须配平——要么资产端凭空多出 5 亿元（虚增资产），要么负债端少记 5 亿元（隐匿负债）。<strong>绝大多数造假选择虚增资产</strong>，因为比隐匿负债更容易操作、更难被发现。</p>
+<p>虚增装进哪个科目？答案集中在<strong>应收账款和存货</strong>——因为它们最容易"凭空捏造"。</p>
+<h4>16.2 为什么应收和存货是重灾区</h4>
+<li><strong>货币资金很难造假</strong>：银行对账单摆在那里，函证一查便知；</li>
+<li><strong>应收和存货是"软资产"</strong>：客户欠不欠钱、仓库有没有那么多货，外部人难以直接验证。</li>
+<p>造假动作因此变得简单：虚构一个客户、一笔销售 → 应收增加＋收入增加＋利润增加；虚构一批存货 → 存货增加＋少结转成本 → 利润增加。经验上，A 股历史上的财务造假绝大多数涉及应收账款和存货这两个"软资产"科目（经验总结，示例表述）。</p>
+<h4>16.3 权责发生制的"漏洞"</h4>
+<p>确认收入不需要收到现金——虚构销售只需要虚构合同与发货单，不需要真实的银行流水。这正是第 2 章讲的权责发生制的阴暗面：规则本身合理，却给造假留了门。<strong>所以现金流才是照妖镜：假收入产生不了真的经营现金流（第 5 章）。</strong></p>
+<h4>16.4 四大造假动机</h4>
+<li><strong>保壳</strong>：连续亏损面临退市风险的公司（注册制退市常态化后，此动机下的造假代价与识别权重同步上升，见第 18 章）；</li>
+<li><strong>对赌</strong>：并购业绩承诺期内，被并购方需要"完成"利润指标；</li>
+<li><strong>减持</strong>：拉高股价后大股东套现；</li>
+<li><strong>融资</strong>：发债、定增需要好看的报表。</li>
+<strong>应用</strong>：看一家公司时先问"谁有动机粉饰报表"——处于对赌期、大股东高比例质押且临近减持窗口、连续两年亏损的公司，排雷标准要自动上调。
+<h4>16.5 存贷双高：最经典的红旗</h4>
+<p>账上躺着大量现金，却同时大量借有息负债。你有 10 亿现金，为什么还要付利息借 5 亿？只有两种解释：<strong>现金是假的</strong>，或者<strong>现金被限制使用/被挪用</strong>。</p>
+<strong>统一判据（一票否决）</strong>：货币资金÷短期借款>2 且 利息收入÷货币资金<1.5% → 存贷双高成立，直接排除。康美药业、康得新暴雷前都呈现这一画像（第 19 章）。
+<strong>例 2-16-1｜存贷双高验算（示例数据，参考公开案例画像）</strong>：某公司：货币资金 300 亿元，短期借款 150 亿元，全年利息收入 2.4 亿元。货币资金÷短期借款＝2（等于阈值）；利息收入率＝2.4÷300＝0.8%<1.5% → 现金收益远低于正常存款利率，"账上 300 亿现金"大概率不真实或不可动用。触发一票否决，不再看其他指标。
+<strong>要点小结</strong>
+<li>虚增利润必然在资产负债表找容器，应收与存货是最常用容器。</li>
+<li>软资产难验证、权责发生制不需要现金到账，共同构成造假空间。</li>
+<li>四大动机：保壳、对赌、减持、融资——先问动机再读数字。</li>
+<li>存贷双高一票否决：货币资金÷短期借款>2 且利息收入率<1.5%。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果公司处于对赌期、保壳压力期或大股东减持窗口 → 那么自动上调排雷标准，十项清单全部从严。</li>
+<li>如果出现存贷双高 → 那么不再分析其他指标，直接排除。</li>
+<li>如果利润增长但应收＋存货增长更快 → 那么标记"虚增资产嫌疑"，进入排雷模式。</li>
+<strong>本章练习</strong>
+<li>用会计恒等式手工推导：虚增 3 亿元利润，资产负债表可以有哪些"配平方式"？各写出一个科目。</li>
+<li>计算一家公司最近一年的利息收入率（利息收入÷货币资金），对照 1.5% 阈值判断。</li>
+<p>---</p>
+<h3>第 17 章 六大造假手法与识别信号</h3>
+<div class="info-box"><strong>本章一句话</strong>：虚增收入、虚减成本、操纵现金流、资产造假、隐匿负债、商誉操纵——每种手法都有可量化的识别信号。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能说出六大造假手法的操作方式与对应信号；</div>
+<div class="info-box">2. 能默写信号汇总表中的阈值；</div>
+<div class="info-box">3. 能执行"单信号存疑、双信号排除"的纪律。</div>
+<h4>17.1 手法一：虚增收入</h4>
+<p>操作方式：关联交易造假（卖给"自己人"）、虚假客户（空壳公司走账）、提前确认收入（年底突击发货甚至次年退货）。</p>
+<strong>关键信号</strong>：应收增速≫营收增速；收现比持续<1；<strong>关联销售占比>30% 需高度警惕</strong>；大客户突然出现又突然消失。
+<h4>17.2 手法二：虚减成本</h4>
+<p>操作方式：研发支出本该费用化却资本化成无形资产；延长折旧年限少计折旧；存货已销售但成本不结转。</p>
+<strong>关键信号</strong>：毛利率畸高于同业且无技术壁垒（<strong>>同业均值 +15 个百分点</strong>）；资本化率异常（同行业约 10%，该公司 30%）；折旧年限显著长于同行。
+<h4>17.3 手法三：操纵现金流</h4>
+<p>操作方式：把本属筹资活动的票据贴现、保理融资包装成经营现金流入，制造"经营现金流健康"的假象。</p>
+<strong>关键信号</strong>：应收票据激增＋经营现金流突然转正＋银行承兑汇票占比异常（应收票据÷应收款项>50% 需深查贴现比例）。
+<h4>17.4 手法四：资产造假</h4>
+<p>操作方式：虚增存货（账面数量远超实际盘点）；在建工程长期挂账不转固（钱花出去了，项目"永远建不完"）。</p>
+<strong>关键信号</strong>：存货周转骤降＋毛利率异常上升（正常清库存应降价、毛利率下降）；<strong>在建工程连续 3 年不转固 → 一票否决</strong>。
+<h4>17.5 手法五：隐匿负债</h4>
+<p>操作方式：明股实债（表面是股权投资，实际是必须回购的债务）；表外担保（替关联方担保但不披露）。</p>
+<strong>关键信号</strong>：<strong>担保÷净资产>50%</strong>；其他应收款突增（常是资金被占用的通道）。
+<h4>17.6 手法六：商誉操纵</h4>
+<p>操作方式：高溢价并购后长期不计提减值（商誉虚高挂账）；或一次性"洗澡式"减值清空，为未来利润腾空间。</p>
+<strong>关键信号</strong>：<strong>商誉÷净资产>30%</strong>；被并购标的业绩明显下滑却不减值；减值测试参数过于乐观（附注中可见）。
+<h4>17.7 信号汇总表</h4>
+<strong>图 2-17-1｜六大造假手法信号矩阵</strong>（信号强度示意；示例数据）
+<div id="chart-3" class="echarts-container"></div>
+<strong>六大手法关键识别信号汇总</strong>
+<p>| 手法 | 最关键信号 | 阈值 | 触发后动作 |
+|---|---|---|---|
+| 虚增收入 | 应收增速≫营收增速 | >营收增速×1.5 | 标记存疑，降仓 50% |
+| 虚减成本 | 毛利率畸高于同业 | >同业均值 +15pp 且无壁垒 | 查资本化率与折旧政策 |
+| 操纵现金流 | 应收票据激增 | 票据÷应收款项>50% | 查贴现与保理比例 |
+| 资产造假 | 在建工程不转固 | >3 年未转固 | 一票否决，直接排除 |
+| 隐匿负债 | 担保过高 | 担保÷净资产>50% | 查表外项目与明股实债 |
+| 商誉操纵 | 商誉占比过高 | 商誉÷净资产>30% | 查减值测试参数 |</p>
+<strong>执行纪律</strong>：任一信号触发 → 不自动认定造假，标记"存疑"并执行第 18 章十项清单后给出结论；<strong>两个以上信号同时触发 → 直接排除——宁可错过，不可踩雷。</strong>
+<strong>例 2-17-1｜双信号排除（示例数据）</strong>：某公司：营收增速 18%，应收增速 35%（>18%×1.5＝27%，信号一触发）；毛利率 52%，同业均值 35%（偏离 17pp>15pp，且无专利壁垒解释，信号二触发）。双信号 → 直接排除。事后复盘：该公司次年因虚增收入被立案——但即使没有"事后"，双信号纪律也足以让我们避开。
+<strong>要点小结</strong>
+<li>六大手法：虚增收入、虚减成本、操纵现金流、资产造假、隐匿负债、商誉操纵。</li>
+<li>每种手法有对应的量化信号，阈值需熟记。</li>
+<li>单信号存疑、双信号排除——纪律重于解释。</li>
+<li>信号矩阵帮助快速定位可疑手法组合。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果发现任一造假信号 → 那么标记"存疑"，执行十项排雷清单。</li>
+<li>如果两个以上信号同时触发 → 那么直接排除，不寻找"例外理由"。</li>
+<li>如果毛利率>同业均值 +15pp 且无壁垒解释 → 那么追查资本化率、折旧政策、收入确认口径。</li>
+<strong>本章练习</strong>
+<li>选一家毛利率显著高于同业的公司，查找其资本化率、折旧年限与同业对比，判断是否存在虚减成本嫌疑。</li>
+<li>对一家应收增速远超营收增速的公司，计算其收现比，判断收入质量。</li>
+<p>---</p>
+<h3>第 18 章 十项排雷清单——买入前的强制安检</h3>
+<div class="info-box"><strong>本章一句话</strong>：十项必查＋五个一票否决，30 分钟完成扫描——排雷是买入前的强制安检，不是可选项。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能默写十项排雷清单与五个一票否决信号；</div>
+<div class="info-box">2. 能在 30 分钟内对任意公司完成一遍扫描；</div>
+<div class="info-box">3. 能解释全面注册制与退市常态化为什么提高排雷权重。</div>
+<h4>18.1 退市常态化：排雷为什么越来越重要</h4>
+<p>A 股已全面实行股票发行注册制（2023 年 2 月），上市公司数量超过 5000 家，退市渠道同步常态化——财务造假、连续亏损、面值退市的案例显著增加。这改变了排雷的"赔率结构"：</p>
+<li><strong>过去</strong>：踩雷后可能靠重组、壳价值回血；</li>
+<li><strong>现在</strong>：踩雷可能面临退市、流动性枯竭，损失接近全额。</li>
+<strong>结论：注册制与退市常态化背景下，排雷的权重必须上升——"宁可错过，不可踩雷"从谨慎变成生存必需。</strong> 新手期尤其如此：选股可以慢慢学，踩一次雷可能直接出局。
+<h4>18.2 十项排雷清单</h4>
+<p>| 序号 | 检查项 | 判据 | 结论 |
+|---|---|---|---|
+| 1 | 净现比 | 经营现金流÷净利润连续<0.5 | 标记"危险" |
+| 2 | 应收增速 | 应收增速>营收增速×1.5 | 标记"存疑" |
+| 3 | 存货异常 | 存货增速>营收增速×1.5 且毛利率上升 | 标记"危险" |
+| 4 | 毛利率偏离 | >同业均值 +15pp 且无技术壁垒 | 标记"存疑" |
+| 5 | 审计意见 | 非标意见（保留/否定/无法表示） | <strong>一票否决</strong> |
+| 6 | 关联交易 | 关联销售/采购占比>30% | 标记"存疑" |
+| 7 | 商誉占比 | 商誉÷净资产>30% | 标记"存疑" |
+| 8 | 担保比例 | 担保÷净资产>50% | 标记"存疑" |
+| 9 | 管理层行为 | 频繁换审计＋高管密集减持 | <strong>一票否决</strong> |
+| 10 | 分红一致性 | 账面大量现金但长期不分红 | 标记"存疑" |</p>
+<p>补充说明第 10 项：账上有大笔货币资金却常年不分红、不偿还高息借款，与"存贷双高"互为印证——现金可能不真实或不可动用。</p>
+<h4>18.3 五个"一票否决"信号</h4>
+<p>任一出现＝直接排除，不再深入分析：</p>
+<li><strong>非标审计意见</strong>（保留、否定、无法表示意见）——审计师已经在报警；</li>
+<li><strong>频繁更换审计机构＋高管密集减持</strong>——最了解公司的人在跑路；</li>
+<li><strong>存贷双高</strong>（货币资金÷短期借款>2 且利息收入率<1.5%）——现金真实性存疑；</li>
+<li><strong>在建工程连续 3 年不转固</strong>——资金黑洞嫌疑；</li>
+<li><strong>两个以上排雷信号同时触发</strong>——单信号存疑、双信号排除。</li>
+<h4>18.4 强制执行纪律</h4>
+<li><strong>决定买入前强制执行十项清单——不完成排雷不买入</strong>；</li>
+<li>排雷结果为"存疑"时：仓位限制在标准仓的 1/3，并设置更紧的止损纪律（与系统手册仓位分级衔接：存疑标的按 C 级信号对待）；</li>
+<li>排雷规则必须<strong>无条件执行</strong>——不管股价在涨还是在跌，不管市场情绪如何（第 19 章案例反复证明：股价上涨是忽略红旗的最大诱因）。</li>
+<strong>图 2-18-1｜十项排雷清单执行流程</strong>（漏斗：从初筛到结论；示例流程）
+<div id="chart-4" class="echarts-container"></div>
+<p>注：漏斗数值为流程示意（示例数据），表示候选池逐级过滤的过程，不代表实际通过率。</p>
+<h4>18.5 排雷与全链路的关系</h4>
+<p>排雷是"八步全链路交易计划"的第④步（基本面排雷），位于宏观环境、指数结构、板块筛选之后，PA 入场信号之前——<strong>基本面排雷不过关的股票，后面所有技术分析都不用做</strong>。详见系统手册第 8 章。</p>
+<strong>例 2-18-1｜30 分钟扫描示例（示例数据）</strong>：某候选公司扫描记录：①净现比 0.9（健康）→过；②应收增速 25%、营收增速 20%（25%<30% 阈值）→过；③存货增速 15%→过；④毛利率 41%、同业均值 38%（偏离 3pp）→过；⑤审计意见标准无保留→过；⑥关联交易 8%→过；⑦商誉÷净资产 5%→过；⑧担保÷净资产 0%→过；⑨管理层稳定、无异常减持→过；⑩连续三年分红率约 40%→过。结论：十项全部通过，进入估值环节。全程用时约 25 分钟（查年报主要财务指标、附注关联交易与担保、审计意见页）。
+<strong>要点小结</strong>
+<li>全面注册制＋退市常态化 → 排雷权重上升，踩雷代价接近全额损失。</li>
+<li>十项清单覆盖：净现比、应收、存货、毛利率、审计意见、关联交易、商誉、担保、管理层、分红。</li>
+<li>五个一票否决：非标意见、换审计＋减持、存贷双高、在建 3 年不转固、双信号叠加。</li>
+<li>不完成排雷不买入；存疑标的限仓 1/3。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果你准备买入一只股票 → 那么先完成十项清单并留下书面记录，未完成不买入。</li>
+<li>如果任一一票否决信号触发 → 那么直接排除，不寻找"例外理由"。</li>
+<li>如果结论为存疑 → 那么仓位上限按标准仓的 1/3 执行，并按更严信号等级对待。</li>
+<strong>本章练习</strong>
+<li>对一只你自选股池中的股票完整执行十项清单，写下每项的数据与结论。</li>
+<li>统计你完成一遍扫描的实际用时，找出最耗时的项目并优化（如固定先查审计意见页）。</li>
+<p>---</p>
+<h3>第 19 章 经典案例复盘——从财报里看到红旗</h3>
+<div class="info-box"><strong>本章一句话</strong>：每次暴雷前 1-2 年，财报都已发出红旗——案例复盘的意义是证明"事前可识别"。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能复述六个经典案例的事前信号；</div>
+<div class="info-box">2. 能说出每个案例对应第 17-18 章的哪条判据；</div>
+<div class="info-box">3. 能总结"事后明显、事前难执行"的心理原因。</div>
+<strong>注意</strong>：本章案例均为已公开定性的历史暴雷事件，仅用于教育复盘，涉及数字来自当时公开报道与处罚认定的口径概述（示例性引用），不构成对相关主体的评价。
+<h4>19.1 案例一：瑞幸咖啡（2020 年自曝虚增收入）</h4>
+<strong>定性</strong>：2020 年 4 月自曝约 22 亿元（人民币口径概述）收入造假，后从美股退市并缴纳罚款（已公开定性）。
+<strong>事前信号</strong>：收入增速与门店扩张速度严重不匹配——单店收入隐含增速远超合理区间；第三方消费数据与财报披露背离。<strong>对应判据</strong>：收入交叉验证（第 11 章三线背离）——用可独立验证的经营数据（门店数、单店流水）验证财报收入，背离即存疑。
+<h4>19.2 案例二：康美药业（货币资金"消失"）</h4>
+<strong>定性</strong>：2019 年披露前期会计差错，近 300 亿元货币资金被调减（已公开定性，存贷双高的教科书案例）。
+<strong>事前信号</strong>：典型的<strong>存贷双高</strong>——账面数百亿货币资金与数百亿有息负债并存，利息收入率不足 1%（远低于正常存款利率）。<strong>对应判据</strong>：货币资金÷短期借款>2 且利息收入率<1.5% → 一票否决。暴雷前一年按此排除，可避开绝大部分损失。
+<h4>19.3 案例三：康得新（账面百亿现金却无法兑付）</h4>
+<strong>定性</strong>：账面大额银行存款却无法偿还到期债券，后被认定财务造假（已公开定性）。
+<strong>事前信号</strong>：利息收入率异常低（账上现金"不生息"）；大股东高比例质押；与控股股东的资金往来频繁（现金归集安排）。<strong>对应判据</strong>：利息收入率核查＋第 22 章大股东质押>50% 警惕＋其他应收款/关联资金往来核查。
+<h4>19.4 案例四：獐子岛（"扇贝跑了"）</h4>
+<strong>定性</strong>：多次以底播虾夷扇贝异常为由计提巨额减值，后被认定虚增利润（已公开定性）。
+<strong>事前信号</strong>：<strong>存货周转天数骤增</strong>（约 200 天暴增至 400 天 +，示例性口径）；存货占总资产比重畸高（>40%）；审计师曾对存货发出"无法获取充分审计证据"类表述。<strong>对应判据</strong>：第 9 章存货周转骤降红旗＋第 18 章非标/类非标审计意见一票否决。生物资产的"水下存货"本就难以盘点——对盘点困难型资产要天然提高警惕。
+<h4>19.5 案例五：乐视网（关联交易与生态幻象）</h4>
+<strong>定性</strong>：关联方收入占比畸高、资金链断裂，最终退市（已公开定性）。
+<strong>事前信号</strong>：<strong>关联销售占比极高</strong>（部分年份超过 50%，远超 30% 警戒线）；应收账款主要来自关联方；经营现金流长期为负却持续扩张。<strong>对应判据</strong>：第 17 章关联交易>30% 存疑（此处远超）＋第 5 章融资续命型直接排除。
+<h4>19.6 案例六：恒大集团（高杠杆地产模式崩塌）</h4>
+<strong>定性</strong>：2021 年美元债违约，债务危机全面爆发（已公开定性）。
+<strong>事前信号</strong>：在"三道红线"监管出台（2020 年 8 月）之前就已可见——净负债率畸高（>150% 口径）、现金短债比<1、剔除预收后资产负债率>70%。<strong>对应判据</strong>：第 14 章地产四指标（净负债率、现金短债比、回款率）全面恶化＋第 9 章利息保障与短债压力。高杠杆驱动的生意，杠杆就是生死线。
+<h4>19.7 共同规律与事前可识别性</h4>
+<p>六个案例的共同点：</p>
+<li><strong>暴雷前 1-2 年已有红旗</strong>：不是"突然暴雷"，是红旗被忽略；</li>
+<li><strong>至少两项信号同时触发</strong>：单信号或许可解释，双信号应排除；</li>
+<li><strong>股价上涨是最大诱因</strong>：越涨越不愿相信负面信号（心理陷阱，第 5 册详述）。</li>
+<strong>事前可识别性</strong>：如果严格按本册十项清单与五个一票否决执行，六个案例均可在暴雷前排除。<strong>所以排雷不是"事后诸葛亮"，是事前可执行的纪律。</strong>
+<h4>19.8 为什么人们会忽略红旗</h4>
+<li><strong>确认偏误</strong>：只愿意看支持自己持仓的信息；</li>
+<li><strong>从众心理</strong>："别人都在买，应该没问题"；</li>
+<li><strong>过度自信</strong>："我能逃顶，暴雷前卖掉就行"；</li>
+<li><strong>损失厌恶</strong>：已经涨了这么多，不愿相信会跌回去。</li>
+<p>这些心理陷阱在第 5 册《风险管理与交易心理》中有系统分析。本册强调：<strong>用清单纪律对抗人性弱点——不依赖"感觉"，依赖"规则"。</strong></p>
+<strong>要点小结</strong>
+<li>六个经典案例事前均有红旗，且对应本册具体判据。</li>
+<li>共同规律：暴雷前 1-2 年已有信号、至少双信号触发、股价上涨是忽略红旗的最大诱因。</li>
+<li>排雷是事前可执行的纪律，不是事后诸葛亮。</li>
+<li>用清单纪律对抗人性弱点。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果回顾历史暴雷案例 → 那么逐项对照本册判据，强化"事前可识别"的信念。</li>
+<li>如果持仓股票出现红旗但股价在涨 → 那么提醒自己：股价上涨是忽略红旗的最大诱因，严格执行排雷纪律。</li>
+<li>如果发现双信号触发 → 那么直接排除，不抱侥幸心理。</li>
+<strong>本章练习</strong>
+<li>选一个历史暴雷案例，查找其暴雷前一年的财报数据，用本册十项清单逐项检查，记录触发了哪些信号。</li>
+<li>反思自己过去是否有"明知有红旗但侥幸持有"的经历，写下当时的心理活动与教训。</li>
+<p>---</p>
+<h3>第 20 章 预期差——财报真正的投资价值</h3>
+<div class="info-box"><strong>本章一句话</strong>：股价反应的不是财报好坏，而是财报与市场预期的差——预期差的方向×幅度才是投资价值。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能写出预期差公式并解释三种情形（超预期/符合预期/不及预期）的股价反应；</div>
+<div class="info-box">2. 能说出预期差的三个来源；</div>
+<div class="info-box">3. 能批判性阅读卖方研报，只取数据不取结论。</div>
+<h4>20.1 什么是预期差</h4>
+<strong>预期差＝实际数据－市场预期</strong>。股价已经把"市场以为的"提前消化（price in），财报发布时，只有"与预期不同的部分"才会驱动股价：
+<li>数据好，但市场预期更好 → <strong>不及预期 → 股价跌</strong>；</li>
+<li>数据差，但市场预期更差 → <strong>超预期 → 股价涨</strong>；</li>
+<li>数据与预期一致 → <strong>符合预期 → 股价反应平淡，看管理层指引</strong>。</li>
+<p>这就是"好消息出尽是利空"的机制：好消息在预期形成阶段已经涨完了。</p>
+<strong>图 2-20-1｜预期差三种情形下的股价反应</strong>（示意性示例数据）
+<div id="chart-5" class="echarts-container"></div>
+<p>注：图中涨跌幅为示意性示例数据，仅说明方向逻辑，不代表任何统计规律；实际反应幅度因市况而异。</p>
+<h4>20.2 预期差的三个来源</h4>
+<li><strong>方向</strong>：增长还是下滑——市场以为会继续增长，实际下滑，方向性预期差最大；</li>
+<li><strong>幅度</strong>：多好或多差——同样超预期，超 10% 与超 50% 的股价反应不同；</li>
+<li><strong>节奏</strong>：什么时候发生——拐点提前或推迟一个季度，也会形成预期差。</li>
+<h4>20.3 市场预期在哪看</h4>
+<li><strong>券商一致预期</strong>：财经数据终端（Wind、同花顺 iFinD、东方财富 Choice 等）汇总的营收/净利润预测均值；</li>
+<li><strong>卖方研报盈利预测</strong>：单家券商的预测，注意其立场。</li>
+<strong>必须知道的偏差</strong>：卖方预测系统性偏乐观——"买入"评级占比通常超过 80%，盈利预测普遍偏乐观（经验校准：约 10%-20%，需自行验证），"卖出"评级极其罕见。所以一致预期本身要打折扣使用。
+<h4>20.4 批判性阅读卖方研报</h4>
+<p>券商同时经营投行与研究业务，存在天然利益关联。正确用法：</p>
+<li><strong>看数据不看结论</strong>：研报中的行业数据、公司经营数据、同业对比是客观信息，最值钱；</li>
+<li><strong>看逻辑不看目标价</strong>：论证链条可以检验，目标价是主观产物；</li>
+<li><strong>重点看风险提示</strong>：这是研报里最诚实的部分。</li>
+<h4>20.5 指引重于当季</h4>
+<strong>财报指引（Guidance）＝管理层对下一期/全年的业绩展望</strong>。股价反映的是未来 6-12 个月的预期，所以：本季度超预期但指引下季度下滑 → 股价可能跌；本季度平淡但指引大幅上调 → 股价可能涨。<strong>读财报的最后一问永远是：管理层对下阶段怎么说？</strong>
+<strong>例 2-20-1｜预期差判断（示例数据）</strong>：某公司 Q3 实际净利润 8 亿元。情形甲：一致预期 10 亿元 → 预期差 -2 亿元（不及预期，即使同比去年 6 亿元增长 33%，仍可能下跌）；情形乙：一致预期 7 亿元 → 预期差 +1 亿元（超预期）；情形丙：一致预期 8 亿元 → 符合预期，看业绩说明会指引。结论：<strong>不看"比去年好"，要看"比市场以为的如何"。</strong>
+<strong>要点小结</strong>
+<li>股价反应＝财报数据－市场预期；好消息出尽是利空。</li>
+<li>预期差三来源：方向、幅度、节奏。</li>
+<li>一致预期偏乐观，批判性使用；研报看数据、逻辑与风险提示。</li>
+<li>指引重于当季数据。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果财报发布前 → 那么先查一致预期（营收/净利润），发布后只按预期差判断反应方向。</li>
+<li>如果阅读卖方研报 → 那么只提取数据与逻辑，自己形成结论，不看目标价。</li>
+<li>如果公司本季度超预期但指引下调 → 那么按利空对待，不追涨。</li>
+<strong>本章练习</strong>
+<li>选一家即将发布财报的公司，记录发布前的一致预期，发布后对比实际数据，写下预期差判断。</li>
+<li>找一份该公司研报，分别摘录"数据部分"与"结论部分"，体会两者的信息价值差异。</li>
+<p>---</p>
+<h3>第 21 章 财报阅读实战——从打开年报到形成判断</h3>
+<div class="info-box"><strong>本章一句话</strong>：年报 200 页不必通读——按"摘要→三表→管理层讨论→附注"的顺序 48 分钟读完，再用五步法形成判断。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能按阅读顺序在 1 小时内完成年报速读；</div>
+<div class="info-box">2. 能在附注中定位五类关键信息；</div>
+<div class="info-box">3. 能执行五步判断流程并输出一页纸报告。</div>
+<h4>21.1 阅读顺序（约 48 分钟速读）</h4>
+<p>年报动辄 200 页，从头读到尾是效率陷阱。推荐顺序：</p>
+<li><strong>摘要与重要提示（3 分钟）</strong>：核心数字、审计意见类型（非标直接出局）；</li>
+<li><strong>三张报表（10 分钟）</strong>：一分钟速读三数字＋勾稽验证（第 2 章、第 6 章）；</li>
+<li><strong>管理层讨论与分析（15 分钟）</strong>：管理层如何解释经营成果，与数字是否一致；</li>
+<li><strong>附注（20 分钟）</strong>：关键附注项——收入确认政策、折旧政策、关联交易、或有事项。</li>
+<p>深读（排雷、估值）在此基础上按需展开，但速读 48 分钟足以决定"值不值得深读"。</p>
+<h4>21.2 附注是"宝藏"</h4>
+<p>大多数人跳过附注，但最有价值的信息在这里：</p>
+<li><strong>收入确认政策</strong>：总额法还是净额法（收入规模差 10 倍）；确认时点是否激进；</li>
+<li><strong>应收账款账龄</strong>：1 年内占比多少，1 年以上坏账计提是否充分；</li>
+<li><strong>关联交易明细</strong>：关联方是谁、交易什么、定价是否公允；</li>
+<li><strong>或有事项</strong>：未决诉讼、对外担保承诺；</li>
+<li><strong>会计政策变更</strong>：今年改了什么规则、对利润影响多大。</li>
+<h4>21.3 五步形成判断</h4>
+<li><strong>看趋势</strong>：核心指标（营收、扣非利润、经营现金流、毛利率、ROE）3-5 年走向——改善还是恶化？</li>
+<li><strong>比同业</strong>：与 2-3 家可比公司对比——是行业问题还是公司问题？</li>
+<li><strong>查勾稽</strong>：三条勾稽线验证（第 6 章）——对不对得上？</li>
+<li><strong>排雷</strong>：十项清单（第 18 章）——有没有红旗？</li>
+<li><strong>定预期差</strong>：一致预期是什么？我的判断是什么？预期差的方向与幅度？</li>
+<h4>21.4 一页纸报告模板</h4>
+<p>每次分析固定输出同一张表，形成肌肉记忆：</p>
+<pre><code>公司名称 / 报告期 / 分析日期
+一、趋势：营收____ 扣非____ 现金流____ 毛利率____ ROE____
+二、同业对比：本公司__ vs 可比 A__ vs 可比 B__（关键指标）
+三、勾稽验证：利润去向✓/✗  现金落点✓/✗  差额构成✓/✗
+四、排雷结论：通过 / 存疑（____项）/ 排除（触发____）
+五、预期差：一致预期____ 我的判断____ 方向____ 幅度____
+六、一句话结论与跟踪指标：</code></pre>
+<h4>21.5 财报阅读 10 条军规</h4>
+<li>先看审计意见，非标直接排除；</li>
+<li>先看现金流，再看利润——现金比利润可靠；</li>
+<li>趋势比绝对值重要，3 年比 1 年重要；</li>
+<li>毛利率是竞争力的最直接证据；</li>
+<li>不跨行业比指标，先定位行业再选基准；</li>
+<li>单季数据必须拆，Q4 拐点要警惕；</li>
+<li>附注比正文重要，关键信息在附注；</li>
+<li>排雷清单无条件执行，不因股价涨跌改变；</li>
+<li>预期差决定股价反应，不是数据绝对好坏；</li>
+<li>财报验证假设，不替代商业判断。</li>
+<strong>例 2-21-1｜48 分钟速读演示（示例流程）</strong>：某制造业年报：
+<li>0-3 分钟：摘要页，扣非净利润 +15%，审计意见标准无保留 → 初步 OK；</li>
+<li>3-13 分钟：三表速览，经营现金流>净利润，勾稽验证通过 → 加分；</li>
+<li>13-28 分钟：管理层讨论，解释增长来自新品放量，与数字一致 → 可信；</li>
+<li>28-48 分钟：附注，关联销售占比 5%、应收账龄 1 年内 92%、无重大担保 → 排雷低风险。</li>
+结论：进入深读与估值环节。
+<strong>要点小结</strong>
+<li>48 分钟速读顺序：摘要→三表→管理层讨论→附注。</li>
+<li>附注是关键信息宝库，必须读。</li>
+<li>五步判断流程：趋势→同业→勾稽→排雷→预期差。</li>
+<li>一页纸模板固化输出格式，形成肌肉记忆。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果要读一份年报 → 那么按 48 分钟速读顺序执行，不从头到尾通读。</li>
+<li>如果完成速读 → 那么输出一页纸报告，固定格式留存。</li>
+<li>如果附注中发现关联交易>30% 或账龄恶化 → 那么进入排雷模式。</li>
+<strong>本章练习</strong>
+<li>选一份年报，用 48 分钟速读法完成阅读，输出一页纸报告。</li>
+<li>对比你的一页纸结论与该年报发布后 3 日的股价反应，反思预期差判断是否准确。</li>
+<p>---</p>
+<h3>第 22 章 管理层质量与资本运作——财报背后的"人"</h3>
+<div class="info-box"><strong>本章一句话</strong>：财报记录过去，管理层决定未来——增减持、质押、承诺兑现、资本配置四类行为是"人"的可量化证据。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能识别增减持、质押、薪酬异常等管理层行为信号；</div>
+<div class="info-box">2. 能建立承诺兑现率追踪表；</div>
+<div class="info-box">3. 能用五维框架给管理层打分并设定阈值动作。</div>
+<h4>22.1 为什么管理层质量比财务数据更重要</h4>
+<p>同样的财务数字，不同管理层意味着不同未来：一家把钱投入高回报项目，一家高溢价并购堆商誉。财报告诉你"过去怎样"，管理层决定"未来怎样"。<strong>所以管理层评估不是软话题，而是可以用行为数据量化的硬分析。</strong></p>
+<h4>22.2 增减持与质押</h4>
+<li><strong>管理层增持</strong>＝信心信号（用自己的钱买自家股票）；</li>
+<li><strong>高管密集减持</strong>＝警惕信号（最了解公司的人在卖）；</li>
+<li><strong>大股东高比例质押</strong>＝风险信号：<strong>质押比例>50% → 高度警惕</strong>（平仓风险＋变相减持动机），排雷清单自动从严；</li>
+<li>薪酬对照：公司利润增长 10% 但高管薪酬增长 50% → 利益输送嫌疑，追问薪酬考核机制。</li>
+<h4>22.3 过往承诺兑现率</h4>
+<p>管理层在业绩说明会、年报展望中的承诺，一年后回看兑现了多少。建立追踪表：承诺事项 → 承诺时间 → 实际结果 → 兑现率。</p>
+<strong>判据</strong>：承诺完成率<50% → 标记"管理层不可信"，不给估值溢价。
+<h4>22.4 资本配置能力（最被忽视的能力）</h4>
+<p>管理层拿到利润和融资后的花法，决定长期股东回报：</p>
+<li><strong>好的资本配置</strong>：优先投入高 ROIC 项目；多余现金分红或回购注销；并购讲协同、出价有纪律；</li>
+<li><strong>坏的资本配置</strong>：低价增发稀释股东；高溢价并购堆商誉；盲目跨界并购。</li>
+<strong>六步分析法</strong>：人设（管理层是谁、背景）→ 约束（面临什么激励与压力）→ 行为（增减持、并购、分红、融资记录）→ 案例（近 3 年最重要的资本配置决策及结果）→ 启示（推断风格与优先级）→ 规则（当____时，我将____）。
+<h4>22.5 股东结构与资本运作信号</h4>
+<li><strong>定增/增发</strong>：发行价<市价×0.8 → 摊薄严重，标记"稀释股东利益"；</li>
+<li><strong>回购</strong>：回购注销＝真利好（减少股本提升 EPS）；回购仅用于员工激励＝中性；</li>
+<li><strong>股权激励</strong>：看行权条件是否过于宽松（如年增 5% 即可行权＝送钱）。</li>
+<h4>22.6 五维评估框架</h4>
+<p>| 维度 | 打分依据 |
+|---|---|
+| 诚信度 | 承诺兑现率、信息披露质量、有无处罚记录 |
+| 执行力 | 经营目标完成情况、项目投产节奏 |
+| 资本配置 | ROIC 水平、并购质量、分红回购记录 |
+| 战略眼光 | 行业拐点判断、业务布局前瞻性 |
+| 股东友好度 | 分红率、与中小股东沟通、回购注销 |</p>
+<p>每维 1-5 分：<strong>总分>18＝优秀；12-18＝一般；<12＝警惕</strong>。</p>
+<strong>例 2-22-1｜五维打分示例（虚构公司，示例数据）</strong>：某公司：诚信度 4（承诺兑现率约 80%）、执行力 4、资本配置 3（一次中等溢价并购，未减值）、战略眼光 4、股东友好度 3（分红率约 30%，无回购）＝总分 18，评级"一般偏优"。若叠加大股东质押 60% → 诚信度与股东友好度各降 1 分 → 16 分，并触发排雷从严。
+<strong>要点小结</strong>
+<li>四类行为信号：增减持、质押（>50% 警惕）、承诺兑现（<50% 不可信）、资本配置。</li>
+<li>回购注销才是真利好；低价增发（<市价×0.8）是稀释。</li>
+<li>五维打分：>18 优秀、12-18 一般、<12 警惕。</li>
+<li>管理层评估用行为数据量化，不靠印象。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果大股东质押比例>50% → 那么标记高质押风险，排雷清单自动从严，仓位上限按标准仓 1/3。</li>
+<li>如果管理层承诺兑现率<50% → 那么标记"管理层不可信"，不给估值溢价。</li>
+<li>如果公司低价增发（发行价<市价×0.8） → 那么标记稀释股东利益，降低持仓意愿。</li>
+<strong>本章练习</strong>
+<li>选一家公司，查大股东质押比例与近一年高管增减持记录，写出结论。</li>
+<li>找出该公司管理层两年前的业绩展望，对照实际结果计算承诺兑现率。</li>
+<p>---</p>
+<h3>第 23 章 估值速成——从"好公司"到"好价格"</h3>
+<div class="info-box"><strong>本章一句话</strong>：好公司≠好股票，好价格才算——PE、PB、PS、PEG 各管一类公司，历史百分位给价格定位。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能为不同类型公司选择正确的估值指标；</div>
+<div class="info-box">2. 能计算估值历史百分位并对照阈值；</div>
+<div class="info-box">3. 能执行"好公司＋好价格"的终极原则并衔接交易系统。</div>
+<h4>23.1 四个基础估值指标</h4>
+<p>| 指标 | 公式 | 适用 | 注意 |
+|---|---|---|---|
+| 市盈率（PE） | 总市值÷净利润（或股价÷EPS） | 稳定盈利公司 | 用扣非净利润；亏损公司无意义 |
+| 市盈增长比（PEG） | PE÷净利润增速（%） | 成长股 | <strong>PEG<1 为低估的经验参考</strong>（示例校准，需自行验证） |
+| 市净率（PB） | 总市值÷净资产 | 重资产、周期、金融 | ROE>15% 的公司 PB>3 也属合理（经验值） |
+| 市销率（PS） | 总市值÷营收 | 亏损但高增长公司 | 只看规模不看利润，风险高 |</p>
+<strong>选指标的口诀</strong>：稳定盈利看 PE，成长看 PEG，重资产周期看 PB，亏损高增看 PS。<strong>方法错配比不估值更危险</strong>——用 PE 给亏损公司估值、用 PS 给成熟公司估值，都是错配。
+<h4>23.2 估值历史百分位</h4>
+<strong>估值百分位＝当前估值在过去 5 年区间中的位置</strong>。计算方法：取近 5 年（约 1250 个交易日或 60 个月末数据）PE 序列，当前 PE 低于其中百分之多少的数据，即为百分位。
+<li><strong><20% 分位</strong>：估值低位区；</li>
+<li><strong>20%-80%</strong>：中位区；</li>
+<li><strong>>80% 分位</strong>：估值高位区。</li>
+<strong>图 2-23-1｜估值百分位示意</strong>（某公司近 5 年 PE 与当前分位；示例数据）
+<div id="chart-6" class="echarts-container"></div>
+<p>验算：序列 32、24、28、18、16，均值＝（32+24+28+18+16）÷5＝23.6；当前 16 为序列最低，约 10% 分位（示例数据）。</p>
+<strong>重要前提</strong>：百分位法假设公司基本面稳定。<strong>如果基本面已恶化（排雷存疑或护城河消亡），低百分位不是便宜，是"价值陷阱"</strong>——先过第 18 章排雷与第 12 章护城河审查，再用百分位。
+<h4>23.3 好公司＋好价格：终极原则</h4>
+<p>| 组合 | 动作 |
+|---|---|
+| 好公司＋好价格 | 买入候选，等待入场信号 |
+| 好公司＋坏价格 | 加入观察池等待，不追高 |
+| 坏公司＋任何价格 | 不买（排雷排除的公司不因"便宜"复活） |</p>
+<p>"好公司"＝本册标准：排雷通过＋ROE 连续>15%（或行业内领先）＋现金流健康＋护城河有财务证据。"好价格"＝估值百分位<20%-30% 区间（经验参考）或 PEG<1。<strong>本册不写死任何个股的具体价格预测——估值是动态过程，价格结论必须在你阅读财报的当下重新计算。</strong></p>
+<h4>23.4 估值的边界与衔接</h4>
+<p>估值只解决"值得买的区域"，不解决"何时买、买多少、何时卖"：</p>
+<li><strong>何时买</strong>：等入场信号（裸 K 手册势位形，第 1 册第四篇）；</li>
+<li><strong>买多少</strong>：单笔风险≤2% 反推仓位（系统手册仓位公式）；</li>
+<li><strong>何时卖</strong>：止损/止盈/移动止盈规则（系统手册出场规则）。</li>
+<p>估值结论进入"八步全链路交易计划"的第④⑤步衔接位置：基本面排雷与估值定位完成后，交棒给技术信号。详见系统手册第 8 章。</p>
+<strong>例 2-23-1｜估值定位（示例数据）</strong>：某消费公司：扣非净利润增速 18%，当前 PE 21 倍，近 5 年 PE 区间 16-45 倍、均值 28 倍，当前百分位约 15%。PEG＝21÷18≈1.17（接近 1，不贵不便宜）；百分位 15%（低位区）。排雷通过、ROE 17%。结论：好公司＋较低价格区域 → 进入观察池等待入场信号，不急于买入（还要等第⑤步技术信号）。
+<strong>要点小结</strong>
+<li>四个估值指标各管一类公司：PE（稳定盈利）、PEG（成长）、PB（重资产/周期）、PS（亏损高增）。</li>
+<li>估值百分位<20% 低位区、20%-80% 中位区、>80% 高位区。</li>
+<li>好公司＋好价格才是买入候选，坏公司任何价格都不买。</li>
+<li>估值只解决"值得买"，不解决"何时买/买多少/何时卖"——衔接系统手册。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果估值百分位<20% 且排雷通过 → 那么加入买入候选池，等待技术入场信号。</li>
+<li>如果估值百分位>80% → 那么即使公司优质也不追高，加入观察池等待回调。</li>
+<li>如果排雷存疑或排除 → 那么无论估值多低都不买（价值陷阱）。</li>
+<strong>本章练习</strong>
+<li>选一家稳定盈利公司，计算其当前 PE 与近 5 年 PE 百分位，判断所处区间。</li>
+<li>对一家成长股，计算 PEG，对照 1 的阈值给出评价。</li>
+<p>---</p>
+<h3>第 24 章 综合案例：从财报到买入决策</h3>
+<div class="info-box"><strong>本章一句话</strong>：把本册全部知识串成一条线——从打开年报到形成买卖决策，完整演练一遍全流程。</div>
+<div class="info-box"><strong>学习目标</strong>：</div>
+<div class="info-box">1. 能独立执行"速读→精读→排雷→估值→决策"全流程；</div>
+<div class="info-box">2. 能输出一页纸报告并与系统手册八步全链路衔接；</div>
+<div class="info-box">3. 能识别流程中的关键卡点并知道何时说"不"。</div>
+<h4>24.1 案例公司背景（虚构示例）</h4>
+<strong>公司名称</strong>：清源家电（虚构）
+<strong>行业</strong>：制造业 - 白色家电
+<strong>市值</strong>：约 800 亿元
+<strong>分析日期</strong>：2024 年 3 月（假设场景）
+<strong>任务</strong>：判断该公司是否值得纳入买入候选池。
+<h4>24.2 第一步：48 分钟速读</h4>
+<strong>摘要页</strong>（3 分钟）：
+<li>2023 年营收 520 亿元（+14%），扣非净利润 42 亿元（+16%）；</li>
+<li>审计意见：标准无保留；</li>
+<li>分红方案：每股派现 1.2 元（分红率约 35%）。</li>
+<strong>三表速览</strong>（10 分钟）：
+<li>经营现金流 55 亿元>净利润 42 亿元 → 净现比 1.31（优秀）；</li>
+<li>货币资金 120 亿元，短期借款 40 亿元 → 货币资金÷短期借款＝3（>2，需查利息收入率）；</li>
+<li>利息收入 2.4 亿元 → 利息收入率＝2.4÷120＝2.0%（>1.5%，存贷双高不成立）。</li>
+<strong>管理层讨论</strong>（15 分钟）：
+<li>增长解释：高端新品占比提升至 35%，毛利率提升 2.1pp；</li>
+<li>海外收入占比 28%，汇率波动有风险提示；</li>
+<li>2024 年指引：营收目标 +10%-15%。</li>
+<strong>附注速查</strong>（20 分钟）：
+<li>关联销售占比 3%（健康）；</li>
+<li>应收账龄：1 年内 94%，1-2 年 4%，2 年以上 2%（健康）；</li>
+<li>商誉 15 亿元÷净资产 280 亿元≈5.4%（健康）；</li>
+<li>担保余额 0（健康）。</li>
+<strong>速读结论</strong>：无明显红旗，进入精读与排雷。
+<h4>24.3 第二步：十项排雷清单</h4>
+<p>| 序号 | 检查项 | 数据 | 结论 |
+|---|---|---|---|
+| 1 | 净现比 | 1.31 | ✓过 |
+| 2 | 应收增速 | +12%（营收 +14%，12%<21%） | ✓过 |
+| 3 | 存货增速 | +8%（<营收增速，且毛利率上升） | ✓过 |
+| 4 | 毛利率偏离 | 32% vs 同业均值 29%（偏离 3pp） | ✓过 |
+| 5 | 审计意见 | 标准无保留 | ✓过 |
+| 6 | 关联交易 | 3% | ✓过 |
+| 7 | 商誉占比 | 5.4% | ✓过 |
+| 8 | 担保比例 | 0% | ✓过 |
+| 9 | 管理层行为 | 稳定，无密集减持 | ✓过 |
+| 10 | 分红一致性 | 分红率 35%，连续 5 年分红 | ✓过 |</p>
+<strong>排雷结论</strong>：十项全部通过，无一票否决信号。
+<h4>24.4 第三步：行业定位与对标</h4>
+<strong>行业定位</strong>：制造业 - 白色家电（第 14 章基准）：
+<li>毛利率正常区间 25%-40% → 该公司 32%（健康）；</li>
+<li>存货周转天数正常约 60 天 → 该公司 55 天（略优于行业）；</li>
+<li>ROE 连续 5 年>15% → 该公司 17.5%（优秀）。</li>
+<strong>同业对比</strong>（选取 2 家可比公司）：
+<p>| 指标 | 清源家电 | 可比 A | 可比 B | 行业均值 |
+|---|---|---|---|---|
+| 毛利率 | 32% | 29% | 35% | 32% |
+| 净利率 | 8.1% | 6.5% | 9.2% | 7.9% |
+| ROE | 17.5% | 14.2% | 19.8% | 17.2% |
+| 净现比 | 1.31 | 0.95 | 1.18 | 1.15 |
+| 存货周转天数 | 55 天 | 68 天 | 48 天 | 60 天 |</p>
+<strong>结论</strong>：清源家电处于行业中上水平，无明显短板。
+<h4>24.5 第四步：估值定位</h4>
+<strong>当前估值</strong>（假设数据）：
+<li>股价 45 元，总股本 18 亿股 → 市值 810 亿元；</li>
+<li>扣非净利润 42 亿元 → PE＝810÷42≈19.3 倍；</li>
+<li>近 5 年 PE 区间：15-32 倍，均值 22 倍；</li>
+<li>当前百分位：约 25%（低位区）；</li>
+<li>扣非净利润增速 16% → PEG＝19.3÷16≈1.2（合理区间）。</li>
+<strong>估值结论</strong>：好价格区域（百分位 25%＋PEG 约 1.2）。
+<h4>24.6 第五步：综合判断与决策</h4>
+<strong>好公司？</strong> 是（排雷通过＋ROE>15%＋行业对标中上）。
+<strong>好价格？</strong> 是（百分位 25%＋PEG 约 1.2）。
+<strong>结论</strong>：好公司＋好价格 → 纳入买入候选池。
+<strong>下一步动作</strong>（衔接系统手册第 8 章）：
+<li>等待第⑤步技术入场信号（第 1 册势位形）；</li>
+<li>若出现 PA 入场信号，按第⑥步仓位公式计算仓位（单笔风险≤2%）；</li>
+<li>设定第⑦步止损/止盈规则；</li>
+<li>跟踪指标：季度毛利率、存货周转、海外收入占比（汇率风险）。</li>
+<strong>一页纸报告输出</strong>：
+<pre><code>清源家电 / 2023 年报 / 2024-03-25
+一、趋势：营收 +14% 扣非 +16% 现金流 55 亿 毛利率 32% ROE 17.5%
+二、同业对比：毛利率 32% vs 行业 32%；ROE 17.5% vs 行业 17.2%（中上水平）
+三、勾稽验证：利润去向✓  现金落点✓  差额构成✓
+四、排雷结论：通过（十项全过）
+五、预期差：一致预期 +14% 我的判断 +16% 方向略偏多 幅度温和
+六、一句话结论与跟踪指标：好公司＋好价格，纳入买入候选池；跟踪毛利率、存货周转、汇率风险。</code></pre>
+<h4>24.7 关键卡点与"说不"的时刻</h4>
+<p>全流程中有三个关键卡点，任何一个说"不"就终止：</p>
+<li><strong>速读阶段</strong>：审计意见非标 → 直接终止；</li>
+<li><strong>排雷阶段</strong>：任一一票否决触发 → 直接终止；</li>
+<li><strong>估值阶段</strong>：好公司但估值百分位>80% → 不追高，仅观察。</li>
+<p>本案例中三个卡点全部通过，才走到"纳入候选池"的结论。</p>
+<h4>24.8 与八步全链路的衔接</h4>
+<p>本册完成的是八步全链路中的第③④步：</p>
+<li>第①步：宏观环境判断（第 3 册）；</li>
+<li>第②步：指数结构与板块筛选（第 1 册＋第 3 册）；</li>
+<li><strong>第③步：个股基本面初筛（本册）</strong>；</li>
+<li><strong>第④步：基本面排雷（本册）</strong>；</li>
+<li><strong>第⑤步：估值定位（本册）</strong>；</li>
+<li>第⑥步：PA 入场信号（第 1 册）；</li>
+<li>第⑦步：仓位与风险管理（第 4 册、第 5 册）；</li>
+<li>第⑧步：出场与复盘（第 4 册）。</li>
+<strong>本册的边界</strong>：只负责判断"值不值得买"，不负责"何时买/买多少/何时卖"。越界会导致"好公司拿不住"或"过早抄底被套"。
+<strong>要点小结</strong>
+<li>综合案例演示全流程：速读→排雷→行业对标→估值→决策。</li>
+<li>三个关键卡点：审计意见、一票否决、估值高位，任一不通过即终止。</li>
+<li>输出固定格式的一页纸报告。</li>
+<li>本册负责"值不值得买"，"何时买/买多少/何时卖"交给系统手册。</li>
+<strong>行动判据（If-Then）</strong>
+<li>如果完成全流程分析 → 那么输出一页纸报告，固定格式留存。</li>
+<li>如果任一关键卡点不通过 → 那么果断终止，不勉强推进。</li>
+<li>如果结论为"好公司＋好价格" → 那么纳入候选池，等待技术信号（不急于买入）。</li>
+<strong>本章练习</strong>
+<li>选一家真实上市公司，独立完成全流程分析，输出一页纸报告。</li>
+<li>对比你的结论与该股后续 3 个月的股价表现，反思哪些判断准确、哪些需要改进。</li>
+<p>---</p>
+<h2>附录 A 财务指标速查表</h2>
+<div class="info-box">全册判据汇总，五册统一口径。阈值均为经验校准值，需结合行业与自行回测使用。</div>
+<h3>A.1 盈利能力</h3>
+<p>| 指标 | 公式 | 判据/健康区间 | 出处 |
+|---|---|---|---|
+| 毛利率 | （营收 - 营业成本）÷营收 | >50% 强定价权；20%-50% 中等；<20% 竞争激烈；>同业均值 +15pp 且无壁垒→存疑 | 第 4、8、17 章 |
+| 净利率 | 净利润÷营收 | 与毛利率看剪刀差：毛利稳净利降＝费用恶化 | 第 8 章 |
+| ROE | 净利润÷净资产 | 连续>15%＝好公司基准；>15% 且权益乘数>3→必须杜邦拆解 | 第 7、8 章 |
+| ROA | 净利润÷总资产 | 排除杠杆的资产回报，行业内比较 | 第 8 章 |
+| ROIC | 税后经营利润÷（净资产 + 有息负债） | >WACC 创造价值；<WACC 毁灭价值；ROE>15% 但 ROIC<8%→杠杆驱动 | 第 8 章 |
+| 扣非含金量 | 净利润÷扣非净利润 | >1.5→利润含金量低 | 第 4 章 |</p>
+<h3>A.2 偿债能力</h3>
+<p>| 指标 | 公式 | 判据 | 出处 |
+|---|---|---|---|
+| 流动比率 | 流动资产÷流动负债 | >2 健康；1.5-2 关注；<1 警惕 | 第 9 章 |
+| 速动比率 | （流动资产 - 存货）÷流动负债 | >1 安全 | 第 9 章 |
+| 资产负债率 | 总负债÷总资产 | 行业内比较；制造约 50%、地产 70%+ 常见、银行 90%+ 常态 | 第 9 章 |
+| 利息保障倍数 | EBIT÷利息支出 | >5 安全；<3 压力大 | 第 9 章 |</p>
+<h3>A.3 运营效率</h3>
+<p>| 指标 | 公式 | 判据 | 出处 |
+|---|---|---|---|
+| 存货周转天数 | 365÷（营业成本÷平均存货） | 制造业约 60 天正常；>90 天警惕 | 第 9 章 |
+| 应收周转天数 | 365÷（营收÷平均应收） | <60 健康；>90 慢；>180 坏账风险 | 第 9 章 |
+| 总资产周转率 | 营收÷平均总资产 | 杜邦第二引擎，行业内比较 | 第 7、9 章 |</p>
+<h3>A.4 现金流质量</h3>
+<p>| 指标 | 公式 | 判据 | 出处 |
+|---|---|---|---|
+| 净现比 | 经营活动现金流÷净利润 | >1.2 优秀；0.8-1.2 健康；0.5-0.8 关注；<0.5 危险 | 第 10 章 |
+| 收现比 | 销售商品提供劳务收到的现金÷营业收入 | >1.1 良好；<1 应收增加 | 第 10 章 |
+| 自由现金流 | 经营活动现金流净额－资本支出 | 连续 3 年为正且覆盖分红＝现金回报能力强 | 第 5、10 章 |</p>
+<h3>A.5 成长能力</h3>
+<p>| 指标 | 判据 | 出处 |
+|---|---|---|
+| 应收增速 | >营收增速×1.5→存疑 | 第 3、11 章 |
+| 增长质量 | 营收、应收、现金流三线交叉验证；利润增速>现金流增速连续 2 年→不可持续预警 | 第 11 章 |
+| 单季拐点 | Q4 单季同比下滑而年报增长→拐点信号 | 第 15 章 |</p>
+<h3>A.6 排雷阈值（一票否决加粗）</h3>
+<p>| 信号 | 阈值 | 级别 |
+|---|---|---|
+| 审计意见 | 非标（保留/否定/无法表示） | <strong>一票否决</strong> |
+| 存贷双高 | 货币资金÷短期借款>2 且利息收入率<1.5% | <strong>一票否决</strong> |
+| 在建工程 | 连续 3 年不转固 | <strong>一票否决</strong> |
+| 管理层 | 频繁换审计＋高管密集减持 | <strong>一票否决</strong> |
+| 多信号叠加 | ≥2 项排雷信号同时触发 | <strong>一票否决</strong> |
+| 商誉 | 商誉÷净资产>30% | 存疑/高风险 |
+| 担保 | 担保÷净资产>50% | 存疑 |
+| 关联交易 | 关联销售/采购占比>30% | 存疑 |
+| 毛利率偏离 | >同业均值 +15pp 且无壁垒 | 存疑 |
+| 质押 | 大股东质押>50% | 警惕，排雷从严 |
+| 互联网获客 | LTV/CAC>3 健康；<1 亏钱获客 | 行业指标 |</p>
+<h3>A.7 银行四指标</h3>
+<p>| 指标 | 健康线 | 压力线 |
+|---|---|---|
+| 资本充足率 | >10.5% | — |
+| 不良贷款率 | <2% | ≥2% |
+| 拨备覆盖率 | >150% | <150% |
+| 净息差（NIM） | >2% | <1.5% |</p>
+<p>---</p>
+<h2>附录 B 六大行业财务特征对比</h2>
+<p>| 行业 | 核心资产 | 关键指标 | 常见区间（示例值） | 特殊关注 |
+|---|---|---|---|---|
+| 制造业 | 固定资产＋存货 | 存货周转、毛利率、产能利用率 | 周转约 60 天、毛利率 25%-40% | 折旧口径统一；产能利用率敏感 |
+| 零售业 | 存货 | 存货周转天数、同店增长、毛利率 | 周转 30-60 天、毛利率<25% | 同店增长比总营收重要；周转是生命线 |
+| 房地产 | 土地储备＋在建 | 净负债率、销售回款率、预收账款 | 净负债率<100% 为健康参考线 | 预收是营收蓄水池；高杠杆常态 |
+| 互联网 | 现金＋无形资产 | DAU/MAU、ARPU、LTV/CAC、毛利率 | 毛利率 50%-80%、LTV/CAC>3 | 用户指标先于财务；资本化率口径 |
+| 金融业（银行） | 贷款＋投资 | 资本充足率、不良率、拨备覆盖率、净息差 | 充足率>10.5%、不良<2%、拨备>150%、NIM>2% | 不用普通企业指标分析 |
+| 医药 | 研发管线＋品牌 | 毛利率、研发占比、管线进度 | 毛利率 50%-90%、研发 10%-25% | 集采政策冲击毛利率 |</p>
+<strong>使用方法</strong>：分析任何公司前，先在本表定位其行业，抄出该行业的关键指标作为基准，再读财报数字。多业务公司额外看分部报告（第 14.7 节）。
+<p>---</p>
+<h2>附录 C 排雷清单卡片（可打印）</h2>
+<div class="info-box">打印后夹在屏幕边——买入任何股票前，逐项打钩。不完成排雷不买入。</div>
+<h3>C.1 五个一票否决信号（任一触发＝直接排除）</h3>
+<li>[ ] 1. 审计意见为标准无保留意见？（保留/否定/无法表示 → 排除）</li>
+<li>[ ] 2. 审计机构稳定且高管无密集减持？（频繁换审计＋密集减持 → 排除）</li>
+<li>[ ] 3. 无存贷双高？（货币资金÷短期借款>2 且 利息收入率<1.5% → 排除）</li>
+<li>[ ] 4. 在建工程正常转固？（连续 3 年不转固 → 排除）</li>
+<li>[ ] 5. 排雷信号少于 2 项？（≥2 项同时触发 → 排除）</li>
+<h3>C.2 十项必查（逐项填写数据）</h3>
+<p>| 序号 | 检查项 | 判据 | 数据记录 | 结论 |
+|---|---|---|---|---|
+| 1 | 净现比 | 连续<0.5 为危险 | 近 3 年：____ | □过 □疑 |
+| 2 | 应收增速 | >营收增速×1.5 为存疑 | 应收___% 营收___% | □过 □疑 |
+| 3 | 存货异常 | 增速>营收×1.5 且毛利率上升为危险 | 存货___% | □过 □疑 |
+| 4 | 毛利率偏离 | >同业均值 +15pp 且无壁垒为存疑 | 本公司___% 同业___% | □过 □疑 |
+| 5 | 审计意见 | 非标一票否决 | 意见类型：____ | □过 □否 |
+| 6 | 关联交易 | 占比>30% 为存疑 | 关联销售/采购___% | □过 □疑 |
+| 7 | 商誉占比 | 商誉÷净资产>30% 为存疑 | ___% | □过 □疑 |
+| 8 | 担保比例 | 担保÷净资产>50% 为存疑 | ___% | □过 □疑 |
+| 9 | 管理层行为 | 频繁换审计＋密集减持一票否决 | 质押比例___% | □过 □否 |
+| 10 | 分红一致性 | 大量现金长期不分红为存疑 | 近 3 年分红率___% | □过 □疑 |</p>
+<h3>C.3 结论规则</h3>
+<li>全部通过 → 进入估值与决策流程（第 23 章）；</li>
+<li>仅"存疑"项（无一票否决） → 仓位上限＝标准仓的 1/3，按 C 级信号对待，跟踪指标加密复核；</li>
+<li>任一一票否决 → 直接排除，在自选池标注排除原因与日期，不因股价涨跌改变结论。</li>
+<h3>C.4 执行纪律提醒</h3>
+<li>排雷规则无条件执行：不管股价在涨还是跌；</li>
+<li>退市常态化背景下（全面注册制 2023 年 2 月起），踩雷代价接近全额损失——排雷权重只会越来越高；</li>
+<li>"存疑"不是"可以打折接受"，而是"限仓＋加密跟踪"。</li>
+<p>---</p>
+<h2>附录 D 术语速查表</h2>
+<p>| 术语 | 定义 | 首见章节 |
+|---|---|---|
+| 权责发生制（Accrual Basis） | 交易发生即确认收入成本，不论现金是否到账 | 第 2 章 |
+| 收付实现制 | 现金实际收付时确认，现金流量表的基础 | 第 5 章 |
+| 勾稽关系 | 三张报表之间数字的对应衔接关系 | 第 2、6 章 |
+| 扣非净利润 | 扣除非经常性损益后的净利润，反映主业真实盈利 | 第 2、4 章 |
+| 非经常性损益 | 资产处置、政府补贴等一次性、不可持续的损益 | 第 4 章 |
+| 每股收益（EPS） | 净利润÷总股本 | 第 4 章 |
+| 自由现金流（FCF） | 经营现金流－资本支出 | 第 5 章 |
+| 杜邦分析（DuPont Analysis） | 把 ROE 拆解为净利率×总资产周转率×权益乘数 | 第 7 章 |
+| 权益乘数 | 总资产÷净资产，衡量财务杠杆 | 第 7 章 |
+| 加权平均资本成本（WACC） | 股东与债权人要求的最低回报率 | 第 8 章 |
+| 投入资本回报率（ROIC） | 税后经营利润÷投入资本 | 第 8 章 |
+| 利息保障倍数 | EBIT÷利息支出 | 第 9 章 |
+| 净现比 | 经营现金流÷净利润，利润含金量指标 | 第 10 章 |
+| 收现比 | 销售收现÷营收 | 第 10 章 |
+| 基数效应 | 基数变大后增速自然放缓的数学现象 | 第 11 章 |
+| 商业模式 | 创造价值→传递价值→获取利润的方式 | 第 12 章 |
+| 护城河 | 阻止竞争者侵蚀利润的结构性优势 | 第 12 章 |
+| 行业生命周期 | 导入期、成长期、成熟期、衰退期 | 第 13 章 |
+| 分部报告 | 多业务公司按板块披露的收入利润明细 | 第 14 章 |
+| 同店增长（Same Store Sales Growth） | 剔除新开店后老店的收入增长 | 第 14 章 |
+| DAU/MAU | 日活跃用户/月活跃用户 | 第 14 章 |
+| ARPU | 每用户平均收入 | 第 14 章 |
+| LTV/CAC | 用户生命周期价值÷获客成本 | 第 14 章 |
+| 净息差（NIM） | 银行生息资产收益率与付息负债成本率之差 | 第 14 章 |
+| 拨备覆盖率 | 贷款损失准备÷不良贷款 | 第 14 章 |
+| 业绩预告/快报 | 正式定期报告前的预披露 | 第 15 章 |
+| 虚增资产 | 在资产端虚构价值以配平虚增的利润 | 第 16 章 |
+| 存贷双高 | 大额货币资金与大额有息负债并存 | 第 16 章 |
+| 明股实债 | 表面股权投资、实质附带回购义务的债务 | 第 17 章 |
+| 洗澡式减值 | 一次性大额减值清空包袱为未来腾利润空间 | 第 17 章 |
+| 非标审计意见 | 保留意见、否定意见、无法表示意见的统称 | 第 18 章 |
+| 预期差 | 实际数据与市场预期之差 | 第 20 章 |
+| 一致预期 | 多家券商盈利预测的汇总均值 | 第 20 章 |
+| 财报指引（Guidance） | 管理层对下一期业绩的展望 | 第 20 章 |
+| 或有事项 | 未决诉讼、对外担保等可能产生未来义务的事项 | 第 21 章 |
+| 市盈率（PE） | 总市值÷净利润 | 第 23 章 |
+| 市盈增长比（PEG） | PE÷净利润增速 | 第 23 章 |
+| 市净率（PB） | 总市值÷净资产 | 第 23 章 |
+| 市销率（PS） | 总市值÷营收 | 第 23 章 |
+| 估值百分位 | 当前估值在近 5 年区间中的相对位置 | 第 23 章 |</p>
+<p>---</p>
+<h2>附录 E 财报阅读自检清单</h2>
+<h3>E.1 读前（3 项）</h3>
+<li>[ ] 明确本次阅读目的（初筛/排雷/验证假设/跟踪拐点）；</li>
+<li>[ ] 已找好 2-3 家可比公司；</li>
+<li>[ ] 确认报告期与披露类型（年报/半年报/季报）。</li>
+<h3>E.2 读中（8 项）</h3>
+<li>[ ] 一分钟速读三数字（扣非净利润、经营现金流、净资产）；</li>
+<li>[ ] 三条勾稽线验证通过（利润去向、现金落点、差额构成）；</li>
+<li>[ ] 核心指标 3-5 年趋势已记录；</li>
+<li>[ ] 同业对比已完成（毛利率、周转、ROE）；</li>
+<li>[ ] 十项排雷清单已逐项执行；</li>
+<li>[ ] 附注五类信息已检查（收入确认、账龄、关联交易、或有事项、政策变更）；</li>
+<li>[ ] 单季数据已拆取（季报场景）；</li>
+<li>[ ] 审计意见已确认。</li>
+<h3>E.3 读后（5 项）</h3>
+<li>[ ] 预期差已判断（一致预期是什么、我的判断、方向与幅度）；</li>
+<li>[ ] 最大风险已写出（一句话）；</li>
+<li>[ ] 跟踪指标已设定（2-3 个，含复核触发条件）；</li>
+<li>[ ] 估值定位已完成（指标选型正确、百分位计算）；</li>
+<li>[ ] 下一步行动已明确（排除/观察池/候选池）。</li>
+<p>---</p>
+<h2>附录 F 结构化练习任务</h2>
+<div class="info-box">五项练习对应本册核心能力，全部完成并留档后，视为达到本册毕业标准（示例标准）。练习用真实公司年报（公开披露文件）完成，结论仅用于学习，不构成投资建议。</div>
+<h3>练习 1 三表勾稽练习（对应第 6 章）</h3>
+<p>选一家公司最新年报，手工抄录并验证三条勾稽线：①净利润→未分配利润变动＋分红；②现金流量表期末现金→货币资金；③现金流量表补充资料（间接法）中净利润→经营现金流的调节。要求：三条线全部对得上（允许附注口径差异，但须写明差异原因）。</p>
+<h3>练习 2 杜邦分析练习（对应第 7 章）</h3>
+<p>选同一行业的 3 家公司，拆解近三年 ROE 三因子（净利率×总资产周转率×权益乘数），制作对比表，回答：各自的驱动模式是什么？ROE 变化是"真提升"还是"杠杆假提升"？哪家 ROE 最可持续？</p>
+<h3>练习 3 排雷实战练习（对应第 18 章）</h3>
+<p>选 1 家公司，完整执行十项排雷清单（附录 C 卡片），逐项记录数据，给出"通过/存疑/排除"结论。若结论为存疑，写明限仓与跟踪安排；若为一票否决，写明触发项。</p>
+<h3>练习 4 预期差练习（对应第 20 章）</h3>
+<p>选 1 家即将发布定期报告的公司：发布前记录一致预期（营收、净利润）与你的独立判断；发布后记录实际数据、当日与 3 日股价反应，对照预期差公式复盘：反应方向与预期差方向一致吗？不一致的可能原因是什么？</p>
+<h3>练习 5 管理层评估练习（对应第 22 章）</h3>
+<p>选 1 家公司，完成：①大股东质押比例与高管增减持记录查询；②近两年承诺兑现率计算（业绩展望 vs 实际）；③五维评估打分（每维 1-5 分，写出打分依据）；④写出一条"当____时，我将____"的管理层相关规则。</p>
+<p>---</p>
+<h2>风险提示</h2>
+<p>本手册仅供教育目的，所有指标阈值与案例数字均为示例数据或经验校准值，不构成任何投资建议或收益承诺。文中提及的具体公司名称仅用于说明历史已公开定性的案例或行业惯例，不构成对相关证券的推荐。股市有风险，投资需谨慎；任何买入决策前，请先确认已遵守《风险管理与交易心理》第 6 章"三条资金红线"。市场有风险，投资需谨慎。</p>
+<p>---</p>
+<p>*《投资者教育手册系列》第 2 册 完*
+*下一册：第 3 册《宏观经济分析》——从企业微观走到宏观大势，学会用增长、通胀、政策三把尺子判断市场环境。*</p>
+        </main>
+    </div>
+    
+    <footer>
+        <p>《投资者教育手册系列》（全五册） © 2024</p>
+        <p>仅供学习参考，不构成投资建议</p>
+    </footer>
+    
+    <script>
+        // ECharts 图表渲染逻辑将在这里动态插入
+        // ECharts 图表初始化
+
+        // 图表chart-1
+        var chart_chart_1 = echarts.init(document.getElementById('chart-1'));
+        chart_chart_1.setOption({"title": {"text": "趋势方向比当前位置更重要", "left": "center"}, "tooltip": {"trigger": "axis"}, "legend": {"data": ["公司 A：高位下滑", "公司 B：低位上升"], "top": "10%"}, "xAxis": {"type": "category", "data": ["2019", "2020", "2021", "2022", "2023"]}, "yAxis": {"type": "value", "name": "ROE"}, "series": [{"name": "公司 A：高位下滑", "type": "line", "data": [28, 26, 23, 19, 15], "itemStyle": {"color": "#ee6666"}}, {"name": "公司 B：低位上升", "type": "line", "data": [8, 10, 13, 16, 19], "itemStyle": {"color": "#91cc75"}}]});
+        
+
+        // 图表chart-2
+        var chart_chart_2 = echarts.init(document.getElementById('chart-2'));
+        chart_chart_2.setOption({"title": {"text": "行业生命周期四阶段", "left": "center"}, "tooltip": {"trigger": "axis"}, "xAxis": {"type": "category", "data": ["导入期", "成长期", "成熟期", "衰退期"]}, "yAxis": {"type": "value", "name": "行业增速"}, "series": [{"type": "line", "data": [10, 40, 15, -5], "areaStyle": {}, "itemStyle": {"color": "#5470c6"}}]});
+        
+
+        // 图表chart-3
+        var chart_chart_3 = echarts.init(document.getElementById('chart-3'));
+        chart_chart_3.setOption({"title": {"text": "六大造假手法与信号强度矩阵（示例数据）", "left": "center"}, "tooltip": {"position": "top"}, "grid": {"left": 120, "right": 40, "top": 60, "bottom": 60}, "xAxis": {"type": "category", "data": ["应收异常", "毛利率异常", "现金流异常", "存货/在建异常", "担保/其他应收异常", "商誉异常"], "name": "信号类别", "axisLabel": {"rotate": 30}}, "yAxis": {"type": "category", "data": ["虚增收入", "虚减成本", "操纵现金流", "资产造假", "隐匿负债", "商誉操纵"]}, "visualMap": {"min": 0, "max": 3, "orient": "horizontal", "left": "center", "bottom": 0, "text": ["强信号", "无"], "inRange": {"color": ["#ffffff", "#ffb74d", "#ef5350"]}}, "series": [{"type": "heatmap", "label": {"show": true}, "data": [[0, 0, 3], [1, 0, 1], [2, 0, 2], [3, 0, 0], [4, 0, 1], [5, 0, 0], [0, 1, 0], [1, 1, 3], [2, 1, 0], [3, 1, 1], [4, 1, 0], [5, 1, 0], [0, 2, 2], [1, 2, 0], [2, 2, 3], [3, 2, 0], [4, 2, 0], [5, 2, 0], [0, 3, 0], [1, 3, 1], [2, 3, 0], [3, 3, 3], [4, 3, 0], [5, 3, 0], [0, 4, 0], [1, 4, 0], [2, 4, 0], [3, 4, 0], [4, 4, 3], [5, 4, 0], [0, 5, 0], [1, 5, 0], [2, 5, 0], [3, 5, 0], [4, 5, 0], [5, 5, 3]]}]});
+        
+
+        // 图表chart-4
+        var chart_chart_4 = echarts.init(document.getElementById('chart-4'));
+        chart_chart_4.setOption({"title": {"text": "排雷清单执行流程（示例流程）", "left": "center"}, "tooltip": {"trigger": "item"}, "series": [{"type": "funnel", "left": "15%", "width": "70%", "top": 60, "bottom": 20, "sort": "descending", "label": {"show": true, "position": "inside"}, "data": [{"name": "候选公司", "value": 100}, {"name": "一票否决筛查（审计意见/存贷双高等）", "value": 80}, {"name": "十项清单逐项检查", "value": 70}, {"name": "通过：进入估值与决策", "value": 45}, {"name": "存疑：限仓 1/3 观察", "value": 15}, {"name": "排除：直接放弃", "value": 10}]}]});
+        
+
+        // 图表chart-5
+        var chart_chart_5 = echarts.init(document.getElementById('chart-5'));
+        chart_chart_5.setOption({"title": {"text": "预期差三种情形下的股价反应（示意性示例数据）", "left": "center"}, "tooltip": {"trigger": "axis"}, "grid": {"left": 60, "right": 30, "top": 60, "bottom": 40}, "xAxis": {"type": "category", "data": ["不及预期（数据好但低于预期）", "符合预期", "超预期（数据差但好于预期）", "大幅超预期"]}, "yAxis": {"type": "value", "name": "财报发布后 3 日涨跌幅（%）"}, "series": [{"type": "bar", "name": "股价反应", "data": [-6, 0.5, 5, 12], "label": {"show": true, "position": "top"}, "itemStyle": {"color": "#ef5350"}, "markLine": {"label": {"formatter": "零反应线"}, "data": [{"yAxis": 0}]}}]});
+        
+
+        // 图表chart-6
+        var chart_chart_6 = echarts.init(document.getElementById('chart-6'));
+        chart_chart_6.setOption({"title": {"text": "估值百分位示意（示例数据）", "left": "center"}, "tooltip": {"trigger": "axis"}, "grid": {"left": 50, "right": 30, "top": 60, "bottom": 40}, "xAxis": {"type": "category", "data": ["第 1 年", "第 2 年", "第 3 年", "第 4 年", "第 5 年"], "name": "年份（年末 PE）"}, "yAxis": {"type": "value", "name": "PE（倍）"}, "series": [{"type": "bar", "name": "年末 PE", "data": [32, 24, 28, 18, 16], "label": {"show": true, "position": "top"}, "itemStyle": {"color": "#7986cb"}, "markLine": {"data": [{"yAxis": 16, "label": {"formatter": "当前 PE=16，约 10% 分位（低位区）"}}, {"yAxis": 23.6, "label": {"formatter": "5 年均值 23.6"}}]}}]});
+        
+
+        // 窗口大小调整时重绘图表
+        window.addEventListener('resize', function() {
+            [chart_chart_1, chart_chart_2, chart_chart_3, chart_chart_4, chart_chart_5, chart_chart_6].forEach(function(chart) {
+                if (chart) chart.resize();
+            });
+        });
+    
+    </script>
+</body>
+</html>

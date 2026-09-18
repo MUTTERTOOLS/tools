@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资者教育手册系列 - 全五册</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --secondary-color: #3182ce;
+            --bg-color: #f7fafc;
+            --text-color: #2d3748;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 { font-size: 3em; margin-bottom: 20px; }
+        .hero p { font-size: 1.3em; opacity: 0.9; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        .handbook-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .handbook-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .handbook-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .handbook-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .handbook-card p {
+            color: #718096;
+            margin-bottom: 20px;
+        }
+        
+        .handbook-card .badge {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>📚 投资者教育手册系列</h1>
+        <p>从零开始，建立完整的投资知识体系</p>
+    </div>
+    
+    <div class="container">
+        <div class="handbook-grid">
+
+            <a href="html/01-裸 K 与价格行为.html" class="handbook-card">
+                <h3>第 1 册 裸 K 与价格行为</h3>
+                <p>不依赖任何技术指标，直接读懂价格本身的语言</p>
+                <span class="badge">阅读手册 →</span>
+            </a>
+
+            <a href="html/02-财报与基本面.html" class="handbook-card">
+                <h3>第 2 册 财报与基本面</h3>
+                <p>从财务报表到投资决策的完整分析框架</p>
+                <span class="badge">阅读手册 →</span>
+            </a>
+
+            <a href="html/03-宏观经济分析.html" class="handbook-card">
+                <h3>第 3 册 宏观经济分析</h3>
+                <p>理解经济周期与政策对股市的影响</p>
+                <span class="badge">阅读手册 →</span>
+            </a>
+
+            <a href="html/04-交易系统与实战.html" class="handbook-card">
+                <h3>第 4 册 交易系统与实战</h3>
+                <p>构建可执行的个人交易体系</p>
+                <span class="badge">阅读手册 →</span>
+            </a>
+
+            <a href="html/05-风险管理与交易心理.html" class="handbook-card">
+                <h3>第 5 册 风险管理与交易心理</h3>
+                <p>资金红线与情绪管理的生存法则</p>
+                <span class="badge">阅读手册 →</span>
+            </a>
+
+        </div>
+    </div>
+    
+    <footer>
+        <p>《投资者教育手册系列》（全五册） © 2024</p>
+        <p>仅供学习参考，不构成投资建议</p>
+    </footer>
+</body>
+</html>
