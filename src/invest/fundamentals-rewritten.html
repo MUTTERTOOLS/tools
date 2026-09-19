@@ -1,0 +1,4425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>财报与基本面投资手册 | Fundamentals 101</title>
+<script src="../../cdn/echarts/5.5.0/echarts.min.js" defer></script>
+<style>
+:root {
+  --bg-deep:#0B0E14;--bg-card:#141820;--bg-sidebar:#0F1219;--bg-hover:#1A2030;
+  --accent:#2563EB;--accent-light:#3B82F6;--accent-dim:rgba(37,99,235,0.15);
+  --text-primary:#E8ECF1;--text-secondary:#94A3B8;--text-muted:#64748B;
+  --border:#1E293B;--border-light:#334155;--radius:8px;
+  --font:'Noto Sans SC','Microsoft YaHei','PingFang SC',system-ui,sans-serif;
+  --green:#22C55E;--red:#EF4444;--yellow:#EAB308;--purple:#A855F7;--cyan:#06B6D4;--orange:#F97316;
+  --sidebar-w:280px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:80px;}
+body{background:var(--bg-deep);color:var(--text-primary);font-family:var(--font);line-height:1.75;font-size:15px;}
+a{color:var(--accent-light);text-decoration:none;}
+a:hover{color:var(--accent);}
+::selection{background:var(--accent);color:#fff;}
+
+/* Sidebar */
+#sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--bg-sidebar);border-right:1px solid var(--border);overflow-y:auto;z-index:100;transition:transform .3s;}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:2px;}
+.sidebar-header{padding:20px;border-bottom:1px solid var(--border);text-align:center;}
+.sidebar-header .book-icon{font-size:28px;color:var(--accent);display:block;margin-bottom:8px;}
+.sidebar-header h3{color:var(--text-primary);font-size:14px;font-weight:600;}
+.sidebar-header .subtitle{color:var(--text-muted);font-size:11px;margin-top:4px;}
+#nav{padding:12px 0;}
+#nav a{display:block;padding:6px 16px 6px 24px;color:var(--text-secondary);font-size:12.5px;transition:all .15s;border-left:3px solid transparent;}
+#nav a:hover{color:var(--text-primary);background:var(--bg-hover);}
+#nav a.active{color:var(--accent-light);border-left-color:var(--accent);background:var(--accent-dim);}
+#nav a.part-link{font-weight:600;color:var(--accent-light);font-size:13px;padding-top:12px;padding-bottom:4px;margin-top:4px;}
+#nav a.ch-link{padding-left:36px;}
+#nav a.app-link{padding-left:36px;color:var(--text-muted);}
+
+/* Main */
+#main{margin-left:var(--sidebar-w);max-width:860px;margin-right:auto;padding:0 40px 60px;}
+.container{margin-bottom:0;}
+
+/* Cover */
+.cover{padding:80px 0 60px;text-align:center;border-bottom:1px solid var(--border);}
+.cover-badge{display:inline-block;background:var(--accent-dim);color:var(--accent-light);padding:4px 16px;border-radius:20px;font-size:12px;font-weight:500;letter-spacing:1px;margin-bottom:24px;border:1px solid rgba(37,99,235,0.3);}
+.cover h1{font-size:42px;font-weight:700;background:linear-gradient(135deg,var(--accent-light),var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;}
+.cover .tagline{color:var(--text-secondary);font-size:18px;margin-bottom:32px;}
+.cover-meta{display:flex;justify-content:center;gap:24px;color:var(--text-muted);font-size:12px;}
+.cover-meta span{display:flex;align-items:center;gap:6px;}
+
+/* Learning Path */
+.reading-path{margin:40px 0;padding:28px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);}
+.reading-path h3{color:var(--accent-light);font-size:15px;margin-bottom:16px;}
+.path-map{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:rgba(37,99,235,0.06);border-radius:6px;border:1px dashed var(--border-light);}
+.path-map .node{padding:6px 14px;border-radius:4px;font-size:12px;font-weight:500;background:var(--bg-deep);border:1px solid var(--border);}
+.path-map .node.current{background:var(--accent);color:#fff;border-color:var(--accent);}
+.path-map .arrow{color:var(--text-muted);font-size:14px;}
+.path-section{margin-bottom:16px;}
+.path-section h4{color:var(--text-secondary);font-size:13px;margin-bottom:8px;}
+.path-section ol{padding-left:20px;color:var(--text-secondary);font-size:13px;}
+.path-section ol li{margin-bottom:4px;}
+
+/* Part Header */
+.part-header{padding:40px 0 24px;border-top:1px solid var(--border);}
+.part-tag{display:inline-block;background:var(--accent-dim);color:var(--accent-light);padding:3px 12px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:1px;margin-bottom:12px;}
+.part-header h2{font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:8px;}
+.part-header .part-goal{color:var(--text-secondary);font-size:14px;line-height:1.6;}
+
+/* Chapter */
+.chapter{padding:20px 0 10px;}
+.chapter-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.ch-num{color:var(--accent-light);margin-right:8px;font-size:18px;}
+.section{margin-bottom:28px;}
+.section h3{font-size:17px;font-weight:600;color:var(--text-primary);margin-bottom:12px;padding-left:10px;border-left:3px solid var(--accent);}
+.section p{margin-bottom:12px;color:var(--text-secondary);line-height:1.8;}
+.section ul,.section ol{margin:8px 0 12px 20px;color:var(--text-secondary);}
+.section li{margin-bottom:6px;line-height:1.7;}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0 20px;font-size:13px;}
+.data-table th{background:var(--accent-dim);color:var(--accent-light);padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent);font-size:12px;}
+.data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text-secondary);}
+.data-table tr:hover td{background:var(--bg-hover);}
+.data-table .highlight{color:var(--accent-light);font-weight:600;}
+.data-table .red{color:var(--red);}
+.data-table .green{color:var(--green);}
+
+/* Callouts */
+.callout{margin:16px 0;padding:14px 16px 14px 20px;border-radius:var(--radius);border-left:4px solid;font-size:13.5px;line-height:1.7;}
+.callout-title{font-weight:700;margin-bottom:4px;font-size:13px;}
+.callout-tip{background:rgba(37,99,235,0.08);border-color:var(--accent-light);}.callout-tip .callout-title{color:var(--accent-light);}
+.callout-key{background:rgba(249,115,22,0.08);border-color:var(--orange);}.callout-key .callout-title{color:var(--orange);}
+.callout-warn{background:rgba(234,179,8,0.08);border-color:var(--yellow);}.callout-warn .callout-title{color:var(--yellow);}
+.callout-danger{background:rgba(239,68,68,0.08);border-color:var(--red);}.callout-danger .callout-title{color:var(--red);}
+.callout p{margin:0;color:var(--text-secondary);}
+
+/* Rule Box */
+.rule-box{margin:20px 0;padding:16px 20px;background:var(--bg-card);border:1px solid var(--accent);border-radius:var(--radius);}
+.rule-title{color:var(--accent-light);font-weight:700;font-size:14px;margin-bottom:10px;}
+.rule-item{margin-bottom:8px;font-size:13px;line-height:1.7;color:var(--text-secondary);}
+.trigger{color:var(--accent-light);font-weight:600;}
+.action{color:var(--green);font-weight:600;}
+
+/* Practice Box */
+.practice-box{margin:16px 0;padding:14px 18px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.25);border-radius:var(--radius);}
+.practice-title{color:var(--cyan);font-weight:700;font-size:13px;margin-bottom:6px;}
+.practice-box p{color:var(--text-secondary);font-size:13px;margin:0;}
+
+/* Calculator Widget */
+.calc-widget{margin:20px 0;padding:20px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);}
+.calc-widget h4{color:var(--accent-light);font-size:14px;margin-bottom:12px;}
+.calc-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.calc-field{flex:1;min-width:140px;}
+.calc-field label{display:block;color:var(--text-muted);font-size:11px;margin-bottom:4px;}
+.calc-field input{width:100%;padding:6px 10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;}
+.calc-field input:focus{border-color:var(--accent);outline:none;}
+.calc-btn{padding:6px 20px;background:var(--accent);color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;margin-top:4px;}
+.calc-btn:hover{background:var(--accent-light);}
+.result-value{font-size:28px;font-weight:700;color:var(--accent-light);margin:8px 0 2px;}
+.result-label{color:var(--text-muted);font-size:12px;}
+
+/* Chart Box */
+.chart-box{margin:20px 0;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);}
+.chart-title{color:var(--text-secondary);font-size:12px;margin-bottom:8px;text-align:center;}
+.chart-container{width:100%;height:320px;}
+
+/* Mobile Toggle */
+#sidebar-toggle{display:none;position:fixed;top:16px;left:16px;z-index:200;background:var(--accent);color:#fff;border:none;width:40px;height:40px;border-radius:8px;font-size:20px;cursor:pointer;}
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%);}
+  #sidebar.open{transform:translateX(0);}
+  #sidebar-toggle{display:block;}
+  #main{margin-left:0;padding:0 16px 40px;}
+  .cover h1{font-size:28px;}
+  .path-map{flex-direction:column;align-items:flex-start;}
+  .path-map .arrow{transform:rotate(90deg);}
+  .data-table{display:block;max-width:100%;overflow-x:auto;}
+}
+
+/* === INFO CARDS（通用内容卡片系统） === */
+.info-grid {
+  display:grid; gap:24px; margin:32px 0;
+}
+.info-grid.cols-2 { grid-template-columns:1fr 1fr; }
+.info-grid.cols-3 { grid-template-columns:repeat(3, 1fr); }
+@media (max-width:768px) { .info-grid.cols-2, .info-grid.cols-3 { grid-template-columns:1fr; } }
+
+.info-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:24px; display:flex; flex-direction:column;
+}
+.info-card-header {
+  font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border);
+}
+.info-card-title {
+  font-size:17px; font-weight:700; margin-bottom:16px; line-height:1.3;
+}
+.info-card-body { font-size:14px; color:var(--text-secondary); line-height:1.8; flex:1; }
+.info-card-body p { margin-bottom:10px; }
+.info-card-body p:last-child { margin-bottom:0; }
+
+/* 卡片颜色变体 */
+.info-card.ic-green { border-color:rgba(34,197,94,0.25); }
+.info-card.ic-green .info-card-header { color:var(--green); border-color:rgba(34,197,94,0.2); }
+.info-card.ic-green .info-card-title { color:var(--green); }
+.info-card.ic-red { border-color:rgba(239,68,68,0.25); }
+.info-card.ic-red .info-card-header { color:var(--red); border-color:rgba(239,68,68,0.2); }
+.info-card.ic-red .info-card-title { color:var(--red); }
+.info-card.ic-blue { border-color:rgba(59,130,246,0.25); }
+.info-card.ic-blue .info-card-header { color:var(--blue); border-color:rgba(59,130,246,0.2); }
+.info-card.ic-blue .info-card-title { color:var(--blue); }
+.info-card.ic-accent { border-color:rgba(249,115,22,0.25); }
+.info-card.ic-accent .info-card-header { color:var(--accent); border-color:rgba(249,115,22,0.2); }
+.info-card.ic-accent .info-card-title { color:var(--accent); }
+.info-card.ic-yellow { border-color:rgba(234,179,8,0.25); }
+.info-card.ic-yellow .info-card-header { color:var(--yellow); border-color:rgba(234,179,8,0.2); }
+.info-card.ic-yellow .info-card-title { color:var(--yellow); }
+
+/* 卡片内条目列表 */
+.info-card-items { display:flex; flex-direction:column; gap:18px; flex:1; }
+.info-card-item .ici-title {
+  font-size:14.5px; font-weight:600; color:var(--text-primary); margin-bottom:4px;
+}
+.info-card-item .ici-body {
+  font-size:13.5px; color:var(--text-secondary); line-height:1.75;
+}
+/* 条目前缀标记（如色点） */
+.info-card-item .ici-mark {
+  display:inline-block; width:6px; height:6px; border-radius:50%;
+  margin-right:8px; vertical-align:middle;
+}
+.info-card.ic-green .ici-mark { background:var(--green); }
+.info-card.ic-red .ici-mark { background:var(--red); }
+.info-card.ic-blue .ici-mark { background:var(--blue); }
+.info-card.ic-accent .ici-mark { background:var(--accent); }
+
+/* 卡片底部注释 */
+.info-card-note {
+  font-size:12px; color:var(--text-muted); line-height:1.6;
+  margin-top:16px; padding-top:14px; border-top:1px solid var(--border);
+}
+
+/* === MOBILE TOGGLE === */
+#mobile-toggle {
+  display:none; position:fixed; top:16px; left:16px; z-index:200;
+  width:40px; height:40px; border-radius:var(--radius-sm);
+  background:var(--bg-card); border:1px solid var(--border);
+  color:var(--accent); font-size:20px; cursor:pointer; align-items:center; justify-content:center;
+}
+@media (max-width:900px) {
+  #sidebar { transform:translateX(-100%); }
+  #sidebar.open { transform:translateX(0); }
+  #main { margin-left:0; }
+  .container { padding:24px 20px 80px; }
+  #mobile-toggle { display:flex; }
+  .cover h1 { font-size:36px; }
+  .cover .meta-grid { grid-template-columns:1fr; }
+  .cover .map-path { flex-direction:column; gap:8px; }
+  .cover .map-arrow { transform:rotate(90deg); }
+  .data-table { display:block; max-width:100%; overflow-x:auto; }
+}
+
+/* === TERM REFERENCE LINKS（首现术语→附录E词条锚点） === */
+.term-ref { color:inherit; text-decoration:underline dotted var(--text-muted); text-underline-offset:3px; }
+.term-ref:hover { color:var(--accent); text-decoration-color:var(--accent); }
+</style>
+</head>
+<body>
+
+<button id="sidebar-toggle" type="button" aria-label="打开章节导航" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+<nav id="sidebar">
+<div class="sidebar-header">
+  <span class="book-icon">📊</span>
+  <h3>财报与基本面</h3>
+  <div class="subtitle">Fundamentals 101</div>
+</div>
+<div id="nav">
+  <a href="#cover" class="part-link">封面</a>
+  <a href="#reading-path">阅读路径</a>
+  <a href="#part1" class="part-link">第一篇 财报是什么</a>
+  <a href="#ch1" class="ch-link">第1章 为什么必须读财报</a>
+  <a href="#ch2" class="ch-link">第2章 三大报表全景速览</a>
+  <a href="#part2" class="part-link">第二篇 报表深度解读</a>
+  <a href="#ch3" class="ch-link">第3章 资产负债表深度解读</a>
+  <a href="#ch4" class="ch-link">第4章 利润表深度解读</a>
+  <a href="#ch5" class="ch-link">第5章 现金流量表深度解读</a>
+  <a href="#part3" class="part-link">第三篇 勾稽关系与杜邦分析</a>
+  <a href="#ch6" class="ch-link">第6章 勾稽关系</a>
+  <a href="#ch7" class="ch-link">第7章 杜邦分析</a>
+  <a href="#part4" class="part-link">第四篇 商业模式与行业分析</a>
+  <a href="#ch8" class="ch-link">第8章 商业模式与护城河</a>
+  <a href="#ch9" class="ch-link">第9章 行业分析框架</a>
+  <a href="#ch10" class="ch-link">第10章 六大行业财务特征</a>
+  <a href="#ch11" class="ch-link">第11章 季度财报与单季分析</a>
+  <a href="#part5" class="part-link">第五篇 核心指标体系</a>
+  <a href="#ch12" class="ch-link">第12章 盈利能力指标</a>
+  <a href="#ch13" class="ch-link">第13章 偿债能力与运营效率</a>
+  <a href="#ch14" class="ch-link">第14章 现金流质量指标</a>
+  <a href="#ch15" class="ch-link">第15章 成长能力与指标趋势</a>
+  <a href="#part6" class="part-link">第六篇 财务排雷</a>
+  <a href="#ch16" class="ch-link">第16章 财务造假的底层逻辑</a>
+  <a href="#ch17" class="ch-link">第17章 六大造假手法与识别</a>
+  <a href="#ch18" class="ch-link">第18章 排雷清单十项必查</a>
+  <a href="#ch19" class="ch-link">第19章 经典案例复盘</a>
+  <a href="#part7" class="part-link">第七篇 从财报到投资决策</a>
+  <a href="#ch20" class="ch-link">第20章 制造业与零售业</a>
+  <a href="#ch21" class="ch-link">第21章 互联网与金融业</a>
+  <a href="#ch22" class="ch-link">第22章 预期差</a>
+  <a href="#ch23" class="ch-link">第23章 财报阅读实战</a>
+  <a href="#ch24" class="ch-link">第24章 管理层质量与资本运作</a>
+  <a href="#appendix" class="part-link">附录</a>
+  <a href="#appa" class="app-link">A 财务指标速查</a>
+  <a href="#appb" class="app-link">B 行业特征对比</a>
+  <a href="#appc" class="app-link">C 排雷清单卡片</a>
+  <a href="#appd" class="app-link">D 术语速查</a>
+  <a href="#appe" class="app-link">E 财报阅读自检</a>
+  <a href="#appf" class="app-link">F 估值速成桥梁</a>
+  <a href="#appg" class="app-link">G 结构化练习</a>
+</div>
+</nav>
+
+<div id="main">
+
+<!-- ==================== 封面 ==================== -->
+<div class="container">
+<div class="cover" id="cover">
+  <div class="cover-badge">FUNDAMENTALS 101</div>
+  <h1>财报与基本面<br>投资手册</h1>
+  <p class="tagline">从数字读懂生意，用财报验证投资</p>
+  <div class="cover-meta">
+    <span>📖 7篇 24章 + 7附录</span>
+    <span>🎯 面向：已有基础的新手投资者</span>
+    <span>📐 强调色：理性蓝 #2563EB</span>
+  </div>
+</div>
+
+<!-- ==================== 阅读路径 ==================== -->
+<div class="reading-path" id="reading-path">
+<h3>🗺️ 阅读路径与学习地图</h3>
+<div class="path-map">
+  <span class="node">裸K</span><span class="arrow">→</span>
+  <span class="node current">财报 ←你在这里</span><span class="arrow">→</span>
+  <span class="node">宏观</span><span class="arrow">→</span>
+  <span class="node">交易系统</span><span class="arrow">→</span>
+  <span class="node">风控心理</span>
+</div>
+<div class="path-section">
+<h4>🚀 快速上手（1-2小时）</h4>
+<ol>
+<li>第1章（为什么读财报）→ 第2章（三大报表速览）→ 第8章（商业模式与护城河）→ 第7章（杜邦分析）→ 附录A指标速查</li>
+</ol>
+</div>
+<div class="path-section">
+<h4>📚 系统学习（8-10周）</h4>
+<ol>
+<li>从第1章顺序读到第24章 → 附录A-G完整查漏补缺</li>
+</ol>
+</div>
+<div class="path-section">
+<h4>⚡ 已有基础</h4>
+<ol>
+<li>第3-5章（科目深化）→ 第6章（勾稽关系）→ 第7章（杜邦分析）→ 第8-9章（商业模式+行业）→ 第10章（单季分析）→ 第16-19章（排雷）→ 第22-24章（预期差+实战+管理层）</li>
+</ol>
+</div>
+<div class="path-section">
+<h4>🔗 跨轮次练习纪律</h4>
+<ol>
+<li>进入宏观学习后，每日保留15分钟：打开一家公司的三表，用本手册方法快速扫描核心指标和排雷项，保持财报阅读手感不断线</li>
+</ol>
+</div>
+</div>
+</div>
+
+<!-- ==================== 第一篇：财报是什么 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part1">
+  <div class="part-tag">第一篇 · 财报是什么</div>
+  <h2>企业与投资者的共同语言</h2>
+  <p class="part-goal">回答"为什么投资者必须读财报"，建立正确认知：财报是验证工具而非预测工具，是"企业的体检报告"。你不需要成为会计，但你需要成为"会读体检报告的病人"。</p>
+</div>
+
+<!-- ===== 第1章 ===== -->
+<!-- ===== 第1章（重写版） ===== -->
+<div class="chapter" id="ch1">
+<h2 class="chapter-title"><span class="ch-num">第1章</span>为什么投资者必须读财报</h2>
+
+<div class="section">
+<h3>1.1 财报是企业的"体检报告"</h3>
+
+<p>每年去医院体检，你拿到一份报告：血压、血糖、肝功能……每个数字告诉你身体某个方面的状况。财报就是企业的体检报告。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-accent">
+<div class="info-card-header">资产负债表</div>
+<div class="info-card-title">骨架照片</div>
+<div class="info-card-body"><p>有多少家底——资产、负债、净资产。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">利润表</div>
+<div class="info-card-title">运动能力测试</div>
+<div class="info-card-body"><p>能赚多少钱——收入、成本、利润。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">现金流量表</div>
+<div class="info-card-title">血液检测</div>
+<div class="info-card-body"><p>现金流是否健康——真金白银的进出。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 不看财报买股票=不体检就开药</div>
+<p>你可能在某些时候蒙对，但你不知道自己为什么对，更不知道自己什么时候会错。投资不是赌博——你需要知道你买的是什么，它值多少钱，风险在哪里。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 财报阅读的正确心态</div>
+<p>你不需要成为会计专家。你只需要像"有经验的病人"一样——看得懂体检报告的关键指标，知道哪些异常需要警惕，哪些只是正常波动。专业的事交给审计师，判断的事交给自己。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>1.2 巴菲特为什么要读财报</h3>
+
+<p>巴菲特每年读上千份年报，不是为了找"PE最低"的股票，而是为了<strong>理解生意的本质</strong>。他看财报的方式和散户完全不同：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">散户的看法</div>
+<div class="info-card-title">数字导向</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>净利润多少？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>增速多少？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PE是多少？</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">巴菲特的看法</div>
+<div class="info-card-title">生意导向</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>这门生意的护城河在哪里？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>利润来源是否可持续？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>管理层如何配置资本？</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 数字是入口，生意是终点</div>
+<p>财报是帮你从数字走进生意的桥梁。看数字不是目的，理解生意才是。如果你看完财报只知道"净利润10亿、增长20%"，你还没有真正读懂这份财报。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>1.3 财报能告诉你什么</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">能告诉你的</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>赚钱能力</div>
+<div class="ici-body">毛利率、净利率、ROE——靠什么赚钱、赚多少、同行比如何</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>家底厚度</div>
+<div class="ici-body">总资产、净资产、负债——有多少家底、欠多少、还得起吗</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>现金健康</div>
+<div class="ici-body">经营现金流、自由现金流——赚的是"纸上的"还是"真金白银"</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>成长轨迹</div>
+<div class="ici-body">营收增速、利润增速、现金流增速——在变好还是变差</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>风险信号</div>
+<div class="ici-body">应收激增、存货堆积、商誉过高——哪些"地雷"可能爆炸</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">不能告诉你的</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>不预测股价</div>
+<div class="ici-body">好财报≠股价涨，坏财报≠股价跌——股价反映的是预期差，不是绝对好坏</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>不替代商业判断</div>
+<div class="ici-body">财报是"后视镜"，告诉你过去发生了什么，不能告诉你未来会怎样</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>不告诉你行业格局变化</div>
+<div class="ici-body">技术颠覆、监管变化、消费习惯改变——这些不会立刻出现在财报里</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>不告诉你管理层的真实想法</div>
+<div class="ici-body">财报是管理层想让你看到的——真实情况要结合管理层行为判断</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>1.4 财报是"后视镜"——正确的期待</h3>
+
+<p>财报有<strong>1-3个月的滞后</strong>：一季报在4月底披露，但反映的是1-3月的经营情况。等到你看到数据时，公司可能已经发生了重大变化。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 正确的期待</div>
+<p><strong>用财报验证假设，不是用财报预测未来</strong>。你先有"这家公司可能被低估"的假设，然后用财报验证——赚钱能力是否真的强？现金流是否真的健康？排雷是否通过？财报是验证工具，不是水晶球。</p>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">正确用法</div>
+<div class="info-card-title">验证假设</div>
+<div class="info-card-body"><p>先形成假设→用财报验证→假设成立则买入/持有，假设不成立则放弃。财报是决策的验证环节，不是起点也不是终点。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">错误用法</div>
+<div class="info-card-title">直接预测</div>
+<div class="info-card-body"><p>"利润增长20%所以股价会涨"——这是用后视镜当望远镜。利润增长20%可能已经被市场定价(price in)，股价反映的是预期差而非绝对值。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第1章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我想买一只股票时，<span class="action">我将先问自己：我对这家公司的假设是什么？然后用财报验证——如果财报不支持假设，不买。</span></div>
+<div class="rule-item"><span class="trigger">当</span>财报数据很好但股价下跌时，<span class="action">我不会认为"市场错了"，而是检查：市场预期是否已经计价（price in）？财报是"后视镜"，股价是"前灯"。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我看到一份财报时，<span class="action">我将先看三个数字：扣非净利润、经营现金流净额、净资产——三个数字健康再深入分析，任何一个异常先进入排雷模式。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家你熟悉的公司（比如贵州茅台或腾讯），打开它最新的年报，找到这三个数字：①扣非净利润 ②经营活动现金流净额 ③净资产。判断这三个数字是否"健康"。</p>
+<p><strong>预期产出</strong>：一张三数字快照表（数字 + 同比变化 + 你的判断）</p>
+<p><strong>自检</strong>：你是在"看数字"还是在"理解生意"？如果让你用一句话概括这家公司的生意模式，你能说出来吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第2章（重写版） ===== -->
+<div class="chapter" id="ch2">
+<h2 class="chapter-title"><span class="ch-num">第2章</span>三大报表全景速览</h2>
+
+<div class="section">
+<h3>2.1 资产负债表：某一天的"家底照片"</h3>
+
+<p>资产负债表告诉你<strong>某一天</strong>（通常是12月31日或3月31日）公司的家底：有多少资产、欠多少债、剩多少是股东的。核心公式：</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 核心公式</div>
+<p><strong>资产 = 负债 + 所有者权益</strong></p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 通俗比喻</div>
+<p>你有一套房（资产500万），房贷300万（负债），你的净资产200万（所有者权益）。资产负债表就是这张"财产清单"——但它的项目比你的房贷复杂100倍。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>2.2 利润表：一段时间的"成绩单"</h3>
+
+<p>利润表告诉你<strong>一段时间</strong>（如1月1日到12月31日）公司赚了多少钱。核心公式：</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 核心公式</div>
+<p><strong>收入 - 成本 - 费用 = 利润</strong></p>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-accent">
+<div class="info-card-header">资产负债表</div>
+<div class="info-card-title">照片 · 时点数据</div>
+<div class="info-card-body"><p>某一天的家底快照。数字是时点的——12月31日的货币资金就是那天账上的数。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">利润表</div>
+<div class="info-card-title">视频 · 时期数据</div>
+<div class="info-card-body"><p>一段时间的累计记录。数字是累计的——全年营收是365天的总和。</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 照片vs视频——这个区别很重要</div>
+<p>资产负债表的数字是"12月31日那天的"，利润表的数字是"1月1日到12月31日的累计"。所以资产负债表不能跨期相加，利润表可以。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>2.3 现金流量表：一段时间的"血液检测"</h3>
+
+<p>现金流量表告诉你<strong>真金白银的进出</strong>，分三个部分：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">经营活动现金流</div>
+<div class="info-card-title">自我造血</div>
+<div class="info-card-body"><p>卖货收到的钱、付给供应商的钱——公司自己赚的钱。这是最重要的现金流科目。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">投资活动现金流</div>
+<div class="info-card-title">花钱扩张或收缩</div>
+<div class="info-card-body"><p>买设备、建厂房、卖资产——公司投资的钱。为负=在扩张，为正=在收缩。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">筹资活动现金流</div>
+<div class="info-card-title">找钱或还钱</div>
+<div class="info-card-body"><p>借款、还债、分红、增发——公司融资的钱。为正=在融资，为负=在还债/分红。</p></div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 通俗比喻</div>
+<p>经营现金流=工资，投资现金流=买房装修，筹资现金流=贷款还贷。如果你月月光（经营现金流为负）但还在买房（投资现金流为负）靠贷款维持（筹资现金流为正）——你的"财务健康"一目了然。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>2.4 三张表的关系：一个故事的三面</h3>
+
+<p>三张表不是三份独立文件——它们讲的是<strong>同一个故事</strong>，只是视角不同：</p>
+
+<div class="flow-chart">
+<div class="flow-title">三表关系</div>
+<div class="flow-node"><strong>利润表</strong>：赚了多少纸面利润？</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>现金流量表</strong>：实际到账多少真金白银？</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>资产负债表</strong>：这些利润和现金最后变成了什么资产？</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 勾稽关系的核心问题</div>
+<p>如果利润表说赚了10亿，但现金流量表说经营现金流只有2亿——那8亿的差额去了哪里？这就是勾稽关系的核心（第6章深度展开）。<strong>三张表必须"对得上"</strong>——对不上=要么有遗漏，要么有问题。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>2.5 一分钟速读法：先看哪三个数字</h3>
+
+<p>打开年报，先看三个数字就够了：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">数字一</div>
+<div class="info-card-title">扣非净利润</div>
+<div class="info-card-body"><p>利润表——扣除一次性损益后的"真实盈利"。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">数字二</div>
+<div class="info-card-title">经营活动现金流净额</div>
+<div class="info-card-body"><p>现金流量表——自己赚的真金白银。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">数字三</div>
+<div class="info-card-title">净资产（所有者权益）</div>
+<div class="info-card-body"><p>资产负债表——股东的"家底"。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 三个数字的健康标准</div>
+<p>扣非净利润持续增长 + 经营现金流 > 净利润 + 净资产稳步增长 = <strong>基本面健康</strong>。三个数字中有任何一个异常 = 需要深入（具体怎么深入，后面的章节逐个拆解）。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>2.6 权责发生制——理解"利润≠现金"的根基</h3>
+
+<p>权责发生制（Accrual Basis）：交易发生就确认收入和成本，<strong>不论现金是否到账</strong>。</p>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 通俗解释</div>
+<p>你今天卖了一台手机给客户，客户说"下个月付款"——按照权责发生制，你今天就可以确认收入和利润。但你的银行账户里并没有收到钱。这就是"利润≠现金"的根源。</p>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 A股利用权责发生制造假</div>
+<p>在A股，有些公司利用权责发生制确认收入但永远收不到现金——虚构客户、虚构销售、虚构利润。这就是为什么<strong>现金流量表是排雷的第一道防线</strong>——利润可以靠会计手段操纵，但银行账户里的钱很难造假。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第2章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我打开一份年报时，<span class="action">我将先用一分钟速读法看三个数字：扣非净利润、经营现金流净额、净资产。三个健康再深入，任何一个异常先进入排雷模式。</span></div>
+<div class="rule-item"><span class="trigger">当</span>利润表说"赚了10亿"但经营现金流只有2亿时，<span class="action">我将追问：8亿去了哪里？是应收账款增加、存货堆积还是其他原因？不弄清楚不买入。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我看到净利润很高但经营现金流为负时，<span class="action">我将直接进入排雷模式——"有利润没现金"是最危险的信号之一（第5章详解）。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家A股公司，打开最新年报，用一分钟速读法找到三个核心数字。然后判断：利润和现金流是否匹配？净资产是否在增长？</p>
+<p><strong>预期产出</strong>：三数字快照表 + "利润vs现金流"匹配判断</p>
+<p><strong>自检</strong>：你能否用"照片/视频/血液检测"的比喻向别人解释三张表的区别？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第3章（重写版） ===== -->
+<div class="chapter" id="ch3">
+<h2 class="chapter-title"><span class="ch-num">第3章</span>资产负债表深度解读——企业的"家底"</h2>
+
+<div class="section">
+<h3>3.1 资产端：货币资金、应收账款、存货</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">货币资金</div>
+<div class="info-card-title">最"硬"的资产</div>
+<div class="info-card-body"><p>现金和银行存款，没什么可争议的空间。但"存贷双高"（大量现金却大量借款）是红旗信号，详见第16章。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">应收账款</div>
+<div class="info-card-title">客户欠公司的钱</div>
+<div class="info-card-body"><p>造假重灾区。关键看：应收增速vs营收增速（应收≫营收=回款变差或虚增收入）；应收账款周转天数（>90天需警惕）。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">存货</div>
+<div class="info-card-title">还没卖出去的商品</div>
+<div class="info-card-body"><p>双刃剑：原材料囤积=看好未来；存货堆积=卖不动，可能面临跌价减值。关键信号：存货增速远超营收增速=滞销。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 应收+存货=造假温床</div>
+<p>A股历史上80%以上的财务造假都涉及应收账款和存货。因为虚增利润的等式是<strong>"虚增资产=虚增利润"</strong>——而应收和存货是最容易"凭空捏造"的资产。当你看到应收激增+存货激增+经营现金流为负——立刻进入排雷模式。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>3.2 资产端：固定资产、在建工程、无形资产、商誉</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">固定资产</div>
+<div class="info-card-title">厂房、设备等长期资产</div>
+<div class="info-card-body"><p>关键看<strong>折旧政策</strong>——同行业公司如果折旧年限差异大，利润就不可比。A公司设备按10年折旧，B公司按15年折旧，B公司的利润天然比A"好看"。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">在建工程</div>
+<div class="info-card-title">还没完工的固定资产</div>
+<div class="info-card-body"><p><strong>长期不转固的在建工程是红旗</strong>——钱花出去了但项目永远完不了？可能资金被挪用。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">无形资产</div>
+<div class="info-card-title">专利、商标、软件</div>
+<div class="info-card-body"><p>部分公司会把本应费用化的研发支出资本化为无形资产——这也是利润操纵手法之一。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">商誉</div>
+<div class="info-card-title">并购溢价</div>
+<div class="info-card-body"><p>并购时支付的对价超过被并购方净资产的部分。<strong>商誉/净资产 > 30%=高危险区</strong>，一旦减值可能吞噬全部利润。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>3.3 负债端：经营性负债 vs 金融性负债</h3>
+
+<p>不是所有负债都是"坏事"。负债分两类：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">经营性负债 · 好负债</div>
+<div class="info-card-title">占别人的便宜</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>应付账款</div>
+<div class="ici-body">拿了货还没付钱</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>预收账款/合同负债</div>
+<div class="ici-body">收了钱还没交货=产品供不应求=好事</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">金融性负债 · 要警惕</div>
+<div class="info-card-title">欠银行的钱</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>短期借款</div>
+<div class="ici-body">到点必须还，还不上=危机</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>长期借款/应付债券</div>
+<div class="ici-body">利息压力持续存在</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 负债好坏公式</div>
+<p><strong>经营性负债占比高 + 金融性负债占比低</strong> = 好的负债结构（议价权强、融资压力小）<br>
+<strong>金融性负债占比高 + 经营性负债占比低</strong> = 需要警惕（议价权弱、融资压力大）</p>
+</div>
+</div>
+
+<div class="section">
+<h3>3.4 所有者权益：实收资本、资本公积、未分配利润</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<div class="info-card-header">实收资本（股本）</div>
+<div class="info-card-title">股东最初投入的钱</div>
+<div class="info-card-body"><p>面值部分，通常1元/股。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">资本公积</div>
+<div class="info-card-title">发行溢价</div>
+<div class="info-card-body"><p>股票发行价超过面值的部分。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">未分配利润</div>
+<div class="info-card-title">最有信息量的科目</div>
+<div class="info-card-body"><p>历年赚的、没分掉的钱。持续增长=公司持续盈利；萎缩=在消耗历史积累。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>3.5 合并报表 vs 母公司报表</h3>
+
+<p>上市公司通常披露两套报表：合并报表和母公司报表。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-accent">
+<div class="info-card-header">合并报表</div>
+<div class="info-card-title">母公司+所有子公司</div>
+<div class="info-card-body"><p>反映整个集团的财务状况。投资分析主要看合并报表——因为子公司也是股东的资产。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">母公司报表</div>
+<div class="info-card-title">仅母公司自身</div>
+<div class="info-card-body"><p>看母公司对子公司的投资和控制关系。如果母公司报表健康但合并报表很差=子公司在拖后腿。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第3章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>应收账款增速远超营收增速+存货增速远超营收增速+经营现金流为负时，<span class="action">我将立刻进入排雷模式——这是"A股造假温床"信号，不排雷不买入。</span></div>
+<div class="rule-item"><span class="trigger">当</span>商誉/净资产 > 30%时，<span class="action">我将标记为"高危险区"，检查被并购方业绩承诺是否完成——一旦商誉减值可能吞噬全部利润。</span></div>
+<div class="rule-item"><span class="trigger">当</span>在建工程长期不转固（超过2年）时，<span class="action">我将追问：钱花到哪里了？项目为什么完不了？可能资金被挪用。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家A股制造业公司，打开资产负债表，按"资产端→负债端→权益端"的顺序，列出最大的5个科目，判断每个科目是否正常。</p>
+<p><strong>预期产出</strong>：资产负债表Top5科目分析表（科目名 | 金额 | 占比 | 是否正常 | 理由）</p>
+<p><strong>自检</strong>：应收和存货的增速是否与营收增速匹配？负债结构中经营性负债和金融性负债的占比如何？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第4章（重写版） ===== -->
+<div class="chapter" id="ch4">
+<h2 class="chapter-title"><span class="ch-num">第4章</span>利润表深度解读——企业的"赚钱能力"</h2>
+
+<div class="section">
+<h3>4.1 从营收到净利润：利润的层层剥壳</h3>
+
+<p>利润表不是只有"收入-支出=利润"这么简单。它是一层层剥壳的过程，每一层都在告诉你不同的事：</p>
+
+<div class="flow-chart">
+<div class="flow-title">利润表剥壳流程</div>
+<div class="flow-node">营业收入 − 营业成本 = <strong>毛利</strong> <span style="color:var(--dim)">（产品竞争力）</span></div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">− 销售费用 − 管理费用 − 研发费用 − 财务费用 = <strong>营业利润</strong> <span style="color:var(--dim)">（主业赚钱能力）</span></div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">+ 营业外收支 = <strong>利润总额</strong></div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">− 所得税 = <strong>净利润</strong> <span style="color:var(--dim)">（最终成果）</span></div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 三层一起看=完整的盈利画像</div>
+<p>毛利率看产品竞争力，营业利润率看主业赚钱能力，净利率看综合盈利水平。不能只看净利润——净利润好但毛利低=靠费用控制撑着；毛利好但净利低=费用在吃利润。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>4.2 营业收入：确认时点与口径</h3>
+
+<p>收入不是"收到钱"才算——按权责发生制，商品控制权转移就可以确认收入。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">总额法 vs 净额法</div>
+<div class="info-card-title">收入可以差10倍</div>
+<div class="info-card-body"><p>电商平台用总额法（按GMV确认收入）还是净额法（按佣金确认收入），收入可以差10倍。同一家公司改一下口径，收入就"暴涨"。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">提前确认</div>
+<div class="info-card-title">年底冲量</div>
+<div class="info-card-body"><p>把明年1月的订单算入今年12月=虚增收入。调节年报数字的常见手法。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">关联交易</div>
+<div class="info-card-title">自导自演</div>
+<div class="info-card-body"><p>卖给子公司算收入，但集团没有外部收入=自导自演。关联交易占比过高=收入质量存疑。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>4.3 营业成本与毛利</h3>
+
+<p>毛利率=（营收-成本）/营收，是衡量<strong>产品竞争力</strong>最直接的指标。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">高毛利率 > 50%</div>
+<div class="info-card-title">定价权强或技术壁垒高</div>
+<div class="info-card-body"><p>茅台91%、恒瑞医药85%。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">中毛利率 20-50%</div>
+<div class="info-card-title">中等竞争力</div>
+<div class="info-card-body"><p>制造业、软件。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">低毛利率 < 20%</div>
+<div class="info-card-title">薄利多销</div>
+<div class="info-card-body"><p>零售、建筑工程。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 毛利率趋势性下滑比低毛利率更危险</div>
+<p>毛利率从40%降到35%比毛利率稳定在20%更值得警惕——趋势告诉你方向，绝对值只告诉你当前位置。1个百分点的毛利率变化可能意味着数亿的利润变化。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>4.4 三费（销售/管理/研发费用）</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">销售费用</div>
+<div class="info-card-title">广告、促销、渠道</div>
+<div class="info-card-body"><p>销售费用率上升=获客成本在增加。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">管理费用</div>
+<div class="info-card-title">行政、人力、办公</div>
+<div class="info-card-body"><p>管理费用率上升=管理效率在下降。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">研发费用</div>
+<div class="info-card-title">研发投入</div>
+<div class="info-card-body"><p>研发费用率 > 10%通常是创新驱动型公司。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 毛利率与净利率的"剪刀差"</div>
+<p>毛利率稳定但净利率下降=费用在吃利润——公司在花更多钱维持同样的收入。这比毛利率下降更隐蔽，因为毛利看起来"没变"，但盈利能力其实在恶化。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>4.5 营业利润 vs 利润总额 vs 净利润</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">营业利润</div>
+<div class="info-card-title">主业赚的钱</div>
+<div class="info-card-body"><p>这是最重要的利润指标——它告诉你公司主营业务能不能赚钱。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">利润总额 >> 营业利润</div>
+<div class="info-card-title">靠营业外收入撑面子</div>
+<div class="info-card-body"><p>出售资产、政府补贴、投资收益——这些不可持续。如果公司利润主要来自营业外收入=主业不赚钱。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>4.6 扣非净利润与EPS</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">扣非净利润</div>
+<div class="info-card-title">最干净的盈利指标</div>
+<div class="info-card-body"><p>扣除非经常性损益后的净利润。如果净利润 >> 扣非净利润=公司在靠一次性收入撑利润。投资分析<strong>优先看扣非净利润</strong>。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">EPS（每股收益）</div>
+<div class="info-card-title">净利润/总股本</div>
+<div class="info-card-body"><p>稀释EPS还要考虑可转债、期权等潜在新增股份的稀释效应。EPS是PE估值的分母。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第4章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>毛利率连续3个季度下滑时，<span class="action">我将标记为"竞争力在衰减"，检查是行业竞争加剧还是成本失控——前者是长期问题，后者可能通过管理改善。</span></div>
+<div class="rule-item"><span class="trigger">当</span>净利润/扣非净利润 > 1.5时，<span class="action">我将标记为"利润含金量低"，查看非经常性损益来源——如果是出售资产或政府补贴，不算真盈利。</span></div>
+<div class="rule-item"><span class="trigger">当</span>毛利率稳定但净利率下降时，<span class="action">我将检查三费变化——"剪刀差"意味着公司在花更多钱维持同样的收入，盈利能力在隐性恶化。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司，从年报中提取利润表，按"毛利→营业利润→利润总额→净利润→扣非净利润"的顺序，计算每一层的利润率，画出利润漏斗图。</p>
+<p><strong>预期产出</strong>：利润漏斗表（层级 | 金额 | 利润率 | 同比变化）</p>
+<p><strong>自检</strong>：毛利率和净利率之间的差距大吗？差距来自三费还是营业外收支？扣非净利润和净利润差距大吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第5章（重写版） ===== -->
+<div class="chapter" id="ch5">
+<h2 class="chapter-title"><span class="ch-num">第5章</span>现金流量表深度解读——企业的"造血能力"</h2>
+
+<div class="section">
+<h3>5.1 为什么现金流量表最难造假</h3>
+
+<p>利润可以靠会计手段操纵，但银行账户里的钱很难造假。利润表说"赚了10亿"，银行对账单只有2亿——现金流量表会戳穿这个谎言。</p>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 现金流铁律</div>
+<p>利润可以操纵，现金流很难操纵。<strong>永远优先看现金流量表</strong>——如果经营现金流和利润长期背离，利润表的可信度打折50%。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>5.2 经营活动现金流</h3>
+
+<p>经营现金流=公司自己赚的真金白银。这是最重要的现金流科目——它回答"公司能不能靠自己活下去"。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">健康信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经营现金流 > 0 且持续增长</div>
+<div class="ici-body">造血能力强</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经营现金流/净利润 > 1</div>
+<div class="ici-body">利润含金量高——赚到的利润都有真金白银支撑</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">危险信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经营现金流 < 0</div>
+<div class="ici-body">造血能力不足——靠外部输血维持</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经营现金流/净利润 < 0.5</div>
+<div class="ici-body">利润含金量低——一半以上的利润没有现金支撑</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>5.3 投资活动与筹资活动现金流</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">投资活动现金流</div>
+<div class="info-card-title">扩张或收缩</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>为负</div>
+<div class="ici-body">公司在扩张（买设备、建厂房）——成长期公司通常为负</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>为正</div>
+<div class="ici-body">公司在收缩（卖资产）——成熟期或转型期可能转正</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">筹资活动现金流</div>
+<div class="info-card-title">找钱或还钱</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>为正</div>
+<div class="ici-body">公司在融资（借款、发债、增发）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>为负</div>
+<div class="ici-body">公司在还债或分红</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>5.4 自由现金流</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 自由现金流公式</div>
+<p><strong>自由现金流 = 经营活动现金流 - 资本支出</strong></p>
+<p>扣除维持运营必须的设备投入后，真正可以自由支配的钱。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 通俗比喻</div>
+<p>你月薪1万（经营现金流），但每月必须花2000维护你的工作工具（资本支出），自由现金流=8000。公司也一样——自由现金流才是真正"可以分给股东的钱"。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>5.5 净利润 vs 经营现金流："有利润没现金"的五个原因</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">可解释的原因（1-4）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>应收账款激增</div>
+<div class="ici-body">卖了货但收不到钱</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>存货堆积</div>
+<div class="ici-body">做了产品但卖不出去</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>预付账款增加</div>
+<div class="ici-body">先付了钱但还没收到货</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>折旧摊销大</div>
+<div class="ici-body">非现金支出降低了利润但不影响现金流</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">不可解释的原因（5）</div>
+<div class="info-card-title">虚增收入</div>
+<div class="info-card-body"><p>最坏的情况——利润是假的。如果前四个原因都解释不了利润和现金流的差距，第五种=排雷。<strong>前四种可以验证，第五种=排除</strong>。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>5.6 现金流的三种健康模式与三种危险模式</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>模式</th><th>经营</th><th>投资</th><th>筹资</th><th>含义</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>成熟牛</strong> ✅</td><td>+</td><td>-</td><td>-</td><td>自造血+稳健投资+还债分红=最健康</td></tr>
+<tr><td><strong>成长股</strong> ✅</td><td>+</td><td>--</td><td>+</td><td>自造血但扩张大+外部融资=正常成长</td></tr>
+<tr><td><strong>收缩转型</strong> ✅</td><td>+</td><td>+</td><td>-</td><td>自造血+卖资产收缩+还债=转型期</td></tr>
+<tr><td><strong>烧钱扩张</strong> ⚠️</td><td>-</td><td>--</td><td>++</td><td>造血不足+激进扩张+靠融资=高风险</td></tr>
+<tr><td><strong>拆东补西</strong> ⚠️</td><td>-</td><td>+</td><td>-</td><td>造血不足+卖资产维生+还债=危急</td></tr>
+<tr><td><strong>融资续命</strong> 🚨</td><td>-</td><td>-</td><td>+++</td><td>造血不足+投资也亏+纯靠融资=极危</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 "融资续命"模式=直接排除</div>
+<p>经营现金流为负+投资现金流为负+筹资现金流大幅为正=公司不赚钱、还在花钱、全靠借钱活着。除非你能确认其有明确盈利拐点，否则直接排除。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第5章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>经营现金流/净利润连续2年 < 0.5时，<span class="action">我将标记为"利润含金量低"，降低估值预期并进入排雷模式。</span></div>
+<div class="rule-item"><span class="trigger">当</span>公司处于"融资续命"模式（经营-、投资-、筹资+++）时，<span class="action">我将直接排除——除非我能确认其有明确盈利拐点。</span></div>
+<div class="rule-item"><span class="trigger">当</span>自由现金流持续为负但净利润为正时，<span class="action">我将检查资本支出是否在创造未来价值——如果是在扩张产能且有明确回报预期可以接受，如果是在维护低效资产则不可接受。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司连续3年现金流量表，判断其属于"成熟牛/成长股/收缩转型"还是"烧钱扩张/拆东补西/融资续命"，并说明判断依据。</p>
+<p><strong>预期产出</strong>：3年现金流模式分析表（年份 | 经营 | 投资 | 筹资 | 模式判断 | 依据）</p>
+<p><strong>自检</strong>：经营现金流/净利润是否持续 > 1？如果否，差距的原因在前四种里能找到吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第6章（重写版） ===== -->
+<div class="chapter" id="ch6">
+<h2 class="chapter-title"><span class="ch-num">第6章</span>三表勾稽——利润、现金与资产的联动关系</h2>
+
+<div class="section">
+<h3>6.1 勾稽是什么意思？为什么"对不上"很危险</h3>
+
+<p>"勾稽"就是三张表之间的数字必须<strong>能对得上</strong>——利润表的利润会流向资产负债表的未分配利润，现金流量表的现金净增加额会等于资产负债表货币资金的期末-期初差额。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 勾稽的本质</div>
+<p>三张表讲的是同一个故事。如果数字对不上=要么有遗漏，要么有问题。<strong>勾稽不是可选项，是财务报表的基本要求</strong>——审计师必须保证勾稽关系成立。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.2 利润表→资产负债表：利润去了哪里</h3>
+
+<div class="flow-chart">
+<div class="flow-title">利润流向</div>
+<div class="flow-node">利润表：净利润 10亿</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">资产负债表：未分配利润 +10亿</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">资产端：这10亿变成了什么？<br>现金？应收账款？存货？固定资产？</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 追问的关键</div>
+<p>利润表说赚了10亿，你要追问：这10亿在资产负债表上变成了什么？如果是现金=好；如果是应收账款和存货=要警惕；如果是固定资产和在建工程=钱被"固化"了。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.3 现金流量表→资产负债表：现金的来龙去脉</h3>
+
+<div class="flow-chart">
+<div class="flow-title">现金流向</div>
+<div class="flow-node">现金流量表：现金净增加额 = 期末现金 - 期初现金</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">资产负债表：货币资金 期末 = 期初 + 现金净增加额</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 验证方法</div>
+<p>资产负债表的货币资金期末减期初 = 现金流量表的现金净增加额。如果不等=勾稽失败，要么是会计差错，要么是有意操纵。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.4 综合勾稽：一个完整的验证流程</h3>
+
+<div class="flow-chart">
+<div class="flow-title">三表勾稽验证</div>
+<div class="flow-node"><strong>第一步</strong>：净利润 → 未分配利润增量（利润表→资产负债表）</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第二步</strong>：经营现金流 vs 净利润（现金流量表 vs 利润表）</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第三步</strong>：现金净增加额 = 货币资金增量（现金流量表→资产负债表）</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第四步</strong>：资产增量 = 负债增量 + 权益增量（资产负债表平衡）</div>
+</div>
+</div>
+
+<div class="section">
+<h3>6.5 实战勾稽示例：一家"对得上"的公司</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>项目</th><th>金额</th><th>勾稽验证</th></tr>
+</thead>
+<tbody>
+<tr><td>净利润</td><td>10亿</td><td>—</td></tr>
+<tr><td>未分配利润增加</td><td>10亿</td><td>✅ 利润全部留存</td></tr>
+<tr><td>经营现金流</td><td>12亿</td><td>✅ > 净利润，含金量高</td></tr>
+<tr><td>货币资金期末-期初</td><td>5亿</td><td>—</td></tr>
+<tr><td>现金净增加额</td><td>5亿</td><td>✅ 等于货币资金增量</td></tr>
+<tr><td>资产增量</td><td>15亿</td><td>—</td></tr>
+<tr><td>负债增量</td><td>5亿</td><td>—</td></tr>
+<tr><td>权益增量</td><td>10亿</td><td>✅ 资产=负债+权益</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 解读</div>
+<p>赚了10亿（利润），收了12亿现金（经营现金流 > 净利润=好），其中7亿变成了其他资产（可能是应收/存货/固定资产），5亿留作现金。资产增加15亿=负债增加5亿+权益增加10亿。<strong>全部对得上=勾稽通过</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.6 警惕"勾稽失败"的红旗信号</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">红旗一</div>
+<div class="info-card-title">利润 >> 经营现金流</div>
+<div class="info-card-body"><p>赚了10亿但只收到2亿现金——8亿去哪了？如果应收/存货的增加解释不了，=虚增收入嫌疑。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">红旗二</div>
+<div class="info-card-title">货币资金增量 ≠ 现金净增加额</div>
+<div class="info-card-body"><p>现金流量表说现金增加5亿，但资产负债表货币资金只增加2亿——3亿去哪了？这是最直接的勾稽失败。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">红旗三</div>
+<div class="info-card-title">资产增量 ≠ 负债+权益增量</div>
+<div class="info-card-body"><p>资产负债表最基本的平衡公式都不成立——极端罕见，通常意味着重大会计差错或蓄意造假。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">黄旗</div>
+<div class="info-card-title">未分配利润增量 ≠ 净利润</div>
+<div class="info-card-body"><p>正常情况未分配利润增量=净利润-分红。如果不等且有无法解释的差异=利润分配有问题。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第6章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我拿到三张表时，<span class="action">我将先做勾稽验证：①净利润→未分配利润 ②经营现金流vs净利润 ③现金净增加额→货币资金增量 ④资产=负债+权益。四步都通过再深入分析。</span></div>
+<div class="rule-item"><span class="trigger">当</span>勾稽失败且无法用合理的会计解释说明时，<span class="action">我将直接排除这家公司——勾稽失败不是"技术问题"，是"诚信问题"。</span></div>
+<div class="rule-item"><span class="trigger">当</span>利润大幅增长但经营现金流不增长甚至下降时，<span class="action">我将追问利润的"去向"——在资产负债表上找到了还是找不到？找不到=虚增利润嫌疑。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司最新年报，做完整的三表勾稽验证——按四步法逐步核对，判断勾稽是否通过。</p>
+<p><strong>预期产出</strong>：勾稽验证表（步骤 | 数据A | 数据B | 是否相等 | 结论）</p>
+<p><strong>自检</strong>：四步勾稽全部通过了吗？如果有差异，你能在财报附注中找到解释吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第7章（重写版） ===== -->
+<div class="chapter" id="ch7">
+<h2 class="chapter-title"><span class="ch-num">第7章</span>合并报表与少数股东权益</h2>
+
+<div class="section">
+<h3>7.1 合并报表的本质</h3>
+
+<p>上市公司通常是一个集团——母公司旗下有多个子公司。合并报表就是把母公司和所有子公司的报表"加总"，然后消除内部交易，反映<strong>整个集团</strong>的财务状况。</p>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 通俗比喻</div>
+<p>你（母公司）和你的两个儿子（子公司A、B）各有收入。合并报表就是把全家人的收入加起来，然后减去你给儿子的零花钱（内部交易），得出家庭总收入。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>7.2 少数股东权益</h3>
+
+<p>如果母公司只持有子公司80%的股权，剩下20%属于"少数股东"。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">少数股东权益</div>
+<div class="info-card-title">资产负债表</div>
+<div class="info-card-body"><p>子公司20%的净资产部分——不属于母公司股东，但计入合并报表。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">少数股东损益</div>
+<div class="info-card-title">利润表</div>
+<div class="info-card-body"><p>子公司20%的净利润部分——从合并净利润中扣除后=归属母公司净利润。</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 归母净利润 vs 净利润</div>
+<p>合并净利润 - 少数股东损益 = <strong>归母净利润</strong>。投资分析看的是归母净利润——因为这是真正属于你的部分。如果净利润很大但归母净利润很小=子公司赚的钱大部分不属于你。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>7.3 何时关注合并报表 vs 母公司报表</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">看合并报表</div>
+<div class="info-card-title">评估集团整体</div>
+<div class="info-card-body"><p>看整个集团赚了多少钱、资产如何、负债如何。投资分析主要看合并报表。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">看母公司报表</div>
+<div class="info-card-title">评估母公司自身</div>
+<div class="info-card-body"><p>母公司有没有"空心化"——资产全在子公司，母公司自身只剩投资。如果母公司报表货币资金极少但有大量借款=资金被子公司占用。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第7章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>净利润大幅大于归母净利润时，<span class="action">我将检查少数股东损益占比——如果少数股东拿走了大部分利润，说明最赚钱的子公司母公司不控股。</span></div>
+<div class="rule-item"><span class="trigger">当</span>母公司报表货币资金极少但合并报表货币资金充裕时，<span class="action">我将追问：钱在子公司账上，母公司能不能用？如果子公司是控股但非全资，分红需要少数股东同意。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家有子公司的上市公司，比较合并报表和母公司报表的货币资金、净利润，判断母公司是否"空心化"。</p>
+<p><strong>自检</strong>：归母净利润和净利润差距大吗？少数股东权益占比如何？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第8章（重写版） ===== -->
+<div class="chapter" id="ch8">
+<h2 class="chapter-title"><span class="ch-num">第8章</span>所有者权益变动表</h2>
+
+<div class="section">
+<h3>8.1 为什么这张表值得一看</h3>
+
+<p>所有者权益变动表连接利润表和资产负债表——它告诉你<strong>净资产从期初到期末发生了什么变化</strong>。它是三表勾稽的"桥梁表"。</p>
+
+<div class="flow-chart">
+<div class="flow-title">权益变动路径</div>
+<div class="flow-node">期初净资产</div>
+<div class="flow-arrow">↓ +净利润</div>
+<div class="flow-node">-分红</div>
+<div class="flow-arrow">↓ ±其他综合收益</div>
+<div class="flow-node">±增发/回购</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">期末净资产</div>
+</div>
+</div>
+
+<div class="section">
+<h3>8.2 五个关键变动项</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">综合收益</div>
+<div class="info-card-title">净利润 + 其他综合收益</div>
+<div class="info-card-body"><p>综合收益=本期创造的权益增量。净利润是已实现损益，其他综合收益是未实现损益（如可供出售金融资产公允价值变动）。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">利润分配</div>
+<div class="info-card-title">分红</div>
+<div class="info-card-body"><p>分红=减少权益。关注分红率=分红/净利润。持续低分红=利润留存扩张；持续高分红=回报股东或没有投资机会。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">增发/回购</div>
+<div class="info-card-title">股本变动</div>
+<div class="info-card-body"><p>增发=稀释每股价值（圈钱）；回购=增厚每股价值（回报股东）。频繁增发=持续向股东要钱。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">其他资本公积变动</div>
+<div class="info-card-title">股权激励等</div>
+<div class="info-card-body"><p>股权激励通常计入资本公积——看似没费用化，实际是隐形成本。</p></div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 三种权益增长模式</div>
+<p><strong>靠利润增长</strong>（最健康）→ <strong>靠增发增长</strong>（稀释股东）→ <strong>靠重估增长</strong>（未实现、不确定）。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第8章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>净资产增长主要来自增发而非利润时，<span class="action">我将标记为"靠圈钱增厚家底"——这不是真增长，是稀释。</span></div>
+<div class="rule-item"><span class="trigger">当</span>其他综合收益大幅波动时，<span class="action">我将检查来源——如果是金融资产公允价值变动，这部分损益未实现，不能作为盈利能力判断依据。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司，看所有者权益变动表，判断净资产增长的来源——靠利润、靠增发还是靠重估？</p>
+<p><strong>自检</strong>：分红率是多少？增发/回购情况如何？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第9章（重写版） ===== -->
+<div class="chapter" id="ch9">
+<h2 class="chapter-title"><span class="ch-num">第9章</span>会计政策与会计估计</h2>
+
+<div class="section">
+<h3>9.1 同样的生意，不同的会计政策=不同的利润</h3>
+
+<p>两家业务完全相同的公司，如果采用不同的会计政策，利润可以差30%甚至更多。看财报必须关注会计政策——它决定了数字怎么算出来。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 会计政策的核心影响</div>
+<p>会计政策不影响实际赚钱能力，但影响报表上的数字。<strong>同行业对比前，必须确认会计政策是否一致</strong>——否则比较毫无意义。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>9.2 五个关键会计政策</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">折旧政策</div>
+<div class="info-card-title">固定资产折旧年限</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>A公司设备按10年折旧</div>
+<div class="ici-body">年折旧=10%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>B公司设备按15年折旧</div>
+<div class="ici-body">年折旧=6.7%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>同样设备，B公司利润天然更高</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">收入确认</div>
+<div class="info-card-title">总额法 vs 净额法</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>总额法=按GMV确认收入</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>净额法=按佣金确认收入</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>同一业务收入可以差10倍</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">存货计价</div>
+<div class="info-card-title">先进先出 vs 加权平均</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>物价上涨期</div>
+<div class="ici-body">先进先出→毛利率更高（老低成本先结转）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>加权平均→平滑波动</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">研发支出</div>
+<div class="info-card-title">费用化 vs 资本化</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>费用化=研发投入直接计入费用</div>
+<div class="ici-body">利润低但更保守</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>资本化=研发投入计入无形资产</div>
+<div class="ici-body">利润高但可能虚增资产</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>9.3 会计估计变更——调节利润的隐蔽手法</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 会计估计变更 vs 会计政策变更</div>
+<p><strong>会计政策变更</strong>通常需要追溯调整，影响大且显眼。<strong>会计估计变更</strong>（如延长折旧年限、提高坏账准备计提比例）采用未来适用法，不需要追溯——更隐蔽，是A股调节利润的常用手法。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 警惕"延长折旧年限"调增利润</div>
+<p>一家公司突然把设备折旧年限从10年改为15年——当年折旧减少，利润增加。但这不是公司真的变好了，而是会计估计变了。检查附注中的"会计估计变更"部分。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第9章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>同行业两家公司利润率差异大时，<span class="action">我将先检查会计政策是否一致——折旧年限、收入确认方法、研发资本化比例——排除会计政策差异后再比较。</span></div>
+<div class="rule-item"><span class="trigger">当</span>公司突然变更会计估计（如延长折旧年限、降低坏账计提比例）时，<span class="action">我将还原变更前的利润——看真实盈利能力是否改善，还是只是会计"美容"。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选同行业两家公司，比较它们的折旧年限、研发资本化比例、收入确认方法，判断利润差异中有多少来自会计政策差异。</p>
+<p><strong>自检</strong>：你能说出公司最近一次会计估计变更的内容和影响吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第10章（重写版） ===== -->
+<div class="chapter" id="ch10">
+<h2 class="chapter-title"><span class="ch-num">第10章</span>年报与季报——披露规则与阅读顺序</h2>
+
+<div class="section">
+<h3>10.1 A股财报披露时间表</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>报告类型</th><th>报告期</th><th>披露截止日</th><th>信息含量</th></tr>
+</thead>
+<tbody>
+<tr><td>一季报</td><td>1-3月</td><td>4月30日</td><td>边际变化信号</td></tr>
+<tr><td>半年报</td><td>1-6月</td><td>8月31日</td><td>中期验证</td></tr>
+<tr><td>三季报</td><td>1-9月</td><td>10月31日</td><td>全年展望</td></tr>
+<tr><td>年报</td><td>1-12月</td><td>4月30日</td><td>最完整信息</td></tr>
+</tbody>
+</table>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 时间表要点</div>
+<p>年报和一季报通常同时披露（4月底）——这是信息最密集的时段。三季报在10月底披露，距离年底还有2个月，是全年展望的重要参考。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>10.2 年报的结构与阅读顺序</h3>
+
+<p>一份A股年报通常300-400页，不要从头读到尾。按以下顺序阅读：</p>
+
+<div class="flow-chart">
+<div class="flow-title">年报高效阅读顺序</div>
+<div class="flow-node"><strong>第一节</strong>：重要提示 → 看审计意见（标准无保留=通过）</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第二节</strong>：公司简介和主要财务指标 → 一分钟速读三个数字</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第三节</strong>：公司业务概要 → 理解生意模式</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第四节</strong>：经营情况讨论与分析 → 管理层视角</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第五节</strong>：重要事项 → 关联交易、担保、承诺</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node"><strong>第八节</strong>：财务报告 → 三表+附注（最核心）</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 财务报告附注——真正的金矿</div>
+<p>年报的财务报告部分，报表本身只有几十页，但<strong>附注可能有200页</strong>。附注是数字背后的解释——应收账款构成、存货明细、关联交易细节、会计政策——都在附注里。<strong>不看附注=只看了一半年报</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>10.3 审计意见——第一道关口</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">标准无保留意见 ✅</div>
+<div class="info-card-title">通过</div>
+<div class="info-card-body"><p>审计师认为财报真实公允。这是正常公司应该拿到的意见。90%以上的A股公司是标准无保留。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">带强调事项的无保留意见 ⚠️</div>
+<div class="info-card-title">通过但有提醒</div>
+<div class="info-card-body"><p>整体通过但审计师想提醒某些事项（如持续经营不确定）。需要看强调的是什么。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">保留意见 / 否定意见 / 无法表示意见 🚨</div>
+<div class="info-card-title">不通过</div>
+<div class="info-card-body"><p>审计师认为财报有问题。这些公司直接排除——不要试图"火中取栗"。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">审计意见变更</div>
+<div class="info-card-title">从"标准"变为"非标"</div>
+<div class="info-card-body"><p>如果去年标准无保留今年变成保留意见=重大红旗。审计师"翻脸"通常意味着发现了严重问题。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>10.4 信息披露的"暗角"——附注中的红旗</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">关联交易占比过高</div>
+<div class="info-card-body"><p>收入主要来自关联方=缺乏外部市场验证，可能通过关联交易输送利益。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">对外担保金额过大</div>
+<div class="info-card-body"><p>担保金额 > 净资产=隐性负债风险极高。一旦被担保方违约，公司需代偿。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">频繁变更会计估计</div>
+<div class="info-card-body"><p>每年都在调折旧年限、坏账计提比例=在"管理"利润。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">大额其他应收款</div>
+<div class="info-card-body"><p>"其他"科目通常应该是小额杂项。如果金额巨大=可能是资金占用或挪用。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第10章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我打开一份年报时，<span class="action">我将先翻到审计意见——非标准意见直接排除，标准无保留再继续。</span></div>
+<div class="rule-item"><span class="trigger">当</span>审计意见从标准变为非标时，<span class="action">我将立刻卖出或回避——审计师"翻脸"是最强的风险信号。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我在附注中发现关联交易占比过高、对外担保金额过大、大额其他应收款时，<span class="action">我将标记为"附注红旗"，降低估值预期。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一份A股年报，按高效阅读顺序翻阅，重点看审计意见、主要财务指标、经营情况讨论、财务报告附注中的关联交易和担保。</p>
+<p><strong>预期产出</strong>：年报阅读清单（按顺序标注关键发现）</p>
+<p><strong>自检</strong>：你是否跳过了附注直接看报表？附注中有哪些红旗信号？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第11章（重写版） ===== -->
+<div class="chapter" id="ch11">
+<h2 class="chapter-title"><span class="ch-num">第11章</span>季度财报与单季分析——跟踪业绩拐点</h2>
+
+<div class="section">
+<h3>11.1 为什么要看季度财报</h3>
+
+<p>年报太慢——反映的是去年的情况。季度财报更敏感——能捕捉到业绩的<strong>边际变化</strong>。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 业绩拐点的定义</div>
+<p>拐点=趋势方向发生变化的时间点。一家公司年报利润增长20%，但Q4利润同比下滑10%——拐点可能已经出现。如果你只看年报，你看到的是"增长20%"；但如果你拆了单季，你看到的是"拐点已现"。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>11.2 同比 vs 环比</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">同比（YoY）</div>
+<div class="info-card-title">和去年同一季度比</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>消除季节性</div>
+<div class="ici-body">白酒Q1旺（春节）、空调Q2-Q3旺（夏天）——同比排除了季节性干扰</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看长期趋势</div>
+<div class="ici-body">同比增长=比去年好；同比下降=比去年差</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">环比（QoQ）</div>
+<div class="info-card-title">和上个季度比</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>更敏感</div>
+<div class="ici-body">能更快捕捉边际变化——环比转负可能领先同比转负1-2个季度</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>有季节性噪音</div>
+<div class="ici-body">白酒Q1→Q2环比必然下降（春节后淡季）——这不代表变差</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>11.3 单季数据拆取方法</h3>
+
+<p>上市公司披露的是<strong>累计数据</strong>（Q1、Q1+Q2、Q1+Q2+Q3），需要自己拆出单季：</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 单季拆取公式</div>
+<p>Q1单季 = 一季报数据<br>
+Q2单季 = 半年报 - 一季报<br>
+Q3单季 = 三季报 - 半年报<br>
+Q4单季 = 年报 - 三季报</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 拆单季的常见陷阱</div>
+<p>有些公司的季度数据合计不等于年报数据（因为审计调整）。如果差值不大（<5%）可以忽略；如果差值大=审计调整幅度大，需要追问原因。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>11.4 季节性、预披露与业绩说明会</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">季节性波动</div>
+<div class="info-card-title">≠变差</div>
+<div class="info-card-body"><p>白酒Q1通常是旺季（春节），空调Q2-Q3是旺季（夏天）。环比下降要排除季节性因素——用同比而非环比判断趋势。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">预披露</div>
+<div class="info-card-title">预告片</div>
+<div class="info-card-body"><p>提前1-2周预告业绩范围。如果预披露超预期，股价通常在预披露当天就反应，不等正式报告。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">业绩说明会</div>
+<div class="info-card-title">管理层指引</div>
+<div class="info-card-body"><p>管理层在会上的发言=下个季度的"指引"。指引比本季度数据更重要——因为股价反映预期。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>11.5 财报季节奏与交易逻辑</h3>
+
+<div class="flow-chart">
+<div class="flow-title">财报季交易节奏</div>
+<div class="flow-node">预披露（提前1-2周）→ 超预期股价当天反应</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">正式报告 → 验证预披露，关注细节</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">业绩说明会 → 管理层指引=下季度预期</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 预期差 > 绝对值</div>
+<p>股价反映的是<strong>预期差</strong>——实际数据vs市场预期的差距。利润增长30%但如果市场预期增长50%=不及预期=股价可能跌。利润下降10%但如果市场预期下降30%=超预期=股价可能涨。<strong>不要用绝对值判断股价方向，要用预期差</strong>。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第11章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>年报利润增长但Q4单季利润同比下滑时，<span class="action">我将标记为"可能的业绩拐点"，拆出单季数据深入分析——拐点领先年报数据。</span></div>
+<div class="rule-item"><span class="trigger">当</span>业绩预披露超预期时，<span class="action">我将不追涨（预期可能已price in），而是等正式报告后看管理层指引。</span></div>
+<div class="rule-item"><span class="trigger">当</span>环比下降但同比上升时，<span class="action">我将先排除季节性因素——用同比判断趋势方向，用环比判断边际变化。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司最近4个季度的数据，拆出单季营收和净利润，画单季趋势图，判断是否有拐点信号。</p>
+<p><strong>预期产出</strong>：单季趋势分析表（季度 | 单季营收 | 同比 | 环比 | 单季净利润 | 同比 | 环比 | 趋势判断）</p>
+<p><strong>自检</strong>：你是否区分了同比和环比？季节性因素排除了吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第12章（重写版） ===== -->
+<div class="chapter" id="ch12">
+<h2 class="chapter-title"><span class="ch-num">第12章</span>盈利能力指标——赚钱的本事</h2>
+
+<div class="section">
+<h3>12.1 毛利率：产品竞争力的一面镜子</h3>
+
+<p>毛利率=（营收-成本）/营收。它回答：<strong>每卖一块钱，扣掉直接成本后剩多少？</strong></p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">高毛利率 > 60%</div>
+<div class="info-card-title">强定价权</div>
+<div class="info-card-body"><p>茅台91%、游戏公司70%+。产品不可替代或品牌溢价极高。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">中毛利率 30-60%</div>
+<div class="info-card-title">中等竞争力</div>
+<div class="info-card-body"><p>制造业、软件。有一定壁垒但面临竞争。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">低毛利率 < 30%</div>
+<div class="info-card-title">薄利多销</div>
+<div class="info-card-body"><p>零售、建筑工程。靠规模和周转赚钱。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 趋势比绝对值更重要</div>
+<p>毛利率持续上升=竞争力增强或成本控制改善；毛利率持续下降=竞争加剧或成本失控。<strong>1个百分点的毛利率变化可能意味着数亿的利润变化</strong>——因为基数是营收，不是利润。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 毛利率变动的数学感知</div>
+<p>一家营收100亿的公司，毛利率从40%降到39%——看起来只降了1个百分点，但毛利从40亿降到39亿，<strong>直接少了1亿利润</strong>。如果费用不变，净利润可能少8000万——这就是1个百分点的威力。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.2 净利率：综合盈利水平</h3>
+
+<p>净利率=净利润/营收。它回答：<strong>每卖一块钱，最终落袋多少？</strong></p>
+
+<div class="flow-chart">
+<div class="flow-title">毛利率→净利率漏斗</div>
+<div class="flow-node">营收 100%</div>
+<div class="flow-arrow">↓ -营业成本</div>
+<div class="flow-node">毛利（毛利率%）</div>
+<div class="flow-arrow">↓ -三费 -税</div>
+<div class="flow-node">净利润（净利率%）</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 剪刀差——毛利率与净利率的差距在扩大</div>
+<p>毛利率稳定+净利率下降=<strong>费用在恶化</strong>（获客成本上升、管理效率下降）。毛利率下降+净利率稳定=公司在用削减费用对冲——但这不可持续。<strong>剪刀差是隐性恶化的信号</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.3 ROE——股东回报的终极指标</h3>
+
+<p>ROE=净利润/净资产——<strong>股东每投入1元赚多少</strong>。巴菲特最看重的指标。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">ROE > 15%</div>
+<div class="info-card-title">好公司</div>
+<div class="info-card-body"><p>巴菲特标准：连续5年>15%=好公司。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">ROE 10-15%</div>
+<div class="info-card-title">中等</div>
+<div class="info-card-body"><p>行业平均水平。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">ROE < 10%</div>
+<div class="info-card-title">资本效率低</div>
+<div class="info-card-body"><p>不如存银行（考虑风险后）。</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ ROE可以被杠杆放大</div>
+<p>ROE=ROA×权益乘数。如果一家公司ROE=20%但ROA只有3%=ROE主要靠高杠杆撑着。一旦去杠杆，ROE会迅速回落。<strong>高ROE+低ROA=杠杆撑的，不算真好</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.4 ROA与ROIC</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">ROA</div>
+<div class="info-card-title">总资产收益率</div>
+<div class="info-card-body"><p>ROA=净利润/总资产——每1元资产赚多少。ROA排除了杠杆影响，比ROE更"真实"地反映资产使用效率。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">ROIC</div>
+<div class="info-card-title">投入资本回报率</div>
+<div class="info-card-body"><p>ROIC=税后经营利润/（净资产+有息负债）——投入资本的回报率，不受融资结构影响。ROIC>WACC=在创造价值；ROIC<WACC=在毁灭价值。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 ROE vs ROA vs ROIC</div>
+<p>ROE看股东回报（含杠杆效应）；ROA看资产效率（排除杠杆）；ROIC看投入资本效率（排除融资结构）。<strong>三者一起看=完整的盈利能力画像</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.5 盈利能力趋势分析</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 趋势 > 绝对值</div>
+<p>毛利率从40%升到42%比毛利率稳定在50%的公司更有看头——因为<strong>趋势告诉你方向</strong>，绝对值只告诉你当前位置。改善中的公司估值会修复，停滞的高毛利率公司估值可能下滑。</p>
+</div>
+
+<table class="data-table">
+<thead>
+<tr><th>场景</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>判断</th></tr>
+</thead>
+<tbody>
+<tr><td>健康成长</td><td>↑</td><td>↑</td><td>↑</td><td>竞争力+效率+回报全面改善 ✅</td></tr>
+<tr><td>费用恶化</td><td>→</td><td>↓</td><td>↓</td><td>毛利稳定但费用在吃利润 ⚠️</td></tr>
+<tr><td>竞争加剧</td><td>↓</td><td>↓</td><td>↓</td><td>产品竞争力下滑 🚨</td></tr>
+<tr><td>对冲衰减</td><td>↓</td><td>→</td><td>→</td><td>毛利降但靠削减费用维持=不可持续 ⚠️</td></tr>
+<tr><td>杠杆撑</td><td>→</td><td>→</td><td>↑</td><td>靠加杠杆提升ROE=虚高 ⚠️</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第12章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>毛利率连续3个季度下滑时，<span class="action">我将检查原因：是行业竞争加剧、成本上升还是产品结构变化——前两者是长期问题，后者可能是暂时的。</span></div>
+<div class="rule-item"><span class="trigger">当</span>ROE > 15%但ROIC < WACC时，<span class="action">我将标记为"高杠杆撑的ROE"——ROE好看但资本效率低，估值不给溢价。</span></div>
+<div class="rule-item"><span class="trigger">当</span>毛利率稳定但净利率下降时，<span class="action">我将检查三费变化——"剪刀差"意味着隐性恶化，比毛利率下滑更隐蔽。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司连续4年数据，计算毛利率、净利率、ROE、ROA，判断属于哪种场景（健康成长/费用恶化/竞争加剧/对冲衰减/杠杆撑）。</p>
+<p><strong>预期产出</strong>：盈利能力趋势表（年份 | 毛利率 | 净利率 | ROE | ROA | 场景判断）</p>
+<p><strong>自检</strong>：ROE是靠什么撑起来的——高净利率、高周转还是高杠杆？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第13章（重写版） ===== -->
+<div class="chapter" id="ch13">
+<h2 class="chapter-title"><span class="ch-num">第13章</span>偿债能力与运营效率——活下去和跑得快</h2>
+
+<div class="section">
+<h3>13.1 短期偿债能力——能不能活下去</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">流动比率</div>
+<div class="info-card-title">流动资产/流动负债</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;2：健康</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>1-2：正常</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&lt;1：短期偿债压力</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">速动比率</div>
+<div class="info-card-title">(流动资产-存货)/流动负债</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>排除存货后还能还债吗？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;1：安全</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">现金比率</div>
+<div class="info-card-title">货币资金/流动负债</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>最保守的偿债指标</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>只有现金能还多少债</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>13.2 长期偿债与负债质量</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 资产负债率不能跨行业比</div>
+<p>制造业50%正常，地产70%也常见，银行90%+是常态。<strong>必须在同行业内比较</strong>——脱离行业谈负债率没有意义。</p>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">利息保障倍数</div>
+<div class="info-card-title">EBIT/利息支出</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;5倍：利息不是问题</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>3-5倍：需关注</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&lt;3倍：利息压力大</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">负债结构</div>
+<div class="info-card-title">经营性 vs 金融性</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经营性负债占比高=好</div>
+<div class="ici-body">占了别人便宜（应付/预收）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>金融性负债占比高=警惕</div>
+<div class="ici-body">欠银行的钱必须还</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>13.3 运营效率三指标</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">存货周转率</div>
+<div class="info-card-title">营业成本/平均存货</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>制造业60天正常</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;90天要警惕</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>骤降=滞销或存货虚增</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">应收账款周转率</div>
+<div class="info-card-title">营收/平均应收</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>60天回款正常</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;90天回款慢</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;180天有坏账风险</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">总资产周转率</div>
+<div class="info-card-title">营收/平均总资产</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>杜邦分析第二引擎</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>高周转=资产效率高</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>13.4 杜邦分解——ROE的三引擎</h3>
+
+<div class="flow-chart">
+<div class="flow-title">杜邦分解</div>
+<div class="flow-node">ROE = 净利率 × 总资产周转率 × 权益乘数</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">净利率（赚钱能力）× 周转率（运营效率）× 权益乘数（杠杆）</div>
+</div>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">高净利率模式</div>
+<div class="info-card-title">厚利少销</div>
+<div class="info-card-body"><p>茅台：净利率50%+，周转慢，杠杆低。靠品牌溢价。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">高周转模式</div>
+<div class="info-card-title">薄利多销</div>
+<div class="info-card-body"><p>沃尔玛：净利率3%，周转极快，靠规模和管理效率。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">高杠杆模式</div>
+<div class="info-card-title">借力打力</div>
+<div class="info-card-body"><p>银行/地产：净利率中等，杠杆高。靠负债放大回报——但风险也大。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 杜邦分解的意义</div>
+<p>同样ROE=15%，靠净利率撑的和靠杠杆撑的<strong>风险完全不同</strong>。杜邦分解让你看清ROE的来源——好ROE靠净利率或周转率，坏ROE靠杠杆。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>13.5 存货周转与毛利率的背离信号</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 存货激增+毛利率上升=造假嫌疑</div>
+<p>正常情况下存货增加应该伴随毛利率下降（清库存需要打折促销）。如果存货在增加但毛利率反而在上升——<strong>可能是少结转成本虚增利润</strong>。存货账面价值偏高（没结转成本）+成本偏低（已结转的部分少）=利润虚高。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第13章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>流动比率 < 1或速动比率 < 0.5时，<span class="action">我将标记为"短期偿债高风险"，不建新仓。</span></div>
+<div class="rule-item"><span class="trigger">当</span>存货周转天数连续2季增加且毛利率异常上升时，<span class="action">我将标记为"存货虚增嫌疑"——正常情况下存货增加应伴随毛利率下降。</span></div>
+<div class="rule-item"><span class="trigger">当</span>ROE主要由权益乘数（杠杆）驱动时，<span class="action">我将还原去杠杆后的ROE——如果去杠杆后ROE < 8%，说明ROE全靠借钱撑着。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司，做杜邦分解——把ROE拆成净利率×周转率×权益乘数，判断ROE主要由哪个引擎驱动。</p>
+<p><strong>预期产出</strong>：杜邦分解表（指标 | 数值 | 行业对比 | 判断）</p>
+<p><strong>自检</strong>：存货周转天数和应收周转天数是否在恶化？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第14章（重写版） ===== -->
+<div class="chapter" id="ch14">
+<h2 class="chapter-title"><span class="ch-num">第14章</span>现金流质量指标——利润的含金量</h2>
+
+<div class="section">
+<h3>14.1 净现比——最重要的单一指标</h3>
+
+<p>净现比=经营现金流/净利润。这是衡量<strong>利润含金量最重要的单一指标</strong>。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">健康区间</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&gt;1.2：优秀</div>
+<div class="ici-body">利润全部变成真金白银还有余</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>0.8-1.2：健康</div>
+<div class="ici-body">利润大部分变成现金</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">警惕区间</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>0.5-0.8：需关注</div>
+<div class="ici-body">一半利润没变成钱</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&lt;0.5：排雷</div>
+<div class="ici-body">利润含金量极低</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>&lt;0或连续负值</div>
+<div class="ici-body">直接进入排雷模式</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>14.2 收现比——回款质量</h3>
+
+<p>收现比=销售收现/营收。它回答：<strong>每确认1元收入，实际收到多少现金？</strong></p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">健康信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>收现比 &gt; 1.1</div>
+<div class="ici-body">回款良好，甚至预收</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>收现比稳定</div>
+<div class="ici-body">回款质量一致</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">危险信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>收现比 &lt; 0.8</div>
+<div class="ici-body">回款差，大量赊销</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>收现比持续下降</div>
+<div class="ici-body">回款在恶化</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>14.3 自由现金流——真正可以分给股东的钱</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 自由现金流公式</div>
+<p><strong>简单法</strong>：自由现金流 = 经营现金流 - 购建固定资产无形资产支付的现金<br>
+<strong>严谨法</strong>：自由现金流 = 经营现金流 - 维持性资本支出（不含扩张性资本支出）</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 行业差异巨大</div>
+<p>重资产行业（制造业）自由现金流天然偏低（资本支出大），轻资产行业（互联网）自由现金流天然偏高。<strong>不要跨行业比绝对值</strong>——同行业对比才有意义。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.4 "有利润没现金"的五种原因</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">可验证的原因（1-4）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>①应收激增</div>
+<div class="ici-body">卖了货但收不到钱</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>②存货堆积</div>
+<div class="ici-body">做了产品但卖不出去</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>③预付增加</div>
+<div class="ici-body">先付了钱但还没收到货</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>④折旧摊销大</div>
+<div class="ici-body">非现金支出降低了利润但不影响现金流</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">不可解释的原因（5）</div>
+<div class="info-card-title">虚增收入</div>
+<div class="info-card-body"><p>最坏的情况——利润是假的。如果前四个原因都解释不了利润和现金流的差距，<strong>第五种=排除</strong>。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 排雷逻辑</div>
+<p>前四种原因可以验证——检查应收、存货、预付、折旧是否增加。如果前四种的增量合计能解释利润和现金流的差距=可理解（但需判断是否恶化）。如果解释不了=虚增收入嫌疑，<strong>直接排除</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.5 现金流质量是排雷的第一道防线</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 为什么现金流是排雷第一道防线</div>
+<p>利润表可以靠权责发生制操纵——确认收入不需要收到现金。但现金流量表记录的是银行账户的真金白银——<strong>很难造假</strong>（除非伪造银行流水，那是犯罪）。所以现金流质量是检验利润真伪的第一道防线。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-title">排雷第一道防线</div>
+<div class="flow-node">净现比 &gt; 0.8？ → ✅ 通过</div>
+<div class="flow-arrow">↓ 否</div>
+<div class="flow-node">前四种原因能解释差距？ → ✅ 可理解但需关注</div>
+<div class="flow-arrow">↓ 否</div>
+<div class="flow-node">第五种：虚增收入嫌疑 → 🚨 排除</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第14章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>净现比连续2年 &lt; 0.5时，<span class="action">我将直接进入排雷模式——检查应收/存货/关联交易，排除虚增收入嫌疑。</span></div>
+<div class="rule-item"><span class="trigger">当</span>收现比 &lt; 0.8且持续下降时，<span class="action">我将标记为"回款恶化+收入虚增嫌疑"，降低估值50%。</span></div>
+<div class="rule-item"><span class="trigger">当</span>利润增速 &gt; 经营现金流增速连续2年时，<span class="action">我将标记为"增长不可持续预警"——利润增长可能缺乏真金白银支撑。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司连续3年数据，计算净现比和收现比，判断利润含金量。如果净现比 &lt; 0.8，检查前四种原因能否解释。</p>
+<p><strong>预期产出</strong>：现金流质量分析表（年份 | 净利润 | 经营现金流 | 净现比 | 销售收现 | 收现比 | 判断）</p>
+<p><strong>自检</strong>：利润和现金流的差距能被前四种原因解释吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第15章（重写版） ===== -->
+<div class="chapter" id="ch15">
+<h2 class="chapter-title"><span class="ch-num">第15章</span>成长能力与指标趋势——方向比位置重要</h2>
+
+<div class="section">
+<h3>15.1 营收增长率——增长的质量比速度重要</h3>
+
+<p>不是所有增长都是好增长。增长的质量取决于来源：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">内生增长</div>
+<div class="info-card-title">最可持续</div>
+<div class="info-card-body"><p>自己扩产、开新店、产品提价——靠自身能力增长。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">并购增长</div>
+<div class="info-card-title">需警惕</div>
+<div class="info-card-body"><p>收购其他公司合并报表——增速好看但要警惕商誉和整合风险。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">会计调整</div>
+<div class="info-card-title">假的</div>
+<div class="info-card-body"><p>改收入确认口径、改折旧年限——增长是"做出来"的，不是真增长。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 增长质量的验证方法</div>
+<p><strong>营收增速20%但应收增速40%</strong>=增长质量差——收入增长了但钱没收回来。<br>
+<strong>营收增速20%且经营现金流增速25%</strong>=增长质量好——赚到的钱都在变成现金。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.2 净利润增速与经营现金流增速</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 看扣非净利润增速</div>
+<p>净利润增速可能被一次性损益扭曲。看<strong>扣非净利润增速</strong>——排除一次性损益后的增速更真实。如果净利润增速30%但扣非增速只有10%=增长主要靠一次性收入撑着。</p>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 利润增速 > 现金流增速=不可持续信号</div>
+<p>利润增速30%但经营现金流增速5%=利润增长可能不可持续。利润可以靠会计手段操纵，但现金流很难造假。<strong>最终验证=经营现金流增速</strong>——如果利润增了但现金流没跟上，增长缺乏真金白银支撑。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.3 增长的三种类型</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>类型</th><th>来源</th><th>持续性</th><th>风险</th></tr>
+</thead>
+<tbody>
+<tr><td>内生增长</td><td>扩产/新店/提价</td><td>高</td><td>低</td></tr>
+<tr><td>并购增长</td><td>收购合并报表</td><td>中</td><td>商誉减值/整合风险</td></tr>
+<tr><td>会计调整</td><td>改口径/改政策</td><td>零</td><td>欺骗性</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>15.4 趋势分析与基数效应</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 连续3-5年的趋势 > 单期数据</div>
+<p>一年的增长可能是偶然，三年的趋势才是方向。<strong>趋势信息量是单期数据的10倍</strong>。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 基数效应——"增速放缓"≠"变差"</div>
+<p>从100亿增长到120亿（增速20%）比从10亿增长到15亿（增速50%）更难。当基数变大后，增速放缓是<strong>数学规律</strong>，不一定是经营恶化。<br><br>
+判断方法：看<strong>绝对增量</strong>而非增速百分比。100→120（增20亿）比10→15（增5亿）的绝对增长更有意义。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.5 成长性趋势矩阵</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>场景</th><th>营收增速</th><th>利润增速</th><th>现金流增速</th><th>判断</th></tr>
+</thead>
+<tbody>
+<tr><td>高质量成长</td><td>↑</td><td>↑</td><td>↑ 且≥利润增速</td><td>真金白银在增长 ✅</td></tr>
+<tr><td>收入虚增</td><td>↑</td><td>↑</td><td>↓ 或远<利润增速</td><td>利润没现金流支撑 ⚠️</td></tr>
+<tr><td>利润操纵</td><td>→</td><td>↑↑</td><td>→</td><td>利润增速远超营收=可疑 🚨</td></tr>
+<tr><td>收缩前兆</td><td>↓</td><td>→</td><td>↓</td><td>营收已降但利润靠费用控制维持 ⚠️</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第15章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>营收增速 > 20%但应收增速 > 营收增速×1.5时，<span class="action">我将标记为"增长质量差"——增长可能是靠放宽信用条件换来的。</span></div>
+<div class="rule-item"><span class="trigger">当</span>利润增速 > 经营现金流增速连续2年时，<span class="action">我将标记为"增长不可持续预警"——利润增长可能缺乏真金白银支撑。</span></div>
+<div class="rule-item"><span class="trigger">当</span>增速大幅放缓但绝对增量仍可观时，<span class="action">我将排除基数效应——不是公司变差了，是基数变大了。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司连续5年数据，计算营收/利润/现金流增速，判断属于哪种成长场景（高质量/收入虚增/利润操纵/收缩前兆）。</p>
+<p><strong>预期产出</strong>：成长性趋势表（年份 | 营收增速 | 利润增速 | 现金流增速 | 场景判断）</p>
+<p><strong>自检</strong>：增长是内生的还是靠并购？增速放缓是基数效应还是真变差？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第16章（重写版） ===== -->
+<div class="chapter" id="ch16">
+<h2 class="chapter-title"><span class="ch-num">第16章</span>财务造假的底层逻辑——虚增资产，粉饰利润</h2>
+
+<div class="section">
+<h3>16.1 造假的核心公式</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 所有造假的第一性原理</div>
+<p><strong>虚增资产 = 虚增利润</strong></p>
+<p>资产=负债+所有者权益。如果你想让利润多5亿（所有者权益增加5亿），资产负债表就必须"平衡"——要么资产端多5亿（虚增资产），要么负债端少5亿（隐匿负债）。99%的造假选择"虚增资产"——因为虚增资产比隐匿负债更容易操作。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 记住这个等式</div>
+<p>如果一家公司利润在增长但<strong>应收+存货增长更快</strong>=几乎可以确定资产端有"水分"。这不一定是造假，但一定是红旗。如果你不理解这个等式，排雷就是盲人摸象。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>16.2 为什么应收账款和存货是造假重灾区</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">现金</div>
+<div class="info-card-title">硬资产——很难造假</div>
+<div class="info-card-body"><p>银行对账单就在那里。要造假需要伪造银行流水——这是犯罪，难度和风险都极高。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">应收+存货</div>
+<div class="info-card-title">软资产——容易造假</div>
+<div class="info-card-body"><p>你无法直接验证客户欠不欠钱、仓库里有没有那么多货。虚构一个客户=应收增加+利润增加。虚构一批存货=存货增加+成本减少=利润增加。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 A股造假80%+涉及应收和存货</div>
+<p>A股历史上80%以上的财务造假都涉及应收账款和存货。因为虚增利润的等式是"虚增资产=虚增利润"——而应收和存货是最容易"凭空捏造"的资产。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>16.3 权责发生制的"漏洞"</h3>
+
+<p>权责发生制确认收入不需要收到现金——这意味着<strong>虚构销售只需要虚构合同和发货单，不需要虚构银行流水</strong>。这是权责发生制天然的"漏洞"，也是为什么现金流量表是排雷第一道防线。</p>
+
+<div class="flow-chart">
+<div class="flow-title">造假路径</div>
+<div class="flow-node">虚构合同+发货单 → 确认收入+利润</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">应收账款增加（资产端虚增）</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-node">资产负债表平衡：虚增资产=虚增利润 ✅</div>
+<div class="flow-arrow">↓ 但</div>
+<div class="flow-node">现金流量表不配合：经营现金流不增 🚨</div>
+</div>
+</div>
+
+<div class="section">
+<h3>16.4 四大造假动机</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">保壳</div>
+<div class="info-card-title">ST公司</div>
+<div class="info-card-body"><p>连续亏损会被ST、退市。造假动机最强——生死存亡。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">对赌</div>
+<div class="info-card-title">并购业绩承诺</div>
+<div class="info-card-body"><p>并购时有业绩承诺，完不成要补偿。造假完成承诺。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">减持</div>
+<div class="info-card-title">拉高套现</div>
+<div class="info-card-body"><p>大股东/高管拉高股价后减持套现。造假配合减持。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">融资</div>
+<div class="info-card-title">发债/定增</div>
+<div class="info-card-body"><p>好看的数据=更好的融资条件。造假配合融资。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>16.5 "存贷双高"——最经典的造假信号</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 存贷双高</div>
+<p><strong>账上有大量现金却大量借款</strong>——逻辑上不应该。如果你有10亿现金，为什么还要借5亿？</p>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">可能一：现金是假的</div>
+<div class="info-card-title">虚增货币资金</div>
+<div class="info-card-body"><p>康美药业案：887亿现金"消失"。账上有钱但实际没有。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">可能二：现金被挪用</div>
+<div class="info-card-title">大股东占用</div>
+<div class="info-card-body"><p>账上有钱但被限制使用——大股东挪用后以借款补充运营资金。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 存贷双高判定标准</div>
+<p>货币资金/短期借款 > 2 且 利息收入/货币资金 < 2%（远低于存款利率）= 存贷双高。利息收入率低说明"钱可能不在账上"。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第16章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>利润增长但应收+存货增长更快时，<span class="action">我将标记为"虚增资产嫌疑"，进入排雷模式——虚增资产=虚增利润是造假第一性原理。</span></div>
+<div class="rule-item"><span class="trigger">当</span>"存贷双高"出现时（货币资金/短期借款 > 2且利息收入率 < 2%），<span class="action">我将标记为"现金真实性存疑"，直接排除——要么现金是假的，要么被挪用。</span></div>
+<div class="rule-item"><span class="trigger">当</span>公司有保壳/对赌/减持/融资动机时，<span class="action">我将提高排雷警觉——这四种情境是造假高发区。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一家公司，检查是否存在"存贷双高"信号（货币资金/短期借款 > 2且利息收入率 < 2%）。然后检查利润增长是否伴随应收+存货更快增长。</p>
+<p><strong>预期产出</strong>：造假信号扫描表（信号 | 阈值 | 实际值 | 是否触发 | 结论）</p>
+<p><strong>自检</strong>：你能用"虚增资产=虚增利润"这个等式解释为什么应收+存货增速 > 营收增速是红旗吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第17章（重写版） ===== -->
+<div class="chapter" id="ch17">
+<h2 class="chapter-title"><span class="ch-num">第17章</span>六大造假手法与识别信号</h2>
+
+<div class="section">
+<h3>17.1 虚增收入</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">手法一</div>
+<div class="info-card-title">关联交易</div>
+<div class="info-card-body"><p>卖给自己的子公司算收入——集团没有外部收入=自导自演。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">手法二</div>
+<div class="info-card-title">虚假客户</div>
+<div class="info-card-body"><p>找空壳公司走账——虚构交易对手。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">手法三</div>
+<div class="info-card-title">提前确认</div>
+<div class="info-card-body"><p>年底发货算今年收入——调节年报数字。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 虚增收入的识别信号</div>
+<p>应收增速≫营收增速（赊销占比在上升）<br>
+收现比持续<1（回款质量在恶化）<br>
+关联销售占比异常（>30%需高度警惕）<br>
+大客户突然出现又突然消失</p>
+</div>
+</div>
+
+<div class="section">
+<h3>17.2 虚减成本</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">手法一</div>
+<div class="info-card-title">费用资本化</div>
+<div class="info-card-body"><p>研发支出本该费用化但记成无形资产——减少当期费用。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">手法二</div>
+<div class="info-card-title">少计折旧</div>
+<div class="info-card-body"><p>延长折旧年限——每年折旧减少=利润增加。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">手法三</div>
+<div class="info-card-title">延迟结转成本</div>
+<div class="info-card-body"><p>存货已经卖了但成本不入账——成本低估=利润虚高。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 虚减成本的识别信号</div>
+<p>毛利率畸高于同业且无技术壁垒<br>
+资本化率异常（同行业10%，这家30%）<br>
+折旧年限比同行长很多<br>
+存货激增+毛利率异常上升（正常应下降）</p>
+</div>
+</div>
+
+<div class="section">
+<h3>17.3 操纵现金流</h3>
+
+<p>现金流本应是最难造假的，但有一种手法可以"挪动"现金流——<strong>用票据贴现虚增经营现金流</strong>。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 票据贴现手法</div>
+<p>本应是筹资现金流的票据贴现被记为经营现金流。操作方式：客户用应收票据付款→公司将票据贴现给银行→贴现所得计入经营现金流而非筹资现金流。结果：经营现金流"虚高"。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 识别信号</div>
+<p>应收票据激增 + 经营现金流突然转正 + 银行承兑汇票占比异常。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>17.4 资产造假</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">虚增存货</div>
+<div class="info-card-title">存货账面>>市场价</div>
+<div class="info-card-body"><p>识别信号：存货周转骤降+毛利率异常上升（正常应下降）。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">在建工程不转固</div>
+<div class="info-card-title">长期不完工</div>
+<div class="info-card-body"><p>花了钱但项目永远完不了——可能资金被挪用。识别：在建工程连续3年不转固=直接排除。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>17.5 隐匿负债</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">明股实债</div>
+<div class="info-card-title">表面股权实际债权</div>
+<div class="info-card-body"><p>引入"战略投资者"但有固定回购条款——实际是借款，但不在负债端体现。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">表外担保</div>
+<div class="info-card-title">替别人担保</div>
+<div class="info-card-body"><p>替关联方或第三方担保但不在报表上体现。识别：担保/净资产>50%=隐性负债风险极高。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>17.6 商誉减值操纵</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 两种操纵方向</div>
+<p><strong>不减值</strong>：高溢价并购后不减值（商誉虚高）——被并购公司业绩下滑但不减值=虚增资产。<br>
+<strong>洗澡式减值</strong>：一次性大额减值清空——"洗大澡"为未来腾出利润空间。当年巨亏但明年可以轻装上阵。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 识别信号</div>
+<p>商誉/净资产>30%、被并购公司业绩下滑但不减值、减值测试参数过于乐观（增长率远超行业均值）。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>17.7 六大手法汇总</h3>
+
+<table class="data-table">
+<thead>
+<tr><th>手法</th><th>最关键信号</th><th>阈值</th><th>触发后</th></tr>
+</thead>
+<tbody>
+<tr><td>虚增收入</td><td>应收增速≫营收增速</td><td>应收增速>营收×1.5</td><td>降仓50%</td></tr>
+<tr><td>虚减成本</td><td>毛利率畸高于同业</td><td>毛利率>同业+15pp</td><td>查资本化率</td></tr>
+<tr><td>操纵现金流</td><td>应收票据激增</td><td>票据/应收>50%</td><td>查贴现比例</td></tr>
+<tr><td>资产造假</td><td>在建工程不转固</td><td>>3年未转固</td><td>直接排除</td></tr>
+<tr><td>隐匿负债</td><td>担保/净资产高</td><td>担保/净资产>50%</td><td>查表外负债</td></tr>
+<tr><td>商誉操纵</td><td>商誉/净资产高</td><td>商誉/净资产>30%</td><td>查减值测试</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第17章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>应收增速 > 营收增速×1.5时，<span class="action">我将降仓50%并检查大客户和关联交易——虚增收入嫌疑。</span></div>
+<div class="rule-item"><span class="trigger">当</span>在建工程连续3年不转固时，<span class="action">我将直接排除——资金可能被挪用。</span></div>
+<div class="rule-item"><span class="trigger">当</span>毛利率 > 同业均值+15个百分点且无技术壁垒时，<span class="action">我将检查资本化率和折旧政策——虚减成本嫌疑。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：用六大手法汇总表对一家公司做全面扫描——逐项检查信号和阈值。</p>
+<p><strong>预期产出</strong>：六大手法扫描表（手法 | 信号 | 阈值 | 实际值 | 是否触发 | 结论）</p>
+<p><strong>自检</strong>：六个手法中哪个最常见？你能否举出对应的历史案例？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<!-- ===== 第18章（重写版） ===== -->
+<div class="chapter" id="ch18">
+<h2 class="chapter-title"><span class="ch-num">第18章</span>排雷清单——十项必查</h2>
+
+<div class="section">
+<h3>18.1 排雷清单——30分钟完成扫描</h3>
+
+<p>这是本手册最核心的实战工具。10项清单，每项一个指标+阈值+操作，你可以在30分钟内完成对任何一家公司的排雷扫描。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">① 查净现比</div>
+<div class="info-card-title">经营现金流/净利润</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">连续2年&lt;0.5</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">进入排雷模式，查应收/存货</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">② 查应收增速</div>
+<div class="info-card-title">应收增速 vs 营收增速</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">应收增速>营收×1.5</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"存疑"</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">③ 查存货异常</div>
+<div class="info-card-title">存货增速+毛利率方向</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">存货增速>营收×1.5且毛利率上升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"危险"</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">④ 查毛利率偏离</div>
+<div class="info-card-title">毛利率 vs 同业</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">毛利率>同业+15pp且无壁垒</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"存疑"</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">⑤ 查审计意见</div>
+<div class="info-card-title">非标=一票否决</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">保留/否定/无法表示意见</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">一票否决，直接排除</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">⑥ 查关联交易</div>
+<div class="info-card-title">关联销售/采购占比</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">关联占比>30%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"存疑"</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">⑦ 查商誉占比</div>
+<div class="info-card-title">商誉/净资产</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">商誉/净资产>30%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"存疑"</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">⑧ 查担保比例</div>
+<div class="info-card-title">担保/净资产</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">担保/净资产>50%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"存疑"</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">⑨ 查管理层行为</div>
+<div class="info-card-title">换审计+高管减持</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">频繁换审计+高管密集减持</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">一票否决，直接排除</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">⑩ 查分红一致性</div>
+<div class="info-card-title">有现金但不分红</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>阈值</div>
+<div class="ici-body">账面大量现金但长期不分红</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>触发</div>
+<div class="ici-body">标记"存疑"</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>18.2 五个"一票否决"信号</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 出现以下任一信号=直接排除，不再深入</div>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">否决一</div>
+<div class="info-card-title">非标审计意见</div>
+<div class="info-card-body"><p>审计师已经"报警"——标准无保留意见之外的所有意见。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">否决二</div>
+<div class="info-card-title">频繁换审计+高管减持</div>
+<div class="info-card-body"><p>管理层在"跑路"——换审计+减持=双信号。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">否决三</div>
+<div class="info-card-title">存贷双高</div>
+<div class="info-card-body"><p>货币资金/短期借款>2且利息收入率<2%——现金可能被挪用或造假。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">否决四</div>
+<div class="info-card-title">在建工程>3年不转固</div>
+<div class="info-card-body"><p>资金可能被挪用——花钱不完工=不可信。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">否决五</div>
+<div class="info-card-title">存货激增+毛利率上升</div>
+<div class="info-card-body"><p>违背商业逻辑——存货增加应伴随毛利率下降。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>18.3 排雷结论的三种状态</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">✅ 通过</div>
+<div class="info-card-title">10/10项通过</div>
+<div class="info-card-body"><p>未发现红旗信号。可以进入估值分析阶段。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">⚠️ 存疑</div>
+<div class="info-card-title">1-3项触发红旗</div>
+<div class="info-card-body"><p>需深入分析触发项，降低估值预期。不完全排除但需谨慎。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">🚨 排除</div>
+<div class="info-card-title">任一一票否决触发</div>
+<div class="info-card-body"><p>直接排除，不再深入分析。宁可错过，不可踩雷。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第18章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我在决定是否买入一只股票前，<span class="action">我将强制执行10项排雷清单——不完成排雷不买入，任何一项一票否决信号触发=直接排除。</span></div>
+<div class="rule-item"><span class="trigger">当</span>排雷结果为"存疑"（1-3项红旗但无一票否决）时，<span class="action">我将降低估值预期30-50%，并持续监控触发项是否改善。</span></div>
+<div class="rule-item"><span class="trigger">当</span>排雷结果为"通过"时，<span class="action">我将进入估值分析阶段——排雷通过≠一定买入，只是"可信"。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选1家公司，完整执行10项排雷清单，写出每项的检查结果和判断，最终给出"通过/存疑/排除"结论。</p>
+<p><strong>预期产出</strong>：排雷清单完整表（序号 | 检查项 | 阈值 | 实际值 | 是否触发 | 结论）+ 最终结论</p>
+<p><strong>自检</strong>：你是否跳过了某项？10项全做了吗？一票否决信号有触发吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+<div class="chapter" id="ch19">
+<h2 class="chapter-title"><span class="ch-num">第19章</span>经典案例复盘——从财报里看到红旗</h2>
+
+<div class="section">
+<h3>19.0 为什么"事后看都很明显，事前却没人逃掉"</h3>
+<p>每个造假案例暴雷后，回头看财报都满是破绽——数据对不上、逻辑不通、红旗信号一个接一个。但为什么事前几乎没人能全身而退？答案不在财报里，而在你的<strong>大脑</strong>里。</p>
+<p>心理学上有个概念叫<strong>确认偏误</strong>（Confirmation Bias）：人倾向于寻找和记住支持自己已有判断的证据，忽略或贬低反面证据。当一只股票已经涨了50%、论坛里全在喊"下一个茅台"时，你看到"存贷双高"会说"公司业务扩张需要借贷，正常"；你看到"存货周转天数翻倍"会说"囤货等涨价，聪明"。同样的数据，在"股价上涨"的滤镜下被重新解读成了利好。</p>
+<p>打个比方：你朋友借了你的钱，每次还准时请客吃饭、开着新买的车，你觉得他"混得不错，肯定还得起"。直到有一天他消失了，你才发现车是租的、饭钱是刷信用卡的——所有信号其实早就在那，只是你选择性地只看到了"请客吃饭"。</p>
+<p>这一章我们复盘5个经典A股造假案例，每个案例的财报红旗信号在暴雷前<strong>1-2年就已经公开存在</strong>。学会识别它们，不是为了"事后诸葛亮"，而是为了在<strong>下一次</strong>你面对类似信号时，能按下确认偏误的暂停键。</p>
+</div>
+
+<div class="callout callout-key">
+<p><strong>本章核心观点：</strong>每个造假案例暴雷前1-2年，财报已发出红旗信号。排雷规则必须是强制、无条件执行的——不管股价在涨还是跌，清单都要做。这不是"多看一眼的事"，而是"不做到就不买入"的硬纪律。</p>
+</div>
+
+<div class="section">
+<h3>19.1 康美药业：300亿货币资金"不翼而飞"</h3>
+<p><strong>公司简介：</strong>康美药业（600518.SH）曾是A股医药白马股，主营中药饮片、中药材贸易，市值巅峰超1200亿元，被纳入MSCI指数，是无数基金的重仓股。</p>
+<p><strong>造假手法：</strong>2016-2018年间，康美通过虚增银行存款、伪造银行流水的方式，累计虚增货币资金最高达299亿元。简单说，账上写着"我有300亿现金"，实际上银行里根本没有——钱被大股东挪用于炒房、炒股、还债。2020年证监会处罚落地，确认虚增货币资金299亿元，创当时A股财务造假金额纪录。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header"><div class="info-card-title">事前红旗信号</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">存贷双高</div><div class="ici-body">账面货币资金高达341亿（2018年报），同时短期借款+应付债券超200亿。放着300亿现金不用，却去借200亿高息贷款——逻辑完全不通。</div><div class="ici-mark">红旗 #1</div></div>
+<div class="info-card-item"><div class="ici-title">利息收入率异常低</div><div class="ici-body">341亿"现金"每年只产生约2.6亿利息收入，利息收入率仅0.8%——同期银行存款利率约1.5%-2%，说明"现金"根本不在银行账上。</div><div class="ici-mark">红旗 #2</div></div>
+<div class="info-card-item"><div class="ici-title">大股东高比例质押</div><div class="ici-body">控股股东康美实业质押率超90%，说明大股东资金链紧张，有强烈动机挪用上市公司资金。</div><div class="ici-mark">红旗 #3</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">事后结果</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">股价表现</div><div class="ici-body">从2018年高点的28元跌至2020年最低2元附近，跌幅超90%。</div></div>
+<div class="info-card-item"><div class="ici-title">公司命运</div><div class="ici-body">2021年破产重整，实控人马兴田被判有期徒刑12年。</div></div>
+<div class="info-card-item"><div class="ici-title">投资者损失</div><div class="ici-body">5万多名投资者索赔，创A股索赔人数纪录。</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<p><strong>红旗解读：</strong>想象你朋友说银行卡里有300万，但他同时还在借高利贷——你信吗？"存贷双高"就是这种荒谬，但在"白马股光环"下，无数投资者选择了相信。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green"><strong>检查利息收入率</strong><br>341亿现金→2.6亿利息→利率0.8%</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow"><strong>对比正常存款利率</strong><br>同期存款利率1.5%-2%<br>0.8%明显偏低</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red"><strong>判定存贷双高</strong><br>手握300亿却借200亿<br>逻辑不通→排除</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green"><strong>避免90%+亏损</strong><br>2018年信号出现时<br>股价约20元→最终跌至2元</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.2 康得新：122亿虚增利润与"凭空消失"的银行存款</h3>
+<p><strong>公司简介：</strong>康得新（002450.SZ）曾是A股新材料龙头，主营预涂膜和光学膜，市值巅峰超900亿，被称"新材料之王"，连续多年被券商推荐为"核心资产"。</p>
+<p><strong>造假手法：</strong>2015-2018年间，康得新通过虚构销售合同、虚增收入和利润，累计虚增利润总额119亿元。更恶劣的是，账面显示有153亿元银行存款，但实际已被大股东通过"现金池"业务悄悄挪走——钱在上市公司账上"显示"着，但使用权早已不在。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header"><div class="info-card-title">事前红旗信号</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">利息收入率异常</div><div class="ici-body">2017年报显示账面货币资金153亿，利息收入仅1.6亿，利率约1%——低于同期存款利率，资金真实性存疑。</div><div class="ici-mark">红旗 #1</div></div>
+<div class="info-card-item"><div class="ici-title">"有钱不分红"</div><div class="ici-body">账上153亿现金，却连续两年无法进行现金分红，理由是"资金周转紧张"——有150亿还会周转紧张？</div><div class="ici-mark">红旗 #2</div></div>
+<div class="info-card-item"><div class="ici-title">大股东质押率接近100%</div><div class="ici-body">控股股东康得集团所持股份质押率接近100%，且频繁新增质押，说明大股东极度缺钱。</div><div class="ici-mark">红旗 #3</div></div>
+<div class="info-card-item"><div class="ici-title">经营现金流/净利润背离</div><div class="ici-body">2015-2017年累计净利润约55亿，但经营现金流净额仅约15亿——赚了55亿只收回15亿现金，剩下的"利润"去哪了？</div><div class="ici-mark">红旗 #4</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">事后结果</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">股价表现</div><div class="ici-body">从2017年高点的26元跌至退市前不足1元，跌幅超95%。</div></div>
+<div class="info-card-item"><div class="ici-title">公司命运</div><div class="ici-body">2021年5月退市，实控人钟玉被采取强制措施。</div></div>
+<div class="info-card-item"><div class="ici-title">投资者损失</div><div class="ici-body">超13万名股东受影响，人均潜在亏损数万元。</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<p><strong>关键教训：</strong>"现金池"是康得新案中最隐蔽的手法——上市公司与大股东共用一个银行账户池，上市公司的钱"自动"流向大股东账户。从财报上看，银行存款数字"存在"，但钱早已不在。防范手段：如果利息收入率持续偏低+大股东高质押+有钱不分红，这三个信号叠加出现，必须无条件排除。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green"><strong>检查利润含金量</strong><br>净利润55亿 vs<br>经营现金流仅15亿</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow"><strong>检查资金真实性</strong><br>153亿存款→利息率仅1%<br>低于正常存款利率</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red"><strong>叠加大股东100%质押</strong><br>三信号叠加→排除</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green"><strong>避免95%亏损</strong><br>2017年信号出现时<br>股价约20元→最终不足1元</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.3 獐子岛："扇贝跑了"——存货异常的教科书案例</h3>
+<p><strong>公司简介：</strong>獐子岛（002069.SZ）是A股海水养殖龙头，主营虾夷扇贝等海产品养殖，总部在辽宁大连长山群岛。2014年和2018年两次以"扇贝跑了""扇贝死了"为由大额核销存货，成为中国资本市场的"魔幻名场面"。</p>
+<p><strong>造假手法：</strong>獐子岛利用海底存货（底播海参、扇贝）难以盘点核实的特殊性，通过少记成本、延迟确认减值的方式虚增利润。当业绩撑不住时，就宣布"扇贝受灾"一次性核销，把多年的虚假利润"洗掉"。2019年证监会查明，2016年已提前知悉底播虾夷扇贝受灾但未及时披露。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header"><div class="info-card-title">事前红旗信号</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">存货周转天数暴增</div><div class="ici-body">从正常年份约200天暴增到2013年的400天+——存货卖不掉（或者根本不存在），周转天数翻倍是最直接的异常信号。</div><div class="ici-mark">红旗 #1</div></div>
+<div class="info-card-item"><div class="ici-title">存货占总资产比重过高</div><div class="ici-body">存货/总资产占比长期超40%——一家养殖公司将近一半资产在"海底"，核实难度极大，审计风险极高。</div><div class="ici-mark">红旗 #2</div></div>
+<div class="info-card-item"><div class="ici-title">审计师出具保留意见</div><div class="ici-body">审计师对存货项目明确表示"无法获取充分、适当的审计证据"——连审计师都查不清的东西，你能查清吗？</div><div class="ici-mark">红旗 #3</div></div>
+<div class="info-card-item"><div class="ici-title">存货减值准备计提不足</div><div class="ici-body">相比400天+的周转天数，存货跌价准备计提比例偏低——周转这么慢，跌价风险当然大，计提却不够？</div><div class="ici-mark">红旗 #4</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">事后结果</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">股价表现</div><div class="ici-body">从2014年暴雷前的约15元跌至2020年的约3元，跌幅超80%。</div></div>
+<div class="info-card-item"><div class="ici-title">公司命运</div><div class="ici-body">2020年被实施退市风险警示（*ST），实控人吴厚刚被终身市场禁入。</div></div>
+<div class="info-card-item"><div class="ici-title">投资者损失</div><div class="ici-body">两次"扇贝事件"累计核销金额超20亿元，投资者损失惨重。</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<p><strong>识别技巧：</strong>当一家公司的核心资产"你看得见但摸不着"——海底的扇贝、矿井里的矿石、深山里的人参——存货真实性就天然存疑。这不是说这类公司一定造假，但你需要<strong>更高的安全边际</strong>：要求审计师出具标准无保留意见、要求存货周转天数合理、要求减值准备计提充分。三缺一，就要警惕。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green"><strong>检查存货周转天数</strong><br>从200天→400天+<br>翻倍=严重异常</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow"><strong>查看审计意见</strong><br>审计师: "无法获取<br>充分审计证据"</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red"><strong>存货占比40%+且难核实</strong><br>核心资产在海底<br>无法独立验证→排除</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green"><strong>避免80%+亏损</strong><br>2013年信号已出现<br>两次暴雷均能躲过</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.4 乐视网：关联交易编织的"生态化反"幻象</h3>
+<p><strong>公司简介：</strong>乐视网（300104.SZ）曾是创业板明星，市值巅峰超1500亿，创始人贾跃亭提出"生态化反"（生态系统化反式创新）概念，横跨视频、手机、汽车、体育、影业、金融七大生态，一度被视为"中国版Netflix+特斯拉"。</p>
+<p><strong>造假手法：</strong>乐视网通过大量关联交易虚增收入和利润。简单说就是"左手倒右手"——乐视网把版权卖给乐视影业，乐视影业再把广告位卖给乐视手机，乐视手机又从乐视体育买内容……转一圈，每个公司收入都增加了，但实际上<strong>没有一分钱来自外部真实客户</strong>。同时，大股东贾跃亭通过减持套现超100亿元，以"无息借款"名义借给上市公司，实际上大部分再未归还。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header"><div class="info-card-title">事前红旗信号</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">关联方收入占比超70%</div><div class="ici-body">2016年乐视网关联交易收入占比超70%——大部分"收入"来自自己控制的关联公司，不是真实的市场交易。</div><div class="ici-mark">红旗 #1</div></div>
+<div class="info-card-item"><div class="ici-title">应收账款主要来自关联方</div><div class="ici-body">应收账款中关联方占比超80%——"卖出去了但没收钱"，而且欠钱的都是"自己人"，钱能不能收回来完全取决于大股东意愿。</div><div class="ici-mark">红旗 #2</div></div>
+<div class="info-card-item"><div class="ici-title">经营现金流长期为负</div><div class="ici-body">2014-2016年累计净利润为正，但经营现金流累计为负——"账上赚钱，口袋没钱"，利润没有真金白银支撑。</div><div class="ici-mark">红旗 #3</div></div>
+<div class="info-card-item"><div class="ici-title">大股东疯狂减持</div><div class="ici-body">贾跃亭在2015-2016年高位减持套现超100亿，嘴上说"借给上市公司"，实际钱再未回来——大股东在跑，你在追？</div><div class="ici-mark">红旗 #4</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">事后结果</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">股价表现</div><div class="ici-body">从2015年高点的约44元（复权后超150元）跌至退市前的0.18元，跌幅近100%。</div></div>
+<div class="info-card-item"><div class="ici-title">公司命运</div><div class="ici-body">2019年退市，贾跃亭远走美国至今未归，留下"下周回国"的段子。</div></div>
+<div class="info-card-item"><div class="ici-title">投资者损失</div><div class="ici-body">超28万名股东受影响，血本无归者不在少数。</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<p><strong>关联交易的本质：</strong>正常的关联交易不是不能有，但当关联交易占比超50%时，公司的"收入"本质上只是大股东的"内部账本调动"——大股东想让它盈利就盈利，想让它亏损就亏损。你觉得你在投资一家公司，实际上你只是在赌大股东的良心。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green"><strong>拆解收入结构</strong><br>关联方收入占比>70%<br>非真实市场收入</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow"><strong>检查现金流</strong><br>利润为正但现金流为负<br>"账面赚钱口袋没钱"</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red"><strong>大股东套现100亿</div><div class="ici-mark">→排除</div></strong><br>大股东在跑→排除</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green"><strong>避免近100%亏损</strong><br>2015年信号已出现<br>最终跌至退市</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.5 瑞幸咖啡：22亿虚构收入与"数据时代的造假"</h3>
+<p><strong>公司简介：</strong>瑞幸咖啡（NASDAQ: LK）2017年创立，2019年5月在纳斯达克上市，创下全球最快IPO纪录（从创立到上市仅18个月）。巅峰市值超120亿美元，被称为"中国版星巴克"，是中概股的明星。</p>
+<p><strong>造假手法：</strong>2020年1月，知名做空机构浑水（Muddy Waters）发布89页报告，通过实地调研1400多家门店、收集25000张小票和11000小时门店监控视频，指控瑞幸虚构单店销量。2020年4月，瑞幸自曝2019年第二至第四季度虚构交易额约22亿元——通过虚构订单、虚增单品价格、虚增其他产品收入等方式，将日均单店杯数从实际约130杯夸大到400杯以上。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header"><div class="info-card-title">事前红旗信号</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">收入增速与门店增速背离</div><div class="ici-body">2019Q3报告收入增速558%，但门店增速仅约400%——单店收入增速远超合理范围，每个门店"突然"卖出3倍以上的咖啡。</div><div class="ici-mark">红旗 #1</div></div>
+<div class="info-card-item"><div class="ici-title">单杯价格逻辑不通</div><div class="ici-body">报告显示单杯售价约16元，但实际大量发放1.8折优惠券、实际到手价仅4-5元——收入按原价记账，但实际收款远低于此。</div><div class="ici-mark">红旗 #2</div></div>
+<div class="info-card-item"><div class="ici-title">营销费用率异常高</div><div class="ici-body">2019年前三季度营销费用占收入比超60%——靠烧钱补贴出来的"收入"，本身可持续性就存疑，更别说数字可能还是假的。</div><div class="ici-mark">红旗 #3</div></div>
+<div class="info-card-item"><div class="ici-title">管理层频繁质押股权</div><div class="ici-body">董事长陆正耀将所持股份全部质押用于个人贷款——大股东全质押，和康得新、乐视如出一辙。</div><div class="ici-mark">红旗 #4</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">事后结果</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">股价表现</div><div class="ici-body">从2020年1月高点的约50美元跌至2020年4月的约5美元，跌幅超90%。</div></div>
+<div class="info-card-item"><div class="ici-title">公司命运</div><div class="ici-body">2020年6月从纳斯达克退市，2021年与SEC达成1.8亿美元和解。</div></div>
+<div class="info-card-item"><div class="ici-title">后续反转</div><div class="ici-body">瑞幸清理造假管理层后重新崛起，2023年实现盈利——但暴雷时的投资者早已血亏离场。</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<p><strong>数据时代的排雷方法：</strong>浑水做的是"用脚丈量"——派人蹲守门店数客流量、收集真实小票。普通投资者做不到这么重，但可以做"轻量版验证"：自己下载APP点几杯咖啡看看实际价格、去几家门店看看客流密度、对比外卖平台真实销量。如果实际体验与财报数据明显矛盾，红旗就出现了。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green"><strong>验证收入增速合理性</strong><br>收入增558% vs<br>门店增400%=异常</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow"><strong>对比实际到手价</strong><br>报告售价16元<br>实际4-5元=虚增</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red"><strong>管理层全质押</div><br>陆正耀股份全质押<br>信号叠加→排除</strong></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green"><strong>避免90%+亏损</strong><br>浑水报告前<br>收入背离信号已存在</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.6 确认偏误：为什么看到红旗却选择忽视</h3>
+<p>读完5个案例，你可能会想："这些信号这么明显，当时怎么可能看不到？"但事实是——<strong>当时确实有人看到了</strong>。浑水看到了瑞幸的问题、一些独立分析师在2018年就质疑了康得新的现金流、雪球论坛上有用户在2014年就吐槽了獐子岛的存货。但大多数投资者依然选择买入或持有，为什么？</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<div class="info-card-header"><div class="info-card-title">确认偏误</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">表现</div><div class="ici-body">已买入某股票后，只搜索利好消息、只看看多分析、自动忽略负面信号——"我已经买了，它不可能有问题"。</div></div>
+<div class="info-card-item"><div class="ici-title">本质</div><div class="ici-body">大脑为了减少认知失调（"我做了聪明决策"vs"我可能买了造假公司"），自动过滤反面证据。</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header"><div class="info-card-title">锚定效应</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">表现</div><div class="ici-body">股价从100元跌到70元，你觉得"便宜了"就买入——但你的"便宜"锚定在100元上，而不是公司真实价值上。</div></div>
+<div class="info-card-item"><div class="ici-title">本质</div><div class="ici-body">造假公司的真实价值可能是0，70元依然不是"便宜"而是"贵了70倍"。</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">社会认同偏差</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">表现</div><div class="ici-body">论坛全在喊多、基金在加仓、券商在推荐——"这么多人看好，不可能错"。</div></div>
+<div class="info-card-item"><div class="ici-title">本质</div><div class="ici-body">群体也可能是错的。康美暴雷前是5万多机构和个人投资者的重仓股，"人多"不是"安全"的同义词。</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<p><strong>最危险的时刻：</strong>不是你不知道红旗信号，而是你知道了却用"这次不一样""公司有特殊原因""利空出尽是利好"来说服自己忽视它。这种自我说服的能力，恰恰是人类最危险的认知缺陷——在投资中，它直接等于亏损。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>19.7 红旗信号汇总：一张"排雷清单"</h3>
+<p>5个案例反复出现的红旗信号，归纳为以下几类。这些信号不一定意味着造假，但当<strong>多个信号叠加</strong>出现时，概率就急剧上升——不需要证明"确实造假"，只要"不能排除造假风险"，就应该放弃。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header"><div class="info-card-title">资金类红旗</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">存贷双高</div><div class="ici-body">账面大量现金同时大量借贷→康美、康得新</div><div class="ici-mark">致命级</div></div>
+<div class="info-card-item"><div class="ici-title">利息收入率偏低</div><div class="ici-body">现金的利息收入率低于同期存款利率→钱可能不在账上</div><div class="ici-mark">致命级</div></div>
+<div class="info-card-item"><div class="ici-title">有钱不分红</div><div class="ici-body">账面百亿现金却连续不分红→钱可能已被挪用</div><div class="ici-mark">高危级</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header"><div class="info-card-title">利润类红旗</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">利润与现金流背离</div><div class="ici-body">净利润为正但经营现金流持续为负→利润可能是纸面数字</div><div class="ici-mark">致命级</div></div>
+<div class="info-card-item"><div class="ici-title">关联交易占比超50%</div><div class="ici-body">收入主要来自关联方→收入真实性存疑→乐视</div><div class="ici-mark">致命级</div></div>
+<div class="info-card-item"><div class="ici-title">收入增速与业务增速背离</div><div class="ici-body">收入暴增但门店/产能/客户没有同步增长→瑞幸</div><div class="ici-mark">高危级</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header"><div class="info-card-title">存货类红旗</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">存货周转天数突变</div><div class="ici-body">周转天数翻倍以上→存货可能卖不掉或根本不存在→獐子岛</div><div class="ici-mark">致命级</div></div>
+<div class="info-card-item"><div class="ici-title">存货难核实且占比高</div><div class="ici-body">核心资产在海底/矿井/深山，审计师出保留意见</div><div class="ici-mark">高危级</div></div>
+<div class="info-card-item"><div class="ici-title">减值准备计提不足</div><div class="ici-body">周转慢但跌价准备少→可能隐瞒减值</div><div class="ici-mark">预警级</div></div>
+</div>
+</div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header"><div class="info-card-title">管理层类红旗</div></div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item"><div class="ici-title">大股东高比例质押</div><div class="ici-body">质押率超80%→大股东资金链紧张，有挪用动机→5个案例全中</div><div class="ici-mark">致命级</div></div>
+<div class="info-card-item"><div class="ici-title">大股东持续减持</div><div class="ici-body">大股东在"利好"中持续套现→乐视、瑞幸</div><div class="ici-mark">高危级</div></div>
+<div class="info-card-item"><div class="ici-title">频繁更换审计师/CFO</div><div class="ici-body">核心财务岗位频繁变动→可能是不愿配合造假的被替换</div><div class="ici-mark">预警级</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第19章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我发现自己因为"股价在涨"而想跳过红旗信号的检查时，<span class="action">我将强制执行完整排雷清单——不管股价在涨还是跌，排雷规则无条件执行，一个信号都不能漏。</span></div>
+<div class="rule-item"><span class="trigger">当</span>"存贷双高"出现（账面大量现金同时大量借款，利息收入率低于存款利率）时，<span class="action">我将不再分析其他指标，直接排除——康美和康得新的教训已经足够，这个组合的造假概率太高。</span></div>
+<div class="rule-item"><span class="trigger">当</span>关联交易收入占比超过50%且经营现金流持续为负时，<span class="action">我将判定利润真实性存疑，排除该标的——收入主要来自"自己人"且没有真金白银支撑，不值得冒险。</span></div>
+<div class="rule-item"><span class="trigger">当</span>大股东质押率超80%且伴随持续减持时，<span class="action">我将视为"大股东在跑路"的信号，无条件排除——5个造假案例全部出现了这个信号，它是最可靠的预警指标之一。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">第19章 实战练习</div>
+<div class="practice-task">
+<p><strong>任务：</strong>从A股当前上市公司中，选一家你感兴趣的公司，按本章的"排雷清单"完整检查一遍——资金类（存贷双高？利息收入率？）、利润类（利润vs现金流？关联交易占比？）、存货类（周转天数趋势？审计意见？）、管理层类（大股东质押率？减持记录？）。把每一项的具体数据和你的判断写下来。</p>
+</div>
+<div class="practice-check">
+<p><strong>自检：</strong></p>
+<ul>
+<li>你检查了利息收入率是否低于同期存款利率？如果没有，你现在知道为什么这很重要了吗？</li>
+<li>你是否因为"这家公司很有名/股价在涨"而跳过了某个红旗的检查？如果有，重新检查一遍。</li>
+<li>如果你发现2个以上红旗信号叠加，你会选择"再研究研究"还是"直接排除"？本章的答案是什么？</li>
+<li>最后问自己一个问题：如果这家公司明天暴雷，你今天看到的哪个信号"事后会变得很明显"？</li>
+</ul>
+</div>
+
+<div class="chapter" id="ch20">
+<h2 class="chapter-title"><span class="ch-num">第20章</span>不同行业的财务阅读</h2>
+
+<div class="section">
+<h3>20.1 为什么不能跨行业"照搬"指标</h3>
+<p>很多新手拿到财报就开始算ROE、看毛利率——但同样30%的毛利率，在制造业意味着竞争力极强，在零售业意味着几乎不可能，在互联网行业可能只是起步水平。<strong>指标本身没有意义，只有在行业语境下才有意义。</strong>这一章我们把四大行业的核心指标、财务特征、阅读重点和常见陷阱放到一起对比，帮你建立"行业滤镜"——看到公司类型，就知道该盯着哪些数字。</p>
+</div>
+
+<div class="section">
+<h3>20.2 四大行业财务特征对比</h3>
+
+<div class="info-grid cols-4">
+<div class="info-card ic-blue">
+<div class="info-card-header">
+<div class="info-card-title">🏭 制造业</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">核心指标</div>
+<div class="ici-body">产能利用率、存货周转天数、固定资产折旧、毛利率</div>
+<div class="ici-mark">产能利用率是利润杠杆</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">财务特征</div>
+<div class="ici-body">重资产、高固定资产占比、折旧是利润的"隐形吞噬者"、存货受原材料价格波动影响大</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读重点</div>
+<div class="ici-body">①产能利用率=实际产量÷设计产能，70%→90%毛利率可能提升5-8个百分点；②折旧年限选择（5年vs10年差一倍利润）；③存货核算方法（先进先出vs加权平均）；④固定资产占总资产比重</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">常见陷阱</div>
+<div class="ici-body">延长折旧年限做高利润；在建工程迟迟不转固（避免开始折旧）；存货跌价准备计提不足；产能利用率低却不说</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-green">
+<div class="info-card-header">
+<div class="info-card-title">🛒 零售业</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">核心指标</div>
+<div class="ici-body">同店增长（SSSG）、坪效、渠道费用率、预收账款</div>
+<div class="ici-mark">同店增长比总营收增长更重要</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">财务特征</div>
+<div class="ici-body">轻资产（租而非建）、低毛利高周转、现金流好（预收/应付撑起运营资金）、库存是生命线</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读重点</div>
+<div class="ici-body">①同店增长：>0=老店在变好，<0连续2季=门店老化；②存货周转天数：优衣库约90天、Zara约60天、Costco约30天；③预收账款趋势=渠道话语权；④线上vs线下毛利率差异（线上更低毛利但更快周转）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">常见陷阱</div>
+<div class="ici-body">靠新开店撑总营收但同店下滑；租金/物流成本隐藏在多个科目；预收款骤降=渠道压货减少； franchise模式下加盟店数据混入</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-yellow">
+<div class="info-card-header">
+<div class="info-card-title">🌐 互联网</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">核心指标</div>
+<div class="ici-body">DAU/MAU、ARPU、CAC（获客成本）、LTV（生命周期价值）、研发资本化率</div>
+<div class="ici-mark">用户指标先于财务指标</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">财务特征</div>
+<div class="ici-body">轻资产、研发费用占比高、收入确认方式差异大（总额法vs净额法差10倍）、亏损可能正常（看趋势而非绝对值）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读重点</div>
+<div class="ici-body">①LTV/CAC>3=健康获客，<1=亏钱获客；②研发资本化vs费用化（资本化做高当期利润）；③总额法vs净额法（看利润率而非营收规模）；④亏损是否在缩小、变现路径是否清晰</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">常见陷阱</div>
+<div class="ici-body">用GMV冒充收入；研发高比例资本化粉饰利润；DAU/MAU定义随意改口径；亏损扩大却说"战略投入期"</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-red">
+<div class="info-card-header">
+<div class="info-card-title">🏦 金融业</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">核心指标</div>
+<div class="ici-body">银行：资本充足率、拨备覆盖率、净息差（NIM）；保险：内含价值、新业务价值；券商：自营/经纪/投行/资管收入结构</div>
+<div class="ici-mark">金融业的"存货"是风险</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">财务特征</div>
+<div class="ici-body">资产负债表=核心（银行的"存货"是贷款）、监管指标比利润表更重要、杠杆天然高、利润可被拨备调节</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读重点</div>
+<div class="ici-body">①银行三大监管线：资本充足率>10.5%、不良率<2%、拨备覆盖率>150%；②NIM>2%=健康，<1.5%=盈利压力大；③保险看内含价值和新业务价值增长；④券商看收入结构（自营波动大、经纪看市场活跃度）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">常见陷阱</div>
+<div class="ici-body">减少拨备计提做高利润（藏在"资产减值损失"里）；不良贷款口径调整（关注类→正常类）；表外业务不透明；靠出售资产一次性收益撑业绩</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>20.3 制造业深度：折旧与产能的利润魔术</h3>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 同样的设备，不同的利润</div>
+<p>A公司按5年折旧（年折旧率20%），B公司按10年折旧（年折旧率10%）——B公司每年利润比A公司多出10%的折旧差额。这10%不是B公司"更好"，只是会计选择不同。<strong>对比同行业公司前，先统一折旧口径。</strong></p>
+</div>
+
+<p><strong>产能利用率</strong>是制造业最核心的利润杠杆。产能利用率=实际产量÷设计产能。高→固定成本摊薄多→毛利率高；低→固定成本摊薄少→毛利率被压缩。制造业利润对产能利用率极度敏感——从70%升到90%，毛利率可能提升5-8个百分点。反过来，从90%降到70%，利润可能腰斩。</p>
+
+<p><strong>存货核算方法</strong>在通胀环境下影响显著：先进先出法让利润偏高（旧低成本先结转），加权平均法让利润更平稳。A股大部分制造业用加权平均法，但出口型企业可能用先进先出——对比时要看附注里的会计政策。</p>
+</div>
+
+<div class="section">
+<h3>20.4 零售业深度：同店增长是"真增长"的唯一证据</h3>
+
+<p><strong>同店增长</strong>（Same Store Sales Growth）比总营收增长更重要——新开店拉动的增长≠老店在变好。如果同店增长连续2季<0=门店在老化或竞争加剧，即使总营收在增长（靠开店），增长质量也在下降。</p>
+
+<p><strong>坪效</strong>（每平方米销售额）是线下零售的效率指标。坪效高=选址好+商品结构好+运营能力强。坪效持续下降=要么人流在减少，要么租金占比在上升。</p>
+
+<p><strong>预收账款</strong>趋势=渠道话语权的晴雨表。预收账款增长=对下游议价能力强（先收钱后发货）；预收账款骤降=经销商压货意愿降低，可能是终端动销放缓的领先信号。</p>
+</div>
+
+<div class="section">
+<h3>20.5 互联网深度：用户指标才是"真财报"</h3>
+
+<p>互联网公司要看"北极星指标"：DAU/MAU（日/月活跃用户）、ARPU（每用户平均收入）、CAC（获客成本）、LTV（用户生命周期价值）。财务指标是滞后指标——用户数据好→未来财务数据才会好。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 互联网公司健康度公式</div>
+<p>LTV/CAC > 3 = 健康的获客效率<br>
+LTV/CAC < 1 = 在亏钱获客，商业模式可能不成立<br>
+ARPU趋势上升 + CAC趋势下降 = 变现飞轮正在转起来</p>
+</div>
+
+<p><strong>研发资本化vs费用化</strong>：资本化=支出变成资产慢慢摊销（利润当期好看），费用化=支出直接扣利润（利润当期难看）。同行业对比前先统一资本化率——一家资本化率50%、另一家10%，利润对比完全失真。</p>
+
+<p><strong>总额法vs净额法</strong>：平台型公司按GMV确认收入（总额法）还是按佣金确认（净额法），收入可能差10倍但利润一样。A股互联网公司越来越多采用净额法——<strong>看利润率而不是营收规模</strong>。一家公司营收突然暴增，先查是不是从净额法切换到了总额法。</p>
+
+<p><strong>互联网亏损≠不行</strong>——看三件事：亏损在缩小还是扩大？获客成本趋势？变现路径是否清晰？亚马逊亏了20年，但自由现金流一直在增长。关键是亏损是否在"买未来"，而不是在"填无底洞"。</p>
+</div>
+
+<div class="section">
+<h3>20.6 金融业深度：三大子行业各有"命门"</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">
+<div class="info-card-title">🏦 银行</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">命门</div>
+<div class="ici-body">资产质量——不良贷款是银行的"癌细胞"</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">三大监管线</div>
+<div class="ici-body">资本充足率 > 10.5%<br>不良贷款率 < 2%<br>拨备覆盖率 > 150%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">核心盈利指标</div>
+<div class="ici-body">净息差（NIM）> 2% = 健康<br>NIM < 1.5% = 盈利压力大</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读要点</div>
+<div class="ici-body">银行的"存货"是贷款，"成本"是利息支出。重点看贷款结构、不良生成率、拨备是否充足。利润可被拨备调节——少提拨备=多做利润。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-yellow">
+<div class="info-card-header">
+<div class="info-card-title">🛡️ 保险</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">命门</div>
+<div class="ici-body">负债端——保费增长和新业务价值</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">核心指标</div>
+<div class="ici-body">内含价值（EV）= 调整净资产 + 有效业务价值<br>新业务价值（NBV）= 当年新签保单的未来利润折现</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读要点</div>
+<div class="ici-body">NBV增长=保险公司的"营收增长"。内含价值是保险公司的"净资产"——比账面净资产更真实。投资端看总投资收益率vs精算假设收益率——长期低于假设=利润虚高。</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">常见陷阱</div>
+<div class="ici-body">靠卖理财型保险冲保费（价值低）；缩短残值假设提升利润；投资收益率长期低于假设</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-blue">
+<div class="info-card-header">
+<div class="info-card-title">📈 券商</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">命门</div>
+<div class="ici-body">收入结构——靠什么赚钱决定波动性</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">四大业务线</div>
+<div class="ici-body">自营：拿自己的钱投资，波动最大<br>经纪：交易佣金，看市场活跃度<br>投行：IPO/发债承销，看市场融资环境<br>资管：管理费收入，看AUM规模</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">阅读要点</div>
+<div class="ici-body">自营收入占比>50%=业绩跟着市场走，牛熊差异大。经纪收入看市占率变化。投行看项目储备。资管看主动管理占比——通道业务利润薄且在萎缩。</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">常见陷阱</div>
+<div class="ici-body">自营投资收益计入"公允价值变动"（未实现利润）；牛市时经纪收入一次性暴增被当常态</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 行业对比的三个"不要"</div>
+<p><strong>不要跨行业比绝对值</strong>——零售业15%毛利率是优秀的，制造业15%可能平庸，互联网15%可能不及格。<br>
+<strong>不要用同一套指标套所有行业</strong>——制造业看产能利用率，零售业看同店增长，互联网看LTV/CAC，金融业看资本充足率。指标用错行业=刻舟求剑。<br>
+<strong>不要忽视行业特有的会计选择空间</strong>——制造业的折旧年限、互联网的资本化率、银行的拨备覆盖率、保险的精算假设，都是利润调节的"合法旋钮"。</p>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 跨行业对比的致命错误</div>
+<p>最常见的错误：看到一家互联网公司"营收增长50%"就兴奋——但如果是总额法切换到净额法前的基数效应呢？看到一家银行"利润增长20%"就买入——但如果是靠减少拨备计提做出来的呢？<strong>跨行业对比时，永远先搞清楚这个行业的利润"调节旋钮"在哪。</strong></p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第20章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我分析一家新公司时，<span class="action">我将先确认它属于哪个行业，然后调出该行业的核心指标清单——用对指标比算对数字更重要。</span></div>
+<div class="rule-item"><span class="trigger">当</span>对比同行业公司时，<span class="action">我将先统一会计口径（折旧年限/存货核算/资本化率/拨备政策）——不统一口径的利润对比毫无意义。</span></div>
+<div class="rule-item"><span class="trigger">当</span>看到金融业利润增长但拨备覆盖率下降时，<span class="action">我将标记为"拨备调节利润嫌疑"——利润增长不是真的，拨备下降才是信号。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">📋 练习任务</div>
+<p>选择你关注的行业中两家可比公司（如两家制造业/两家零售业），下载最近3年年报，完成以下对比：</p>
+<ol>
+<li>列出两家公司该行业4个核心指标的3年数据（如制造业：产能利用率、存货周转天数、折旧政策、毛利率）</li>
+<li>统一会计口径后重新对比——毛利率差异是否来自会计选择而非竞争力？</li>
+<li>找出每家公司最可能的1个"利润调节旋钮"（折旧年限？资本化率？拨备？）并写明依据</li>
+<li>判断：哪家公司的利润"含金量"更高？给出你的理由</li>
+</ol>
+
+<div class="chapter" id="ch21">
+<h2 class="chapter-title"><span class="ch-num">第21章</span>预期差与财报阅读实战</h2>
+
+<div class="section">
+<h3>21.1 为什么"好消息"可能让股价跌</h3>
+<p>你一定经历过这种困惑：公司公布财报，利润增长30%，结果股价大跌。为什么？因为股价反应的不是"绝对好坏"，而是<strong>预期差</strong>——实际数据与市场预期的差距。市场以为增长35%，实际只增长30%——虽然绝对值在涨，但"不及预期"，股价就跌。</p>
+<p>这就是为什么"好消息出尽是利空"——预期已经被提前消化了，没有预期差就没有催化剂。反过来，一家亏损公司如果市场预期亏5亿，实际只亏3亿——"超预期"，股价可能大涨。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 预期差公式</div>
+<p>股价反应 ≠ 财报绝对好坏<br>
+股价反应 = 财报数据 − 市场预期<br>
+投资价值 = 预期差的方向 × 幅度 × 节奏</p>
+</div>
+
+<div class="section">
+<h3>21.2 预期差的三个来源</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<div class="info-card-header">
+<div class="info-card-title">① 方向</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">问题</div>
+<div class="ici-body">市场预期增长，实际下滑？或市场预期下滑，实际增长？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">影响</div>
+<div class="ici-body">方向性预期差=最大的股价催化剂。方向反了=涨幅或跌幅最大。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-green">
+<div class="info-card-header">
+<div class="info-card-title">② 幅度</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">问题</div>
+<div class="ici-body">方向对了，但好多少/差多少？预期增长20%实际增长25%=正向幅度差5个百分点。</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">影响</div>
+<div class="ici-body">幅度决定涨跌幅的大小。幅度差越大，股价反应越剧烈。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-yellow">
+<div class="info-card-header">
+<div class="info-card-title">③ 节奏</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">问题</div>
+<div class="ici-body">市场预期Q3回暖，实际Q2就回暖了？或预期Q2见底，实际Q3还在恶化？</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">影响</div>
+<div class="ici-body">节奏差=时间维度的预期差。提前回暖=股价提前涨；延迟回暖=股价继续跌。节奏往往被忽视，但影响极大。</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<p>三个来源可以组合出现。最强烈的催化剂=方向+幅度+节奏同时超预期。最致命的组合=方向错了+幅度大+节奏延迟。分析财报时，三个维度都要想一遍。</p>
+</div>
+
+<div class="section">
+<h3>21.3 市场预期从哪获取</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-accent">
+<div class="info-card-header">
+<div class="info-card-title">📊 一致预期</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">获取渠道</div>
+<div class="ici-body">Wind/同花顺/东方财富等平台上可查"一致预期"——多家券商盈利预测的汇总均值</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">关键数据</div>
+<div class="ici-body">营收预测、净利润预测、EPS预测。部分平台还提供同比/环比增速预期</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">注意</div>
+<div class="ici-body">一致预期是"均值"——有的分析师偏乐观，有的偏保守。看一致预期时也要看预期分歧度（标准差大=市场分歧大=预期差空间大）</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-red">
+<div class="info-card-header">
+<div class="info-card-title">📄 卖方研报</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">利益冲突</div>
+<div class="ici-body">券商投行+研究业务并存，"买入"评级占比通常>80%；"卖出"评级极其罕见——得罪客户和上市公司</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">系统性偏差</div>
+<div class="ici-body">盈利预测系统性偏乐观10-20%，牛市中更严重。目标价是"画饼"不是"承诺"</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title">正确用法</div>
+<div class="ici-body"><strong>看数据不看结论、看逻辑不看目标价、看风险提示不看推荐理由</strong>。研报最有价值的部分=行业数据、公司经营数据、同业对比——这些是客观事实。结论和目标价是主观判断，自己形成。</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 研报的三层价值</div>
+<p><strong>第一层（最有价值）</strong>：行业数据、产业链信息、同业对比——这些是你自己很难收集的客观事实。<br>
+<strong>第二层（有参考价值）</strong>：盈利预测模型——看假设是否合理，不看结论数字。<br>
+<strong>第三层（几乎无用）</strong>：评级、目标价、推荐理由——主观判断+利益冲突，自己形成结论。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>21.4 财报指引（Guidance）比当期数据更重要</h3>
+<p>因为股价反映的是对未来6-12个月的预期。如果本季度超预期但管理层指引下季度增速下滑=股价可能跌。反之，本季度不及预期但管理层上调全年指引=股价可能涨。<strong>看财报时，管理层对未来的指引比已经发生的数字更重要。</strong></p>
+<p>"超预期"不只是"比去年好"——要比的是<strong>"市场以为的"</strong>。同比增速30%但如果一致预期是35%=不及预期。记住这个等式：超预期 = 实际值 > 市场预期值，而不是 实际值 > 去年同期值。</p>
+</div>
+
+<div class="section">
+<h3>21.5 从预期差到行动：完整实战流程</h3>
+
+<div class="flow-chart">
+<div class="flow-step fs-blue">
+<div class="fs-title">预期差识别</div>
+<div class="fs-body">查一致预期 → 判断方向/幅度/节奏 → 定位预期差来源</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-green">
+<div class="fs-title">年报阅读</div>
+<div class="fs-body">摘要(3min) → 三张表(10min) → MD&A(15min) → 附注(20min)</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-yellow">
+<div class="fs-title">五步形成判断</div>
+<div class="fs-body">看趋势 → 比同业 → 查勾稽 → 排雷 → 定预期差</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-red">
+<div class="fs-title">决策行动</div>
+<div class="fs-body">预期差为正→考虑建仓/加仓 | 预期差为负→考虑减仓/回避</div>
+</div>
+</div>
+
+<p>整个流程的逻辑：先用预期差框架判断"市场以为的"和"我认为的"差距在哪，然后带着问题去读年报——不是漫无目的地翻200页，而是有针对性地验证你的判断。读完之后用五步流程系统化输出结论，最后用预期差方向指导行动。</p>
+</div>
+
+<div class="section">
+<h3>21.6 年报阅读顺序：48分钟搞定一份年报</h3>
+<p>不要从头读到尾（年报动辄200页，会看困的）。按这个顺序，48分钟内完成核心阅读：</p>
+
+<div class="info-grid cols-4">
+<div class="info-card ic-blue">
+<div class="info-card-header">
+<div class="info-card-title">第1步 · 3分钟</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">摘要/重要提示</div>
+<div class="ici-body">看核心数字（营收/净利润/经营性现金流）和审计意见。非标意见=直接跳过这家公司。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-green">
+<div class="info-card-header">
+<div class="info-card-title">第2步 · 10分钟</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">三张表</div>
+<div class="ici-body">一分钟速读法+勾稽验证。利润表看趋势，资产负债表看结构，现金流量表看真假。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-yellow">
+<div class="info-card-header">
+<div class="info-card-title">第3步 · 15分钟</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">管理层讨论与分析</div>
+<div class="ici-body">管理层怎么看自己的经营？措辞变化、重点变化、回避的问题——都是信号。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-red">
+<div class="info-card-header">
+<div class="info-card-title">第4步 · 20分钟</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title">附注五大宝藏项</div>
+<div class="ici-body">收入确认政策、应收账款账龄、关联交易明细、或有事项、会计政策变更。</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>21.7 附注是"宝藏"——大多数人跳过的地方</h3>
+<p>附注是年报的"小字"——大多数人跳过，但最有价值的信息在这里。以下是五大必看项：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-accent">
+<div class="info-card-header">
+<div class="info-card-title">📜 收入确认政策</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-body">总额法还是净额法？收入确认时点是发货时、签收时还是验收时？政策变更=收入口径变了，历史对比可能失真。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-accent">
+<div class="info-card-header">
+<div class="info-card-title">📜 应收账款账龄</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-body">多少是1年内的、多少是1年以上的？账龄迁移率恶化=回款变差。3年以上应收=回收概率极低，看是否充分计提坏账。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-accent">
+<div class="info-card-header">
+<div class="info-card-title">📜 关联交易明细</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-body">关联方是谁？交易什么？价格是否公允？关联交易占比>30%=利润可能被"调节"。重点关注关联方采购/销售价格与市场价的差异。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-accent">
+<div class="info-card-header">
+<div class="info-card-title">📜 或有事项</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-body">有没有未决诉讼、担保承诺、对外提供担保？这些是"定时炸弹"——一旦引爆，可能直接吞掉全年利润。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-card ic-accent">
+<div class="info-card-header">
+<div class="info-card-title">📜 会计政策变更</div>
+</div>
+<div class="info-card-body">
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-body">今年改了什么规则？对利润影响多大？如果会计政策变更恰好让利润"好看"了——警惕。追溯调整后历史数据也会变，对比时要看追溯后口径。</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 附注阅读的"三问法"</div>
+<p>每项附注都问三个问题：<strong>①这个数字/政策变了没有？②变了多少？③为什么变？</strong>如果公司改了会计政策但没解释原因，或者关联交易突然暴增——这就是红旗信号。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>21.8 五步形成判断</h3>
+
+<div class="flow-chart">
+<div class="flow-step fs-blue">
+<div class="fs-title">① 看趋势</div>
+<div class="fs-body">核心指标3-5年走向——在改善还是恶化？一年好不算好，三年趋势才是真信号。</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-green">
+<div class="fs-title">② 比同业</div>
+<div class="fs-body">和2-3家可比公司对比——是行业问题还是公司问题？行业整体下滑时公司下滑=正常；行业增长时公司下滑=公司问题。</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-yellow">
+<div class="fs-title">③ 查勾稽</div>
+<div class="fs-body">三表交叉验证——利润表的净利润是否对得上现金流量表的经营活动现金流？资产负债表的变化是否与利润表一致？</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-red">
+<div class="fs-title">④ 排雷</div>
+<div class="fs-body">10项必查清单——有没有红旗？应收暴增？存货异常？现金流为负？非标审计？关联交易异常？</div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="flow-step fs-blue">
+<div class="fs-title">⑤ 定预期差</div>
+<div class="fs-body">一致预期是什么？我的判断是什么？预期差方向（正/负）和幅度（大/小）？</div>
+</div>
+</div>
+
+<p>五步走完，你应该能写出一份一页纸分析报告：公司靠什么赚钱→趋势在改善还是恶化→同行比较位置→有没有雷→市场预期是什么/我的判断是什么/预期差在哪。这份报告就是你的投资决策依据。</p>
+</div>
+
+<div class="section">
+<h3>21.9 财报阅读10条军规</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">📋 财报阅读10条军规</div>
+<ol>
+<li><strong>先看审计意见</strong>，非标直接排除——这是第0步，不满足后面全白看</li>
+<li><strong>先看现金流，再看利润</strong>——现金比利润可靠，经营性现金流<净利润=利润质量存疑</li>
+<li><strong>趋势比绝对值重要，3年比1年重要</strong>——一年好可能是周期，三年趋势才是竞争力</li>
+<li><strong>毛利率是竞争力的最直接证据</strong>——毛利率持续提升=定价权在增强</li>
+<li><strong>杜邦分析拆ROE</strong>——知道"怎么赚的"比"赚了多少"重要，高杠杆撑的ROE≠好生意</li>
+<li><strong>应收+存货=造假温床</strong>，永远重点关注——两个科目同时暴增=红旗</li>
+<li><strong>跨行业不比绝对值，先建行业基准</strong>——15%毛利率在零售业是优秀，在制造业是平庸</li>
+<li><strong>排雷清单强制执行</strong>，不完成不买入——宁可错过，不可踩雷</li>
+<li><strong>预期差>绝对好坏</strong>——不是"好不好"而是"比预期如何"</li>
+<li><strong>从数字读生意</strong>——终极目标不是会算指标，是理解公司靠什么赚钱</li>
+</ol>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第21章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>财报发布前，<span class="action">我将先查一致预期（营收/净利润预测值），然后对比实际数据判断预期差方向、幅度和节奏——不看绝对好坏，只看预期差。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我要分析一家公司时，<span class="action">我将按五步流程（看趋势→比同业→查勾稽→排雷→定预期差）执行，写出一份一页纸分析报告——不写完不买入。</span></div>
+<div class="rule-item"><span class="trigger">当</span>阅读卖方研报时，<span class="action">我将只提取数据和逻辑，自己形成结论——不看目标价，不看"买入"评级，重点看风险提示部分。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">📋 练习任务
+
+<div class="chapter" id="ch22">
+<h2 class="chapter-title"><span class="ch-num">第22章</span>管理层质量与资本运作——财报背后的"人"</h2>
+
+<div class="section">
+<h3>22.1 为什么管理层质量比财务数据更重要</h3>
+<p>同样的财务数字，不同管理层=不同未来。一家毛利率30%的公司，优秀管理层可能通过产品升级把毛利率做到40%；糟糕管理层可能通过盲目并购把公司拖入泥潭。财报告诉你"过去怎样"，管理层决定"未来怎样"。</p>
+</div>
+
+<div class="section">
+<h3>22.2-22.3 管理层持股与薪酬</h3>
+<p><strong>管理层增持</strong>=信心信号（用自己的钱买自家股票），<strong>减持</strong>=警惕信号（在卖自家股票），<strong>高比例质押</strong>=风险信号（大股东可能被动平仓）。</p>
+<p>管理层薪酬结构：是否与业绩挂钩？薪酬是否合理？高管薪酬/净利润占比是否异常高？如果公司利润增长10%但高管薪酬增长50%=利益输送嫌疑。</p>
+</div>
+
+<div class="section">
+<h3>22.4 过往承诺兑现率</h3>
+<p>管理层在业绩说明会上说的话，一年后回看兑现了多少。如果承诺完成率<50%=管理层不可信。你可以做一个简单的追踪表：承诺事项→承诺时间→实际结果→兑现率。</p>
+</div>
+
+<div class="section">
+<h3>22.5 资本配置能力（最被忽视的能力）</h3>
+<p>好的资本配置：高ROE项目优先、多余现金分红或回购、并购有协同效应。<br>
+坏的资本配置：低价增发稀释股东、高溢价并购吃商誉、盲目跨界。</p>
+<p>用"人设→约束→行为→案例→启示→规则"六步法分析管理层：</p>
+<ul>
+<li><strong>人设</strong>：管理层是谁？背景是什么？</li>
+<li><strong>约束</strong>：他们面临什么激励和压力？</li>
+<li><strong>行为</strong>：他们做了什么？增减持、并购、分红、融资？</li>
+<li><strong>案例</strong>：过往3年最重要的资本配置决策是什么？结果如何？</li>
+<li><strong>启示</strong>：从行为中推断管理层的风格和优先级</li>
+<li><strong>规则</strong>：当____时，我将____</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>22.6 股东结构与资本运作信号</h3>
+<ul>
+<li><strong>大股东质押比例>50%</strong>：高度警惕——平仓风险+变相减持动机</li>
+<li><strong>定增/增发</strong>：发行价<市价×0.8=摊薄严重；锁定期到期后减持压力</li>
+<li><strong>回购注销</strong>：真回购注销=利好（减少股本提升EPS），回购不注销=中性（员工激励）</li>
+<li><strong>股权激励</strong>：行权条件是否合理？对费用的影响？是否变相利益输送？</li>
+</ul>
+</div>
+
+<div class="section">
+<h3>22.7-22.8 五维评估框架与规则化</h3>
+
+<!-- ECharts: 管理层五维评估雷达图 -->
+<div class="chart-box">
+<div class="chart-title">图22-1 管理层质量五维评估雷达图</div>
+<div class="chart-container" id="chart-management-radar"></div>
+</div>
+
+<p>五维评估：诚信度/执行力/资本配置/战略眼光/股东友好度。每维度1-5分，总分>18=优秀，12-18=一般，<12=警惕。</p>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第22章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>大股东质押比例>50%时，<span class="action">我将标记为"高质押风险"——排雷清单第8项自动触发，仓位限制在1/3标准仓。</span></div>
+<div class="rule-item"><span class="trigger">当</span>管理层过往承诺兑现率<50%时，<span class="action">我将标记为"管理层不可信"——不给估值溢价，排雷清单提高警惕级别。</span></div>
+<div class="rule-item"><span class="trigger">当</span>公司低价增发（发行价<市价×0.8）时，<span class="action">我将标记为"稀释股东利益"——降低持仓，不给信任溢价。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-title">📋 练习任务</div>
+<p>选择一家你关注的公司，用五维评估框架给管理层打分，并重点完成以下两项检查：</p>
+<ol>
+<li><strong>大股东质押比例</strong>：在公告/年报中查大股东质押股数占其持股的比例。>50%=高质押风险，记录质押起始价格和预警/平仓线</li>
+<li><strong>承诺兑现率</strong>：翻阅过去2年业绩说明会/投资者关系记录，列出管理层做出的3-5项关键承诺，逐一对照实际结果，计算兑现率。<50%=管理层不可信</li>
+<li><strong>五维打分</strong>：诚信度/执行力/资本配置/战略眼光/股东友好度，每维度1-5分，写出每项打分依据（不能凭感觉，要有事实支撑）</li>
+<li><strong>结论</strong>：总分>18=优秀，12-18=一般，<12=警惕。根据评分决定是否给予估值溢价或需要降低仓位</li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>工具·速查·练习</h2>
+  <p class="part-goal">指标速查、行业特征、排雷卡片、术语表、自检清单、估值桥梁、练习任务——从知识到行动的最后一公里。</p>
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>工具·速查·练习</h2>
+  <p class="part-goal">指标速查、行业特征、排雷卡片、术语表、自检清单、估值桥梁、练习任务——从知识到行动的最后一公里。</p>
+</div>
+
+<!-- ===== 附录A ===== -->
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>工具·速查·练习</h2>
+  <p class="part-goal">指标速查、行业特征、排雷卡片、术语表、自检清单、估值桥梁、练习任务——从知识到行动的最后一公里。</p>
+</div>
+
+<!-- ===== 附录A ===== -->
+<div class="chapter" id="appa">
+<h2 class="chapter-title"><span class="ch-num">附录A</span>财务指标速查表</h2>
+<div class="section">
+<h3>盈利能力</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>公式</th><th>健康区间</th><th>行业差异</th><th>失效场景</th></tr></thead>
+<tbody>
+<tr><td class="highlight">毛利率</td><td>(营收-成本)/营收</td><td>30-80%</td><td>白酒>80%，零售<25%</td><td>会计口径差异</td></tr>
+<tr><td class="highlight">净利率</td><td>净利润/营收</td><td>5-30%</td><td>银行30%+，制造业5-10%</td><td>非经常性损益干扰</td></tr>
+<tr><td class="highlight">ROE</td><td>净利润/净资产</td><td>>15%优秀</td><td>银行12%+，科技20%+</td><td>高杠杆撑的假ROE</td></tr>
+<tr><td class="highlight">ROIC</td><td>税后经营利润/投入资本</td><td>>WACC</td><td>轻资产>重资产</td><td>资本口径不一致</td></tr>
+</tbody>
+</table>
+
+<h3>偿债能力</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>公式</th><th>健康区间</th><th>行业差异</th><th>失效场景</th></tr></thead>
+<tbody>
+<tr><td>流动比率</td><td>流动资产/流动负债</td><td>>1.5</td><td>地产<1.2常见</td><td>存货变现能力差异</td></tr>
+<tr><td>资产负债率</td><td>总负债/总资产</td><td>40-60%</td><td>银行90%+，制造50%</td><td>经营性负债vs金融性负债</td></tr>
+<tr><td>利息保障倍数</td><td>EBIT/利息支出</td><td>>3</td><td>高杠杆行业<3常见</td><td>EBIT计算口径</td></tr>
+</tbody>
+</table>
+
+<h3>现金流质量</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>公式</th><th>健康区间</th><th>行业差异</th><th>失效场景</th></tr></thead>
+<tbody>
+<tr><td class="highlight">净现比</td><td>经营现金流/净利润</td><td>>0.8</td><td>重资产偏低</td><td>折旧摊销影响大时偏高</td></tr>
+<tr><td class="highlight">收现比</td><td>销售收现/营收</td><td>>1.0</td><td>ToB企业偏低</td><td>预收款干扰</td></tr>
+<tr><td>自由现金流</td><td>经营CF-资本支出</td><td>>0</td><td>扩张期可<0</td><td>维持性vs扩张性资本支出</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录B ===== -->
+<div class="chapter" id="appb">
+<h2 class="chapter-title"><span class="ch-num">附录B</span>行业财务特征对比速查</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>行业</th><th>核心资产</th><th>核心负债</th><th>关键指标</th><th>正常区间</th><th>特殊关注</th></tr></thead>
+<tbody>
+<tr><td class="highlight">制造业</td><td>固定资产+存货</td><td>短期借款+应付</td><td>存货周转率、毛利率</td><td>周转60-90天、毛利25-40%</td><td>产能利用率、折旧政策</td></tr>
+<tr><td class="highlight">零售业</td><td>存货</td><td>应付账款</td><td>存货周转天数、同店增长</td><td>周转30-60天</td><td>供应链效率、季节性</td></tr>
+<tr><td class="highlight">房地产</td><td>土地储备+在建</td><td>预收+长借</td><td>净负债率、回款率</td><td>净负债率<100%</td><td>预售模式、交付周期</td></tr>
+<tr><td class="highlight">互联网</td><td>现金+无形资产</td><td>较少</td><td>DAU/ARPU/毛利率</td><td>毛利50-80%</td><td>获客成本、变现路径</td></tr>
+<tr><td class="highlight">金融业</td><td>贷款+投资</td><td>存款+同业</td><td>资本充足率/不良率/NIM</td><td>NIM>2%/不良<2%</td><td>监管指标、风险敞口</td></tr>
+<tr><td class="highlight">医药</td><td>研发资产+存货</td><td>较少</td><td>研发占比、毛利率</td><td>毛利50-90%/研发10-25%</td><td>集采冲击、管线进展</td></tr>
+</tbody>
+</table>
+
+<h3>新兴行业补充</h3>
+<table class="data-table">
+<thead><tr><th>行业</th><th>财务特征</th><th>特殊关注</th></tr></thead>
+<tbody>
+<tr><td>新能源（锂电/光伏）</td><td>高研发资本化率、补贴占比大、资本支出远超经营CF</td><td>技术迭代→资产减值风险</td></tr>
+<tr><td>半导体</td><td>重资产+高折旧（30-50%成本）、周期性强</td><td>硅周期、存货跌价</td></tr>
+<tr><td>AI/算力</td><td>收入确认复杂、固定资产+利息双高</td><td>用户指标→财务指标转化路径</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录C ===== -->
+<div class="chapter" id="appc">
+<h2 class="chapter-title"><span class="ch-num">附录C</span>排雷清单卡片（可打印）</h2>
+<div class="section">
+<p style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">⚠️ 五个一票否决信号</p>
+<ul style="list-style:none;padding:0;">
+<li style="padding:8px 12px;margin-bottom:4px;background:rgba(239,68,68,0.1);border-radius:4px;color:var(--text-secondary);font-size:13px;">🚫 非标审计意见</li>
+<li style="padding:8px 12px;margin-bottom:4px;background:rgba(239,68,68,0.1);border-radius:4px;color:var(--text-secondary);font-size:13px;">🚫 频繁换审计 + 高管密集减持</li>
+<li style="padding:8px 12px;margin-bottom:4px;background:rgba(239,68,68,0.1);border-radius:4px;color:var(--text-secondary);font-size:13px;">🚫 存贷双高（货币资金/短期借款>2 且 利息收入率<1.5%）</li>
+<li style="padding:8px 12px;margin-bottom:4px;background:rgba(239,68,68,0.1);border-radius:4px;color:var(--text-secondary);font-size:13px;">🚫 在建工程连续3年不转固</li>
+<li style="padding:8px 12px;margin-bottom:4px;background:rgba(239,68,68,0.1);border-radius:4px;color:var(--text-secondary);font-size:13px;">🚫 两个以上排雷信号同时触发</li>
+</ul>
+
+<p style="font-size:14px;font-weight:600;color:var(--text-primary);margin:16px 0 12px;">📋 十项必查清单</p>
+<ul style="list-style:none;padding:0;">
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ① 净现比>0.5？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ② 应收增速<营收增速×1.5？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ③ 存货增速<营收增速×1.5 或 毛利率未异常上升？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ④ 毛利率<同业均值+15pp 或有技术壁垒？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ⑤ 审计意见=标准无保留？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ⑥ 关联交易<30%？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ⑦ 商誉/净资产<30%？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ⑧ 担保/净资产<50%？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ⑨ 未频繁换审计+未密集减持？</li>
+<li style="padding:6px 12px;margin-bottom:3px;border-bottom:1px solid var(--border);color:var(--text-secondary);font-size:13px;">☐ ⑩ 分红与账面现金一致？</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录D ===== -->
+<div class="chapter" id="appd">
+<h2 class="chapter-title"><span class="ch-num">附录D</span>术语速查表</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>术语</th><th>英文</th><th>定义</th><th>章节</th></tr></thead>
+<tbody>
+<tr><td>权责发生制</td><td>Accrual Basis</td><td>交易发生即确认收入/成本，不论现金是否到账</td><td>第2章</td></tr>
+<tr><td>勾稽关系</td><td>Articulation</td><td>三张表之间的数据联动与交叉验证逻辑</td><td>第6章</td></tr>
+<tr><td>杜邦分析</td><td>DuPont Analysis</td><td>ROE=净利率×周转率×权益乘数</td><td>第7章</td></tr>
+<tr><td>净现比</td><td>CFO/NI Ratio</td><td>经营现金流/净利润，衡量利润含金量</td><td>第14章</td></tr>
+<tr><td>收现比</td><td>Cash Sales/Revenue</td><td>销售收现/营收，衡量回款效率</td><td>第14章</td></tr>
+<tr><td>自由现金流</td><td>Free Cash Flow</td><td>经营现金流-资本支出</td><td>第5章</td></tr>
+<tr><td>扣非净利润</td><td>Recurring NI</td><td>扣除非经常性损益后的净利润</td><td>第4章</td></tr>
+<tr><td>商誉减值</td><td>Goodwill Impairment</td><td>并购溢价对应的资产价值下降</td><td>第3章</td></tr>
+<tr><td>存贷双高</td><td>High Cash+High Debt</td><td>账上大量现金同时大量借款</td><td>第16章</td></tr>
+<tr><td>明股实债</td><td>Disguised Debt</td><td>表面是股权实际是债权</td><td>第17章</td></tr>
+<tr><td>预期差</td><td>Expectation Gap</td><td>市场预期vs实际数据的差距</td><td>第22章</td></tr>
+<tr><td>资本化率</td><td>Capitalization Rate</td><td>支出记为资产而非费用的比例</td><td>第17章</td></tr>
+<tr><td>权益乘数</td><td>Equity Multiplier</td><td>总资产/净资产，衡量杠杆水平</td><td>第7章</td></tr>
+<tr><td>ROIC</td><td>Return on Invested Capital</td><td>投入资本回报率</td><td>第12章</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录E ===== -->
+<div class="chapter" id="appe">
+<h2 class="chapter-title"><span class="ch-num">附录E</span>财报阅读自检清单</h2>
+<div class="section">
+<h3>读前自检</h3>
+<ul>
+<li>☐ 我明确知道为什么读这份财报（验证什么假设）</li>
+<li>☐ 我找到了2-3家可比公司</li>
+<li>☐ 我确认了报告期和披露日期</li>
+</ul>
+<h3>读中自检</h3>
+<ul>
+<li>☐ 三表勾稽关系验证通过</li>
+<li>☐ 核心指标3-5年趋势清晰</li>
+<li>☐ 与可比公司对比完成</li>
+<li>☐ 10项排雷清单执行完毕</li>
+<li>☐ 附注关键项（收入确认/关联交易/或有事项）已查</li>
+</ul>
+<h3>读后自检</h3>
+<ul>
+<li>☐ 我判断了预期差方向和幅度</li>
+<li>☐ 我列出了3个最大风险</li>
+<li>☐ 我标注了3个值得持续跟踪的指标</li>
+<li>☐ 我写出了下一步行动（买入/等待/排除）</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录F ===== -->
+<div class="chapter" id="appf">
+<h2 class="chapter-title"><span class="ch-num">附录F</span>估值速成——从"好"到"值"的桥梁</h2>
+<div class="section">
+<p>财报分析判断"好不好"，但"好公司"≠"好价格"。这里提供从"好"到"值"的快速桥梁——详细方法论请参考《估值指标手册》。</p>
+
+<h3>PE（市盈率）</h3>
+<p>PE=股价/每股收益。PE=25意味着按当前利润25年回本。适合稳定盈利公司。ROE越高→合理PE越高；增速越高→合理PE越高（PEG=PE/增速，PEG<1为低估）。</p>
+
+<h3>PB（市净率）</h3>
+<p>PB=股价/每股净资产。适合重资产行业。ROE>15%的公司PB>3合理，ROE<8%的公司PB<1正常。</p>
+
+<h3>PS（市销率）</h3>
+<p>PS=市值/营收。适合亏损但高增长的公司。</p>
+
+<h3>估值百分位法</h3>
+<p>当前PE/PB在近5年历史分位的位置：<20%为低位（可能低估），>80%为高位（可能高估）。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 估值终极原则</div>
+<p>好公司 + 好价格 = 买入<br>好公司 + 坏价格 = 等待<br>坏公司 + 任何价格 = 不买</p>
+</div>
+</div>
+</div>
+
+<!-- ===== 附录G ===== -->
+<div class="chapter" id="appg">
+<h2 class="chapter-title"><span class="ch-num">附录G</span>结构化财报练习任务</h2>
+<div class="section">
+
+<h3>练习1：三表勾稽（对应第6章）</h3>
+<p><strong>任务</strong>：选一家公司年报，用"小王奶茶店"方法手工填写三张表的核心数字，验证勾稽关系</p>
+<p><strong>操作步骤</strong>：①记录营收/净利润/经营现金流/总资产/净资产/期末现金 ②验证净利润→未分配利润 ③验证期末现金=货币资金 ④验证收入-收现=应收变动</p>
+<p><strong>验证标准</strong>：三条勾稽线全部对得上</p>
+
+<h3>练习2：杜邦分析（对应第7章）</h3>
+<p><strong>任务</strong>：选3家同行业公司，拆解ROE三因子</p>
+<p><strong>验证标准</strong>：能清晰判断每家公司的ROE驱动模式（利润/周转/杠杆）及可持续性</p>
+
+<h3>练习3：排雷实战（对应第18章）</h3>
+<p><strong>任务</strong>：选1家公司，完整执行10项排雷清单，写出每项检查结果</p>
+<p><strong>验证标准</strong>：最终结论"通过/存疑/排除"有充分依据</p>
+
+<h3>练习4：预期差（对应第22章）</h3>
+<p><strong>任务</strong>：选1家即将发布财报的公司，记录一致预期，财报发布后对比预期差</p>
+<p><strong>验证标准</strong>：正确判断预期差方向（超预期/符合/不及预期）</p>
+
+<h3>练习5：管理层评估（对应第24章）</h3>
+<p><strong>任务</strong>：选1家公司，用五维评估框架打分，重点查大股东质押比例和承诺兑现率</p>
+<p><strong>验证标准</strong>：五维总分与公司后续表现方向一致</p>
+</div>
+</div>
+
+</div><!-- end container appendix -->
+
+<!-- ==================== FOOTER ==================== -->
+<div class="container" style="text-align:center;padding:60px 0 40px;border-top:1px solid var(--border);">
+<p style="color:var(--text-muted);font-size:12px;">财报与基本面投资手册 · Fundamentals 101 · 投资者教育手册系列</p>
+<p style="color:var(--text-muted);font-size:11px;margin-top:8px;">本手册仅供学习参考，不构成投资建议。投资有风险，入市需谨慎。</p>
+</div>
+
+</div><!-- end #main -->
+
+<script>
+// ===== Sidebar Active State =====
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const navLinks = document.querySelectorAll('#nav a');
+  const sections = [];
+  sidebarToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+    sidebarToggle.setAttribute('aria-label', isOpen ? '关闭章节导航' : '打开章节导航');
+  });
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const el = document.querySelector(href);
+      if (el) sections.push({ el, link });
+    }
+  });
+  function updateActive() {
+    const scrollY = window.scrollY + 100;
+    let current = sections[0];
+    sections.forEach(s => { if (s.el.offsetTop <= scrollY) current = s; });
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open');
+        sidebarToggle.setAttribute('aria-expanded', 'false');
+        sidebarToggle.setAttribute('aria-label', '打开章节导航');
+      }
+    });
+  });
+});
+
+// ===== DuPont Calculator =====
+function calcDuPont() {
+  const margin = parseFloat(document.getElementById('dupont-margin').value);
+  const turnover = parseFloat(document.getElementById('dupont-turnover').value);
+  const leverage = parseFloat(document.getElementById('dupont-leverage').value);
+  if (isNaN(margin) || isNaN(turnover) || isNaN(leverage)) return;
+  const roe = (margin / 100 * turnover * leverage * 100).toFixed(1);
+  document.getElementById('dupont-result').textContent = roe + '%';
+  let driver = '';
+  if (margin > 25) driver = '高利润驱动型';
+  else if (turnover > 2) driver = '高周转驱动型';
+  else if (leverage > 3) driver = '高杠杆驱动型 ⚠️';
+  else driver = '均衡型';
+  document.getElementById('dupont-label').textContent = 'ROE = ' + margin + '% × ' + turnover + ' × ' + leverage + ' = ' + roe + '% · ' + driver;
+}
+
+// ===== Cash Quality Calculator =====
+function calcCashQuality() {
+  const cfo = parseFloat(document.getElementById('cashflow-cfo').value);
+  const np = parseFloat(document.getElementById('cashflow-np').value);
+  const cashSales = parseFloat(document.getElementById('cashflow-cashsales').value);
+  const rev = parseFloat(document.getElementById('cashflow-rev').value);
+  if (isNaN(cfo) || isNaN(np) || isNaN(cashSales) || isNaN(rev)) return;
+  const ncr = np > 0 ? (cfo / np).toFixed(2) : '—';
+  const scr = rev > 0 ? (cashSales / rev).toFixed(2) : '—';
+  document.getElementById('cashflow-ncr').textContent = ncr;
+  document.getElementById('cashflow-scr').textContent = scr;
+  let ncrLabel = '';
+  if (parseFloat(ncr) > 1.2) ncrLabel = '净现比 → 优秀 ✅';
+  else if (parseFloat(ncr) > 0.8) ncrLabel = '净现比 → 健康';
+  else if (parseFloat(ncr) > 0.5) ncrLabel = '净现比 → 需关注 ⚠️';
+  else ncrLabel = '净现比 → 危险 🚨';
+  let scrLabel = '';
+  if (parseFloat(scr) > 1.1) scrLabel = '收现比 → 回款良好 ✅';
+  else if (parseFloat(scr) > 0.9) scrLabel = '收现比 → 正常';
+  else if (parseFloat(scr) > 0.8) scrLabel = '收现比 → 需关注 ⚠️';
+  else scrLabel = '收现比 → 危险 🚨';
+  document.getElementById('cashflow-ncr-label').textContent = ncrLabel;
+  document.getElementById('cashflow-scr-label').textContent = scrLabel;
+}
+
+// ===== Red Flag Calculator =====
+function calcRedFlag() {
+  const checks = [1,2,3,4,5,6,7,8,9,10].map(i => document.getElementById('rl'+i).checked);
+  const passCount = checks.filter(Boolean).length;
+  const failCount = 10 - passCount;
+  const el = document.getElementById('rl-result');
+  const label = document.getElementById('rl-label');
+  if (failCount === 0) { el.textContent = '✅ 通过'; el.style.color = 'var(--green)'; label.textContent = '10/10项通过，未发现红旗信号'; }
+  else if (failCount <= 2) { el.textContent = '⚠️ 存疑 (' + failCount + '项红旗)'; el.style.color = 'var(--yellow)'; label.textContent = passCount + '/10项通过，' + failCount + '项触发红旗——仓位限制1/3标准仓'; }
+  else { el.textContent = '🚨 排除 (' + failCount + '项红旗)'; el.style.color = 'var(--red)'; label.textContent = passCount + '/10项通过，' + failCount + '项触发红旗——直接排除'; }
+}
+
+// ===== ECharts Lazy Loader =====
+function initCharts() {
+  if (typeof echarts === 'undefined') { setTimeout(initCharts, 500); return; }
+
+  // DuPont Industry Comparison
+  const c1 = document.getElementById('chart-dupont');
+  if (c1 && c1.offsetParent !== null) {
+    const ch1 = echarts.init(c1);
+    ch1.setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      legend: { data: ['净利率(%)', '总资产周转率(次)', '权益乘数(倍)', 'ROE(%)'], textStyle: { color: '#8B95A5' }, top: 5 },
+      grid: { left: '8%', right: '4%', top: '18%', bottom: '12%' },
+      xAxis: { type: 'category', data: ['白酒', '零售', '银行', '互联网', '医药', '地产'], axisLine: { lineStyle: { color: '#5A6478' } } },
+      yAxis: [ { type: 'value', name: '%/次/倍', splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)' } }, axisLine: { lineStyle: { color: '#5A6478' } } } ],
+      series: [
+        { name: '净利率(%)', type: 'bar', data: [35, 3, 25, 30, 20, 15], itemStyle: { color: '#22C55E' } },
+        { name: '总资产周转率(次)', type: 'bar', data: [0.5, 2.0, 0.05, 0.8, 0.6, 0.3], itemStyle: { color: '#3B82F6' } },
+        { name: '权益乘数(倍)', type: 'bar', data: [1.5, 2.5, 13, 1.8, 1.6, 5.0], itemStyle: { color: '#A855F7' } },
+        { name: 'ROE(%)', type: 'bar', data: [26, 15, 12, 43, 19, 22], itemStyle: { color: '#F97316' } }
+      ]
+    });
+    window.addEventListener('resize', () => ch1.resize());
+  }
+
+  // Management Quality Radar
+  const c2 = document.getElementById('chart-management-radar');
+  if (c2 && c2.offsetParent !== null) {
+    const ch2 = echarts.init(c2);
+    ch2.setOption({
+      tooltip: {},
+      radar: {
+        indicator: [
+          { name: '诚信度', max: 5 },
+          { name: '执行力', max: 5 },
+          { name: '资本配置', max: 5 },
+          { name: '战略眼光', max: 5 },
+          { name: '股东友好度', max: 5 }
+        ],
+        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+        splitArea: { areaStyle: { color: ['rgba(37,99,235,0.02)', 'rgba(37,99,235,0.04)'] } }
+      },
+      series: [{
+        type: 'radar',
+        data: [
+          { value: [4, 3, 2, 3, 2], name: '存疑管理层', lineStyle: { color: '#EF4444' }, areaStyle: { color: 'rgba(239,68,68,0.15)' }, itemStyle: { color: '#EF4444' } },
+          { value: [4, 4, 4, 4, 3], name: '一般管理层', lineStyle: { color: '#EAB308' }, areaStyle: { color: 'rgba(234,179,8,0.1)' }, itemStyle: { color: '#EAB308' } },
+          { value: [5, 5, 4, 5, 4], name: '优秀管理层', lineStyle: { color: '#22C55E' }, areaStyle: { color: 'rgba(34,197,94,0.1)' }, itemStyle: { color: '#22C55E' } }
+        ]
+      }]
+    });
+    window.addEventListener('resize', () => ch2.resize());
+  }
+}
+
+let chartsInitialized = false;
+function initializeCharts() {
+  if (chartsInitialized) return;
+  chartsInitialized = true;
+  initCharts();
+}
+window.addEventListener('scroll', function() {
+  if (!chartsInitialized) {
+    const boxes = document.querySelectorAll('.chart-container');
+    let anyVisible = false;
+    boxes.forEach(box => { const r = box.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0) anyVisible = true; });
+    if (anyVisible) initializeCharts();
+  }
+}, { passive: true });
+document.addEventListener('DOMContentLoaded', function() { setTimeout(initializeCharts, 1000); });
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,4848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>宏观经济分析投资手册 | Macro 101</title>
+<style>
+:root {
+  --bg-deep:#0B0E14;--bg-card:#141820;--bg-sidebar:#0F1219;--bg-hover:#1A2030;
+  --accent:#7C3AED;--accent-light:#8B5CF6;--accent-dim:rgba(124,58,237,0.15);
+  --text-primary:#E8ECF1;--text-secondary:#94A3B8;--text-muted:#64748B;
+  --border:#1E293B;--border-light:#334155;--radius:8px;
+  --font:'Noto Sans SC','Microsoft YaHei','PingFang SC',system-ui,sans-serif;
+  --green:#22C55E;--red:#EF4444;--yellow:#EAB308;--purple:#A855F7;--cyan:#06B6D4;--orange:#F97316;
+  --sidebar-w:280px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:80px;}
+body{background:var(--bg-deep);color:var(--text-primary);font-family:var(--font);line-height:1.75;font-size:15px;}
+a{color:var(--accent-light);text-decoration:none;}
+a:hover{color:var(--accent);}
+::selection{background:var(--accent);color:#fff;}
+
+/* Sidebar */
+#sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--bg-sidebar);border-right:1px solid var(--border);overflow-y:auto;z-index:100;transition:transform .3s;}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:2px;}
+.sidebar-header{padding:20px;border-bottom:1px solid var(--border);text-align:center;}
+.sidebar-header .book-icon{font-size:28px;color:var(--accent);display:block;margin-bottom:8px;}
+.sidebar-header h3{color:var(--text-primary);font-size:14px;font-weight:600;}
+.sidebar-header .subtitle{color:var(--text-muted);font-size:11px;margin-top:4px;}
+#nav{padding:12px 0;}
+#nav a{display:block;padding:6px 16px 6px 24px;color:var(--text-secondary);font-size:12.5px;transition:all .15s;border-left:3px solid transparent;}
+#nav a:hover{color:var(--text-primary);background:var(--bg-hover);}
+#nav a.active{color:var(--accent-light);border-left-color:var(--accent);background:var(--accent-dim);}
+#nav a.part-link{font-weight:600;color:var(--accent-light);font-size:13px;padding-top:12px;padding-bottom:4px;margin-top:4px;}
+#nav a.ch-link{padding-left:36px;}
+#nav a.app-link{padding-left:36px;color:var(--text-muted);}
+
+/* Main */
+#main{margin-left:var(--sidebar-w);max-width:860px;margin-right:auto;padding:0 40px 60px;}
+.container{margin-bottom:0;}
+
+/* Cover */
+.cover{padding:80px 0 60px;text-align:center;border-bottom:1px solid var(--border);}
+.cover-badge{display:inline-block;background:var(--accent-dim);color:var(--accent-light);padding:4px 16px;border-radius:20px;font-size:12px;font-weight:500;letter-spacing:1px;margin-bottom:24px;border:1px solid rgba(124,58,237,0.3);}
+.cover h1{font-size:42px;font-weight:700;background:linear-gradient(135deg,var(--accent-light),var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:12px;}
+.cover .tagline{color:var(--text-secondary);font-size:18px;margin-bottom:32px;}
+.cover-meta{display:flex;justify-content:center;gap:24px;color:var(--text-muted);font-size:12px;}
+.cover-meta span{display:flex;align-items:center;gap:6px;}
+
+/* Learning Path */
+.reading-path{margin:40px 0;padding:28px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);}
+.reading-path h3{color:var(--accent-light);font-size:15px;margin-bottom:16px;}
+.path-map{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:rgba(124,58,237,0.06);border-radius:6px;border:1px dashed var(--border-light);}
+.path-map .node{padding:6px 14px;border-radius:4px;font-size:12px;font-weight:500;background:var(--bg-deep);border:1px solid var(--border);}
+.path-map .node.current{background:var(--accent);color:#fff;border-color:var(--accent);}
+.path-map .arrow{color:var(--text-muted);font-size:14px;}
+.path-section{margin-bottom:16px;}
+.path-section h4{color:var(--text-secondary);font-size:13px;margin-bottom:8px;}
+.path-section ol{padding-left:20px;color:var(--text-secondary);font-size:13px;}
+.path-section ol li{margin-bottom:4px;}
+
+/* Part Header */
+.part-header{padding:40px 0 24px;border-top:1px solid var(--border);}
+.part-tag{display:inline-block;background:var(--accent-dim);color:var(--accent-light);padding:3px 12px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:1px;margin-bottom:12px;}
+.part-header h2{font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:8px;}
+.part-header .part-goal{color:var(--text-secondary);font-size:14px;line-height:1.6;}
+
+/* Chapter */
+.chapter{padding:20px 0 10px;}
+.chapter-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.ch-num{color:var(--accent-light);margin-right:8px;font-size:18px;}
+.section{margin-bottom:28px;}
+.section h3{font-size:17px;font-weight:600;color:var(--text-primary);margin-bottom:12px;padding-left:10px;border-left:3px solid var(--accent);}
+.section p{margin-bottom:12px;color:var(--text-secondary);line-height:1.8;}
+.section ul,.section ol{margin:8px 0 12px 20px;color:var(--text-secondary);}
+.section li{margin-bottom:6px;line-height:1.7;}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0 20px;font-size:13px;}
+.data-table th{background:var(--accent-dim);color:var(--accent-light);padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent);font-size:12px;}
+.data-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text-secondary);}
+.data-table tr:hover td{background:var(--bg-hover);}
+.data-table .highlight{color:var(--accent-light);font-weight:600;}
+.data-table .red{color:var(--red);}
+.data-table .green{color:var(--green);}
+
+/* Callouts */
+.callout{margin:16px 0;padding:14px 16px 14px 20px;border-radius:var(--radius);border-left:4px solid;font-size:13.5px;line-height:1.7;}
+.callout-title{font-weight:700;margin-bottom:4px;font-size:13px;}
+.callout-tip{background:rgba(124,58,237,0.08);border-color:var(--accent-light);}.callout-tip .callout-title{color:var(--accent-light);}
+.callout-key{background:rgba(249,115,22,0.08);border-color:var(--orange);}.callout-key .callout-title{color:var(--orange);}
+.callout-warn{background:rgba(234,179,8,0.08);border-color:var(--yellow);}.callout-warn .callout-title{color:var(--yellow);}
+.callout-danger{background:rgba(239,68,68,0.08);border-color:var(--red);}.callout-danger .callout-title{color:var(--red);}
+.callout p{margin:0;color:var(--text-secondary);}
+
+/* Rule Box */
+.rule-box{margin:20px 0;padding:16px 20px;background:var(--bg-card);border:1px solid var(--accent);border-radius:var(--radius);}
+.rule-title{color:var(--accent-light);font-weight:700;font-size:14px;margin-bottom:10px;}
+.rule-item{margin-bottom:8px;font-size:13px;line-height:1.7;color:var(--text-secondary);}
+.trigger{color:var(--accent-light);font-weight:600;}
+.action{color:var(--green);font-weight:600;}
+
+/* Practice Box */
+.practice-box{margin:16px 0;padding:14px 18px;background:rgba(6,182,212,0.06);border:1px solid rgba(6,182,212,0.25);border-radius:var(--radius);}
+.practice-title{color:var(--cyan);font-weight:700;font-size:13px;margin-bottom:6px;}
+.practice-box p{color:var(--text-secondary);font-size:13px;margin:0;}
+
+/* Calculator / Interactive Widget */
+.calc-widget{margin:20px 0;padding:20px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);}
+.calc-widget h4{color:var(--accent-light);font-size:14px;margin-bottom:12px;}
+.calc-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.calc-field{flex:1;min-width:140px;}
+.calc-field label{display:block;color:var(--text-muted);font-size:11px;margin-bottom:4px;}
+.calc-field input,.calc-field select{width:100%;padding:6px 10px;background:var(--bg-deep);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;}
+.calc-field input:focus,.calc-field select:focus{border-color:var(--accent);outline:none;}
+.calc-btn{padding:6px 20px;background:var(--accent);color:#fff;border:none;border-radius:4px;font-size:13px;cursor:pointer;margin-top:4px;}
+.calc-btn:hover{background:var(--accent-light);}
+.result-value{font-size:28px;font-weight:700;color:var(--accent-light);margin:8px 0 2px;}
+.result-label{color:var(--text-muted);font-size:12px;}
+
+/* Signal Light Widget */
+.signal-widget{margin:20px 0;padding:20px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);}
+.signal-widget h4{color:var(--accent-light);font-size:14px;margin-bottom:12px;}
+.signal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:14px;}
+.signal-item{padding:10px 12px;background:var(--bg-deep);border:1px solid var(--border);border-radius:6px;}
+.signal-item label{display:flex;align-items:center;gap:8px;color:var(--text-secondary);font-size:12px;cursor:pointer;}
+.signal-item select{margin-left:auto;padding:3px 6px;background:var(--bg-card);border:1px solid var(--border);border-radius:3px;color:var(--text-primary);font-size:12px;}
+.signal-result{display:flex;gap:16px;align-items:center;padding:12px 16px;background:var(--bg-deep);border-radius:6px;margin-top:10px;}
+.signal-dot{width:24px;height:24px;border-radius:50%;display:inline-block;}
+.dot-green{background:var(--green);box-shadow:0 0 8px rgba(34,197,94,0.4);}
+.dot-yellow{background:var(--yellow);box-shadow:0 0 8px rgba(234,179,8,0.4);}
+.dot-red{background:var(--red);box-shadow:0 0 8px rgba(239,68,68,0.4);}
+
+/* Clock Widget (Merrill Lynch) */
+.clock-widget{margin:20px 0;padding:20px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius);}
+.clock-widget h4{color:var(--accent-light);font-size:14px;margin-bottom:14px;}
+.clock-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.clock-cell{width:100%;padding:14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:inherit;font:inherit;text-align:center;cursor:pointer;transition:all .2s;}
+.clock-cell:hover{border-color:var(--accent);transform:translateY(-2px);}
+.clock-cell.active{border-color:var(--accent);box-shadow:0 0 12px var(--accent-dim);}
+.clock-cell .cell-icon{font-size:24px;display:block;margin-bottom:6px;}
+.clock-cell .cell-name{display:block;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;}
+.clock-cell .cell-asset{display:block;font-size:11px;color:var(--text-muted);}
+.clock-cell .cell-detail{font-size:11px;color:var(--text-secondary);margin-top:6px;display:none;}
+.clock-cell.active .cell-detail{display:block;}
+
+/* Mobile Toggle */
+#sidebar-toggle{display:none;position:fixed;top:16px;left:16px;z-index:200;background:var(--accent);color:#fff;border:none;width:40px;height:40px;border-radius:8px;font-size:20px;cursor:pointer;}
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%);}
+  #sidebar.open{transform:translateX(0);}
+  #sidebar-toggle{display:block;}
+  #main{margin-left:0;padding:0 16px 40px;}
+  .cover h1{font-size:28px;}
+  .path-map{flex-direction:column;align-items:flex-start;}
+  .path-map .arrow{transform:rotate(90deg);}
+  .clock-grid{grid-template-columns:1fr;}
+  .signal-grid{grid-template-columns:1fr;}
+  .data-table{display:block;max-width:100%;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<button id="sidebar-toggle" type="button" aria-label="打开章节导航" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+<nav id="sidebar">
+<div class="sidebar-header">
+  <span class="book-icon">🌍</span>
+  <h3>宏观经济分析</h3>
+  <div class="subtitle">Macro 101</div>
+</div>
+<div id="nav">
+  <a href="#cover" class="part-link">封面</a>
+  <a href="#reading-path">阅读路径</a>
+  <a href="#part1" class="part-link">第一篇 宏观是什么</a>
+  <a href="#ch1" class="ch-link">第1章 为什么必须看宏观</a>
+  <a href="#ch2" class="ch-link">第2章 宏观分析全景地图</a>
+  <a href="#part2" class="part-link">第二篇 经济周期与增长</a>
+  <a href="#ch3" class="ch-link">第3章 经济周期</a>
+  <a href="#ch4" class="ch-link">第4章 核心增长指标</a>
+  <a href="#ch5" class="ch-link">第5章 就业与收入</a>
+  <a href="#part3" class="part-link">第三篇 物价、货币与财政</a>
+  <a href="#ch6" class="ch-link">第6章 通货膨胀</a>
+  <a href="#ch7" class="ch-link">第7章 美林时钟</a>
+  <a href="#ch8" class="ch-link">第8章 货币政策</a>
+  <a href="#ch9" class="ch-link">第9章 财政政策</a>
+  <a href="#ch10" class="ch-link">第10章 房地产</a>
+  <a href="#ch11" class="ch-link">第11章 中国特色政策市</a>
+  <a href="#part4" class="part-link">第四篇 外部环境与大宗</a>
+  <a href="#ch12" class="ch-link">第12章 汇率</a>
+  <a href="#ch13" class="ch-link">第13章 美联储与全球流动性</a>
+  <a href="#ch14" class="ch-link">第14章 大宗商品</a>
+  <a href="#part5" class="part-link">第五篇 陷阱与误区</a>
+  <a href="#ch15" class="ch-link">第15章 宏观数据七大陷阱</a>
+  <a href="#ch16" class="ch-link">第16章 常见误区与纠正</a>
+  <a href="#ch17" class="ch-link">第17章 经典误判案例复盘</a>
+  <a href="#part6" class="part-link">第六篇 实战框架</a>
+  <a href="#ch18" class="ch-link">第18章 行业轮动</a>
+  <a href="#ch19" class="ch-link">第19章 估值与仓位</a>
+  <a href="#ch20" class="ch-link">第20章 宏观跟踪体系</a>
+  <a href="#ch21" class="ch-link">第21章 宏观分析实战</a>
+  <a href="#ch22" class="ch-link">第22章 宏观分析的边界</a>
+  <a href="#appendix" class="part-link">附录</a>
+  <a href="#appa" class="app-link">A 指标速查</a>
+  <a href="#appb" class="app-link">B 数据日历</a>
+  <a href="#appc" class="app-link">C 美林时钟速查</a>
+  <a href="#appd" class="app-link">D 术语速查</a>
+  <a href="#appe" class="app-link">E 跟踪自检</a>
+</div>
+</nav>
+
+<div id="main">
+
+<!-- Cover -->
+<div class="cover" id="cover">
+  <div class="cover-badge">投资者教育手册系列 · 第3本</div>
+  <h1>宏观经济分析</h1>
+  <p class="tagline">从"看数据"到"做决策"——投资者必修的宏观思维课</p>
+  <div class="cover-meta">
+    <span>📖 6篇22章+5附录</span>
+    <span>🌍 紫罗兰色 = 宏观视野</span>
+    <span>⚡ 3个交互组件 + 5个图表</span>
+  </div>
+</div>
+
+<!-- Reading Path -->
+<div class="reading-path" id="reading-path">
+<h3>🗺️ 学习地图——你在整体路径中的位置</h3>
+<div class="path-map">
+  <span class="node">裸K</span><span class="arrow">→</span>
+  <span class="node">财报</span><span class="arrow">→</span>
+  <span class="node current">宏观 ←你在这里</span><span class="arrow">→</span>
+  <span class="node">交易系统</span><span class="arrow">→</span>
+  <span class="node">风控心理</span>
+</div>
+<div class="path-section">
+<h4>🚀 快速上手路径（30分钟）</h4>
+<ol>
+<li>第1章：为什么必须看宏观 → 建立直觉</li>
+<li>第2章：全景地图 + 术语速释 → 拿到工具箱</li>
+<li>第7章：美林时钟 → 最经典的宏观-资产框架</li>
+<li>第11章：中国特色政策市 → A股的特殊逻辑</li>
+<li>第20章：宏观信号灯跟踪体系 → 立即可用</li>
+</ol>
+</div>
+<div class="path-section">
+<h4>📚 系统学习路径</h4>
+<ol>
+<li>从第1章顺序读到第22章 → 附录A-E查漏补缺</li>
+</ol>
+</div>
+<div class="path-section">
+<h4>🎓 已有宏观基础</h4>
+<ol>
+<li>第3-4章（经济周期+增长指标）→ 第7-8章（美林时钟+货币政策）→ 第11章（政策市）→ 第12-14章（外部+大宗）→ 第15-17章（陷阱+误判）→ 第21-22章（实战+边界）</li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== 第一篇 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part1">
+  <div class="part-tag">第一篇</div>
+  <h2>宏观是什么——经济大环境的"天气预报"</h2>
+  <p class="part-goal">回答"为什么投资者必须看宏观"，建立自上而下的分析思维，了解宏观分析的整体框架，完成核心术语的速释铺垫。</p>
+</div>
+
+<div class="chapter" id="ch1">
+<h2 class="chapter-title"><span class="ch-num">第1章</span>为什么投资者必须看宏观</h2>
+
+<div class="section">
+<h3>1.1 宏观是"天气"，个股是"出门穿什么"</h3>
+
+<p>你出门前会看天气预报。晴天穿短袖，下雨带伞，寒潮加外套。投资也一样——<strong>宏观经济就是"天气"</strong>，你买什么股票、仓位多高、防守还是进攻，取决于大环境是"晴天"还是"暴风雨"。</p>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 忽视宏观=暴风雨天穿短袖</div>
+<p>忽视宏观的投资者，就像在暴风雨天穿短袖出门——也许运气好没感冒，但大部分时候会淋成落汤鸡。</p>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">核心类比</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>宏观=天气</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>个股=出门穿什么</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>行业=哪个街区</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策=气象局预警</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">你不能改变天气</div>
+<div class="info-card-title">但可以决定穿什么</div>
+<div class="info-card-body"><p>你不能改变宏观经济，但你可以根据宏观决定仓位、行业配置和防守策略。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>1.2 自上而下 vs 自下而上</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-accent">
+<div class="info-card-header">自上而下（Top-Down）</div>
+<div class="info-card-title">宏观手册教的路径</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>全球经济</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>↓ 本国经济</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>↓ 行业选择</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>↓ 个股筛选</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">自下而上（Bottom-Up）</div>
+<div class="info-card-title">财报手册的核心方法</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>直接研究公司基本面</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>不太关心大环境</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>好公司穿越周期</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 两者结合才是完整的投资决策</div>
+<p>自上而下告诉你"今天该穿长袖还是短袖"，自下而上告诉你"这件长袖是不是好面料"。<strong>专业投资者通常先用宏观定方向，再用基本面选个股</strong>——先看天气再选衣服，但具体穿哪件还得看自己的体型和偏好。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>1.3 宏观好≠个股好，但宏观差→大部分个股都差</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">宏观好</div>
+<div class="info-card-title">≠你买的股票一定涨</div>
+<div class="info-card-body"><p>公司可能管理差、估值高、行业夕阳。宏观好只是"顺风"，顺风不代表船一定能到终点——船本身可能有问题。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">宏观差</div>
+<div class="info-card-title">→大部分股票都跌</div>
+<div class="info-card-body"><p>哪怕公司基本面没问题。逆风环境下，好公司也会被杀估值——不是公司变差了，是市场给的"尺子"变了。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 宏观的作用：提高胜率，而非保证赢</div>
+<p>看宏观不能保证你买的股票涨，但能帮你<strong>避开"全军覆没"的风险</strong>——宏观差的时候减仓防守，保住本金，等宏观好转再进攻。投资不是比谁赚得快，是比谁活得久。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第1章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我做投资决策时，<span class="action">我将先看宏观定方向（顺风/逆风），再用基本面选个股——不看天气就出门是冒险，只看天气不选衣服也不行。</span></div>
+<div class="rule-item"><span class="trigger">当</span>宏观差但个股基本面好时，<span class="action">我不会重仓——逆风环境下好公司也会被杀估值，减仓防守、等待宏观好转是更优选择。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：回忆你最近一次亏损的投资，问自己：当时宏观环境是顺风还是逆风？你是否忽视了宏观信号？</p>
+<p><strong>自检</strong>：你现在是"先看天气再出门"还是"不看天气直接出门"？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch2">
+<h2 class="chapter-title"><span class="ch-num">第2章</span>宏观分析全景地图</h2>
+
+<div class="section">
+<h3>2.1 宏观分析的六大维度速览</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<div class="info-card-header">维度一：经济增长</div>
+<div class="info-card-title">经济在扩张还是收缩？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>GDP</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PMI</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>工业增加值</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">维度二：物价通胀</div>
+<div class="info-card-title">通胀在升还是降？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CPI</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PPI</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>核心CPI</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">维度三：货币政策</div>
+<div class="info-card-title">央行在放水还是收水？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>M2</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>社融</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>LPR/降准降息</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">维度四：财政政策</div>
+<div class="info-card-title">政府在花钱还是省钱？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>赤字率</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>专项债</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>基建投资</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">维度五：外部环境</div>
+<div class="info-card-title">海外是风还是浪？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>汇率</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>美联储</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>全球PMI</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">维度六：政策市</div>
+<div class="info-card-title">A股的政策风向标？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政治局会议</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>国家队</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>产业政策</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>2.2 核心术语速释</h3>
+
+<p>以下10个术语将在本手册反复出现。先混个脸熟，后面每章会详细展开。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">GDP</div>
+<div class="info-card-body"><p>经济体一年生产的全部最终产品和服务的总价值——量体温的"总体温度"。详见第4章。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">PMI</div>
+<div class="info-card-body"><p>采购经理指数，>50=扩张，&lt;50=收缩。经济最灵敏的"体温计"。详见第4章。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">CPI</div>
+<div class="info-card-body"><p>居民消费价格指数，衡量物价涨跌——央行最关注的"通胀温度计"。详见第6章。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">PPI</div>
+<div class="info-card-body"><p>工业品出厂价格指数——上游成本的"哨兵"。详见第6章。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">M2</div>
+<div class="info-card-body"><p>广义货币供应量——"市场上有多少钱"。详见第8章。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">社融</div>
+<div class="info-card-body"><p>社会融资规模——实体经济从金融体系"借了多少钱"。详见第8章。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">美林时钟</div>
+<div class="info-card-body"><p>经济增速×通胀=四阶段，每阶段最优资产不同——"宏观版四季歌"。详见第7章。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">LPR</div>
+<div class="info-card-body"><p>贷款市场报价利率——企业和个人的贷款基准利率。详见第8章。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">北向资金</div>
+<div class="info-card-body"><p>港股通渠道流入A股的资金，被视为"聪明钱"的风向标。详见第11章。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">赤字率</div>
+<div class="info-card-body"><p>财政赤字/GDP，衡量财政扩张力度。3%是国际"警戒线"。详见第9章。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第2章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我开始宏观分析时，<span class="action">我将按六大维度逐一检查——经济增长、物价通胀、货币政策、财政政策、外部环境、政策市——不跳过任何维度。</span></div>
+<div class="rule-item"><span class="trigger">当</span>遇到不熟悉的宏观术语时，<span class="action">我将回查本章术语表，先弄清定义再继续分析——概念不清就做判断等于盲猜。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：用六大维度框架，试着给当前宏观环境打一个"初印象"——每个维度是顺风还是逆风？</p>
+<p><strong>自检</strong>：六个维度你都能找到对应的数据吗？哪个维度你最不熟悉？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="container">
+
+<div class="part-header" id="part2">
+  <div class="part-tag">第二篇</div>
+  <h2>经济周期与增长——我们在哪里</h2>
+  <p class="part-goal">建立"经济周期"的认知框架，学会判断当前处于周期的哪个阶段，以及不同阶段对投资意味着什么。</p>
+</div>
+
+<div class="chapter" id="ch3">
+<h2 class="chapter-title"><span class="ch-num">第3章</span>经济周期——经济运行的规律</h2>
+
+<div class="section">
+<h3>3.1 经济为什么有周期</h3>
+
+<p>经济不像直线，更像波浪。繁荣之后必有衰退，衰退之后终将复苏——这不是宿命论，而是<strong>人性、信贷和技术</strong>三大力量的共同结果。</p>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 猪周期——经济周期的微缩版</div>
+<p>想象一个养猪场：猪肉涨价→大家多养猪→猪多了供给过剩→肉价暴跌→农户亏损退出→猪少了供给紧张→肉价再涨。企业的产能扩张和收缩、银行的信贷松紧、居民的消费信心，都在做类似的事。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>3.2 周期的四个阶段</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">复苏期 🌱</div>
+<div class="info-card-title">春天：万物生长</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经济增速：上升↑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>通胀：低↓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>企业盈利：改善↑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策方向：维持宽松</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">过热期 🔥</div>
+<div class="info-card-title">盛夏：燥热难耐</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经济增速：高位↑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>通胀：上升↑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>企业盈利：高位但增速放缓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策方向：开始收紧</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">滞胀期 🍂</div>
+<div class="info-card-title">深秋：果实渐少</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经济增速：下降↓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>通胀：高位↑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>企业盈利：下滑↓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策方向：两难（控通胀vs稳增长）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">衰退期 ❄️</div>
+<div class="info-card-title">寒冬：蛰伏等待</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经济增速：低位↓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>通胀：下降↓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>企业盈利：恶化↓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策方向：开始宽松</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 投资者的直觉锚</div>
+<p>复苏=春天（万物生长）· 过热=盛夏（燥热难耐）· 滞胀=深秋（果实渐少）· 衰退=寒冬（蛰伏等待）。<strong>每个季节穿什么衣服（买什么资产），第7章美林时钟会详细讲</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>3.3 周期的驱动力：库存、产能、房地产</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">库存周期</div>
+<div class="info-card-title">3-4年</div>
+<div class="info-card-body"><p>企业补库存→库存过高→去库存→库存过低→再补库存。最短、最频繁的周期，又称"基钦周期"。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">产能周期</div>
+<div class="info-card-title">8-10年</div>
+<div class="info-card-body"><p>行业扩产→产能过剩→淘汰出清→产能不足→再扩产。与企业资本支出挂钩，又称"朱格拉周期"。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">房地产周期</div>
+<div class="info-card-title">15-20年</div>
+<div class="info-card-body"><p>拿地→开工→销售→竣工→再拿地。最长的国内周期，牵动银行、建材、家电、地方财政。又称"库兹涅茨周期"。</p></div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 三个周期叠加</div>
+<p>当三个周期同时向上=强复苏（如2009年四万亿+地产+库存共振）。当三个周期同时向下=强衰退（如2015年去库存+去产能+地产下滑）。<strong>大多数时候，三个周期方向不一致</strong>，分析时需要分别判断。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>3.4 认识周期对投资的意义</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 周期告诉你三件事</div>
+<p><strong>1. 当前大概在哪个阶段</strong>——决定大类资产配置方向（股票/债券/商品/现金）。</p>
+<p><strong>2. 下一步大概往哪走</strong>——不是精确预测，而是概率判断（复苏→过热的概率大还是重回衰退的概率大？）。</p>
+<p><strong>3. 什么时候该逆思考</strong>——衰退极致时准备布局复苏，过热极致时准备防守。极端时刻逆向思考胜率最高。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 周期不是钟表</div>
+<p>周期不像钟表那样精确——你不知道每个阶段持续多久，也不知道拐点精确在哪天。<strong>周期告诉你"方向"和"概率"，不告诉你"精确时间"</strong>。试图精确择时是绝大多数投资者亏钱的原因。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第3章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我做宏观分析时，<span class="action">我将先判断当前经济大概在周期的哪个阶段（复苏/过热/滞胀/衰退）——这决定大类资产配置方向。</span></div>
+<div class="rule-item"><span class="trigger">当</span>经济处于衰退极致（数据很差、市场极度悲观）时，<span class="action">我将开始逆向思考——准备布局复苏期受益资产，而不是恐慌抛售。</span></div>
+<div class="rule-item"><span class="trigger">当</span>经济处于过热极致（数据很好、市场极度乐观）时，<span class="action">我将开始防守——准备减仓高估值品种，而不是追高。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：回顾最近12个月的PMI和CPI数据，判断当前经济大概在美林时钟的哪个阶段。</p>
+<p><strong>自检</strong>：你的判断依据是什么？三个周期（库存/产能/房地产）目前分别向上还是向下？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch4">
+<h2 class="chapter-title"><span class="ch-num">第4章</span>核心增长指标——GDP、PMI、工业增加值</h2>
+
+<div class="section">
+<h3>4.1 GDP：经济体总产出</h3>
+
+<p>GDP（Gross Domestic Product）衡量一个经济体在一定时期内生产的全部最终产品和服务的总价值。季度发布，是经济活动的<strong>最终成绩单</strong>。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">要点1</div>
+<div class="info-card-title">GDP是滞后指标</div>
+<div class="info-card-body"><p>当你看到GDP数据时，股市可能已经提前反映了。GDP确认趋势，不预测趋势。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">要点2</div>
+<div class="info-card-title">看趋势比看绝对值重要</div>
+<div class="info-card-body"><p>6.0%→5.5%→5.0%是下行趋势，哪怕5.0%本身不算差。趋势方向比单季数值重要得多。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">要点3</div>
+<div class="info-card-title">关注环比变化</div>
+<div class="info-card-body"><p>环比（季调后）转正是经济企稳的早期信号。同比好看但环比恶化=增长动能衰竭。</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ GDP的局限</div>
+<p>GDP告诉你"经济好不好"，但不告诉你"市场怎么想"。<strong>GDP超预期但市场不涨</strong>——说明预期已经price in了。<strong>GDP不及预期但市场不跌</strong>——说明悲观预期已充分反映。市场交易的是"预期差"，不是绝对值。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>4.2 GDP增速的"合理区间"</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">中国GDP增速历史演变</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2000-2007：10%+</div>
+<div class="ici-body">高速增长期，入世红利+地产黄金时代</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2008-2012：8-10%</div>
+<div class="ici-body">四万亿刺激后逐步回落</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2013-2019：6-7%</div>
+<div class="ici-body">"新常态"，增速下台阶</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2020-2025：4-5%</div>
+<div class="ici-body">疫情冲击+结构调整+人口拐点</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">关键认识</div>
+<div class="info-card-title">增速下台阶≠经济差</div>
+<div class="info-card-body"><p>5%的增长率在中国经济体量下，每年的增量仍然巨大。但对股市而言，<strong>市场交易的是"增速的变化方向"，不是绝对值</strong>。增速从5%升到5.5%=利好；从5%降到4.5%=利空——即使5%本身不算差。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>4.3 PMI：宏观经济第一个体温计</h3>
+
+<p>PMI（Purchasing Managers' Index，采购经理指数）是每月发布的经济景气指标。<strong>它是宏观指标中最灵敏的</strong>——比GDP早一个月，比工业增加值更前瞻。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">PMI > 50</div>
+<div class="info-card-title">扩张区间</div>
+<div class="info-card-body"><p>经济在扩张。但要看方向——52→51→50.5=扩张减速。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">PMI < 50</div>
+<div class="info-card-title">收缩区间</div>
+<div class="info-card-body"><p>经济在收缩。但要看方向——48→49→49.5=收缩放缓（可能见底）。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">PMI = 50</div>
+<div class="info-card-title">荣枯线</div>
+<div class="info-card-body"><p>扩张与收缩的分界线。穿越50是重要信号。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 PMI的三个看法</div>
+<p><strong>1. 看绝对值</strong>——>50还是<50，在扩张还是收缩。</p>
+<p><strong>2. 看方向</strong>——连续3个月上升 vs 连续3个月下降，含义完全不同。方向比绝对值重要。</p>
+<p><strong>3. 看结构</strong>——新订单指数（需求）、生产指数（供给）、原材料库存（备货意愿）、从业人员（就业），哪个在拉动、哪个在拖后腿？</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 制造业PMI vs 非制造业PMI vs 综合PMI</div>
+<p>国家统计局每月发布三个PMI：<strong>制造业PMI</strong>（工业）、<strong>非制造业PMI</strong>（服务业+建筑业）、<strong>综合PMI</strong>（两者加权）。制造业PMI最受关注，但非制造业PMI对判断消费和服务业更敏感。三个一起看更全面。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>4.4 工业增加值：实体经济的"脉搏"</h3>
+
+<p>工业增加值衡量工业生产活动的总量变化。它比GDP频率更高（月度），比PMI更"实"（PMI是问卷调查，工业增加值是实际产量统计）。</p>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 三者关系</div>
+<p><strong>PMI（最灵敏）→ 工业增加值（确认）→ GDP（最终验证）</strong>。PMI是"预期"，工业增加值是"实际"，GDP是"总结"。三者方向一致=趋势确认；方向矛盾=需要进一步调查。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第4章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>PMI每月公布时，<span class="action">我将同时看绝对值（>50/<50）、方向（连续3个月趋势）和结构（新订单/生产/库存/就业）——三看缺一不可。</span></div>
+<div class="rule-item"><span class="trigger">当</span>PMI方向连续3个月上升时，<span class="action">我将标记为"经济企稳/复苏信号"——开始关注周期性行业的买入机会。</span></div>
+<div class="rule-item"><span class="trigger">当</span>GDP同比好看但环比恶化时，<span class="action">我将不被同比数字迷惑——环比恶化=增长动能衰竭，减仓防御。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近6个月的制造业PMI数据，画一条趋势线。当前PMI在扩张还是收缩？方向是上升还是下降？</p>
+<p><strong>自检</strong>：新订单指数和生产指数哪个在主导？库存指数在补库存还是去库存？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch5">
+<h2 class="chapter-title"><span class="ch-num">第5章</span>就业与收入——经济冷暖的"温度计"</h2>
+
+<div class="section">
+<h3>5.1 失业率：滞后指标，但社会意义重大</h3>
+
+<p>就业是经济的<strong>滞后指标</strong>——企业先减产（PMI下降），然后才裁员（失业率上升）。但失业率对<strong>社会稳定和消费信心</strong>影响巨大，是政府最关注的指标之一。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 为什么滞后</div>
+<p>企业不会一遇到困难就立刻裁员——裁员有成本（补偿金）、有风险（劳动纠纷）、有惯性（"也许下季度就好了"）。所以就业数据通常比经济拐点晚3-6个月。<strong>看就业判断经济方向=看后视镜开车</strong>，但看就业判断消费趋势是有效的。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>5.2 中国就业数据的特殊性</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">城镇登记失业率</div>
+<div class="info-card-title">参考价值有限</div>
+<div class="info-card-body"><p>只统计去登记的人，严重低估真实失业水平。历史上长期在4%左右，几乎不变。<strong>不建议作为投资参考</strong>。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">城镇调查失业率</div>
+<div class="info-card-title">更接近真实</div>
+<div class="info-card-body"><p>国际标准方法，更接近真实情况。正常区间5.0-5.5%，超过5.5%需要关注。<strong>优先看这个</strong>。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 数据陷阱</div>
+<p>中国的就业数据波动小、敏感性高，官方数据可能低估就业压力。投资者应该结合<strong>替代指标</strong>来判断真实就业状况：</p>
+<p>农民工外出务工人数、城市拥堵指数（通勤量）、招聘网站活跃度、快递外卖骑手数量（就业蓄水池）。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>5.3 居民收入增长：消费的"燃料"</h3>
+
+<p>居民可支配收入增速决定了消费的"天花板"。</p>
+
+<div class="flow-chart">
+<div class="flow-step">收入增速上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">消费意愿增强</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">消费类企业盈利改善</div>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step">收入增速下滑</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">消费降级</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">高端消费承压</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 收入分层的投资含义</div>
+<p>不要只看平均收入——<strong>收入结构比平均数更重要</strong>。高收入群体收入增速快→奢侈品、高端消费受益。中低收入群体收入增速快→大众消费、性价比品牌受益。近年来中国收入分化加剧，<strong>高端消费和极致性价比两头强，中间层最难受</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>5.4 就业→收入→消费→企业盈利的传导链</h3>
+
+<p>这是一条关键的宏观传导链：</p>
+
+<div class="flow-chart">
+<div class="flow-step fs-green">经济好转</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">企业招人</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">就业改善</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">收入增长</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">消费回暖</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">企业盈利上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">股价上涨</div>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">经济下滑</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">企业裁员</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">收入下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">消费萎缩</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">企业盈利恶化</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">股价下跌</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 时滞</div>
+<p>这条链的<strong>时滞大约3-6个月</strong>——就业数据改善后，消费数据通常1-2个季度后跟进。如果你看到就业数据改善，可以提前布局消费板块——但要确认就业改善是趋势性的，不是单月波动。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>5.5 就业数据对不同板块的影响</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">就业改善</div>
+<div class="info-card-title">利好板块</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>消费</div>
+<div class="ici-body">收入增长→消费回暖</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>地产</div>
+<div class="ici-body">收入预期改善→购房意愿上升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>保险</div>
+<div class="ici-body">收入增长→保险消费增加</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">就业恶化</div>
+<div class="info-card-title">利空板块</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>高端消费</div>
+<div class="ici-body">收入不确定→削减非必要支出</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>可选消费</div>
+<div class="ici-body">汽车、家电、旅游首当其冲</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>银行</div>
+<div class="ici-body">失业→信用卡/消费贷违约率上升</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第5章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>城镇调查失业率连续3个月上升时，<span class="action">我将标记为"就业恶化信号"——减仓可选消费和高端消费，关注必选消费的防御价值。</span></div>
+<div class="rule-item"><span class="trigger">当</span>就业数据改善（失业率下降+收入增速回升）时，<span class="action">我将提前布局消费板块——传导链时滞3-6个月，等消费数据确认再买就晚了。</span></div>
+<div class="rule-item"><span class="trigger">当</span>官方就业数据平稳但替代指标（招聘活跃度、通勤量等）恶化时，<span class="action">我将更信替代指标——中国就业数据波动小，替代指标更真实。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近6个月城镇调查失业率数据，同时观察招聘网站活跃度和城市拥堵指数，判断真实就业状况。</p>
+<p><strong>自检</strong>：官方数据和替代指标一致吗？如果矛盾，你更信哪个？为什么？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="container">
+
+<div class="part-header" id="part3">
+  <div class="part-tag">第三篇</div>
+  <h2>物价、货币与财政——政策怎样影响市场</h2>
+  <p class="part-goal">理解通货膨胀、货币政策和财政政策三大工具如何影响经济和股市，建立"政策→市场"的传导思维。</p>
+</div>
+
+<div class="chapter" id="ch6">
+<h2 class="chapter-title"><span class="ch-num">第6章</span>通货膨胀——物价的"双刃剑"</h2>
+
+<div class="section">
+<h3>6.1 CPI：居民消费价格指数</h3>
+
+<p>CPI（Consumer Price Index）衡量居民消费品和服务价格的变化。央行最关注的"通胀温度计"。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">CPI同比 > 3%</div>
+<div class="info-card-title">通胀压力</div>
+<div class="info-card-body"><p>央行可能收紧货币政策。对股市偏利空——加息预期升温杀估值。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">CPI同比 2-3%</div>
+<div class="info-card-title">温和通胀</div>
+<div class="info-card-body"><p>对股市最友好的区间——企业盈利温和增长，央行不需要收紧。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">CPI同比 < 1%</div>
+<div class="info-card-title">通缩风险</div>
+<div class="info-card-body"><p>需求不足，企业盈利承压。央行可能降息刺激——但对股市效果取决于企业能否受益。</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ CPI的"猪肉权重"陷阱</div>
+<p>中国CPI中猪肉权重较高（约2-3%，但猪肉价格波动大，实际影响可达CPI波动的30-50%）。<strong>猪肉涨价推高CPI≠全面通胀</strong>——可能只是猪周期。看CPI时一定要看"核心CPI"（扣除食品和能源），核心CPI才是真正的通胀趋势。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.2 PPI：工业品出厂价格指数</h3>
+
+<p>PPI（Producer Price Index）衡量工业品出厂价格的变化。是上游成本的"哨兵"——PPI上涨意味着原材料和工业品在涨价，传导到下游就是消费品涨价（CPI上升）。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 关键传导链</div>
+<p><strong>PPI上涨 → 中游制造业成本上升 → 如果不能转嫁给消费者（CPI不涨），中游利润被挤压</strong>。这就是为什么PPI-CPI剪刀差是判断上下游利润分配的核心指标。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.3 CPI与PPI的"剪刀差"</h3>
+
+<p>CPI和PPI的走势差异，是判断上下游利润分配的利器：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">PPI涨 CPI不涨</div>
+<div class="info-card-title">上游涨价无法传导</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>受益：上游资源</div>
+<div class="ici-body">煤炭/钢铁/有色</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>承压：中游制造</div>
+<div class="ici-body">成本升但售价不升</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">PPI跌 CPI稳</div>
+<div class="info-card-title">上游成本下降</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>受益：中下游</div>
+<div class="ici-body">制造和消费</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>承压：上游资源</div>
+<div class="ici-body">产品降价</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">PPI和CPI同涨</div>
+<div class="info-card-title">全面通胀</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>受益：有定价权龙头</div>
+<div class="ici-body">能转嫁成本</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>承压：无定价权中小企业</div>
+<div class="ici-body">成本涨但售价不敢涨</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 剪刀差的投资应用</div>
+<p><strong>PPI-CPI剪刀差扩大（PPI涨CPI不涨）→ 买上游资源股，卖中游制造股</strong>。<strong>剪刀差收窄（PPI跌CPI稳）→ 买中下游消费和制造，卖上游资源股</strong>。这是A股最实用的宏观-行业轮动信号之一。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>6.4 通胀对不同行业的影响</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">通胀受益行业</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>上游资源</div>
+<div class="ici-body">煤炭、有色、石油——产品直接涨价</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>有定价权消费品</div>
+<div class="ici-body">白酒、奢侈品——能跟涨</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>农业</div>
+<div class="ici-body">农产品涨价直接受益</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>房地产</div>
+<div class="ici-body">实物资产抗通胀</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">通胀受损行业</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>中游制造（无定价权）</div>
+<div class="ici-body">成本涨但无法转嫁</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>公用事业</div>
+<div class="ici-body">价格受管制，无法跟涨</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>高负债企业</div>
+<div class="ici-body">央行加息→融资成本上升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>航空</div>
+<div class="ici-body">油价涨=成本暴涨</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第6章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>PPI-CPI剪刀差扩大时，<span class="action">我将超配上游资源股（煤炭/有色/钢铁），低配中游制造业——上游涨价中游吃瘪。</span></div>
+<div class="rule-item"><span class="trigger">当</span>CPI同比>3%且核心CPI也>2%时，<span class="action">我将标记为"全面通胀风险"——减仓高估值成长股（加息杀估值），增配有定价权的消费品和上游资源。</span></div>
+<div class="rule-item"><span class="trigger">当</span>CPI涨但核心CPI不涨时，<span class="action">我将判断为"食品/能源驱动的结构性通胀"——不是全面通胀，不改变货币政策预期，不盲目减仓。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近6个月CPI、PPI和核心CPI数据，计算PPI-CPI剪刀差趋势。当前上下游利润分配对谁有利？</p>
+<p><strong>自检</strong>：CPI上涨是核心CPI驱动还是食品/能源驱动？这对货币政策判断有什么不同含义？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch7">
+<h2 class="chapter-title"><span class="ch-num">第7章</span>美林时钟——宏观经济与资产配置的经典框架</h2>
+
+<div class="section">
+<h3>7.1 美林时钟的核心逻辑</h3>
+
+<p>美林时钟是美林证券2004年提出的经典框架，将经济周期分成四个阶段，每个阶段对应不同的最优资产。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 核心公式</div>
+<p><strong>经济增速（GDP方向）× 通胀高低（CPI方向）= 四个阶段</strong>。每个阶段有不同的最优大类资产和行业配置。</p>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green">复苏期<br>经济↑ 通胀↓<br>→ 股票</div>
+<div class="flow-arrow">↻</div>
+<div class="flow-step fs-red">过热期<br>经济↑ 通胀↑<br>→ 大宗商品</div>
+<div class="flow-arrow">↻</div>
+<div class="flow-step fs-yellow">滞胀期<br>经济↓ 通胀↑<br>→ 黄金/现金</div>
+<div class="flow-arrow">↻</div>
+<div class="flow-step fs-blue">衰退期<br>经济↓ 通胀↓<br>→ 债券</div>
+</div>
+</div>
+
+<div class="section">
+<h3>7.2 复苏期：经济↑通胀↓ → 最优资产：股票</h3>
+
+<p>经济刚从衰退中走出来，企业盈利开始改善，但通胀还没起来，央行还维持宽松政策。这是<strong>股票的黄金期</strong>——盈利增长+估值扩张的"戴维斯双击"。</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">领涨行业1</div>
+<div class="info-card-title">金融</div>
+<div class="info-card-body"><p>信用扩张→银行放贷增加→券商交易量上升→保险投资收益改善</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">领涨行业2</div>
+<div class="info-card-title">可选消费</div>
+<div class="info-card-body"><p>收入回升+信心改善→汽车、家电、旅游、白酒需求回暖</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">领涨行业3</div>
+<div class="info-card-title">科技成长</div>
+<div class="info-card-body"><p>流动性充裕+风险偏好高→高估值板块获得溢价</p></div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 复苏期的操作要点</div>
+<p>复苏期是<strong>满仓股票的最佳时机</strong>——盈利涨+估值涨+政策友好。但要注意：复苏期不是回头看的"已知复苏"，而是当下的"正在复苏"——判断复苏需要PMI连续回升+社融回暖+政策维持宽松的确认。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>7.3 过热期：经济↑通胀↑ → 最优资产：大宗商品</h3>
+
+<p>经济火热，需求旺盛推高上游价格，央行开始收紧（加息/提准）。股票的估值端开始承压，但盈利端还有支撑。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">最强板块</div>
+<div class="info-card-title">上游资源</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>能源</div>
+<div class="ici-body">油价上涨→石油开采和炼化盈利暴涨</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>有色金属</div>
+<div class="ici-body">铜铝价格上涨→矿企利润飙升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>化工</div>
+<div class="ici-body">产品涨价+产能紧张→利润率扩张</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">承压板块</div>
+<div class="info-card-title">高估值成长+消费</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>高估值成长股</div>
+<div class="ici-body">利率上升杀估值</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>消费股</div>
+<div class="ici-body">成本压力+需求边际放缓</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>7.4 滞胀期：经济↓通胀↑ → 最优资产：黄金/现金</h3>
+
+<p>经济下滑但通胀顽固，央行两难——加息控通胀会进一步打击经济，降息稳增长会加剧通胀。这是<strong>最痛苦的阶段</strong>——股债双杀。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">抗跌配置</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>医药</div>
+<div class="ici-body">刚需+不受周期影响</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>公用事业</div>
+<div class="ici-body">需求稳定+高股息</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>必选消费</div>
+<div class="ici-body">刚需+有定价权（食品饮料）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>黄金</div>
+<div class="ici-body">抗通胀+避险</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">核心策略</div>
+<div class="info-card-title">防守为主</div>
+<div class="info-card-body"><p>滞胀期是<strong>现金为王</strong>的阶段。减仓进攻性资产，增配防御性资产。不要试图抄底——滞胀期可能持续较久，抄底往往抄在半山腰。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>7.5 衰退期：经济↓通胀↓ → 最优资产：债券</h3>
+
+<p>经济衰退央行降息，利率下降=债券价格上涨。高股息+低估值股票也可关注，但首选债券。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 衰退期的布局价值</div>
+<p>衰退期末端是<strong>布局复苏的最佳时机</strong>——央行大幅降息+财政刺激出台+市场极度悲观=逆向布局的黄金窗口。但这个窗口的判断极其困难——你以为的"衰退末端"可能只是"衰退中段"。需要PMI企稳+社融回暖的确认信号。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>7.6 美林时钟的中国特色</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 美林时钟在中国的变形</div>
+<p>美林时钟基于美国经济设计，在中国会"变形"：</p>
+<p><strong>1. 政策干预更强</strong>——中国政府会主动干预经济周期，缩短衰退、抑制过热。周期阶段可能跳过或压缩。</p>
+<p><strong>2. 房地产影响更大</strong>——中国房地产周期对经济的影响远大于美国，房地产下行可能让"复苏"迟迟不来。</p>
+<p><strong>3. 时钟可能"倒转"</strong>——政策过度刺激可能让经济从衰退快速跳到过热，跳过复苏期。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第7章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我判断经济处于复苏期时，<span class="action">我将满仓股票——超配金融、可选消费、科技成长——这是戴维斯双击的最佳窗口。</span></div>
+<div class="rule-item"><span class="trigger">当</span>经济进入过热期时，<span class="action">我将减仓高估值成长股，超配上游资源（能源/有色/化工）——商品最强、股票开始承压。</span></div>
+<div class="rule-item"><span class="trigger">当</span>经济进入滞胀期时，<span class="action">我将大幅减仓股票，转向防御——医药/公用事业/必选消费/黄金/现金——股债双杀阶段不抄底。</span></div>
+<div class="rule-item"><span class="trigger">当</span>经济处于衰退期末端（PMI企稳+央行降息+社融回暖）时，<span class="action">我将逆向布局——开始建仓金融和可选消费，为复苏期做准备。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：用最近6个月的PMI和CPI数据，判断当前经济处于美林时钟的哪个阶段。对应的最优资产是什么？你的持仓与这个判断一致吗？</p>
+<p><strong>自检</strong>：你的持仓与美林时钟的建议一致吗？如果不一致，是时钟错了还是你错了？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch8">
+<h2 class="chapter-title"><span class="ch-num">第8章</span>货币政策——央行的"方向盘"</h2>
+
+<div class="section">
+<h3>8.0 债券市场101——读懂利率传导的前提</h3>
+
+<p>理解货币政策，先理解几个债券市场的基本概念：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">国债收益率曲线</div>
+<div class="info-card-body"><p>不同期限国债的收益率连线。正常情况向上倾斜（长期>短期），因为长期风险更大需要更多补偿。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">收益率曲线倒挂</div>
+<div class="info-card-body"><p>短期利率>长期利率→市场预期经济衰退。美国历史上，倒挂后12-18个月通常出现衰退。<strong>最可靠的衰退预测指标之一</strong>。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">10年期国债收益率</div>
+<div class="info-card-body"><p>中国10年期国债收益率是"无风险利率锚"，影响所有资产估值——它升，估值降；它降，估值升。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">债券价格与利率反向</div>
+<div class="info-card-body"><p>利率上升→已发行的旧债券价格下跌（新债券收益率更高，旧债券竞争力下降）。反之亦然。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 利率传导链</div>
+<p><strong>国债利率 → 企业债利率 → 银行贷款利率 → 企业融资成本 → 企业盈利 → 股价</strong>。10年期国债收益率是整条链的起点，它的变化决定了估值的方向。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>8.1 央行是谁：目标与工具</h3>
+
+<p>央行（中国人民银行）的核心目标是<strong>稳增长+控通胀+保就业+防风险</strong>。它主要通过两个渠道影响经济：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">价格工具</div>
+<div class="info-card-title">调整利率</div>
+<div class="info-card-body"><p>降息=宽松（降低融资成本），加息=收紧（提高融资成本）。主要通过调整LPR、逆回购利率、MLF利率实现。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">数量工具</div>
+<div class="info-card-title">调整货币供应量</div>
+<div class="info-card-body"><p>降准=释放资金（银行可贷资金增加），公开市场操作=注入/回收流动性。主要通过存款准备金率、MLF、逆回购实现。</p></div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 水龙头比喻</div>
+<p>央行=水龙头，利率=拧水龙头的力度，M2=水管里的水量，社融=水流到田里（实体经济）的量。<strong>降准=把水管加粗，降息=把水龙头拧大</strong>。但如果田里的沟渠堵了（银行不放贷/企业不借钱），水龙头再大水也流不到田里——这就是"流动性陷阱"。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>8.2 利率工具：降息降准</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">降准（降低存款准备金率）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>机制</div>
+<div class="ici-body">银行存央行的准备金减少→可贷资金增加</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>效果</div>
+<div class="ici-body">释放长期流动性，银行可贷资金增多</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>对股市影响</div>
+<div class="ici-body">利好——流动性增加→部分流入股市</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">降息（降低LPR/MLF利率）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>机制</div>
+<div class="ici-body">降低贷款基准利率→企业融资成本下降</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>效果</div>
+<div class="ici-body">直接降低企业和个人融资成本</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>对股市影响</div>
+<div class="ici-body">强利好——估值直接提升（贴现率下降）</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>8.3 M2与社融：央行放水了吗？水到田里了吗？</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">M2（广义货币供应量）</div>
+<div class="info-card-title">"水管里的水量"</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>含义</div>
+<div class="ici-body">市场上的货币总量</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>M2增速上升</div>
+<div class="ici-body">央行在放水</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>关键看</div>
+<div class="ici-body">M2增速与名义GDP增速的差——差为正=超额放水</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">社融（社会融资规模）</div>
+<div class="info-card-title">"水流到田里的量"</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>含义</div>
+<div class="ici-body">实体经济从金融体系借到的钱</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>社融增速上升</div>
+<div class="ici-body">实体经济在加杠杆→经济向好</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>关键看</div>
+<div class="ici-body">社融增速与M2增速的差——社融>M2=实体需求强</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 M2和社融的关系</div>
+<p><strong>M2是"水龙头放了多少水"，社融是"田里流了多少水"</strong>。M2增速>社融增速=银行有钱但企业不借（流动性陷阱）。社融增速>M2增速=企业借钱需求旺盛（经济活跃）。<strong>社融是经济的领先指标</strong>——社融回暖通常预示1-2个季度后经济企稳。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>8.4 货币政策对股市的影响路径</h3>
+
+<div class="flow-chart">
+<div class="flow-step fs-green">央行降息降准</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">无风险利率下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">贴现率下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">估值上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">股价上涨</div>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-green">央行降息降准</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">企业融资成本下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">盈利改善</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">股价上涨</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 降息≠一定涨</div>
+<p>降息对股市<strong>通常是利好</strong>，但不一定立刻涨。如果降息是因为经济太差（衰退式降息），市场可能继续跌——因为盈利恶化的速度超过了利率下降的利好。<strong>预防式降息（经济还行但防风险）=强利好；衰退式降息=利好但有时滞</strong>。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第8章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>央行降息+社融增速回升时，<span class="action">我将标记为"宽货币+宽信用"信号——这是最积极的政策组合，超配股票（尤其金融和成长股）。</span></div>
+<div class="rule-item"><span class="trigger">当</span>M2增速上升但社融增速不升时，<span class="action">我将判断为"流动性陷阱"——央行放水但实体不借，效果有限，不盲目加仓。</span></div>
+<div class="rule-item"><span class="trigger">当</span>10年期国债收益率快速上升时，<span class="action">我将减仓高估值成长股——无风险利率上升直接杀估值，高估值品种首当其冲。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近6个月的M2增速、社融增速和10年期国债收益率。当前是宽货币还是紧货币？宽信用还是紧信用？</p>
+<p><strong>自检</strong>：M2和社融方向一致吗？如果不一致，意味着什么？对股市是利好还是利空？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch9">
+<h2 class="chapter-title"><span class="ch-num">第9章</span>财政政策——政府的"油门与刹车"</h2>
+
+<div class="section">
+<h3>9.1 财政政策 vs 货币政策</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">货币政策</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>执行者</div>
+<div class="ici-body">央行</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>手段</div>
+<div class="ici-body">利率、准备金率</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>作用方式</div>
+<div class="ici-body">间接（通过银行体系传导）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>见效速度</div>
+<div class="ici-body">慢（3-6个月）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">财政政策</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>执行者</div>
+<div class="ici-body">财政部+地方政府</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>手段</div>
+<div class="ici-body">税收、支出、发债</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>作用方式</div>
+<div class="ici-body">直接（政府直接花钱）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>见效速度</div>
+<div class="ici-body">更快（基建直接拉动）</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>9.2 赤字率、专项债、特别国债</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-yellow">
+<div class="info-card-header">赤字率</div>
+<div class="info-card-body"><p>财政赤字/GDP。3%是国际"警戒线"（但中国经常突破）。<strong>赤字率上升=财政扩张</strong>。关注每年政府工作报告公布的赤字率目标。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">专项债</div>
+<div class="info-card-body"><p>地方政府为特定项目发行的债券（基建、棚改等）。<strong>专项债额度增加=基建投资增加</strong>=利好建筑、建材、工程机械。关注提前批额度。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">特别国债</div>
+<div class="info-card-body"><p>中央政府为特殊目的发行的国债（2020年抗疫、2023年灾后恢复）。<strong>比专项债层级更高、规模更大</strong>。发行特别国债=重大政策信号。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>9.3 减税降费</h3>
+
+<p>减税降费直接增厚企业利润和居民可支配收入。对股市的影响：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">企业减税</div>
+<div class="info-card-title">利润率提升</div>
+<div class="info-card-body"><p>利好制造业和服务业。但要注意：减税是一次性的——<strong>减税带来的利润增长不是"永续的"，不应给高估值溢价</strong>。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">居民减税</div>
+<div class="info-card-title">可支配收入增加</div>
+<div class="info-card-body"><p>利好消费板块。但居民是否把减税省下的钱花掉，取决于消费信心——信心不足时减税变成储蓄而非消费。</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 减税的代价</div>
+<p>减税会减少财政收入→赤字扩大→长期看可能需要"补回来"。<strong>减税不是免费午餐</strong>——今天的减税可能意味着明天的加税或财政紧缩。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>9.4 产业政策与补贴</h3>
+
+<p>中国的产业政策对股市影响极大——<strong>新能源补贴催生了2020-2021年的新能源牛市，半导体大基金催生了国产替代行情</strong>。关注政府工作报告和五年规划中的重点扶持产业。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 产业政策的投资机会</div>
+<p><strong>政策扶持=行业景气度上升的强力催化剂</strong>。但要注意三点：1）政策扶持≠行业一定能赚钱（补贴退坡后谁是赢家？）；2）政策受益股往往提前炒作，政策落地可能是"利好出尽"；3）政策方向可能突然变化——跟踪政策比预测政策更重要。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>9.5 基础设施投资</h3>
+
+<p>基建投资是中国最重要的财政刺激手段之一。基建发力时，以下行业受益：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">直接受益</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>建筑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>建材（水泥/钢铁）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>工程机械</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">间接受益</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>有色（铜/铝）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>化工</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>银行（信贷扩张）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">滞后受益</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>地产（基建改善周边地价）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>消费（就业+收入改善）</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第9章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>政府工作报告中赤字率提升+专项债额度增加时，<span class="action">我将标记为"财政扩张信号"——超配基建链（建筑/建材/工程机械），关注政策扶持产业。</span></div>
+<div class="rule-item"><span class="trigger">当</span>产业政策明确扶持某个行业时，<span class="action">我将跟踪政策落地节奏——政策预期阶段炒预期，政策落地阶段防"利好出尽"。</span></div>
+<div class="rule-item"><span class="trigger">当</span>财政紧缩（赤字率下降+专项债减少）时，<span class="action">我将减仓基建链相关股票——财政退坡=基建相关企业订单减少。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近一年政府工作报告中的赤字率目标和专项债额度，与上一年对比，判断财政是扩张还是收缩。</p>
+<p><strong>自检</strong>：当前有哪些产业被政策明确扶持？你的持仓中有政策受益标的吗？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch10">
+<h2 class="chapter-title"><span class="ch-num">第10章</span>房地产——国民经济的重要变量</h2>
+
+<div class="section">
+<h3>10.1 房地产为什么重要</h3>
+
+<p>房地产是中国经济的"超级变量"，影响远超其他任何单一行业：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">产业链长</div>
+<div class="info-card-body"><p>从拿地到竣工，牵动银行、建材、家电、家具、装修等几十个行业。<strong>房地产投资占固定资产投资20%+</strong>。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">就业多</div>
+<div class="info-card-body"><p>建筑业+相关服务业就业人数超过5000万。地产下滑→失业率上升→消费萎缩。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">土地财政</div>
+<div class="info-card-body"><p>地方政府收入严重依赖土地出让金（占地方财政收入30-50%）。地产下滑→地方财政承压→基建投资受限。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">居民财富</div>
+<div class="info-card-body"><p>中国城镇居民60%以上的财富在房产。房价下跌→财富效应→消费萎缩。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>10.2 房地产周期</h3>
+
+<p>房地产开发有一个完整的周期链条：</p>
+
+<div class="flow-chart">
+<div class="flow-step">拿地</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">开工</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">施工</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">预售</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">竣工</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">交付</div>
+</div>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">拿地</div>
+<div class="info-card-title">领先6-12月</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>土地市场</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>地方政府财政</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">开工</div>
+<div class="info-card-title">领先3-6月</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>水泥</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>钢铁</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>工程机械</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">施工/销售</div>
+<div class="info-card-title">同步</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>建材</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>地产股</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>按揭银行</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">竣工交付</div>
+<div class="info-card-title">滞后6-12月</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>家电</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>家具</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>装修</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 领先指标</div>
+<p><strong>拿地是房地产周期的最早信号</strong>——土地成交面积和溢价率回升，意味着开发商预期好转，6-12个月后新开工和投资会跟进。拿地数据持续低迷=地产仍在下行周期。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>10.3 房地产对经济的影响路径</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">四条传导路径</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>投资路径</div>
+<div class="ici-body">地产投资占固投20%+，直接影响GDP</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>消费路径</div>
+<div class="ici-body">买房带动家电/家具/装修消费；房价涨跌影响财富和消费信心</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>就业路径</div>
+<div class="ici-body">建筑业+相关行业就业占城镇就业15%+</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>财政路径</div>
+<div class="ici-body">土地出让金占地方财政收入30-50%</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">地产下滑的连锁反应</div>
+<div class="flow-chart">
+<div class="flow-step fs-red">地产销售下滑</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">开发商减少拿地开工</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">建材/钢铁/机械需求下降</div>
+</div>
+<div class="flow-chart">
+<div class="flow-step fs-red">土地出让金减少</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">地方财政紧张</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">基建投资受限</div>
+</div>
+<div class="flow-chart">
+<div class="flow-step fs-red">房价下跌</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">居民财富缩水</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">消费萎缩</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>10.4 房地产对股市的影响</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">直接影响</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>地产股</div>
+<div class="ici-body">与销售数据直接相关</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>物业股</div>
+<div class="ici-body">与竣工交付相关</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>建材股</div>
+<div class="ici-body">与开工/施工相关</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">间接影响</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>银行</div>
+<div class="ici-body">按揭贷款+开发贷风险</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>家电/家居</div>
+<div class="ici-body">与竣工交付滞后相关</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>消费</div>
+<div class="ici-body">财富效应传导</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第10章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>土地成交面积和溢价率连续3个月回升时，<span class="action">我将标记为"地产周期见底信号"——提前布局地产链（建材/工程机械/家电），领先指标回暖后6-12个月传导到下游。</span></div>
+<div class="rule-item"><span class="trigger">当</span>房地产销售持续下滑时，<span class="action">我将减仓地产链相关股票（地产/建材/银行/家电），同时关注消费板块的下行风险——财富效应传导。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近12个月的房地产销售面积、新开工面积和土地成交数据，判断地产周期当前在什么位置。</p>
+<p><strong>自检</strong>：拿地数据是否企稳？销售是否回暖？你的持仓中有没有地产链敏感标的？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch11">
+<h2 class="chapter-title"><span class="ch-num">第11章</span>中国特色——政策市的运行逻辑</h2>
+
+<div class="section">
+<h3>11.1 A股为什么叫"政策市"</h3>
+
+<p>A股受政策影响远大于成熟市场。原因：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">政府是最大股东</div>
+<div class="info-card-body"><p>国企占比高，政策直接影响大量上市公司的经营决策和业绩。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">监管工具丰富</div>
+<div class="info-card-body"><p>IPO节奏、再融资规则、减持新规、印花税——监管层工具箱丰富且使用频繁。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">"国家队"可直接入市</div>
+<div class="info-card-body"><p>汇金、社保、证金可以直接买入股票或ETF——这是其他国家罕见的干预手段。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">产业政策决定兴衰</div>
+<div class="info-card-body"><p>新能源/半导体/自主可控——政策扶持方向就是市场主线方向。</p></div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 在A股做投资，不看政策=闭眼开车</div>
+<p>政策方向决定了A股的<strong>行业主线、资金流向和市场情绪</strong>。忽视政策的投资者，就像闭眼开车——也许短期没事，但迟早出大事。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>11.2 监管政策工具箱</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">利好工具</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>降低印花税</div>
+<div class="ici-body">降低交易成本=重大利好（2023年8月减半）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>暂停/放缓IPO</div>
+<div class="ici-body">减少供给=利好存量股票（2015年股灾后暂停4个月）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>收紧再融资</div>
+<div class="ici-body">减少解禁压力=利好（2017年再融资新规）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>限制大股东减持</div>
+<div class="ici-body">减少抛压=利好（2017/2023年减持新规）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>扩大融资标的</div>
+<div class="ici-body">增加流动性=利好（2014年扩容）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">利空工具</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>加快IPO节奏</div>
+<div class="ici-body">增加供给=抽血效应</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>放宽再融资</div>
+<div class="ici-body">增加解禁压力</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>查配资/去杠杆</div>
+<div class="ici-body">强制去杠杆=剧烈调整（2015年）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>收紧行业监管</div>
+<div class="ici-body">如教培、互联网、游戏——行业级别利空</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>11.3 "国家队"：汇金/社保/证金</h3>
+
+<p>"国家队"入场是最强的政策信号：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">中央汇金</div>
+<div class="info-card-body"><p>直接增持四大行或ETF，信号最明确。<strong>汇金增持=政策底确认</strong>。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">社保基金</div>
+<div class="info-card-body"><p>长线资金入市，代表"政策底"。社保是长线投资者，买入持有时间长。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">证金公司</div>
+<div class="info-card-body"><p>2015年直接入市买股票，力度最大。极端情况下才会出手。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 国家队信号的解读</div>
+<p>国家队入场→确认"政策底"，但<strong>政策底≠市场底</strong>。历史经验：政策底通常领先市场底1-3个月。看到国家队入场，<strong>不是满仓信号，而是"不要再恐慌抛售+开始关注建仓时机"的信号</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>11.4 北向资金：外资的"聪明钱"</h3>
+
+<p>北向资金是港股通渠道流入A股的外资，被市场视为"聪明钱"。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">北向资金大幅流入</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>信号</div>
+<div class="ici-body">外资看好A股→核心资产受益</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>注意</div>
+<div class="ici-body">北向流入≠一定涨，但持续流入是积极信号</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">北向资金大幅流出</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>信号</div>
+<div class="ici-body">外资撤离→白马股承压</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>注意</div>
+<div class="ici-body">单日流出可能是调仓，持续多日流出才是真信号</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 北向资金的参考价值在下降</div>
+<p>2024年起，北向资金实时数据不再公布（改为延迟披露），其"风向标"作用减弱。但<strong>趋势性流入/流出仍有参考价值</strong>——看周度/月度数据，不看单日波动。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>11.5 政治局会议：最高决策信号</h3>
+
+<p>政治局会议（4月/7月/10月/12月）是A股最重要的政策信号来源。会议通稿的措辞变化直接决定市场方向：</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 看通稿的三个要点</div>
+<p><strong>1. 新提法</strong>——首次出现的表述通常意味着政策新方向（如"新质生产力"首次提出后相关板块大涨）。</p>
+<p><strong>2. 措辞变化</strong>——从"稳中求进"到"积极进取"=政策更积极；从"遏制上涨"到"遏制过快上涨"=态度微妙转变。</p>
+<p><strong>3. 产业表述</strong>——被点名的产业=政策扶持方向，通常成为下一阶段市场主线。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第11章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>国家队（汇金/社保）入市增持时，<span class="action">我将标记为"政策底确认"——停止恐慌抛售，开始关注建仓时机，但不立刻满仓（政策底领先市场底1-3个月）。</span></div>
+<div class="rule-item"><span class="trigger">当</span>政治局会议通稿出现新提法或措辞变化时，<span class="action">我将第一时间分析其含义——新提法通常催生市场新主线。</span></div>
+<div class="rule-item"><span class="trigger">当</span>监管层出台重大利好（降印花税/暂停IPO/限制减持）时，<span class="action">我将关注市场反应——如果高开低走，说明市场信心不足，不追高；如果放量上涨，确认政策效果。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：回看最近一次政治局会议通稿，找出新提法或措辞变化。这些变化对应哪些投资机会？</p>
+<p><strong>自检</strong>：你的持仓中有政策明确扶持的标的吗？有没有可能受政策收紧影响的标的？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="container">
+
+<div class="part-header" id="part4">
+  <div class="part-tag">第四篇</div>
+  <h2>外部环境与大宗商品——全球变化如何传导到A股</h2>
+  <p class="part-goal">理解"外部世界"如何影响中国经济和A股，建立全球视野下的宏观分析能力。</p>
+</div>
+
+<div class="chapter" id="ch12">
+<h2 class="chapter-title"><span class="ch-num">第12章</span>汇率——人民币的"价格"</h2>
+
+<div class="section">
+<h3>12.1 汇率是什么</h3>
+
+<p>汇率是一种货币换另一种货币的比率。人民币兑美元7.0意味着1美元=7元人民币。<strong>数字变大=人民币贬值，数字变小=人民币升值</strong>。</p>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 记忆技巧</div>
+<p>汇率数字大=人民币"不值钱"了=贬值。汇率数字小=人民币"值钱"了=升值。<strong>7.3比7.0贬值，6.8比7.0升值</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.2 人民币汇率的决定因素</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">贸易顺差</div>
+<div class="info-card-body"><p>出口>进口→赚到的美元多→人民币有升值压力。中国长期贸易顺差=人民币长期有升值基础。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">资本流动</div>
+<div class="info-card-body"><p>外资流入→买人民币→升值；外资流出→卖人民币→贬值。<strong>短期汇率主要看资本流动</strong>。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">中美利差</div>
+<div class="info-card-body"><p>中国利率>美国→资本流入→升值；利差倒挂（美国利率>中国）→资本流出→贬值。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">央行态度</div>
+<div class="info-card-body"><p>央行通过中间价、外汇储备、逆周期因子调控汇率。<strong>央行不让汇率大升大贬</strong>——稳定优先。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>12.3 汇率贬值对A股的影响</h3>
+
+<p>人民币贬值=利空为主，但有结构性差异：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">利空</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>外资流出</div>
+<div class="ici-body">人民币资产贬值→北向资金撤离→白马股承压</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>进口企业成本上升</div>
+<div class="ici-body">航空（美元负债）、造纸（进口纸浆）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>通胀输入</div>
+<div class="ici-body">进口商品涨价→CPI上升</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">利好</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>出口企业受益</div>
+<div class="ici-body">产品以美元定价，换回更多人民币</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>纺织/家电/电子制造</div>
+<div class="ici-body">出口导向型行业利润提升</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>12.4 汇率升值对A股的影响</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">利好</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>外资流入</div>
+<div class="ici-body">人民币资产升值→北向资金买入→核心资产受益</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>进口企业成本下降</div>
+<div class="ici-body">航空（美元负债缩水）、造纸</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">利空</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>出口企业利润压缩</div>
+<div class="ici-body">换回的人民币少了</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>12.5 汇率对不同行业的影响差异</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">贬值受益</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>出口制造</div>
+<div class="ici-body">家电/纺织/电子</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">贬值受损</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>航空</div>
+<div class="ici-body">外币负债→汇兑损失</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>造纸</div>
+<div class="ici-body">进口原料成本上升</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">升值受益</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>航空</div>
+<div class="ici-body">外币负债缩水→汇兑收益</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>核心资产</div>
+<div class="ici-body">外资流入→白马股受益</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>12.6 CFETS一篮子汇率指数——人民币的"综合成绩"</h3>
+
+<p>人民币兑美元只是"单科成绩"，CFETS指数才是"综合成绩"。</p>
+
+<p>CFETS（中国外汇交易中心）人民币汇率指数衡量的是人民币对中国最主要贸易伙伴货币的<strong>加权平均汇率</strong>。篮子包含25种货币，按贸易权重加权——美元权重最高（约19%），其次是欧元、日元、韩元等。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">为什么重要</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>更全面</div>
+<div class="ici-body">兑美元贬值可能只是美元太强——CFETS稳定说明人民币对整体贸易伙伴并不弱</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>央行看什么</div>
+<div class="ici-body">央行调控汇率参考的是CFETS指数，不是兑美元单边汇率——"参考一篮子货币"是央行的核心汇率框架</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">怎么用</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CFETS涨+兑美元贬</div>
+<div class="ici-body">=美元独强，人民币对其他货币其实在升值→贬值压力有限</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CFETS跌+兑美元贬</div>
+<div class="ici-body">=人民币全面走弱→真贬值，值得警惕</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 一句话总结</div>
+<p><strong>兑美元看资本流动，CFETS看贸易竞争力</strong>。两个一起看才完整——如果CFETS稳定但兑美元贬值，不用太恐慌；如果双双走弱，就要认真对待。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.7 "811汇改"——人民币汇率制度的关键转折</h3>
+
+<p>2015年8月11日，央行宣布完善人民币兑美元汇率中间价报价机制——这一改革被称为"811汇改"，是人民币汇率史上最重要的转折点之一。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">改了什么</div>
+<div class="info-card-body"><p>此前中间价与市场价严重偏离（中间价6.1 vs 即期6.2），央行每天"定"中间价。<strong>811汇改后，中间价=前日收盘价+一篮子货币变动</strong>——让市场供求发挥更大作用。简单说：央行从"定价者"变成了"参考者"。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">市场冲击</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>短期</div>
+<div class="ici-body">人民币3天贬值3%→全球恐慌→新兴市场货币竞相贬值→A股8月暴跌</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>中期</div>
+<div class="ici-body">2015-2016年资本外流加剧→外汇储备从3.7万亿降至3万亿→央行收紧资本管制</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>长期</div>
+<div class="ici-body">汇率市场化程度提高→人民币双向波动成为常态→"单边升值"时代结束</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 对A股投资者的教训</div>
+<p>811汇改说明<strong>汇率制度变革本身就是黑天鹅</strong>——当央行突然改变规则时，市场需要重新定价。此后每次汇率形成机制调整（加入逆周期因子、取消逆周期因子、重新加入……）都会引发短期波动。<strong>关注央行汇率政策表态，比看汇率数字本身更重要</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.8 离岸CNH vs 在岸CNY——两个价格，一个货币</h3>
+
+<p>人民币有两个汇率：在岸价（CNY）和离岸价（CNH）。同一个货币，两种价格——差价里藏着重要信号。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">在岸CNY</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>交易地点</div>
+<div class="ici-body">中国境内（银行间外汇市场）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>波动限制</div>
+<div class="ici-body">中间价上下2%的涨跌幅限制</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>参与者</div>
+<div class="ici-body">境内银行+央行——央行直接参与交易</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>特点</div>
+<div class="ici-body">受央行调控影响大，波动相对小</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">离岸CNH</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>交易地点</div>
+<div class="ici-body">境外（香港、伦敦、新加坡等）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>波动限制</div>
+<div class="ici-body">无涨跌幅限制，自由浮动</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>参与者</div>
+<div class="ici-body">全球机构投资者——央行不直接干预</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>特点</div>
+<div class="ici-body">反映国际市场的真实供需，波动更大</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 套利机制与价差信号</div>
+<p><strong>CNH比CNY更贬（CNH-CNY>0）</strong>→海外市场更看空人民币→贬值预期强→资本外流压力大。此时北向资金往往也在流出。</p>
+<p><strong>CNH比CNY更升（CNH-CNY<0）</strong>→海外市场更看多人民币→升值预期强→资本流入动力足。此时北向资金往往也在流入。</p>
+<p>当价差突然扩大（>200个基点），说明市场出现了强烈的方向性预期——<strong>价差是贬值/升值压力的"实时温度计"</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>12.9 逆周期因子——央行的"自动稳定器"</h3>
+
+<p>逆周期因子是2017年5月央行引入的中间价报价机制中的调节参数，用来<strong>对冲市场的顺周期行为</strong>——简单说就是"市场太疯时踩刹车"。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">作用机制</div>
+<div class="info-card-body"><p>811汇改后的中间价公式：<strong>中间价=前日收盘价+一篮子货币变动</strong>。问题是：当市场形成单边贬值预期时，收盘价越来越贬→中间价越来越贬→预期自我强化（顺周期螺旋）。逆周期因子加入后变成：<strong>中间价=前日收盘价+一篮子货币变动+逆周期因子</strong>。当贬值预期过强时，逆周期因子为正值→把中间价往上拉；当升值预期过强时，逆周期因子为负值→把中间价往下压。</p></div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">实战含义</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>启用逆周期因子</div>
+<div class="ici-body">=央行认为市场单边预期过强→"央行要管了"→贬值/升值趋势可能被遏制</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>取消逆周期因子</div>
+<div class="ici-body">=央行认为市场已经回归理性→汇率波动交给市场→波动可能加大</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>反复启用/取消</div>
+<div class="ici-body">=央行在"市场化"和"稳定"之间动态平衡——每次调整本身就是重要政策信号</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 小白记忆法</div>
+<p>逆周期因子=央行的"减震器"。市场太疯狂时它来缓冲，市场平静时它就退出。<strong>每次逆周期因子的启用或调整，都是央行在向市场喊话："我觉得汇率走得太远了"</strong>——这个信号比汇率数字本身更有指导意义。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第12章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>人民币快速贬值时，<span class="action">我将减仓外资重仓的白马股和进口依赖型企业，关注出口导向型企业的受益机会。</span></div>
+<div class="rule-item"><span class="trigger">当</span>人民币持续升值时，<span class="action">我将增配核心资产（外资流入受益）和进口依赖型企业（成本下降），减仓出口导向型企业。</span></div>
+<div class="rule-item"><span class="trigger">当</span>汇率在窄幅区间波动时，<span class="action">我将不因汇率调整持仓——小幅波动对行业影响有限，只有趋势性升贬值才值得调仓。</span></div>
+<div class="rule-item"><span class="trigger">当</span>CNH与CNY价差突然扩大时，<span class="action">我将关注海外市场的贬值/升值预期强度——价差>200基点说明市场方向性预期强烈，可能预示北向资金的大幅流动。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查最近6个月人民币兑美元汇率走势和CFETS指数走势，两者方向是否一致？查当前CNH和CNY价差，海外市场是看多还是看空人民币？</p>
+<p><strong>自检</strong>：中美利差当前是正还是负？逆周期因子当前是否启用？这对汇率有什么影响？你的持仓中哪些标的对汇率敏感？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch13">
+<h2 class="chapter-title"><span class="ch-num">第13章</span>美联储与全球流动性——世界央行的"指挥棒"</h2>
+
+<div class="section">
+<h3>13.1 美联储为什么重要</h3>
+
+<p>美元是全球储备货币，美联储是"世界的央行"。美联储的利率政策决定了全球资金流向——<strong>加息→美元回流美国→全球流动性收紧；降息→美元外流→全球流动性宽松</strong>。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 对A股的三条传导路径</div>
+<p>对A股的直接影响虽然有限，但<strong>间接影响巨大</strong>：通过汇率、资本流动和市场情绪三条路径传导。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>13.2 美联储的利率周期</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">降息周期</div>
+<div class="info-card-title">1-2年</div>
+<div class="info-card-body"><p>经济衰退或预防衰退→利率下降→全球流动性宽松→新兴市场受益（包括A股）。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">加息周期</div>
+<div class="info-card-title">2-3年</div>
+<div class="info-card-body"><p>经济过热或通胀上升→利率上升→全球流动性收紧→新兴市场承压（资本回流美国）。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">暂停期</div>
+<div class="info-card-title">6-18个月</div>
+<div class="info-card-body"><p>观察经济数据→决定下一步方向。暂停期市场不确定性最高，波动加大。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>13.3 美联储加息对A股的三条传导路径</h3>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">美联储加息</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">美元走强</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">人民币贬值</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">北向资金流出</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">A股承压</div>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">美联储加息</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">美债收益率上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">中美利差收窄/倒挂</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">资本外流压力</div>
+</div>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">美联储加息</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">美股波动</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">全球风险偏好下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">A股跟跌</div>
+</div>
+</div>
+
+<div class="section">
+<h3>13.4 美联储降息对A股的影响</h3>
+
+<p>降息对A股通常利好，但要看语境：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">预防式降息</div>
+<div class="info-card-title">强利好 ✅</div>
+<div class="info-card-body"><p>经济还行但防风险（如2019年）→全球流动性宽松→A股受益明显。这是最好的降息类型。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">衰退式降息</div>
+<div class="info-card-title">利好但有时滞</div>
+<div class="info-card-body"><p>经济已经衰退（如2008年）→短期市场恐慌→A股可能先跌后涨。降息效果被衰退担忧抵消，需要时间消化。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 如何判断是预防式还是衰退式</div>
+<p>看<strong>失业率和PMI</strong>——如果降息时失业率仍在低位、PMI仍>50=预防式。如果降息时失业率快速上升、PMI已<50=衰退式。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>13.5 中美利差——资本流动的"水位差"</h3>
+
+<p>中美利差=中国10年期国债收益率 - 美国10年期国债收益率。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">利差为正（中国利率>美国）</div>
+<div class="info-card-title">资本流入中国</div>
+<div class="info-card-body"><p>中国利率更高→资金愿意持有人民币资产→人民币升值→A股受益。这是正常状态。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">利差倒挂（美国利率>中国）</div>
+<div class="info-card-title">资本流出压力</div>
+<div class="info-card-body"><p>美国利率更高→资金回流美国→人民币贬值→A股承压。2022-2024年美联储加息周期中持续出现。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>13.6 QE与QT——美联储资产负债表的"膨胀"与"收缩"</h3>
+
+<p>利率只是美联储工具箱的一部分。当利率降到零还不够时，美联储会动用<strong>量化宽松（QE）</strong>——直接在市场上大规模购买国债和MBS（抵押贷款支持证券），向金融体系注入流动性。反之，<strong>量化紧缩（QT）</strong>则是让到期的债券不续作，被动缩减资产负债表。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">QE（量化宽松）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>操作方式</div>
+<div class="ici-body">美联储在公开市场购买国债/MBS→基础货币增加→银行体系流动性充裕</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>资产负债表</div>
+<div class="ici-body">资产端（国债+MBS）增加→负债端（银行准备金）增加→总规模扩张</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>市场影响</div>
+<div class="ici-body">长端利率被压低→风险资产（股票/商品）上涨→美元走弱→全球流动性泛滥</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">QT（量化紧缩）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>操作方式</div>
+<div class="ici-body">到期国债/MBS不续作（或主动卖出）→基础货币减少→银行体系流动性收缩</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>资产负债表</div>
+<div class="ici-body">资产端（国债+MBS）减少→负债端（银行准备金）减少→总规模收缩</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>市场影响</div>
+<div class="ici-body">长端利率上行压力→风险资产承压→美元走强→全球流动性收紧</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 美联储资产负债表规模变化</div>
+<p><strong>2008年危机前</strong>：约0.9万亿美元→<strong>三轮QE后（2014年）</strong>：约4.5万亿→<strong>2020年疫情前</strong>：约4.2万亿→<strong>无限QE后（2022年峰值）</strong>：约9.0万亿→<strong>QT缩表中（2024年）</strong>：约7.0万亿。资产负债表的扩张和收缩，对应着全球流动性的潮起潮落——<strong>对A股投资者而言，QE=全球顺风，QT=全球逆风</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>13.7 点阵图与SEP——如何读懂美联储的"计划表"</h3>
+
+<p>每年3/6/9/12月的美联储议息会议后，会发布<strong>经济预测摘要（SEP）</strong>，其中最受市场关注的就是<strong>点阵图（Dot Plot）</strong>——它告诉你每位美联储官员对未来的利率预测。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">点阵图怎么读</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>每个点=1位官员</div>
+<div class="ici-body">19位FOMC成员各自预测的"今年/明年/后年/长期"联邦基金利率中值</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>中位数=市场预期</div>
+<div class="ici-body">把所有点排序取中位数——这就是"美联储整体认为的利率路径"</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>点的分布=分歧</div>
+<div class="ici-body">点越集中=共识越强；点越分散=分歧越大→市场不确定性高</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">SEP关键指标</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>GDP增速预测</div>
+<div class="ici-body">上调=美联储更乐观→可能偏鹰；下调=更悲观→可能偏鸽</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>通胀（PCE）预测</div>
+<div class="ici-body">上调=通胀担忧→偏鹰；下调=通胀缓和→偏鸽</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>失业率预测</div>
+<div class="ici-body">上调=就业恶化→偏鸽（更可能降息）；下调=就业强劲→偏鹰</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 点阵图不是承诺</div>
+<p>点阵图是官员<strong>此刻的预测</strong>，不是未来的承诺。经济数据变化→预测跟着变。2016年点阵图预计加息4次，实际只加了1次；2023年预计终端利率4.6%，实际到了5.5%。<strong>关注点阵图的"变化方向"比"绝对水平"更重要</strong>——中位数上移=偏鹰信号，下移=偏鸽信号。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>13.8 案例复盘：2013年缩减恐慌（Taper Tantrum）</h3>
+
+<p>2013年5月22日，时任美联储主席伯南克在国会听证中暗示<strong>可能缩减QE购买规模</strong>——市场理解为"要关水龙头了"，恐慌瞬间爆发。</p>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">伯南克暗示缩减QE</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">市场：QE要结束！</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">美债收益率飙升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">新兴市场资本外逃</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">"缩减恐慌"</div>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">市场冲击</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>美债</div>
+<div class="ici-body">10年期收益率从1.6%飙升至3.0%（几乎翻倍）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>新兴市场</div>
+<div class="ici-body">印度/巴西/印尼货币暴跌，股市大幅回调</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>黄金</div>
+<div class="ici-body">从1400美元跌至1200美元</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">教训</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>Taper≠加息</div>
+<div class="ici-body">缩减QE只是"少放水"，不是"抽水"——但市场把它当成了加息</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>预期比现实更可怕</div>
+<div class="ici-body">实际Taper到2013年12月才开始，但恐慌在5月就爆发了——市场提前3个月反应</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>对A股的启示</div>
+<div class="ici-body">美联储边际收紧的信号>实际收紧的动作——关注美联储措辞变化比关注加息本身更重要</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 缩减恐慌的核心逻辑</div>
+<p>市场不怕坏消息，怕<strong>意外</strong>。伯南克的暗示是"意外"——市场没准备好。之后每次美联储进入边际收紧期（哪怕只是缩减QE而非加息），都可能引发类似恐慌。<strong>对A股投资者而言：当美联储从"极度宽松"转向"边际收紧"时，即使还没有加息，也要提高警惕</strong>——边际变化比绝对水平更关键。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第13章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>美联储开始加息周期时，<span class="action">我将提高警惕——减仓高估值成长股（全球流动性收紧杀估值），关注防御性配置。</span></div>
+<div class="rule-item"><span class="trigger">当</span>美联储预防式降息时，<span class="action">我将增配A股——全球流动性宽松+人民币升值预期=核心资产受益窗口。</span></div>
+<div class="rule-item"><span class="trigger">当</span>中美利差倒挂加深时，<span class="action">我将关注人民币贬值风险——减仓外资重仓股，增配出口受益标的。</span></div>
+<div class="rule-item"><span class="trigger">当</span>美联储边际收紧信号出现（点阵图上移/暗示缩减QE）时，<span class="action">我将比实际加息更早行动——缩减恐慌的教训是"边际变化比绝对水平更可怕"。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查当前美联储联邦基金利率水平、中美10年期国债利差和美联储资产负债表规模。美联储当前在加息周期、降息周期还是暂停期？QE还是QT？</p>
+<p><strong>自检</strong>：查看最新一次美联储点阵图中位数，与3个月前相比是上移还是下移？这对A股意味着什么？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch14">
+<h2 class="chapter-title"><span class="ch-num">第14章</span>大宗商品——经济的"原材料"</h2>
+
+<div class="section">
+<h3>14.1 大宗商品为什么重要</h3>
+
+<p>大宗商品（原油、铜、铁矿石、农产品等）是经济运行的"原材料"。它们的价格变化反映供需关系，同时传导到中下游企业的成本和利润。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 大宗商品价格=全球经济的"体检报告"</div>
+<p>大宗商品涨价=全球需求旺盛（经济好）。大宗商品跌价=全球需求疲软（经济差）。<strong>铜价和油价是全球经济最灵敏的实时指标</strong>——比GDP早1-2个季度反映经济拐点。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.2 原油：工业的血液</h3>
+
+<p>原油是最重要的大宗商品，被称为"工业的血液"。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">油价上涨的影响</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PPI上升</div>
+<div class="ici-body">→通胀压力→央行可能收紧→估值承压</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>运输成本上升</div>
+<div class="ici-body">→物流、航空利润受挤压</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>石油开采和炼化</div>
+<div class="ici-body">→盈利改善</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">关注布伦特原油价格</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>80美元/桶以下</div>
+<div class="ici-body">舒适区——通胀压力可控</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>80-100美元</div>
+<div class="ici-body">偏热——开始关注通胀传导</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>100美元以上</div>
+<div class="ici-body">通胀担忧——央行可能收紧</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>14.3 黄金：避险资产</h3>
+
+<p>黄金有四个特殊属性，决定了它在投资组合中的独特地位：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">与美元负相关</div>
+<div class="info-card-body"><p>美元走强→黄金承压；美元走弱→黄金上涨。因为黄金以美元定价。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">与通胀正相关</div>
+<div class="info-card-body"><p>通胀预期上升→黄金上涨（保值需求）。黄金是经典的抗通胀资产。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">与地缘风险正相关</div>
+<div class="info-card-body"><p>战争/危机→避险买盘→黄金上涨。"大炮一响，黄金万两"。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">与实际利率负相关</div>
+<div class="info-card-body"><p>实际利率下降→持有黄金的机会成本降低→黄金上涨。<strong>这是最核心的定价因子</strong>。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 实际利率 = 名义利率 - 通胀</div>
+<p><strong>实际利率是黄金定价的核心</strong>。当通胀高于名义利率时（实际利率为负），持有黄金"不亏钱"而持有现金"亏钱"（被通胀侵蚀）→黄金大涨。这就是为什么滞胀期黄金表现最好。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.4 铜："铜博士"</h3>
+
+<p>铜被称为"铜博士"（Dr. Copper），因为铜的需求与全球制造业景气度高度相关——<strong>经济好→铜需求大→铜价涨；经济差→铜需求少→铜价跌</strong>。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 铜价是经济的"领先指标"</div>
+<p>铜价往往比PMI更早反映经济拐点——因为铜的采购和生产在产业链上游，上游的变化先于中下游的景气度。铜价连续上涨=全球经济可能即将回暖。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.5 大宗商品涨跌对股市的影响</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">商品涨价</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>受益</div>
+<div class="ici-body">上游资源股（煤炭/有色/石油/化工）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>承压</div>
+<div class="ici-body">中游制造（成本上升）+航空（油价）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">商品跌价</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>受益</div>
+<div class="ici-body">中下游制造和消费（成本下降）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>承压</div>
+<div class="ici-body">上游资源股（产品降价）</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>14.6 铁矿石与黑色系——中国投资者的"主场"</h3>
+
+<p>对中国A股投资者来说，<strong>铁矿石、螺纹钢、焦煤、焦炭</strong>——这"黑色系"四大品种，可能比原油更重要。原因很简单：中国是全球最大的钢铁生产国和铁矿石进口国，黑色系直接影响A股一大片行业。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">铁矿石</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>中国依赖度</div>
+<div class="ici-body">进口依赖度超80%，主要来自澳大利亚和巴西</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>A股映射</div>
+<div class="ici-body">涨价→钢铁企业成本上升（利空钢企）；跌价→钢企利润改善（利好钢企）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>关键变量</div>
+<div class="ici-body">澳洲发货量+巴西淡水河谷产量+中国港口库存</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">螺纹钢/焦煤/焦炭</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>螺纹钢</div>
+<div class="ici-body">=房地产+基建的"体温计"——螺纹钢需求=钢筋需求=建筑需求→直接映射地产和基建景气度</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>焦煤/焦炭</div>
+<div class="ici-body">=炼钢原料→螺纹钢涨→焦煤焦炭跟涨；焦煤是黑色系中供给最刚性、弹性最小的品种</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>实战口诀</div>
+<div class="ici-body">螺纹钢看需求（地产基建），焦煤看供给（安检环保限产），铁矿石看进口（海外发运量）</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 黑色系 vs 原油：谁对中国投资者更重要？</div>
+<p><strong>对A股来说，黑色系>原油</strong>。原因：①黑色系产业链的A股上市公司远多于原油链（钢铁、煤炭、建材、基建）；②黑色系直接映射中国地产和基建周期——这是A股最大的两个周期驱动力；③螺纹钢价格是中国PMI的"实时版"，比官方PMI更灵敏。<strong>关注螺纹钢库存和价格走势=提前预判PMI方向</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.7 农产品与猪周期——猪肉如何"绑架"CPI</h3>
+
+<p>在中国，<strong>猪肉权重占CPI的2-3%</strong>，但猪肉价格的波动幅度远超其他分项——一轮猪周期猪肉价格可以翻倍或腰斩。结果就是：猪肉涨→CPI涨→"通胀"——但这个"通胀"跟经济过热毫无关系。</p>
+
+<div class="flow-chart">
+<div class="flow-step fs-yellow">猪价上涨</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow">CPI上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">市场担忧"通胀"</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">央行可能收紧？</div>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">猪周期的规律</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>周期长度</div>
+<div class="ici-body">约3-4年一个完整周期（能繁母猪→仔猪→出栏需要10-14个月）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>核心指标</div>
+<div class="ici-body">能繁母猪存栏量（领先猪价10-12个月）+猪粮比（>6:1盈利，<5:1亏损）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">对A股的影响</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>猪价涨+CPI涨</div>
+<div class="ici-body">≠经济过热，是供给端问题→核心CPI可能仍在低位→央行不应因猪通胀收紧→市场往往过度反应</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>投资映射</div>
+<div class="ici-body">猪周期上行→养殖股（牧原/温氏）盈利暴涨；猪周期下行→养殖股亏损，但食品加工和餐饮成本下降</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 猪通胀≠真通胀</div>
+<p>2019年猪价暴涨导致CPI一度突破4%，但核心CPI只有1.5%——央行没有收紧反而降息。<strong>看CPI一定要拆分：是猪价带动还是全面涨价？</strong>如果是猪价单一因素，不用恐慌——这叫"结构性通胀"，不是"全面通胀"，央行不会因猪价收紧货币。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.8 OPEC+与供给端冲击——为什么供给比需求更"炸裂"</h3>
+
+<p>大宗商品的价格波动来自供需两端，但<strong>供给端冲击往往比需求端冲击更剧烈</strong>——因为需求变化是渐进的（经济衰退不会一夜之间发生），但供给变化可以是瞬间的（战争、制裁、OPEC减产协议）。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">供给端冲击的特征</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>突发性</div>
+<div class="ici-body">战争/制裁/产量协议→供给瞬间减少→价格暴涨（如2022年俄乌冲突→油价突破130美元）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>不可预测</div>
+<div class="ici-body">OPEC+减产决定是政治博弈结果，不是经济规律→供给冲击很难提前预判</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>价格弹性大</div>
+<div class="ici-body">短期供给缺乏弹性（油井不能马上关停/开启）→价格涨幅远超需求冲击</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">需求端冲击的特征</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>渐进性</div>
+<div class="ici-body">经济衰退→需求逐步下降→价格缓慢下跌</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>可跟踪</div>
+<div class="ici-body">PMI/工业增加值等数据可以提前预判需求方向→有应对时间</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>价格弹性小</div>
+<div class="ici-body">需求下降幅度通常在5-15%之间，而供给中断可以瞬间减少30-50%</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 OPEC+——石油市场的"卡特尔"</div>
+<p>OPEC+（OPEC加上俄罗斯等非OPEC产油国）控制着全球约40%的原油产量和60%以上的出口量。<strong>OPEC+减产=供给收紧→油价上涨→通胀风险→全球央行收紧压力加大</strong>。对A股投资者而言，OPEC+减产协议的直接影响有限，但通过油价→通胀→央行政策的传导路径间接影响A股。关注OPEC+月度产量决议——尤其是沙特和俄罗斯的立场变化。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>14.9 商品与美元的负相关关系详解</h3>
+
+<p>大宗商品以美元定价，这决定了<strong>美元与商品价格之间天然的负相关关系</strong>——美元涨→商品跌，美元跌→商品涨。理解这个关系，对判断商品走势至关重要。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">为什么负相关</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>计价效应</div>
+<div class="ici-body">商品以美元标价→美元升值→同样数量的美元能买更多商品→商品价格下跌；反之亦然</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>购买力效应</div>
+<div class="ici-body">美元升值→非美货币贬值→非美国家购买力下降→商品需求减少→价格下跌</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>替代效应</div>
+<div class="ici-body">美元走强→美元资产更有吸引力→资金从商品市场流出→商品价格下跌</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-accent">
+<div class="info-card-header">实战应用</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>美元弱+商品涨</div>
+<div class="ici-body">=顺风组合→资源股+新兴市场双受益→A股周期股机会</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>美元强+商品跌</div>
+<div class="ici-body">=逆风组合→资源股承压+新兴市场资本外流→A股周期股回避</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>例外：供给冲击</div>
+<div class="ici-body">供给端冲击（战争/OPEC减产）可以让美元和油价同时上涨——负相关关系暂时失灵</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 负相关不是100%</div>
+<p>美元与商品的负相关是<strong>统计规律，不是铁律</strong>。在供给端冲击下（如2022年俄乌冲突），美元和油价可以同时涨——因为避险买美元+供给减少买原油同时发生。<strong>通常看负相关判断方向，但遇到供给冲击时要独立分析</strong>。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第14章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>布伦特油价突破100美元/桶时，<span class="action">我将关注通胀风险——减仓航空/物流，增配石油开采/炼化，警惕央行收紧货币政策的可能。</span></div>
+<div class="rule-item"><span class="trigger">当</span>实际利率为负（通胀>名义利率）时，<span class="action">我将增配黄金相关资产——实际利率为负是黄金最强定价因子。</span></div>
+<div class="rule-item"><span class="trigger">当</span>铜价连续3个月上涨时，<span class="action">我将标记为"全球经济回暖信号"——关注有色金属和周期股的买入机会。</span></div>
+<div class="rule-item"><span class="trigger">当</span>螺纹钢库存连续3周下降+价格上涨时，<span class="action">我将标记为"地产基建需求回暖信号"——关注钢铁、建材、煤炭股的买入机会。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查当前布伦特油价、黄金价格、铜价和螺纹钢价格。美元指数在走强还是走弱？这对商品价格是顺风还是逆风？</p>
+<p><strong>自检</strong>：当前能繁母猪存栏量同比是增还是减？这对未来猪价和CPI意味着什么？当前CPI上涨（如果有的话）是猪价驱动还是全面涨价？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="container">
+
+<div class="part-header" id="part5">
+  <div class="part-tag">第五篇</div>
+  <h2>宏观数据的陷阱与误区——为什么容易看错</h2>
+  <p class="part-goal">在建立知识体系之后，集中讲透宏观分析中最容易犯的错误，让读者懂得"数据不是一切，解读比数据本身更重要"。</p>
+</div>
+
+<div class="chapter" id="ch15">
+<h2 class="chapter-title"><span class="ch-num">第15章</span>宏观数据的陷阱与常见误区</h2>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 两个层面的问题</div>
+<p>宏观数据的"坑"分两层：<strong>第一层是技术性的数据陷阱</strong>——数据本身没问题，但你的读法有问题；<strong>第二层是思维性的分析误区</strong>——数据读对了，但你的推理逻辑有问题。前7个陷阱属于第一层，后5个误区属于第二层。两层问题叠加，是大多数人宏观分析出错的根本原因。</p>
+</div>
+
+<div class="section">
+<h3>上篇：七大技术性数据陷阱</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 这一层的问题是：数据没骗你，是你自己骗了自己</div>
+<p>以下7个陷阱，都是"数据正确，但解读错误"。每个陷阱都有具体的计算公式和真实案例，帮你从根上避开。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.1 陷阱1：看同比忽视环比</h3>
+
+<p>同比数据看趋势，环比数据看边际变化。最危险的情景：<strong>同比还好看，但环比已经恶化</strong>。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 计算公式</div>
+<p><strong>同比增速</strong>=（本期值-去年同期值）÷去年同期值×100%<br>
+<strong>环比增速</strong>=（本期值-上期值）÷上期值×100%（季调后）</p>
+<p>同比受基数影响大（去年低→今年高），环比更接近"当下动量"。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>GDP同比5.0%看着不错，但环比（季调后）已经连续2个季度下降——说明增长动能正在衰竭，同比数据有"基数效应"撑着。<strong>每次看同比数据时，强制问自己：环比怎么样？</strong>如果环比在恶化，同比的好看只是"惯性"，不是"加速"。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.2 陷阱2：把方向当强度</h3>
+
+<p>PMI>50表示扩张，但<strong>扩张的速度在放缓</strong>你注意到了吗？</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 计算公式</div>
+<p><strong>PMI变化方向</strong>=本月PMI - 上月PMI<br>
+PMI>50且变化方向为正（PMI上升）=扩张加速<br>
+PMI>50且变化方向为负（PMI下降）=扩张减速</p>
+<p>同样>50，52→51→50.5和50.5→51→52的含义完全相反——前者在"失速"，后者在"蓄力"。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>2017年9月-2018年6月，PMI持续>50（51-52之间），但PMI从52→51→50.5逐月下滑。很多投资者只看"PMI>50=经济还行"，忽视了扩张在减速。<strong>结果2018年下半年经济明显放缓时措手不及</strong>——减速中的扩张，如果不刹车，迟早停下来。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.3 陷阱3：忽视基数效应</h3>
+
+<p>低基数下的高增长≠趋势反转。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 计算公式</div>
+<p><strong>两年复合增速</strong>=（√(本期值÷前年同期值) - 1）×100%<br>
+例：2021Q1 GDP同比18.3%，但2020Q1为-6.8%<br>
+两年复合增速=（√(1.183×0.932) - 1）×100% ≈ 5.0%</p>
+<p>用两年复合增速过滤基数效应，才看得出真实增长力度。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>2021年一季度GDP同比增长18.3%——创历史纪录！但那是因为2020年一季度疫情基数极低（-6.8%）。两年平均增速只有5.0%，并不强劲。<strong>看到异常高的同比增速，先查基数</strong>——用两年复合增速或环比增速来过滤基数效应。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.4 陷阱4：只看总量不看结构</h3>
+
+<p>社融总量大增是好事？可能只是政府发债撑的，企业贷款反而在萎缩。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 结构拆解公式</div>
+<p><strong>社融</strong>=企业中长期贷款+企业短期贷款+票据融资+政府债券+居民贷款+其他<br>
+质量排序：<strong>企业中长期贷款>居民中长期贷款>短期贷款>票据融资>政府债券</strong></p>
+<p>企业中长期贷款占比上升=实体经济真实扩产意愿增强；票据融资占比上升=银行冲量，实体需求弱。</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>2022年5月社融大增2.79万亿（同比多增8900亿），乍一看很猛。但拆分结构：政府债券净融资1.06万亿（占38%）+票据融资增加4200亿——<strong>企业中长期贷款反而在萎缩</strong>。这说明社融增量主要靠政府发债和银行冲票撑起来的，实体经济融资意愿很弱。<strong>看社融要看分项：企业中长期贷款才是企业真实扩产意愿的体现</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.5 陷阱5：忽视季节性</h3>
+
+<p>很多宏观数据有明显的季节性——春节效应、季末冲量、年末结账。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 季节性调整公式</div>
+<p><strong>季调环比</strong>=（实际环比-历史同期平均环比偏差）<br>
+常见季节性规律：<br>
+1-2月数据受春节影响→看1-2月合计值，不看单月<br>
+3月社融偏高→季末冲量效应（银行"开门红"）<br>
+6月/9月/12月数据偏高→季末考核冲量<br>
+1月/2月CPI偏高→春节食品涨价</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>2019年2月社融仅7000亿，市场一片悲观"社融断崖"。但2月有春节（工作日少5-7天），历史上2月社融就偏低。看1-2月合计值4.65万亿，同比多增1.1万亿——<strong>其实信用扩张很强劲</strong>。3月数据回升也可能只是春节后的"开工效应"。<strong>看1-2月数据要看合并值，不看单月</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.6 陷阱6：过度解读单月波动</h3>
+
+<p>单月数据波动很大——季节性、基数效应、统计误差都可能造成单月"假信号"。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 3个月趋势法则</div>
+<p><strong>趋势确认条件</strong>：同一方向连续出现3个月<br>
+PMI连续3个月上升=扩张趋势确认<br>
+PMI上升1个月后回落=噪音<br>
+社融连续3个月超预期=信用周期拐点确认<br>
+社融1个月超预期=可能只是季节性波动</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>2023年1月PMI跳升至50.1（回到扩张区），市场兴奋"经济复苏了"。但2月PMI立刻回落至49.2，3月再降至48.9——<strong>1月的跳升只是疫情放开后的集中补产，不是趋势性回暖</strong>。<strong>不要用单月数据做判断，至少看3个月趋势</strong>。投资决策基于趋势，不基于噪音。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.7 陷阱7：混淆因果与相关</h3>
+
+<p>两个数据同时涨跌≠因果关系。PMI和股价同时上涨，可能是因为第三个因素（如政策刺激）同时影响了两者。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 因果vs相关的判断框架</div>
+<p><strong>因果关系</strong>：A→B，改变A必然改变B（如央行降息→流动性增加→估值上升）<br>
+<strong>相关关系</strong>：A和B同时变化，但可能是C同时影响了两者（如社融增速和股市上涨同时出现，但可能是政策刺激同时推动了两者）<br>
+<strong>验证方法</strong>：①时间先后（A先变B后变？）②控制变量（排除C后A还能影响B？）③逻辑机制（A影响B的传导路径是否清晰？）</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 真实案例</div>
+<p>"社融增速上升→股市上涨"是相关关系，不是必然因果——社融上升的同时可能还有降息、政策利好等共同因素。2022年4月社融大幅下滑但市场见底反弹——因为政策底已经出现。<strong>不要用单一指标预测股市</strong>，要用多维度交叉验证。社融是"参考信号"而非"预测公式"。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>下篇：五大思维性分析误区</h3>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 这一层的问题是：逻辑错了，结论自然全错</div>
+<p>即使数据读对了，如果推理逻辑有问题，结论还是会错。以下5个误区是投资者最常犯的"思维陷阱"——每个都有真实案例和纠正方法。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.8 误区1："预测"vs"应对"</h3>
+
+<p>宏观分析最常见的误区：试图<strong>预测</strong>经济走向。正确的姿势：为各种可能性<strong>做好准备</strong>。</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">错误姿势：预测</div>
+<div class="info-card-title">"我认为GDP增速会是5.2%"</div>
+<div class="info-card-body"><p>单一预测=赌一个方向。对了赚，错了亏。宏观预测的准确率极低——即使是央行和IMF的预测也经常偏离实际。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">正确姿势：应对</div>
+<div class="info-card-title">"如果GDP>5%我做A，如果<5%我做B"</div>
+<div class="info-card-body"><p>为多种场景准备方案。不管实际是哪种情况，你都有应对——<strong>胜率不在于预测准确率，而在于准备覆盖率</strong>。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 案例与纠正</div>
+<p><strong>案例</strong>：2023年初多数机构预测"强复苏"，结果全年弱复苏——满仓等复苏的投资者全年亏损。<strong>纠正方法</strong>：不要问"经济会怎样"，而要问"如果经济怎样，我该怎么办"。<strong>准备2-3种场景和对应的行动方案，比做单一预测的胜率高得多</strong>。比如：强复苏→满仓周期+消费；弱复苏→半仓高股息+成长；衰退→轻仓债券+黄金。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.9 误区2："宏观好=买股票"</h3>
+
+<p>宏观好但估值高→不该买。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 案例与纠正</div>
+<p><strong>案例</strong>：2021年初，经济复苏+PMI>50+社融高增，但核心资产PE已在历史95%分位——<strong>宏观好+估值贵=高处不胜寒</strong>。结果2021年核心资产大回调，茅指数全年跌超20%。<strong>纠正方法</strong>：宏观和估值必须组合判断——好宏观+好估值=买入；好宏观+差估值=等待；差宏观+好估值=可以买（等催化剂）；差宏观+差估值=不碰。<strong>宏观决定方向，估值决定安全边际，两者缺一不可</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.10 误区3："宏观差=卖股票"</h3>
+
+<p>宏观差但政策在托底→可能是最好的买入时机。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 案例与纠正</div>
+<p><strong>案例</strong>：2018年10月，经济数据很差（去杠杆+贸易摩擦），但政策底已经出现（刘鹤喊话+政策转向）。恐慌卖出的人错过了2019年一季度上证指数24%的反弹。<strong>纠正方法</strong>：<strong>关键判断：宏观差到什么程度？政策是否已经出手？</strong>如果政策已出手，宏观差反而是布局时机。建立"政策底→市场底→盈利底"的三底框架——政策底领先市场底3-6个月，市场底领先盈利底1-2个季度。看到政策底时不要恐慌，要开始寻找市场底。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.11 误区4："单一指标做决策"</h3>
+
+<p>只用PMI或只用社融做决策=盲人摸象。</p>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 案例与纠正</div>
+<p><strong>案例</strong>：2021年下半年PMI持续>50，只看PMI的投资者认为"经济还行"。但此时社融增速已大幅下滑→信用在收缩→地产在暴雷→经济其实在快速走弱。只看一个指标，看不到全貌。<strong>纠正方法</strong>：<strong>至少用3个维度交叉验证</strong>：经济增长（PMI+工业增加值）、货币（M2+社融）、通胀（CPI+PPI）。三个维度方向一致=信号可信；方向矛盾=需要进一步调查，不急着做判断。当PMI说"好"但社融说"差"时，以社融为主——信用周期比景气度更前瞻。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>15.12 误区5："宏观分析能择时"</h3>
+
+<p>宏观分析告诉你方向，不告诉你精确买点。</p>
+
+<div class="callout callout-danger">
+<div class="callout-title">🚨 案例与纠正</div>
+<p><strong>案例</strong>：2022年10月，宏观信号已显示"衰退期末端+政策底已现"——按宏观应该买入。但大盘10月还在跌，到2022年10月31日才真正见底，之后3个月反弹15%。<strong>如果你在10月初买入，要承受1个月的浮亏；如果你等到10月底买入，正好抓到底部</strong>——但这个"底"是技术面告诉你的，不是宏观。<strong>纠正方法</strong>：宏观定方向+仓位，技术面定买点。宏观告诉你"现在是底部区域"（方向），技术面告诉你"哪天可以动手"（时机）。<strong>试图用宏观精确择时是绝大多数投资者亏钱的原因</strong>——宏观拐点可能领先市场拐点数月。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第15章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我看任何宏观数据时，<span class="action">我将强制同时看同比和环比——同比看趋势，环比看边际变化，两者矛盾时以环比为主。</span></div>
+<div class="rule-item"><span class="trigger">当</span>看到异常高的同比增速时，<span class="action">我将先查基数——用两年复合增速过滤基数效应，不被"数字繁荣"迷惑。</span></div>
+<div class="rule-item"><span class="trigger">当</span>看到单月数据大幅波动时，<span class="action">我将等3个月趋势确认再做判断——单月波动是噪音，3个月趋势是信号。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我用宏观做投资决策时，<span class="action">我将准备2-3种场景和对应的行动方案——不做单一预测，只做概率应对；宏观定方向+仓位，技术面定买点。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一个你最近关注的宏观数据（如PMI或社融），依次检查它是否落入7个技术性陷阱之一。然后回顾你最近一次因宏观判断而做的投资决策，检查是否落入5个思维性误区之一。</p>
+<p><strong>自检</strong>：你是在"预测"还是在"应对"？你的宏观判断有没有配合估值和技术面一起使用？你有没有被基数效应或单月波动误导过？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch16">
+<h2 class="chapter-title"><span class="ch-num">第16章</span>经典宏观误判案例复盘</h2>
+
+<div class="section">
+<h3>16.1 2008年金融危机：为什么大多数人都没看到</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">事前信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2006年</div>
+<div class="ici-body">美国房价见顶</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2007年</div>
+<div class="ici-body">次贷违约率上升→贝尔斯登对冲基金清盘</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2007年下半年</div>
+<div class="ici-body">信用利差扩大</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2008年9月</div>
+<div class="ici-body">雷曼倒闭→全球金融海啸</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">为什么大多数人没看到</div>
+<div class="info-card-body"><p>GDP数据直到2008年Q3才大幅恶化（滞后），但<strong>信用市场2007年已在报警</strong>。大多数投资者只看GDP和CPI，忽视了信用利差这个"煤矿里的金丝雀"。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 教训</div>
+<p><strong>信用市场的信号比GDP更早</strong>。当信用利差异常扩大时，即使GDP还好看，也要提高警惕。信用利差=市场对违约风险的定价——它是恐慌的"前哨站"。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>16.2 2015年中国股灾：宏观数据好，但市场崩了</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-yellow">
+<div class="info-card-header">事前信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>杠杆资金暴增</div>
+<div class="ici-body">融资余额从4000亿飙到2.3万亿</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>估值极端</div>
+<div class="ici-body">创业板PE超100倍</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>监管收紧信号</div>
+<div class="ici-body">清查配资</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">为什么误判</div>
+<div class="info-card-body"><p>很多人只看宏观数据（GDP 7%、PMI>50），认为"经济没问题"。但A股的暴跌不是因为经济差，而是<strong>杠杆去化+估值泡沫破裂</strong>。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 教训</div>
+<p><strong>A股的暴跌可能跟宏观经济无关</strong>——杠杆、估值、监管政策是独立变量。不要用"宏观数据好"来否定"市场可能崩盘"的风险。<strong>杠杆水平+估值分位是A股崩盘的预警指标</strong>，比宏观数据更重要。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>16.3 2020年疫情：为什么跌得急但涨得也快</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-red">
+<div class="info-card-header">事前信号</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>2020年1月</div>
+<div class="ici-body">疫情爆发→春节后A股开盘暴跌8%</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>3月</div>
+<div class="ici-body">全球恐慌→美股熔断→A股二次探底</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">为什么涨得快</div>
+<div class="info-card-body"><p>各国央行和财政<strong>史无前例的刺激</strong>（美联储无限QE+中国专项债+消费券）。流动性泛滥→市场V型反弹。到了2020年底，很多指数已超过疫情前高点。</p></div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 教训</div>
+<p><strong>外部冲击+政策强刺激=V型反弹</strong>。疫情是"外生冲击"而非"内生衰退"——经济基本面没有恶化，只是暂时停摆。一旦政策出手+疫情可控，恢复速度会超预期。<strong>区分"外生冲击"和"内生衰退"是关键</strong>——前者V型，后者U型或L型。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>16.4 三大案例的共同教训</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">2008年教训</div>
+<div class="info-card-title">关注信用市场</div>
+<div class="info-card-body"><p>不要只看GDP——信用利差是更早的预警信号。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">2015年教训</div>
+<div class="info-card-title">关注杠杆和估值</div>
+<div class="info-card-body"><p>宏观数据好≠市场不会崩——杠杆和估值是独立风险变量。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">2020年教训</div>
+<div class="info-card-title">区分冲击类型</div>
+<div class="info-card-body"><p>外生冲击V型恢复，内生衰退U/L型——应对策略不同。</p></div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第16章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>宏观数据好但信用利差异常扩大时，<span class="action">我将提高警惕——信用市场比GDP更早报警，即使GDP好看也要减仓防守。</span></div>
+<div class="rule-item"><span class="trigger">当</span>融资余额快速攀升+估值达到历史高位时，<span class="action">我将标记为"杠杆+估值泡沫风险"——不管宏观数据多好，开始减仓防守。</span></div>
+<div class="rule-item"><span class="trigger">当</span>外部冲击发生（疫情/战争/灾害）但政策强力出手时，<span class="action">我将判断为"外生冲击"而非"内生衰退"——准备V型反弹的布局机会，而不是恐慌抛售。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：选一个你经历过的市场大跌（如2015年股灾、2018年贸易摩擦、2020年疫情），复盘当时的宏观信号和市场信号是否一致。</p>
+<p><strong>自检</strong>：你是否在暴跌前看到过预警信号但忽视了？以后如何避免同样的错误？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="container">
+
+<div class="part-header" id="part6">
+  <div class="part-tag">第六篇</div>
+  <h2>宏观到投资——实战框架与跟踪体系</h2>
+  <p class="part-goal">从宏观分析到投资决策的完整链路：行业轮动、估值与仓位、跟踪体系与实战判断。</p>
+</div>
+
+<div class="chapter" id="ch17">
+<h2 class="chapter-title"><span class="ch-num">第17章</span>宏观对行业轮动的影响——不同周期买什么</h2>
+
+<div class="section">
+<h3>17.1 经济周期与行业轮动的基本规律</h3>
+
+<p>不同经济周期阶段，各行业表现差异巨大——这就是"行业轮动"。理解轮动，就知道了<strong>"什么时候买什么"</strong>。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 轮动的核心逻辑</div>
+<p>不同行业对经济周期的敏感度不同——<strong>金融和可选消费对复苏最敏感，上游资源对过热最敏感，防御性行业在滞胀期抗跌，高股息在衰退期受欢迎</strong>。提前判断周期阶段→提前配置对应行业=轮动的本质。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>17.2 复苏期：金融、可选消费、科技成长</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">金融</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>银行</div>
+<div class="ici-body">信用扩张→放贷增加</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>券商</div>
+<div class="ici-body">交易量上升+两融扩张</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>保险</div>
+<div class="ici-body">投资收益改善</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">可选消费</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>汽车</div>
+<div class="ici-body">收入回升+信心改善</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>家电</div>
+<div class="ici-body">地产回暖带动</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>白酒</div>
+<div class="ici-body">消费场景恢复</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">科技成长</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>半导体</div>
+<div class="ici-body">流动性充裕+风险偏好高</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>新能源</div>
+<div class="ici-body">高估值获得溢价</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>医药</div>
+<div class="ici-body">创新药+高弹性</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>17.3 过热期：上游资源领涨</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">能源</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>石油开采</div>
+<div class="ici-body">油价上涨→盈利暴涨</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>煤炭</div>
+<div class="ici-body">需求旺盛+涨价</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">有色金属</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>铜</div>
+<div class="ici-body">"铜博士"领涨</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>铝/锂</div>
+<div class="ici-body">需求拉动</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">化工</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>基础化工</div>
+<div class="ici-body">产品涨价+产能紧张</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 过热期高估值成长股承压</div>
+<p>过热期利率上升杀估值——高估值成长股开始承压，消费股也面临成本压力。<strong>过热期是"价值>成长"的阶段</strong>——上游资源（价值）跑赢科技成长。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>17.4 滞胀期：防御性行业</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">防御性配置</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>医药</div>
+<div class="ici-body">刚需+不受周期影响</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>公用事业</div>
+<div class="ici-body">需求稳定+高股息</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>必选消费</div>
+<div class="ici-body">刚需+有定价权（食品饮料）</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">避险资产</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>黄金</div>
+<div class="ici-body">抗通胀+避险</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>现金</div>
+<div class="ici-body">滞胀期股债双杀，现金为王</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>17.5 衰退期：高股息、债券相关</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">衰退期配置</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>债券</div>
+<div class="ici-body">降息→债券价格上涨</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>高股息股票</div>
+<div class="ici-body">股息率>国债利率=有吸引力</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>低估值蓝筹</div>
+<div class="ici-body">防御+估值安全边际</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">衰退期末端布局</div>
+<div class="info-card-body"><p>衰退期末端开始<strong>逆向布局复苏期受益行业</strong>——金融和可选消费。但需要确认信号：PMI企稳+社融回暖+央行降息。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>17.6 轮动的实操难点</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 轮动说起来容易做起来难</div>
+<p><strong>1. 判断周期阶段本身就难</strong>——你以为是复苏，可能只是衰退中的反弹；你以为是过热，可能只是复苏的中段。</p>
+<p><strong>2. 市场会提前反映</strong>——当确认复苏时，金融股可能已经涨了20%。轮动要"提前半步"，不能"确认后再动"。</p>
+<p><strong>3. A股政策干扰大</strong>——政策可以加速或打断周期，让轮动节奏变形。</p>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 实操建议</div>
+<p><strong>不追求精确轮动，追求方向正确</strong>——大概在复苏期多配金融消费，大概在过热期多配资源，大概在滞胀期多配防御。精确切换是神仙才能做到的事，方向正确就足以跑赢大部分投资者。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第18章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我判断经济进入复苏期时，<span class="action">我将超配金融、可选消费、科技成长——这是盈利+估值双击的最佳阶段。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我判断经济进入过热期时，<span class="action">我将转向上游资源（能源/有色/化工），减仓高估值成长——价值>成长。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我判断经济进入滞胀期时，<span class="action">我将大幅减仓进攻性资产，转向防御——医药/公用事业/必选消费/黄金/现金。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我判断经济进入衰退期末端时，<span class="action">我将逆向布局金融和可选消费——为复苏期做准备，但需要PMI企稳+社融回暖的确认。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：根据你当前的周期判断，列出应该超配和低配的行业。对比你的实际持仓，是否一致？</p>
+<p><strong>自检</strong>：你的持仓与周期阶段匹配吗？如果不匹配，是因为你有不同的判断，还是你还没调整？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch18">
+<h2 class="chapter-title"><span class="ch-num">第18章</span>宏观对估值与仓位的影响——利率决定估值中枢</h2>
+
+<div class="section">
+<h3>18.1 利率与估值的底层关系</h3>
+
+<p>股票估值的核心公式：</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 估值公式</div>
+<p><strong>贴现率 = 无风险利率 + 风险溢价</strong></p>
+<p>无风险利率通常用10年期国债收益率代表。<strong>利率上升→贴现率上升→未来现金流的现值下降→估值下降</strong>。利率下降→贴现率下降→估值上升。</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-title">💡 为什么降息估值涨、加息估值跌</div>
+<p>不是企业变得更值钱了，而是<strong>用来衡量价值的"尺子"变了</strong>。利率下降=尺子变长=同样的利润被"量"出更高的价值。这就是为什么降息周期估值涨、加息周期估值跌。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>18.2 宏观宽松→估值扩张</h3>
+
+<div class="flow-chart">
+<div class="flow-step fs-green">降息周期</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">无风险利率下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">贴现率下降</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">PE上升</div>
+</div>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">渠道1</div>
+<div class="info-card-title">利率下降</div>
+<div class="info-card-body"><p>无风险利率下降→贴现率下降→PE上升</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">渠道2</div>
+<div class="info-card-title">流动性充裕</div>
+<div class="info-card-body"><p>更多资金追逐股票→估值溢价</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">渠道3</div>
+<div class="info-card-title">风险偏好上升</div>
+<div class="info-card-body"><p>风险溢价收窄→进一步推高估值</p></div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 经典案例：2014-2015年"杠杆牛"</div>
+<p>企业盈利没怎么增长，但估值从10倍PE涨到30倍——<strong>纯靠降息+流动性推动</strong>。这种"纯估值牛"的特点是：来得快（估值暴涨）去得也快（一旦流动性收紧，估值暴跌）。2015年股灾就是流动性收紧后的估值崩塌。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>18.3 宏观紧缩→估值收缩</h3>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">加息/去杠杆</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">无风险利率上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">贴现率上升</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-red">PE下降</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 经典案例：2018年A股</div>
+<p>2018年A股全年下跌，不是因为经济差（GDP还有6.6%），而是因为<strong>去杠杆→流动性收紧→估值从15倍PE杀到10倍</strong>。盈利在涨，但估值的跌幅超过了盈利的涨幅——总市值还是跌了。<strong>宏观紧缩下，"好公司"也躲不过杀估值</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>18.4 流动性对成长股vs价值股的不同影响</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">宽松环境</div>
+<div class="info-card-title">成长股 > 价值股</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>原因</div>
+<div class="ici-body">成长股的现金流在远期，低利率让远期现金流"更值钱"</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>表现</div>
+<div class="ici-body">科技/新能源/医药等高估值成长股获得溢价</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">紧缩环境</div>
+<div class="info-card-title">价值股 > 成长股</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>原因</div>
+<div class="ici-body">高利率让远期现金流"缩水"，成长股估值被杀更狠</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>表现</div>
+<div class="ici-body">低估值蓝筹/高股息/资源股相对抗跌</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 仓位与宏观的关系</div>
+<p><strong>宏观顺风+估值低位=满仓</strong>；<strong>宏观顺风+估值高位=半仓</strong>（防高位回调）；<strong>宏观逆风+估值低位=半仓</strong>（等催化剂）；<strong>宏观逆风+估值高位=空仓或轻仓</strong>。宏观和估值共同决定仓位，不是单一因素。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第19章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>央行进入降息周期且估值在历史低位时，<span class="action">我将满仓——降息推升估值+估值有安全边际=最佳布局窗口。</span></div>
+<div class="rule-item"><span class="trigger">当</span>央行进入加息周期或去杠杆环境时，<span class="action">我将减仓高估值成长股——加息杀估值，成长股首当其冲，转向低估值价值股和高股息。</span></div>
+<div class="rule-item"><span class="trigger">当</span>10年期国债收益率快速上升时，<span class="action">我将降低整体仓位——无风险利率上升=所有资产估值中枢下移。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：查当前10年期国债收益率趋势和主要指数的PE分位。宏观是推升估值还是压制估值？</p>
+<p><strong>自检</strong>：你的仓位是否与"宏观+估值"的判断一致？当前应该满仓、半仓还是轻仓？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch19">
+<h2 class="chapter-title"><span class="ch-num">第19章</span>宏观跟踪体系——每周每月看什么</h2>
+
+<div class="section">
+<h3>19.1 宏观数据发布日历</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">⭐⭐⭐⭐⭐ 必看</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PMI</div>
+<div class="ici-body">月末/次月1日</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>社融/M2</div>
+<div class="ici-body">每月10-15日</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政治局会议</div>
+<div class="ici-body">4/7/10/12月</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">⭐⭐⭐⭐ 重要</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CPI/PPI</div>
+<div class="ici-body">每月9-12日</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>工业增加值/社零/投资</div>
+<div class="ici-body">每月15日左右</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>货币政策执行报告</div>
+<div class="ici-body">季后1-2月</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">⭐⭐⭐ 关注</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>进出口</div>
+<div class="ici-body">每月7-13日</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>GDP</div>
+<div class="ici-body">季后15-20天</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.2 每周必看：高频数据</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">生产高频</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>发电量/用电量</div>
+<div class="ici-body">工业活动的实时指标</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>高炉开工率</div>
+<div class="ici-body">钢铁生产景气度</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>轮胎开工率</div>
+<div class="ici-body">汽车和化工景气度</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">需求高频</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>30城商品房销售</div>
+<div class="ici-body">房地产景气高频指标</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>乘联会车市数据</div>
+<div class="ici-body">消费实时温度</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>猪肉/蔬菜价格</div>
+<div class="ici-body">CPI领先指标</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">海外高频</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>国际油价/铜价</div>
+<div class="ici-body">全球需求实时反映</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>美元指数</div>
+<div class="ici-body">全球流动性风向标</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>美债收益率</div>
+<div class="ici-body">全球资产定价锚</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">物流高频</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>港口吞吐量</div>
+<div class="ici-body">进出口活动实时指标</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>快递吞吐量</div>
+<div class="ici-body">消费活动高频指标</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.3 每月必看：核心指标</h3>
+
+<div class="flow-chart">
+<div class="flow-step">PMI（方向）</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">社融/M2（政策+信用）</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">CPI/PPI（通胀）</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">工业增加值（强度）</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 每月分析顺序</div>
+<p><strong>先看PMI判断方向</strong>（扩张还是收缩？上升还是下降？）→ <strong>再看社融/M2判断政策</strong>（宽货币还是紧货币？宽信用还是紧信用？）→ <strong>然后看CPI/PPI判断通胀</strong>（通胀上行还是下行？剪刀差方向？）→ <strong>最后看工业增加值确认强度</strong>。四步完成月度宏观体检。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>19.4 每季度必看</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">季度必看</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>GDP</div>
+<div class="ici-body">确认经济趋势</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>货币政策执行报告</div>
+<div class="ici-body">央行态度和前瞻指引</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政治局会议</div>
+<div class="ici-body">政策定调</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">季度复盘</div>
+<div class="info-card-body"><p>每季度做一次<strong>全面宏观复盘</strong>：经济周期阶段确认、政策方向确认、外部环境确认。根据复盘结果调整大类资产配置和行业配置。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>19.5 宏观信号"绿灯/黄灯/红灯"体系</h3>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-green">
+<div class="info-card-header">🟢 绿灯（满仓）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PMI>50且上升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>社融增速回升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CPI温和（2-3%）</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>央行宽松</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">🟡 黄灯（半仓）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PMI在50附近波动</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>社融增速平稳</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CPI在2%附近</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策中性</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">🔴 红灯（轻仓/空仓）</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>PMI<50且下降</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>社融增速下滑</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>CPI>3%或通缩</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>央行收紧</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第20章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>每周做宏观跟踪时，<span class="action">我将看高频数据（用电量/地产销售/油价/铜价）——这些数据比月度数据更早反映经济变化。</span></div>
+<div class="rule-item"><span class="trigger">当</span>每月做宏观分析时，<span class="action">我将按PMI→社融/M2→CPI/PPI→工业增加值的顺序完成月度宏观体检，并更新信号灯。</span></div>
+<div class="rule-item"><span class="trigger">当</span>宏观信号灯为红灯时，<span class="action">我将大幅减仓——PMI<50+社融下滑+央行收紧=最差组合，防守优先。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：按本章的框架，做一次完整的月度宏观体检。当前信号灯是绿色、黄色还是红色？</p>
+<p><strong>自检</strong>：你的持仓仓位与信号灯一致吗？如果红灯但满仓，你需要调整。</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch20">
+<h2 class="chapter-title"><span class="ch-num">第20章</span>宏观分析实战——从数据到判断</h2>
+
+<div class="section">
+<h3>20.1 宏观分析的五步流程</h3>
+
+<p>这是本手册的核心实战框架，把第二至第四篇的知识整合为可执行的流程：</p>
+
+<div class="flow-chart">
+<div class="flow-step fs-green">第一步<br>判断经济周期位置</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">第二步<br>判断政策方向</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">第三步<br>判断外部环境</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">第四步<br>综合判断顺风/逆风</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">第五步<br>制定行动方案</div>
+</div>
+</div>
+
+<div class="section">
+<h3>20.2 第一步：判断经济周期位置</h3>
+
+<p>问两个问题：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-blue">
+<div class="info-card-header">问题1</div>
+<div class="info-card-title">经济增长在上行还是下行？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看PMI趋势</div>
+<div class="ici-body">连续3个月上升=上行；下降=下行</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看工业增加值</div>
+<div class="ici-body">增速上升=上行；下降=下行</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">问题2</div>
+<div class="info-card-title">通胀在上升还是下降？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看CPI趋势</div>
+<div class="ici-body">核心CPI方向</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看PPI趋势</div>
+<div class="ici-body">PPI方向+剪刀差</div>
+</div>
+</div>
+</div>
+</div>
+
+<p>两个维度交叉，定位到美林时钟的四个阶段之一（复苏/过热/滞胀/衰退）。</p>
+</div>
+
+<div class="section">
+<h3>20.3 第二步：判断政策方向</h3>
+
+<p>问两个问题：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">问题1</div>
+<div class="info-card-title">货币政策在宽松还是收紧？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看降息/降准</div>
+<div class="ici-body">降息降准=宽松；加息提准=收紧</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看社融/M2</div>
+<div class="ici-body">增速上升=宽信用；下降=紧信用</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">问题2</div>
+<div class="info-card-title">财政政策在扩张还是收缩？</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看赤字率</div>
+<div class="ici-body">上升=扩张；下降=收缩</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>看专项债节奏</div>
+<div class="ici-body">提前批+加速发行=积极</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 在中国，政策方向比经济周期更重要</div>
+<p>政策可以改变周期节奏——宽货币+宽信用+宽财政可能让经济从衰退快速跳到复苏。<strong>当经济差但政策"三宽"时，不要只看经济数据做判断——政策的力量可以扭转趋势</strong>。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>20.4 第三步：判断外部环境</h3>
+
+<p>问三个问题：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<div class="info-card-header">问题1</div>
+<div class="info-card-title">美联储在加息还是降息？</div>
+<div class="info-card-body"><p>决定全球流动性方向。加息=全球收紧；降息=全球宽松。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">问题2</div>
+<div class="info-card-title">中美利差在扩大还是收窄？</div>
+<div class="info-card-body"><p>决定资本流动方向。利差收窄/倒挂=资本外流压力。</p></div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">问题3</div>
+<div class="info-card-title">全球PMI在扩张还是收缩？</div>
+<div class="info-card-body"><p>决定出口环境。全球PMI>50=出口受益；<50=出口承压。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>20.5 第四步：综合判断——"顺风"还是"逆风"</h3>
+
+<p>将三个步骤的结论汇总：</p>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">顺风 ✅</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经济：PMI>50+上升，工业增加值回升</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策：宽货币+宽信用+财政扩张</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>外部：美联储降息+中美利差收窄+全球PMI>50</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">逆风 ❌</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>经济：PMI<50或下降，工业增加值放缓</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>政策：紧货币或紧信用+财政收缩</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>外部：美联储加息+利差倒挂+全球PMI<50</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 不是所有维度都一致</div>
+<p>大多数时候，三个维度的信号不一致——经济好但政策收紧，或经济差但政策出手。这种"混合信号"下，<strong>以政策方向为主</strong>（中国政策影响力最大），以经济方向为辅，外部环境为参考。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>20.6 第五步：制定行动方案</h3>
+
+<div class="info-grid cols-2">
+<div class="info-card ic-green">
+<div class="info-card-header">顺风+低估值</div>
+<div class="info-card-title">满仓，进攻</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>超配</div>
+<div class="ici-body">金融/可选消费/科技成长</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>仓位</div>
+<div class="ici-body">80-100%</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">顺风+高估值</div>
+<div class="info-card-title">半仓，均衡</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>配置</div>
+<div class="ici-body">均衡，适度减仓高估值</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>仓位</div>
+<div class="ici-body">50-70%</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-blue">
+<div class="info-card-header">逆风+低估值</div>
+<div class="info-card-title">半仓，防守反击</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>配置</div>
+<div class="ici-body">高股息+低估值蓝筹，等催化剂</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>仓位</div>
+<div class="ici-body">30-50%</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">逆风+高估值</div>
+<div class="info-card-title">轻仓或空仓</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>配置</div>
+<div class="ici-body">现金+黄金+债券</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>仓位</div>
+<div class="ici-body">0-30%</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第21章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我做宏观分析时，<span class="action">我将按五步流程执行：周期位置→政策方向→外部环境→综合判断→行动方案。不跳步，不省略。</span></div>
+<div class="rule-item"><span class="trigger">当</span>三个维度信号不一致时，<span class="action">我将以政策方向为主——在中国，政策影响力最大，可以扭转经济趋势。</span></div>
+<div class="rule-item"><span class="trigger">当</span>综合判断为顺风+低估值时，<span class="action">我将满仓进攻——这是最积极的组合，不犹豫。</span></div>
+<div class="rule-item"><span class="trigger">当</span>综合判断为逆风+高估值时，<span class="action">我将轻仓或空仓——这是最危险的组合，保住本金优先。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：用五步流程做一次完整的宏观分析，输出：1）周期位置 2）政策方向 3）外部环境 4）顺风/逆风判断 5）行动方案。</p>
+<p><strong>自检</strong>：你的行动方案与你的实际持仓一致吗？如果不一致，你需要调整持仓还是调整判断？</p>
+</div>
+
+</div><!-- end chapter -->
+
+<div class="chapter" id="ch21">
+<h2 class="chapter-title"><span class="ch-num">第21章</span>宏观分析的边界——什么时候该停</h2>
+
+<div class="section">
+<h3>21.1 宏观分析不是万能的</h3>
+
+<p>三个"不能"：</p>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">不能选个股</div>
+<div class="info-card-title">宏观→行业，不到个股</div>
+<div class="info-card-body"><p>宏观告诉你买什么行业，不告诉你买哪家公司。选个股需要基本面分析（财报手册的核心内容）。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">不能择时</div>
+<div class="info-card-title">宏观→方向，不到买点</div>
+<div class="info-card-body"><p>宏观告诉你方向，不告诉你精确买点。择时需要技术面分析（裸K手册的核心内容）。</p></div>
+</div>
+<div class="info-card ic-red">
+<div class="info-card-header">不能预测黑天鹅</div>
+<div class="info-card-title">宏观基于规律，黑天鹅打破规律</div>
+<div class="info-card-body"><p>疫情、战争、地缘冲突——这些无法预测的突发事件可以瞬间打破所有宏观分析框架。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>21.2 宏观与基本面、技术面的配合</h2>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<div class="info-card-header">宏观</div>
+<div class="info-card-title">该不该出门</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>回答</div>
+<div class="ici-body">顺风/逆风</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>时间尺度</div>
+<div class="ici-body">季度-年</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>作用</div>
+<div class="ici-body">定方向+定仓位</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">基本面</div>
+<div class="info-card-title">去哪家店</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>回答</div>
+<div class="ici-body">买哪家公司</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>时间尺度</div>
+<div class="ici-body">季度-年</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>作用</div>
+<div class="ici-body">选标的</div>
+</div>
+</div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">技术面</div>
+<div class="info-card-title">走哪条路</div>
+<div class="info-card-items">
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>回答</div>
+<div class="ici-body">什么时候动手</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>时间尺度</div>
+<div class="ici-body">日-周</div>
+</div>
+<div class="info-card-item">
+<div class="ici-title"><span class="ici-mark"></span>作用</div>
+<div class="ici-body">择时+验证</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 三位一体的投资框架</div>
+<p><strong>宏观=天气（要不要出门），基本面=目的地（去哪家店），技术面=导航（走哪条路最近）</strong>。三者缺一，决策不完整。</p>
+<p>只看宏观→知道方向但不知道买什么；只看基本面→选对公司但可能买贵了或逆风；只看技术面→择时精确但大方向可能错了。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>21.3 宏观信号与市场信号的矛盾处理</h3>
+
+<p>当宏观说"应该涨"但市场在跌，怎么办？</p>
+
+<div class="flow-chart">
+<div class="flow-step fs-red">宏观说涨但市场在跌</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow">先信市场</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow">检查宏观</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-yellow">控制仓位</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step fs-green">等方向明朗</div>
+</div>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-red">
+<div class="info-card-header">第一步：先信市场</div>
+<div class="info-card-body"><p>市场可能掌握了你还不知道的信息（如信用市场恶化、机构提前减仓）。<strong>市场不会无缘无故地跌</strong>——跌必有因。</p></div>
+</div>
+<div class="info-card ic-yellow">
+<div class="info-card-header">第二步：检查宏观</div>
+<div class="info-card-body"><p>你的宏观判断是否遗漏了什么？是否只看了3个指标而忽略了其他？<strong>重新检查所有维度</strong>，看有没有矛盾信号被忽视。</p></div>
+</div>
+<div class="info-card ic-green">
+<div class="info-card-header">第三步：控制仓位</div>
+<div class="info-card-body"><p>矛盾没解决前，不重仓——<strong>等方向明朗再加仓</strong>。保住本金比抓住机会更重要。</p></div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h3>21.4 什么时候该停止宏观分析</h3>
+
+<div class="callout callout-warn">
+<div class="callout-title">⚠️ 停止宏观分析的三种场景</div>
+<p><strong>1. 黑天鹅事件</strong>——疫情/战争/地缘冲突等突发事件打破所有框架。此时宏观分析失效，转为危机模式（减仓+避险+等尘埃落定）。</p>
+<p><strong>2. 信号极度混乱</strong>——各维度信号矛盾到无法判断方向。此时不要强行做判断——<strong>看不懂就不做</strong>，轻仓等待信号明朗。</p>
+<p><strong>3. 市场与宏观持续背离</strong>——宏观一直说"应该涨"但市场一直跌（或反过来）。如果持续3个月以上背离，说明你的宏观框架可能遗漏了关键变量——停止分析，重新审视框架。</p>
+</div>
+</div>
+
+<div class="section">
+<h3>21.5 宏观分析的终极心法</h3>
+
+<div class="callout callout-key">
+<div class="callout-title">🔑 宏观分析的三条终极心法</div>
+<p><strong>1. 谦逊</strong>——宏观太复杂，没有人能完全看懂。你的判断永远有可能是错的——保持谦逊，做好应对多种场景的准备。</p>
+<p><strong>2. 趋势>精确</strong>——不要追求精确预测，追求方向正确。大概知道"顺风还是逆风"就足以指导仓位和配置。</p>
+<p><strong>3. 市场>宏观</strong>——当市场与宏观矛盾时，先信市场。市场是所有信息的集合，你的宏观分析只是其中一小部分。</p>
+</div>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">第22章 行动规则</div>
+<div class="rule-item"><span class="trigger">当</span>我做投资决策时，<span class="action">我将用三位一体框架——宏观定方向+仓位，基本面选标的，技术面择时——三者缺一不可。</span></div>
+<div class="rule-item"><span class="trigger">当</span>宏观与市场信号矛盾时，<span class="action">我将先信市场——控制仓位，重新检查宏观判断，等方向明朗再行动。</span></div>
+<div class="rule-item"><span class="trigger">当</span>宏观信号极度混乱或黑天鹅发生时，<span class="action">我将停止宏观分析——转为危机模式（减仓+避险+等尘埃落定），看不懂就不做。</span></div>
+</div>
+
+<div class="practice-box">
+<div class="practice-header">📋 本章练习</div>
+<p><strong>任务</strong>：回顾你的投资体系，宏观、基本面、技术面三个维度你都有吗？哪个维度最薄弱？</p>
+<p><strong>自检</strong>：你有没有遇到过"宏观说涨但市场跌"的情况？你是怎么处理的？以后如何改进？</p>
+</div>
+
+</div><!-- end chapter -->
+
+
+
+
+
+<!-- ==================== 附录 ==================== -->
+<div class="container">
+
+<div class="part-header" id="appendix">
+  <div class="part-tag">附录</div>
+  <h2>工具·速查·练习</h2>
+  <p class="part-goal">指标速查、数据日历、美林时钟速查、术语表、跟踪自检——从知识到行动的最后一公里。</p>
+</div>
+
+<!-- ===== 附录A ===== -->
+<div class="chapter" id="appa">
+<h2 class="chapter-title"><span class="ch-num">附录A</span>宏观指标速查表</h2>
+<div class="section">
+<h3>增长类</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>发布频率</th><th>发布时间</th><th>正常区间</th><th>股市影响</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td class="highlight">GDP</td><td>季度</td><td>季后15-20天</td><td>中国4-6%</td><td>趋势比数值重要</td><td>经济的最终成绩单</td></tr>
+<tr><td class="highlight">PMI</td><td>月度</td><td>月末/次月1日</td><td>>50扩张<50收缩</td><td>领先指标，最关键</td><td>经济的第一体温计</td></tr>
+<tr><td>工业增加值</td><td>月度</td><td>月中</td><td>4-6%</td><td>同步确认</td><td>制造业的实时温度</td></tr>
+<tr><td>用电量</td><td>月度/日度</td><td>次月中旬</td><td>5-7%</td><td>高频验证</td><td>最真实的活动指标</td></tr>
+</tbody>
+</table>
+
+<h3>通胀类</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>发布频率</th><th>发布时间</th><th>正常区间</th><th>股市影响</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td class="highlight">CPI</td><td>月度</td><td>每月9-12日</td><td>2-3%最优</td><td>>3%利空，<1%利空</td><td>居民的通胀温度计</td></tr>
+<tr><td class="highlight">PPI</td><td>月度</td><td>每月9-12日</td><td>0-3%</td><td>上游vs下游利润分配</td><td>上游成本的哨兵</td></tr>
+<tr><td>核心CPI</td><td>月度</td><td>同CPI</td><td>1-2%</td><td>更稳定，央行更关注</td><td>剔除食品能源的真实通胀</td></tr>
+</tbody>
+</table>
+
+<h3>货币类</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>发布频率</th><th>发布时间</th><th>正常区间</th><th>股市影响</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td class="highlight">M2</td><td>月度</td><td>每月10-15日</td><td>8-12%</td><td>增速上升=宽松利好</td><td>市场上有多少钱</td></tr>
+<tr><td class="highlight">社融</td><td>月度</td><td>每月10-15日</td><td>增速拐点最重要</td><td>A股最重要前瞻指标</td><td>实体经济借了多少钱</td></tr>
+<tr><td>M1-M2剪刀差</td><td>月度</td><td>同M2</td><td>差值扩大=活化</td><td>扩大利好/收窄利空</td><td>资金活化还是沉淀</td></tr>
+<tr><td>LPR</td><td>月度</td><td>每月20日</td><td>1Y:3-4% 5Y:3-4.5%</td><td>下调=宽松利好</td><td>贷款定价锚</td></tr>
+</tbody>
+</table>
+
+<h3>财政类</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>发布频率</th><th>发布时间</th><th>正常区间</th><th>股市影响</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td>赤字率</td><td>年度（两会）</td><td>3月</td><td><3%常规 >3%扩张</td><td>上调=财政扩张利好</td><td>政府花钱力度</td></tr>
+<tr><td>专项债</td><td>月度</td><td>持续</td><td>看发行节奏</td><td>提前发行=基建发力利好</td><td>基建资金来源</td></tr>
+<tr><td>基建投资</td><td>月度</td><td>月中</td><td>>5%扩张</td><td>增速上升利好建筑建材</td><td>财政发力效果</td></tr>
+</tbody>
+</table>
+
+<h3>外部类</h3>
+<table class="data-table">
+<thead><tr><th>指标</th><th>发布频率</th><th>发布时间</th><th>正常区间</th><th>股市影响</th><th>一句话</th></tr></thead>
+<tbody>
+<tr><td class="highlight">人民币汇率</td><td>日度</td><td>实时</td><td>6.5-7.5</td><td>贬值利空/升值利好</td><td>资本流动指南针</td></tr>
+<tr><td class="highlight">中美利差</td><td>日度</td><td>实时</td><td>>0中国高</td><td>倒挂=资本外流利空</td><td>全球资金的收益比较</td></tr>
+<tr><td>全球PMI</td><td>月度</td><td>每月1-3日</td><td>>50扩张</td><td>决定出口环境</td><td>全球需求晴雨表</td></tr>
+<tr><td>布伦特原油</td><td>日度</td><td>实时</td><td>70-90舒适</td><td>>100通胀恐慌利空</td><td>工业血液</td></tr>
+<tr><td>黄金</td><td>日度</td><td>实时</td><td>-</td><td>避险+抗通胀</td><td>终极避险资产</td></tr>
+<tr><td>铜价</td><td>日度</td><td>实时</td><td>-</td><td>经济晴雨表</td><td>铜博士</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录B ===== -->
+<div class="chapter" id="appb">
+<h2 class="chapter-title"><span class="ch-num">附录B</span>宏观数据发布日历与获取渠道</h2>
+<div class="section">
+<h3>月度数据</h3>
+<table class="data-table">
+<thead><tr><th>日期</th><th>数据</th><th>发布机构</th></tr></thead>
+<tbody>
+<tr><td>月末/次月1日</td><td>PMI</td><td>国家统计局</td></tr>
+<tr><td>每月7-13日</td><td>进出口</td><td>海关总署</td></tr>
+<tr><td>每月9-12日</td><td>CPI/PPI</td><td>国家统计局</td></tr>
+<tr><td>每月10-15日</td><td>社融/M2</td><td>央行</td></tr>
+<tr><td>每月15日左右</td><td>工业增加值/社零/投资</td><td>国家统计局</td></tr>
+<tr><td>每月20日</td><td>LPR</td><td>央行</td></tr>
+</tbody>
+</table>
+
+<h3>季度/不定期数据</h3>
+<table class="data-table">
+<thead><tr><th>时间</th><th>数据/事件</th><th>发布机构</th></tr></thead>
+<tbody>
+<tr><td>季后15-20天</td><td>GDP</td><td>国家统计局</td></tr>
+<tr><td>季后1-2月</td><td>货币政策执行报告</td><td>央行</td></tr>
+<tr><td>4/7/10/12月</td><td>政治局会议</td><td>中共中央</td></tr>
+<tr><td>12月</td><td>中央经济工作会议</td><td>中共中央</td></tr>
+<tr><td>3月</td><td>两会（政府工作报告）</td><td>全国人大</td></tr>
+<tr><td>每年8次</td><td>美联储议息会议</td><td>美联储</td></tr>
+</tbody>
+</table>
+
+<h3>数据获取渠道</h3>
+<ul>
+<li><strong>国家统计局</strong>（stats.gov.cn）：GDP/CPI/PPI/PMI/工业增加值</li>
+<li><strong>央行</strong>（pbc.gov.cn）：M2/社融/LPR/货币政策执行报告</li>
+<li><strong>Wind/Choice/同花顺iFinD</strong>：专业宏观数据终端（机构投资者首选）</li>
+<li><strong>东方财富/同花顺APP</strong>：宏观数据入口（散户友好）</li>
+<li><strong>财联社/华尔街见闻</strong>：实时数据快讯与解读</li>
+<li><strong>美联储官网</strong>（federalreserve.gov）：议息决议与经济预测</li>
+</ul>
+</div>
+</div>
+
+<!-- ===== 附录C ===== -->
+<div class="chapter" id="appc">
+<h2 class="chapter-title"><span class="ch-num">附录C</span>美林时钟与行业轮动速查</h2>
+<div class="section">
+<h3>四阶段资产配置对照表</h3>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>经济</th><th>通胀</th><th>最优资产</th><th>次优资产</th><th>最差资产</th></tr></thead>
+<tbody>
+<tr><td class="highlight">复苏期</td><td>↑</td><td>↓</td><td class="green">股票</td><td>商品</td><td class="red">债券</td></tr>
+<tr><td class="highlight">过热期</td><td>↑</td><td>↑</td><td class="green">大宗商品</td><td>股票</td><td class="red">债券</td></tr>
+<tr><td class="highlight">滞胀期</td><td>↓</td><td>↑</td><td class="green">黄金/现金</td><td>债券</td><td class="red">股票</td></tr>
+<tr><td class="highlight">衰退期</td><td>↓</td><td>↓</td><td class="green">债券</td><td>黄金/现金</td><td class="red">大宗商品</td></tr>
+</tbody>
+</table>
+
+<h3>行业受益/受损排序</h3>
+<table class="data-table">
+<thead><tr><th>阶段</th><th>最受益行业</th><th>次受益</th><th>承压行业</th></tr></thead>
+<tbody>
+<tr><td class="highlight">复苏期</td><td>金融、科技成长</td><td>可选消费</td><td>公用事业</td></tr>
+<tr><td class="highlight">过热期</td><td>能源、有色</td><td>化工</td><td>消费（成本压力）</td></tr>
+<tr><td class="highlight">滞胀期</td><td>医药、必选消费</td><td>公用事业</td><td>科技、金融</td></tr>
+<tr><td class="highlight">衰退期</td><td>高股息、债券</td><td>公用事业</td><td>周期股、可选消费</td></tr>
+</tbody>
+</table>
+
+<h3>中国版美林时钟历史回测（2005-2025）</h3>
+<table class="data-table">
+<thead><tr><th>时期</th><th>阶段</th><th>最优资产</th><th>实际表现</th><th>吻合度</th></tr></thead>
+<tbody>
+<tr><td>2005-2007</td><td>复苏→过热</td><td>股票</td><td>上证1000→6000，大牛市</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2007-2008</td><td>过热→滞胀→衰退</td><td>商品→黄金→债券</td><td>股市6124→1664暴跌</td><td>✅ 大致吻合</td></tr>
+<tr><td>2009-2010</td><td>复苏（四万亿刺激）</td><td>股票</td><td>股票先涨后震荡</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2011-2012</td><td>滞胀</td><td>黄金</td><td>股债双杀，黄金涨</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2013-2015</td><td>衰退</td><td>债券</td><td>债牛，但股市2014-2015杠杆牛</td><td class="red">❌ 偏离（政策驱动）</td></tr>
+<tr><td>2016-2017</td><td>过热（供给侧改革）</td><td>商品</td><td>周期股+商品大涨</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2018-2019</td><td>衰退</td><td>债券</td><td>债牛+股市熊</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2020-2021</td><td>复苏（疫情后）</td><td>股票</td><td>核心资产牛市</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2022-2023</td><td>衰退</td><td>债券</td><td>债牛+股市震荡下行</td><td class="green">✅ 吻合</td></tr>
+<tr><td>2024-2025</td><td>弱复苏</td><td>股票（结构性）</td><td>待验证</td><td>⏳ 待验证</td></tr>
+</tbody>
+</table>
+<p style="color:var(--text-muted);font-size:12px;">总结：美林时钟在中国约70%的阶段吻合，偏离主要因政策干预（2014-2015杠杆牛）和外部冲击（2008金融危机、2020疫情）。</p>
+
+<h3>实操口诀卡</h3>
+<div style="padding:16px;background:var(--accent-dim);border-radius:6px;border:1px dashed var(--accent);margin:12px 0;">
+<p style="color:var(--text-primary);font-size:14px;font-weight:600;text-align:center;line-height:2;">复苏买股票 · 繁荣做周期 · 滞胀拿黄金 · 衰退持债券</p>
+<p style="color:var(--text-muted);font-size:12px;text-align:center;margin-top:4px;">（在中国：政策信号优先于经济周期）</p>
+</div>
+</div>
+</div>
+
+<!-- ===== 附录D ===== -->
+<div class="chapter" id="appd">
+<h2 class="chapter-title"><span class="ch-num">附录D</span>术语速查表</h2>
+<div class="section">
+<table class="data-table">
+<thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>章节</th></tr></thead>
+<tbody>
+<tr><td>GDP</td><td>Gross Domestic Product</td><td>经济体一定时期内生产的全部最终产品和服务的总价值</td><td>第4章</td></tr>
+<tr><td>PMI</td><td>Purchasing Managers' Index</td><td>采购经理指数，>50扩张/<50收缩</td><td>第4章</td></tr>
+<tr><td>CPI</td><td>Consumer Price Index</td><td>居民消费价格指数，衡量物价涨跌</td><td>第6章</td></tr>
+<tr><td>PPI</td><td>Producer Price Index</td><td>工业品出厂价格指数，衡量上游成本变化</td><td>第6章</td></tr>
+<tr><td>M2</td><td>Broad Money Supply</td><td>广义货币供应量，"市场上有多少钱"</td><td>第8章</td></tr>
+<tr><td>社融</td><td>Total Social Financing</td><td>社会融资规模，实体经济从金融体系借的钱</td><td>第8章</td></tr>
+<tr><td>M1-M2剪刀差</td><td>M1-M2 Growth Spread</td><td>M1与M2增速之差，衡量资金活化程度</td><td>第8章</td></tr>
+<tr><td>LPR</td><td>Loan Prime Rate</td><td>贷款市场报价利率，银行贷款定价锚</td><td>第8章</td></tr>
+<tr><td>美林时钟</td><td>Merrill Lynch Clock</td><td>经济增速×通胀=四阶段资产配置框架</td><td>第7章</td></tr>
+<tr><td>QE</td><td>Quantitative Easing</td><td>量化宽松，央行直接购买资产注入流动性</td><td>第8章</td></tr>
+<tr><td>利率传导链</td><td>Rate Transmission</td><td>政策利率→LPR→贷款利率→融资成本→盈利→估值</td><td>第8章</td></tr>
+<tr><td>赤字率</td><td>Deficit/GDP Ratio</td><td>财政赤字占GDP比例，>3%为扩张</td><td>第9章</td></tr>
+<tr><td>专项债</td><td>Special Purpose Bonds</td><td>地方政府为特定项目发行的债券</td><td>第9章</td></tr>
+<tr><td>土地财政</td><td>Land Finance</td><td>地方政府依赖土地出让收入的模式</td><td>第10章</td></tr>
+<tr><td>汇率</td><td>Exchange Rate</td><td>一种货币兑换另一种货币的比率</td><td>第12章</td></tr>
+<tr><td>美联储</td><td>Federal Reserve</td><td>美国央行，全球最重要的央行</td><td>第13章</td></tr>
+<tr><td>中美利差</td><td>US-China Yield Spread</td><td>中美10年期国债收益率之差</td><td>第12-13章</td></tr>
+<tr><td>预期差</td><td>Expectation Gap</td><td>数据公布值与市场预期的差距</td><td>第15章</td></tr>
+<tr><td>逆周期调节</td><td>Countercyclical Policy</td><td>经济差时刺激、经济好时收紧的政策</td><td>第9章</td></tr>
+<tr><td>信用利差</td><td>Credit Spread</td><td>企业债与国债的收益率差，衡量信用松紧</td><td>第8章</td></tr>
+<tr><td>VIX</td><td>Volatility Index</td><td>恐慌指数，>30=市场恐慌</td><td>第13章</td></tr>
+<tr><td>贴现率</td><td>Discount Rate</td><td>无风险利率+风险溢价，决定估值中枢</td><td>第19章</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ===== 附录E ===== -->
+<div class="chapter" id="appe">
+<h2 class="chapter-title"><span class="ch-num">附录E</span>宏观跟踪自检清单</h2>
+<div class="section">
+<h3>每周自检</h3>
+<ul>
+<li>☐ 当高频数据（发电量/地产销售/车市）出现连续2周同方向变化时，我将记录并评估是否影响月度判断</li>
+<li>☐ 当全球市场出现重大事件（美联储发言/地缘冲突/黑天鹅）时，我将评估对A股的传导路径并决定是否调整仓位</li>
+<li>☐ 当我的情绪因市场波动而焦虑时，我将回顾信号灯判断——信号灯没变，仓位不动</li>
+</ul>
+
+<h3>每月自检</h3>
+<ul>
+<li>☐ 当核心指标（PMI/社融/CPI/PPI）更新后，我将花15分钟更新信号灯判断</li>
+<li>☐ 当信号灯颜色发生变化时，我将按规则调整仓位和行业配置</li>
+<li>☐ 当信号灯颜色没变但市场出现大幅波动时，我将检查是否遗漏了关键信号</li>
+<li>☐ 当政策出现重要变化（政治局会议/央行操作）时，我将重新评估政策方向</li>
+<li>☐ 当外部环境发生变化（美联储/汇率/大宗）时，我将更新外部维度判断</li>
+</ul>
+
+<h3>每季度自检</h3>
+<ul>
+<li>☐ 当季度数据（GDP/货币政策报告）发布后，我将复核当前经济周期阶段判断</li>
+<li>☐ 当投资组合与宏观信号不匹配时，我将调整至匹配（如信号红灯但仓位80%，需减仓）</li>
+<li>☐ 当下一季度的关键变量（如美联储议息/两会/重要数据发布）即将到来时，我将提前准备应对方案</li>
+</ul>
+</div>
+</div>
+
+</div><!-- end container appendix -->
+
+<!-- ==================== FOOTER ==================== -->
+<div class="container" style="text-align:center;padding:60px 0 40px;border-top:1px solid var(--border);">
+<p style="color:var(--text-muted);font-size:12px;">宏观经济分析投资手册 · Macro 101 · 投资者教育手册系列</p>
+<p style="color:var(--text-muted);font-size:11px;margin-top:8px;">本手册仅供学习参考，不构成投资建议。投资有风险，入市需谨慎。</p>
+</div>
+
+</div><!-- end #main -->
+
+<script>
+// ===== Sidebar Active State =====
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const navLinks = document.querySelectorAll('#nav a');
+  const sections = [];
+  sidebarToggle.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('open');
+    sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+    sidebarToggle.setAttribute('aria-label', isOpen ? '关闭章节导航' : '打开章节导航');
+  });
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const el = document.querySelector(href);
+      if (el) sections.push({ el, link });
+    }
+  });
+  function updateActive() {
+    const scrollY = window.scrollY + 100;
+    let current = sections[0];
+    sections.forEach(s => { if (s.el.offsetTop <= scrollY) current = s; });
+    navLinks.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        sidebar.classList.remove('open');
+        sidebarToggle.setAttribute('aria-expanded', 'false');
+        sidebarToggle.setAttribute('aria-label', '打开章节导航');
+      }
+    });
+  });
+});
+
+// ===== Merrill Lynch Clock Interactive =====
+function showClockDetail(phase) {
+  const details = {
+    recovery: '📊 <strong>复苏期特征</strong><br>• 经济指标：PMI从50以下回升至50以上，工业增加值回暖<br>• 通胀指标：CPI低迷（<2%），PPI可能仍为负<br>• 政策环境：央行维持宽松，财政可能开始发力<br>• 股市特征：成交量放大，金融/消费/科技领涨，估值开始修复<br>• 操作建议：加仓至70%+，偏进攻型配置',
+    overheat: '🔥 <strong>过热期特征</strong><br>• 经济指标：PMI>53，工业增加值增速高，GDP增速峰值<br>• 通胀指标：CPI上升至2.5%+，PPI快速上涨<br>• 政策环境：央行开始收紧（提准/加息预期），财政维持中性<br>• 股市特征：上游资源股最强，成长股开始承压，成交量高位<br>• 操作建议：增配上游资源，减仓高估值成长，总仓位可维持70%',
+    stagflation: '🍂 <strong>滞胀期特征</strong><br>• 经济指标：PMI跌破50或明显下降，工业增加值放缓<br>• 通胀指标：CPI>3%居高不下，PPI可能开始回落<br>• 政策环境：央行两难（控通胀vs稳增长），财政可能出台定向刺激<br>• 股市特征：股债双杀，防御性行业相对抗跌，黄金表现好<br>• 操作建议：仓位降至30-40%，转向防御（医药/公用/必选消费+黄金）',
+    recession: '❄️ <strong>衰退期特征</strong><br>• 经济指标：PMI持续<50，工业增加值下滑，GDP增速低<br>• 通胀指标：CPI下降至<2%，PPI可能为负（通缩压力）<br>• 政策环境：央行开始降息降准，财政推出刺激方案<br>• 股市特征：成交量萎缩，债券牛市，高股息有吸引力<br>• 操作建议：债券为主，股票可开始分批建仓（1/3仓），等政策底确认'
+  };
+  const el = document.getElementById('clock-detail');
+  const textEl = document.getElementById('clock-detail-text');
+  document.querySelectorAll('.clock-cell').forEach(c => {
+    c.classList.remove('active');
+    c.setAttribute('aria-pressed', 'false');
+  });
+  const activeCell = document.getElementById('clock-' + phase);
+  if (activeCell) {
+    activeCell.classList.add('active');
+    activeCell.setAttribute('aria-pressed', 'true');
+  }
+  textEl.innerHTML = details[phase] || '';
+  el.style.display = 'block';
+}
+
+// ===== Signal Light Calculator =====
+function calcSignal() {
+  const vals = ['sig-growth','sig-inflation','sig-mono','sig-credit','sig-fiscal','sig-external'].map(id => parseInt(document.getElementById(id).value));
+  const total = vals.reduce((a,b) => a+b, 0);
+  const el = document.getElementById('signal-result');
+  const dot = document.getElementById('signal-dot');
+  const text = document.getElementById('signal-text');
+  const advice = document.getElementById('signal-advice');
+  el.style.display = 'flex';
+
+  dot.className = 'signal-dot';
+  if (total >= 3) {
+    dot.classList.add('dot-green');
+    text.textContent = '绿灯 · 顺风（得分+' + total + '）';
+    text.style.color = 'var(--green)';
+    advice.textContent = '仓位70-90%，进攻型配置';
+  } else if (total >= 0) {
+    dot.classList.add('dot-yellow');
+    text.textContent = '黄灯 · 偏中性（得分+' + total + '）';
+    text.style.color = 'var(--yellow)';
+    advice.textContent = '仓位40-60%，均衡配置';
+  } else {
+    dot.classList.add('dot-red');
+    text.textContent = '红灯 · 逆风（得分' + total + '）';
+    text.style.color = 'var(--red)';
+    advice.textContent = '仓位10-30%，防御型配置';
+  }
+}
+
+// ===== Rate → PE Calculator =====
+function calcRatePE() {
+  const rf = parseFloat(document.getElementById('rate-rf').value);
+  const rp = parseFloat(document.getElementById('rate-rp').value);
+  const g = parseFloat(document.getElementById('rate-g').value);
+  if (isNaN(rf) || isNaN(rp) || isNaN(g)) return;
+  const dr = (rf + rp) / 100;
+  const gDec = g / 100;
+  const peEl = document.getElementById('rate-pe-result');
+  const labelEl = document.getElementById('rate-pe-label');
+
+  if (dr > gDec && dr > 0) {
+    const pe = (1 / (dr - gDec)).toFixed(1);
+    peEl.textContent = pe + 'x';
+    labelEl.textContent = '贴现率=' + (rf+rp).toFixed(1) + '%，合理PE≈' + pe + '倍（增长型PE=1/(贴现率-增速)）';
+  } else if (dr > 0) {
+    const pe = (1 / dr).toFixed(1);
+    peEl.textContent = pe + 'x';
+    labelEl.textContent = '贴现率=' + (rf+rp).toFixed(1) + '%，增速≥贴现率时PE不可用，零增长PE≈' + pe + '倍';
+  }
+}
+
+// Initial calc
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() { calcRatePE(); }, 500);
+});
+</script>
+</body>
+</html>
