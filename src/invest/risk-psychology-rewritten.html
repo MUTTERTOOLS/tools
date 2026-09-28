@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>风险管理与交易心理 · Risk & Mind 101</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js" defer></script>
 <style>
 :root {
   --bg: #0B0E14;
@@ -311,6 +312,12 @@ ul.red li::marker { color: var(--accent); }
 /* === TERM REFERENCE LINKS（首现术语→附录E词条锚点） === */
 .term-ref { color:inherit; text-decoration:underline dotted var(--text-muted); text-underline-offset:3px; }
 .term-ref:hover { color:var(--accent); text-decoration-color:var(--accent); }
+
+/* Chart Box */
+.chart-box{margin:20px 0;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);}
+.chart-title{color:var(--text-secondary);font-size:12px;margin-bottom:8px;text-align:center;}
+.chart-container{width:100%;height:320px;}
+
 </style>
 </head>
 <body>
@@ -438,7 +445,7 @@ ul.red li::marker { color: var(--accent); }
 
 <p>大多数新手进入股市时，满脑子想的都是同一个问题："买什么能涨？"他们花大量时间研究K线形态、打听内幕消息、追踪主力资金流向，甚至熬夜看美股走势来判断明天A股方向。这些努力都在追求一个维度——<strong>赚钱能力</strong>，也就是选股、择时入场和止盈的技巧。</p>
 
-<p>但交易还有一个被绝大多数新手忽视的维度——<strong>不亏钱能力</strong>，也就是仓位控制、止损纪律和系统性风险管理。这两个维度构成了交易能力的完整拼图，缺一不可。</p>
+<p>但交易还有一个被绝大多数新手忽视的维度——<strong>不亏钱能力</strong>，也就是仓位控制、止损纪律和<a class="term-ref" href="#term-systematic-risk">系统性风险</a>管理。这两个维度构成了交易能力的完整拼图，缺一不可。</p>
 
 <div class="info-grid cols-2">
 <div class="info-card ic-blue">
@@ -448,12 +455,12 @@ ul.red li::marker { color: var(--accent); }
 </div>
 <div class="info-card ic-red">
 <h4>不亏钱能力（防守维度）</h4>
-<p>关注"怎么少亏"：仓位管理、止损纪律、风险预算、资金红线、熔断机制。它决定你的<strong>下限</strong>——最坏的情况下会亏多少。</p>
+<p>关注"怎么少亏"：仓位管理、止损纪律、<a class="term-ref" href="#term-risk-budget">风险预算</a>、资金红线、<a class="term-ref" href="#term-circuit-breaker">熔断</a>机制。它决定你的<strong>下限</strong>——最坏的情况下会亏多少。</p>
 <p>新手通常在这里投入不到10%的精力。</p>
 </div>
 </div>
 
-<p>问题在于：上限再高，下限失控，结果照样是灾难。一个能抓住翻倍股的选手，如果不懂风控，一次50%的回撤就能抹掉之前所有的努力。而一个选股能力平庸但风控严格的选手，靠的是"小亏小赚、偶尔大赚"的复利累积，长期反而走得更好。</p>
+<p>问题在于：上限再高，下限失控，结果照样是灾难。一个能抓住翻倍股的选手，如果不懂风控，一次50%的<a class="term-ref" href="#term-drawdown">回撤</a>就能抹掉之前所有的努力。而一个选股能力平庸但风控严格的选手，靠的是"小亏小赚、偶尔大赚"的复利累积，长期反而走得更好。</p>
 
 <div class="callout callout-tip">
 <p><strong>类比理解：</strong>赚钱能力就像汽车的发动机马力，不亏钱能力就像刹车系统。没有人买车只看马力不看刹车——因为发动机决定你能开多快，但刹车决定你能不能在弯道和红灯前活下来。交易也一样，你的选股能力再强，没有风控这个刹车系统，迟早会在某个"弯道"飞出公路。</p>
@@ -584,7 +591,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 <div class="info-card ic-yellow">
 <h4>"风控太复杂看不懂"的回避</h4>
-<p>很多新手看到"仓位反推""相关性矩阵""凯利公式"等术语就头疼，觉得风控是专业机构的事，跟自己无关。</p>
+<p>很多新手看到"仓位反推""<a class="term-ref" href="#term-correlation-breakdown">相关性</a>矩阵""<a class="term-ref" href="#term-kelly-criterion">凯利公式</a>"等术语就头疼，觉得风控是专业机构的事，跟自己无关。</p>
 <p>事实上，个人投资者需要的风控知识并不复杂——1%原则、分层止损、三条红线——这些概念小学生都能理解。复杂的是执行，不是理解。</p>
 </div>
 </div>
@@ -606,7 +613,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-green">
 <h4>风控 ≠ 低收益</h4>
 <p>很多人以为风控会降低收益。数学上恰恰相反——因为亏损的不对称性，<strong>控制回撤本身就是提升复利的最佳手段</strong>。</p>
-<p>年化15%且最大回撤10%的策略，长期收益远超年化30%但最大回撤50%的策略。前者10年后1元变4.05元，后者一次50%回撤就只剩1.5元。</p>
+<p>年化15%且<a class="term-ref" href="#term-max-drawdown">最大回撤</a>10%的策略，长期收益远超年化30%但最大回撤50%的策略。前者10年后1元变4.05元，后者一次50%回撤就只剩1.5元。</p>
 </div>
 </div>
 
@@ -637,7 +644,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="flow-step fs-blue">
 <strong>第二层：组合风控</strong>
 <p>多笔交易构成的持仓组合</p>
-<p>通过分散投资降低非系统性风险</p>
+<p>通过分散投资降低<a class="term-ref" href="#term-unsystematic-risk">非系统性风险</a></p>
 </div>
 <div class="flow-arrow">→</div>
 <div class="flow-step fs-yellow">
@@ -708,7 +715,7 @@ ul.red li::marker { color: var(--accent); }
 <h4>风险（Risk）</h4>
 <p><strong>定义：</strong>你知道可能发生什么，也大致知道每种结果的概率。</p>
 <p><strong>特征：</strong>可量化、可定价、可对冲。</p>
-<p><strong>交易中的例子：</strong>"这只股票可能涨10%或跌8%，历史波动率显示跌8%的概率约30%。"——你知道范围、知道概率，就可以据此设计止损和仓位。</p>
+<p><strong>交易中的例子：</strong>"这只股票可能涨10%或跌8%，历史<a class="term-ref" href="#term-volatility-sizing">波动率</a>显示跌8%的概率约30%。"——你知道范围、知道概率，就可以据此设计止损和仓位。</p>
 </div>
 <div class="info-card ic-yellow">
 <h4>不确定性（Uncertainty）</h4>
@@ -760,7 +767,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 <div class="info-card ic-green">
 <h4>非系统性风险的应对策略</h4>
-<p><strong>1. 分散持仓</strong>：持有5-15只不同行业的股票，单票仓位不超过总资金的15-20%，单笔风险不超过1-2%。</p>
+<p><strong>1. 分散持仓</strong>：持有5-15只不同行业的股票，单票仓位不超过总资金的15-20%，<a class="term-ref" href="#term-per-trade-risk">单笔风险</a>不超过1-2%。</p>
 <p><strong>2. 基本面筛查</strong>：回避有明显财务隐患的公司（高商誉、高质押、现金流为负、审计非标等），从源头降低暴雷概率。</p>
 <p><strong>3. 单票硬止损</strong>：无论多么看好一只股票，都设置止损位——非系统性风险往往在你"最看好"的时候爆发。</p>
 </div>
@@ -798,7 +805,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-accent">
 <h4>操作风险</h4>
 <p><strong>本质：</strong>因为自己的操作失误、系统故障或情绪失控导致的亏损。这类风险跟市场无关，完全是自己造成的。</p>
-<p><strong>表现形式：</strong>下错单（买成卖、数量多打一个零）、设错止损价、交易软件故障、忘记止损、情绪化追涨杀跌、报复性交易。</p>
+<p><strong>表现形式：</strong>下错单（买成卖、数量多打一个零）、设错止损价、交易软件故障、忘记止损、情绪化追涨杀跌、<a class="term-ref" href="#term-revenge-trading">报复性交易</a>。</p>
 <p><strong>A股案例：</strong>某散户本想买入100股，手滑输入10000股，直接满仓买入；又如某投资者止损价设为10.00元，但因为疏忽设成了1.00元，结果在1元价格被成交后才发现——直接亏损90%。更常见的是情绪化操作：亏了之后赌气加仓，结果越亏越加、越加越亏。</p>
 <p><strong>防御手段：</strong>下单前二次确认、使用条件单而非手动止损、不在情绪激动时做交易决策、定期复盘操作失误记录。</p>
 </div>
@@ -1234,6 +1241,12 @@ ul.red li::marker { color: var(--accent); }
 
 <div class="callout callout-key">
 <p><strong>本章核心结论：</strong>单笔风险管理是整个风控体系的第一道防线，也是最基础的一道。它的核心原则极其简单——每笔交易最多亏总资金的1-2%——但简单不等于容易。仓位反推法给了你精确计算仓位的工具，但真正难的是<strong>在亏损发生时无条件执行止损</strong>。1%的数学之美在于：即使遭遇极端连败，你的账户仍然在可恢复的范围内。这不是保守，这是让你留在牌桌上的资格证。</p>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图3-1 亏损与回本的不对称性——亏50%需要涨100%才能回本</div>
+<div class="chart-container" id="chart-loss-recovery"></div>
 </div>
 
 <div class="rule-box">
@@ -1786,7 +1799,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 
 <div class="callout callout-warn">
-<p><strong>警惕"翻本陷阱"：</strong>熔断后恢复交易时，最常见的心理陷阱是"急于翻本"。你会不自觉地加大仓位、放宽止损、追求高收益——试图快速把亏损赚回来。但这恰恰是导致第二次熔断的最常见原因。记住：<strong>亏损已经发生了，它是沉没成本。恢复后的每一笔交易都是新的交易，与之前的亏损无关。</strong>如果带着"赚回来"的心态交易，你大概率会亏得更多。</p>
+<p><strong>警惕"翻本陷阱"：</strong>熔断后恢复交易时，最常见的心理陷阱是"急于翻本"。你会不自觉地加大仓位、放宽止损、追求高收益——试图快速把亏损赚回来。但这恰恰是导致第二次熔断的最常见原因。记住：<strong>亏损已经发生了，它是<a class="term-ref" href="#term-sunk-cost">沉没成本</a>。恢复后的每一笔交易都是新的交易，与之前的亏损无关。</strong>如果带着"赚回来"的心态交易，你大概率会亏得更多。</p>
 </div>
 
 <div class="callout callout-key">
@@ -2552,7 +2565,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 <div class="info-card ic-green">
 <h4>移动止盈——让利润奔跑</h4>
-<p><strong>逻辑：</strong>不设固定目标，而是随着价格上涨不断上移止损线（此时止损线变成止盈线）。价格继续涨就继续持有，价格回撤到止盈线才出场。</p>
+<p><strong>逻辑：</strong>不设固定目标，而是随着价格上涨不断上移<a class="term-ref" href="#term-stop-loss-line">止损线</a>（此时止损线变成止盈线）。价格继续涨就继续持有，价格回撤到止盈线才出场。</p>
 <p><strong>操作：</strong>比如10元买入，初始止损9元。涨到12元时，止损上移到11元（锁定1元利润）。涨到15元时，止损上移到13.5元（锁定3.5元利润）。涨到20元时，止损上移到18元。只要趋势不结束就一直持有，直到回撤触发止盈。</p>
 <p><strong>适用场景：</strong>趋势跟踪交易。适合单边上涨行情——抓住大趋势，让利润充分奔跑。</p>
 <p><strong>优势：</strong>能抓住大趋势的完整利润。不会"卖早了"。心理上更轻松——不用猜"顶在哪"，让市场告诉你什么时候走。</p>
@@ -2648,7 +2661,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 <div class="info-card ic-yellow">
 <h4>障碍二："止损了就真亏了，不止损只是浮亏"</h4>
-<p><strong>心理机制：</strong>这是损失厌恶——"确认亏损"的痛苦是"浮亏"的痛苦的数倍。止损把浮亏变成实亏，这个心理转换极其痛苦。所以很多人选择"不止损就不是真亏"——自欺欺人。</p>
+<p><strong>心理机制：</strong>这是<a class="term-ref" href="#term-loss-aversion">损失厌恶</a>——"确认亏损"的痛苦是"浮亏"的痛苦的数倍。止损把浮亏变成实亏，这个心理转换极其痛苦。所以很多人选择"不止损就不是真亏"——自欺欺人。</p>
 <p><strong>克服方法：</strong>认知重构。浮亏就是真亏——你的净值已经减少了，只是你还没有"确认"它。不止损不等于没亏，只是你选择让这个亏损继续扩大。就像伤口出血——不去看不代表血不流了。</p>
 </div>
 </div>
@@ -2732,7 +2745,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 
 <div class="chapter" id="ch9">
-<h2 class="chapter-title"><span class="ch-num">第9章</span>压力测试与极端场景——"如果最坏情况同时发生"</h2>
+<h2 class="chapter-title"><span class="ch-num">第9章</span><a class="term-ref" href="#term-stress-test">压力测试</a>与极端场景——"如果最坏情况同时发生"</h2>
 
 <div class="callout callout-key">
 <p><strong>核心命题：</strong>正常情况下的风控只是及格线，极端时刻的生存能力才是真正的考验。压力测试就是问自己一个不舒服的问题："如果最坏情况同时发生，我的账户会亏多少？"这个问题你不愿意想，但必须想——因为市场不会在你准备好了才发生极端事件。本章将带你逐一拆解三种极端场景、相关性崩溃的致命陷阱、压力测试的完整计算方法，以及一份极端场景生存指南。</p>
@@ -2751,7 +2764,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-yellow">
 <h4>压力测试 vs 日常风控</h4>
 <p>日常风控管的是"正常情况下亏多少"——止损、仓位、分散，应对的是日常波动。</p>
-<p>压力测试管的是"极端情况下亏多少"——系统性暴跌、黑天鹅、流动性枯竭，应对的是尾部风险。</p>
+<p>压力测试管的是"极端情况下亏多少"——系统性暴跌、黑天鹅、流动性枯竭，应对的是<a class="term-ref" href="#term-tail-risk">尾部风险</a>。</p>
 <p>日常风控是安全带，压力测试是碰撞测试。安全带管日常刹车，碰撞测试管"万一以120公里时速撞墙"。</p>
 </div>
 </div>
@@ -3027,7 +3040,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-yellow">
 <h4>你的交易对市场毫无影响</h4>
 <p>A股每天交易额数千亿元，参与者数以千万计。你那几万、几十万的交易，在整个市场中连一粒灰尘都算不上。市场不知道你买了什么，不知道你卖了什么，不知道你亏了多少。</p>
-<p>你觉得"我一买它就跌"——这不是市场在针对你，而是<strong>确认偏误</strong>。你只记住了"买了就跌"的痛苦经历，忘了"买了就涨"的愉快经历。统计一下你会发现，"买了就跌"和"买了就涨"的比例其实差不多。</p>
+<p>你觉得"我一买它就跌"——这不是市场在针对你，而是<strong><a class="term-ref" href="#term-confirmation-bias">确认偏误</a></strong>。你只记住了"买了就跌"的痛苦经历，忘了"买了就涨"的愉快经历。统计一下你会发现，"买了就跌"和"买了就涨"的比例其实差不多。</p>
 </div>
 <div class="info-card ic-accent">
 <h4>"被针对"错觉的心理根源</h4>
@@ -3055,7 +3068,7 @@ ul.red li::marker { color: var(--accent); }
 <h4>概率思维（专业模式）</h4>
 <p>"我研究了这只股票，逻辑有道理，大概率会涨。但'大概率'不是'一定'——可能有40%的概率不涨反跌。我按大概率方向操作，同时设好止损以防小概率发生。"——这是概率思维。</p>
 <p>在这种思维下：盈利是"概率兑现了"，亏损是"概率没兑现"——都不是对个人能力的审判。亏损不是"我错了"，是"这次概率没站我这边"——就像抛硬币出了反面，不是你的错。</p>
-<p>概率思维的核心：不追求"每笔都赚"，追求"长期正期望值"——接受短期亏损是获取长期盈利的<strong>成本</strong>。</p>
+<p>概率思维的核心：不追求"每笔都赚"，追求"长期正<a class="term-ref" href="#term-expectancy">期望值</a>"——接受短期亏损是获取长期盈利的<strong>成本</strong>。</p>
 </div>
 </div>
 
@@ -3174,7 +3187,7 @@ ul.red li::marker { color: var(--accent); }
 <p><strong>内容：</strong>你在交易中的情绪反应——恐惧、贪婪、希望、绝望、愤怒、冲动。情绪层是认知和行为之间的"干扰层"。</p>
 <p><strong>问题表现：</strong>情绪层的问题表现为"知道但做不到"。你知道该止损，但恐惧让你不止损。你知道不该追高，但贪婪让你追高。你知道不该过度交易，但冲动让你停不下来。</p>
 <p><strong>解决方案：</strong>情绪觉察 + 系统化执行。觉察是"我注意到自己在恐惧"——觉察到就拦截了一半。系统化执行是用条件单、规则清单等工具绕过情绪。</p>
-<p><strong>检验标准：</strong>面对亏损时，能否识别自己的情绪状态（情绪温度计什么颜色），并按颜色对应的规则行动。</p>
+<p><strong>检验标准：</strong>面对亏损时，能否识别自己的情绪状态（<a class="term-ref" href="#term-emotion-gauge">情绪温度计</a>什么颜色），并按颜色对应的规则行动。</p>
 </div>
 <div class="info-card ic-green">
 <h4>第三层：行为层（你做什么）</h4>
@@ -3209,7 +3222,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 
 <div class="callout callout-key">
-<p><strong>重新定义胜负：</strong>按规则执行 = 赢（不论这笔盈亏）。违反规则 = 输（不论这笔盈亏）。原因：单笔盈亏是概率决定的，你控制不了。但"是否按规则执行"是你100%能控制的。用你能控制的衡量胜负，不用你不能控制的——这就是"过程导向"。当你把胜负标准从"赚不赚钱"切换到"有没有按规则做"，你的心态会发生根本性变化：亏损不再痛苦（因为"按规则止损了=我赢了"），盈利不再得意（因为"如果不是按规则赚的=我输了"）。这个转变是交易心理成熟的标志。</p>
+<p><strong>重新定义胜负：</strong>按规则执行 = 赢（不论这笔盈亏）。违反规则 = 输（不论这笔盈亏）。原因：单笔盈亏是概率决定的，你控制不了。但"是否按规则执行"是你100%能控制的。用你能控制的衡量胜负，不用你不能控制的——这就是"<a class="term-ref" href="#term-process-oriented">过程导向</a>"。当你把胜负标准从"赚不赚钱"切换到"有没有按规则做"，你的心态会发生根本性变化：亏损不再痛苦（因为"按规则止损了=我赢了"），盈利不再得意（因为"如果不是按规则赚的=我输了"）。这个转变是交易心理成熟的标志。</p>
 </div>
 
 <h3>八、大脑不是为交易设计的——进化心理学视角</h3>
@@ -3225,7 +3238,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-yellow">
 <h4>从众本能的进化根源</h4>
 <p><strong>原始社会：</strong>原始人脱离群体会死——独自面对猛兽没有生还可能。所以进化让人类强烈地跟随群体——群体行动时感到安全，脱离群体时感到恐惧。这个机制让原始人留在部落中，提高生存概率。</p>
-<p><strong>交易中：</strong>从众本能变成FOMO追高——"大家都在买，我不买就落后了"。看到别人赚钱你焦虑，看到群体行动你跟风。但交易中群体往往是错的——"众人贪婪我恐惧，众人恐惧我贪婪"说的就是这个道理。</p>
+<p><strong>交易中：</strong>从众本能变成<a class="term-ref" href="#term-fear-of-missing-out">FOMO</a>追高——"大家都在买，我不买就落后了"。看到别人赚钱你焦虑，看到群体行动你跟风。但交易中群体往往是错的——"众人贪婪我恐惧，众人恐惧我贪婪"说的就是这个道理。</p>
 </div>
 <div class="info-card ic-yellow">
 <h4>确定性偏好的进化根源</h4>
@@ -3502,7 +3515,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-red">
 <h4>致命组合二：过度自信 + 近因偏误 + 锚定效应</h4>
 <p><strong>场景：</strong>你连续盈利几笔后。</p>
-<p>过度自信让你觉得"我找到了秘诀"。近因偏误让你觉得"最近都赚了，以后也会赚"。锚定效应让你锚定最近的高盈利（"上次赚了30%，这次也能"）。</p>
+<p>过度自信让你觉得"我找到了秘诀"。近因偏误让你觉得"最近都赚了，以后也会赚"。<a class="term-ref" href="#term-anchoring">锚定效应</a>让你锚定最近的高盈利（"上次赚了30%，这次也能"）。</p>
 <p>三个偏误同时作用的结果：你加大仓位、放松纪律、提高盈利预期——然后在一次正常的市场回调中遭受巨大亏损。这是"从天堂到地狱"的心理学配方。</p>
 <p>这个组合在牛市末期特别常见——新手在牛市中连胜，觉得自己是天才，加大仓位，然后牛市见顶时一次性回吐所有盈利。</p>
 </div>
@@ -3777,7 +3790,7 @@ ul.red li::marker { color: var(--accent); }
 <h4>FOMO触发器的系统化应对</h4>
 <p><strong>只买自选池中的标的：</strong>不在盘中临时选股。所有买入标的必须在前一天晚上（或更早）就加入自选池、完成分析、写好交易计划。盘中看到大涨的股票只能"观察"，不能"买入"。</p>
 <p><strong>错过信号后不追：</strong>如果一只自选池的股票发出了买入信号但你没买到（比如开盘涨停买不进），不允许追入——等下一次信号。错过一个信号不会让你亏钱，追入可能让你亏钱。</p>
-<p><strong>限制信息输入：</strong>减少看社交媒体上的晒单和"涨停推荐"。别人的盈利和你的交易无关——他们的信号、仓位、风险承受力和你不一样。你有你的系统，不需要和别人比。</p>
+<p><strong>限制信息输入：</strong>减少看社交媒体上的晒单和"涨停推荐"。别人的盈利和你的交易无关——他们的信号、仓位、<a class="term-ref" href="#term-risk-capacity">风险承受力</a>和你不一样。你有你的系统，不需要和别人比。</p>
 </div>
 <div class="info-card ic-accent">
 <h4>踏空是交易的一部分</h4>
@@ -4013,7 +4026,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-accent">
 <h4>阻断规则 + 替代行为</h4>
 <p><strong>阻断规则：</strong></p>
-<p>铁律：亏损的持仓不加仓。只在盈利的持仓上加仓（"盈利加仓"=顺势而为），从不在亏损的持仓上加仓（"亏损加仓"=逆势摊平）。</p>
+<p>铁律：亏损的持仓不加仓。只在盈利的持仓上加仓（"<a class="term-ref" href="#term-anti-martingale">盈利加仓</a>"=顺势而为），从不在亏损的持仓上加仓（"亏损加仓"=逆势摊平）。</p>
 <p>如果确实认为当前价格值得买入——先卖掉亏损仓位（止损），再以新的信号重新买入（新的止损、新的仓位计算）。不是"在亏损上加仓"，而是"了结旧交易、开新交易"。</p>
 <p><strong>替代行为：</strong></p>
 <p>问自己"如果我现在没有持仓，我会以当前价格买入这只股票吗？"如果会→先卖掉旧仓位（止损），再按新信号买入。如果不会→卖掉旧仓位（止损），不买。</p>
@@ -4525,7 +4538,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>目标价</div><div class="ici-body">止盈目标</div></div>
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>出场价</div><div class="ici-body">实际出场价</div></div>
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>仓位</div><div class="ici-body">股数/金额/占比</div></div>
-<div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>盈亏</div><div class="ici-body">金额/R倍数</div></div>
+<div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>盈亏</div><div class="ici-body">金额/<a class="term-ref" href="#term-r-multiple">R倍数</a></div></div>
 </div>
 </div>
 <div class="info-card ic-yellow">
@@ -4542,13 +4555,19 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card-header">执行与复盘</div>
 <div class="info-card-items">
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>入场理由</div><div class="ici-body">对照规则逐项打钩</div></div>
-<div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>执行率</div><div class="ici-body">按规则/偏离规则</div></div>
+<div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-execution-rate">执行率</a></div><div class="ici-body">按规则/偏离规则</div></div>
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>偏离原因</div><div class="ici-body">恐惧/贪婪/侥幸/犹豫</div></div>
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>情绪复盘</div><div class="ici-body">模式发现+改进建议</div></div>
 <div class="info-card-item"><div class="ici-title"><span class="ici-mark"></span>规则修正</div><div class="ici-body">是否需要修改规则</div></div>
 </div>
 </div>
 </div>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图14-1 情绪温度计——四色标记系统与操作限制</div>
+<div class="chart-container" id="chart-emotion-gauge"></div>
 </div>
 
 <div class="rule-box">
@@ -4672,7 +4691,7 @@ ul.red li::marker { color: var(--accent); }
 <div class="info-card ic-blue">
 <strong>第4步：喝水</strong><br>
 为什么有效：紧张和焦虑会导致口干（交感神经兴奋抑制唾液分泌），而口干又会反向加剧"威胁感"——大脑会把身体不适解读为危险信号。喝水这个动作同时解决两个问题：缓解口干打破恶性循环，吞咽动作刺激迷走神经进一步放松。<br><br>
-操作：缓慢喝一杯温水（约200ml），不要牛饮。小口慢咽，感受水经过喉咙的过程——这本身就是一个微型的正念练习。
+操作：缓慢喝一杯温水（约200ml），不要牛饮。小口慢咽，感受水经过喉咙的过程——这本身就是一个微型的<a class="term-ref" href="#term-mindfulness">正念</a>练习。
 </div>
 </div>
 
@@ -4858,7 +4877,7 @@ ul.red li::marker { color: var(--accent); }
 </div>
 
 <div class="chapter" id="ch16">
-<h2 class="chapter-title"><span class="ch-num">第16章</span>心理预演与情景规划——开盘前就做好决定</h2>
+<h2 class="chapter-title"><span class="ch-num">第16章</span><a class="term-ref" href="#term-mental-rehearsal">心理预演</a>与情景规划——开盘前就做好决定</h2>
 
 <div class="callout callout-key">
 <strong>核心思想：</strong>交易中最糟糕的决定，几乎都是盘中临时做的。你盯着一根大阳线心跳加速然后追进去，你看着浮亏不断扩大咬牙不卖，你在"要不要加仓"之间犹豫了3秒然后选了最差的选择——所有这些，都是因为你到了那个时刻才第一次想"该怎么办"。心理预演，就是在平静时把决定做好，盘中只需要执行。
@@ -6217,6 +6236,12 @@ If 震荡中浮盈回吐，Then 按原计划止损/止盈，不因"赚过又亏"
 </div>
 
 <!-- ===== 行动规则 ===== -->
+
+<div class="chart-box">
+<div class="chart-title">图20-1 交易者成长四阶段——从"不知道自己不懂"到"纪律成本能"</div>
+<div class="chart-container" id="chart-growth-stages"></div>
+</div>
+
 <div class="rule-box">
   <h4>📋 本章行动规则</h4>
   <div class="rule-item"><strong>规则一：诚实定位你当前所在的阶段。</strong>不要高估自己——大多数人都以为自己在第三阶段，实际还在第二阶段。用自检清单客观评估，只有你自己知道真相。</div>
@@ -6552,6 +6577,12 @@ If 震荡中浮盈回吐，Then 按原计划止损/止盈，不因"赚过又亏"
 </div>
 
 <!-- ===== 行动规则 ===== -->
+
+<div class="chart-box">
+<div class="chart-title">图21-1 复利的力量——10万本金不同年化收益率的20年增长对比</div>
+<div class="chart-container" id="chart-compound-growth"></div>
+</div>
+
 <div class="rule-box">
   <h4>📋 本章行动规则</h4>
   <div class="rule-item"><strong>规则一：永远把生存放在第一位。</strong>任何可能让你"出局"的交易行为都是禁区。单笔亏损不超过2%，总仓位不超过总资金合理上限，账户总回撤超20%时暂停交易。活着才有机会，出局就什么都没有了。</div>
@@ -6776,40 +6807,40 @@ If 震荡中浮盈回吐，Then 按原计划止损/止盈，不因"赚过又亏"
 <table class="data-table">
 <thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>章节</th></tr></thead>
 <tbody>
-<tr><td class="highlight">风险</td><td>Risk</td><td>可量化的未来损失不确定性</td><td>第2章</td></tr>
-<tr><td class="highlight">系统性风险</td><td>Systematic Risk</td><td>影响整个市场的风险，不可分散</td><td>第2章</td></tr>
-<tr><td class="highlight">非系统性风险</td><td>Unsystematic Risk</td><td>个股/行业特有风险，可分散</td><td>第2章</td></tr>
-<tr><td class="highlight">尾部风险</td><td>Tail Risk</td><td>概率极小但损失极大的事件</td><td>第2章</td></tr>
-<tr><td class="highlight">左尾风险</td><td>Left Tail Risk</td><td>亏损比盈利大且频繁的分布形态</td><td>第2章</td></tr>
-<tr><td class="highlight">回撤</td><td>Drawdown</td><td>账户从峰值到谷底的跌幅</td><td>第7章</td></tr>
-<tr><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>历史上最严重的一次回撤</td><td>第7章</td></tr>
-<tr><td class="highlight">风险预算</td><td>Risk Budget</td><td>愿意承受的最大亏损额度</td><td>第2章</td></tr>
-<tr><td class="highlight">风险容量</td><td>Risk Capacity</td><td>能承受的最大总亏损</td><td>第2章</td></tr>
-<tr><td class="highlight">单笔风险</td><td>Per-Trade Risk</td><td>每笔交易最大亏损=总资金×1-2%</td><td>第3章</td></tr>
-<tr><td class="highlight">固定分数法</td><td>Fixed Fractional</td><td>每笔冒固定比例的风险</td><td>第3章</td></tr>
-<tr><td class="highlight">波动率仓位法</td><td>Volatility Sizing</td><td>根据ATR调整仓位大小</td><td>第3章</td></tr>
-<tr><td class="highlight">凯利公式</td><td>Kelly Criterion</td><td>f*=(bp-q)/b，最优仓位比例</td><td>第3章</td></tr>
-<tr><td class="highlight">半凯利</td><td>Half Kelly</td><td>凯利值÷2，保守版</td><td>第3章</td></tr>
-<tr><td class="highlight">反马丁格尔</td><td>Anti-Martingale</td><td>盈利后加仓，趋势跟踪策略</td><td>第3章</td></tr>
-<tr><td class="highlight">金字塔加仓</td><td>Pyramiding</td><td>盈利后分批加仓，每次递减</td><td>第3章</td></tr>
-<tr><td class="highlight">熔断机制</td><td>Circuit Breaker</td><td>触及风险上限后强制停止交易</td><td>第7章</td></tr>
-<tr><td class="highlight">清盘线</td><td>Stop-Loss Line</td><td>回撤20%→全面停止交易</td><td>第7章</td></tr>
-<tr><td class="highlight">压力测试</td><td>Stress Test</td><td>模拟极端场景下最大亏损</td><td>第9章</td></tr>
-<tr><td class="highlight">VaR</td><td>Value at Risk</td><td>95%置信度下明天最多亏多少</td><td>第9章</td></tr>
-<tr><td class="highlight">相关性崩溃</td><td>Correlation Breakdown</td><td>暴跌时所有资产同向下跌</td><td>第9章</td></tr>
-<tr><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益</td><td>第10章</td></tr>
-<tr><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险R为单位的盈亏</td><td>第8章</td></tr>
-<tr><td class="highlight">损失厌恶</td><td>Loss Aversion</td><td>亏100的痛苦≈赚200的快乐</td><td>第11章</td></tr>
-<tr><td class="highlight">确认偏误</td><td>Confirmation Bias</td><td>只看支持自己观点的信息</td><td>第11章</td></tr>
-<tr><td class="highlight">锚定效应</td><td>Anchoring</td><td>被第一个看到的数字锚定</td><td>第11章</td></tr>
-<tr><td class="highlight">沉没成本</td><td>Sunk Cost</td><td>已投入的成本不应影响未来决策</td><td>第11章</td></tr>
-<tr><td class="highlight">报复性交易</td><td>Revenge Trading</td><td>亏损后"赚回来"的心态</td><td>第13章</td></tr>
-<tr><td class="highlight">FOMO</td><td>Fear of Missing Out</td><td>害怕错过→追高</td><td>第12章</td></tr>
-<tr><td class="highlight">情绪温度计</td><td>Emotion Gauge</td><td>用颜色标记情绪状态的可视化工具</td><td>第11章</td></tr>
-<tr><td class="highlight">心理预演</td><td>Mental Rehearsal</td><td>开盘前预演各场景应对方案</td><td>第16章</td></tr>
-<tr><td class="highlight">正念</td><td>Mindfulness</td><td>觉察情绪而不被情绪驱动</td><td>第17章</td></tr>
-<tr><td class="highlight">过程导向</td><td>Process-Oriented</td><td>关注执行率而非盈亏</td><td>第18章</td></tr>
-<tr><td class="highlight">执行率</td><td>Execution Rate</td><td>按规则执行的交易占比</td><td>第18章</td></tr>
+<tr id="term-risk"><td class="highlight">风险</td><td>Risk</td><td>可量化的未来损失不确定性</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-systematic-risk"><td class="highlight">系统性风险</td><td>Systematic Risk</td><td>影响整个市场的风险，不可分散</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-unsystematic-risk"><td class="highlight">非系统性风险</td><td>Unsystematic Risk</td><td>个股/行业特有风险，可分散</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-tail-risk"><td class="highlight">尾部风险</td><td>Tail Risk</td><td>概率极小但损失极大的事件</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-left-tail-risk"><td class="highlight">左尾风险</td><td>Left Tail Risk</td><td>亏损比盈利大且频繁的分布形态</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-drawdown"><td class="highlight">回撤</td><td>Drawdown</td><td>账户从峰值到谷底的跌幅</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-max-drawdown"><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>历史上最严重的一次回撤</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-risk-budget"><td class="highlight">风险预算</td><td>Risk Budget</td><td>愿意承受的最大亏损额度</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-risk-capacity"><td class="highlight">风险容量</td><td>Risk Capacity</td><td>能承受的最大总亏损</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-per-trade-risk"><td class="highlight">单笔风险</td><td>Per-Trade Risk</td><td>每笔交易最大亏损=总资金×1-2%</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-fixed-fractional"><td class="highlight">固定分数法</td><td>Fixed Fractional</td><td>每笔冒固定比例的风险</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-volatility-sizing"><td class="highlight">波动率仓位法</td><td>Volatility Sizing</td><td>根据ATR调整仓位大小</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-kelly-criterion"><td class="highlight">凯利公式</td><td>Kelly Criterion</td><td>f*=(bp-q)/b，最优仓位比例</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-half-kelly"><td class="highlight">半凯利</td><td>Half Kelly</td><td>凯利值÷2，保守版</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-anti-martingale"><td class="highlight">反马丁格尔</td><td>Anti-Martingale</td><td>盈利后加仓，趋势跟踪策略</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-pyramiding"><td class="highlight">金字塔加仓</td><td>Pyramiding</td><td>盈利后分批加仓，每次递减</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-circuit-breaker"><td class="highlight">熔断机制</td><td>Circuit Breaker</td><td>触及风险上限后强制停止交易</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-stop-loss-line"><td class="highlight">清盘线</td><td>Stop-Loss Line</td><td>回撤20%→全面停止交易</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-stress-test"><td class="highlight">压力测试</td><td>Stress Test</td><td>模拟极端场景下最大亏损</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-value-at-risk"><td class="highlight">VaR</td><td>Value at Risk</td><td>95%置信度下明天最多亏多少</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-correlation-breakdown"><td class="highlight">相关性崩溃</td><td>Correlation Breakdown</td><td>暴跌时所有资产同向下跌</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-expectancy"><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-r-multiple"><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险R为单位的盈亏</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-loss-aversion"><td class="highlight">损失厌恶</td><td>Loss Aversion</td><td>亏100的痛苦≈赚200的快乐</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-confirmation-bias"><td class="highlight">确认偏误</td><td>Confirmation Bias</td><td>只看支持自己观点的信息</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-anchoring"><td class="highlight">锚定效应</td><td>Anchoring</td><td>被第一个看到的数字锚定</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-sunk-cost"><td class="highlight">沉没成本</td><td>Sunk Cost</td><td>已投入的成本不应影响未来决策</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-revenge-trading"><td class="highlight">报复性交易</td><td>Revenge Trading</td><td>亏损后"赚回来"的心态</td><td><a class="term-ref" href="#ch13">第13章</a></td></tr>
+<tr id="term-fear-of-missing-out"><td class="highlight">FOMO</td><td>Fear of Missing Out</td><td>害怕错过→追高</td><td><a class="term-ref" href="#ch12">第12章</a></td></tr>
+<tr id="term-emotion-gauge"><td class="highlight">情绪温度计</td><td>Emotion Gauge</td><td>用颜色标记情绪状态的可视化工具</td><td><a class="term-ref" href="#ch11">第11章</a></td></tr>
+<tr id="term-mental-rehearsal"><td class="highlight">心理预演</td><td>Mental Rehearsal</td><td>开盘前预演各场景应对方案</td><td><a class="term-ref" href="#ch16">第16章</a></td></tr>
+<tr id="term-mindfulness"><td class="highlight">正念</td><td>Mindfulness</td><td>觉察情绪而不被情绪驱动</td><td><a class="term-ref" href="#ch17">第17章</a></td></tr>
+<tr id="term-process-oriented"><td class="highlight">过程导向</td><td>Process-Oriented</td><td>关注执行率而非盈亏</td><td><a class="term-ref" href="#ch18">第18章</a></td></tr>
+<tr id="term-execution-rate"><td class="highlight">执行率</td><td>Execution Rate</td><td>按规则执行的交易占比</td><td><a class="term-ref" href="#ch18">第18章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -6994,5 +7025,146 @@ function calcStress() {
     (total > position * 0.2 ? '<br><span style="color:var(--accent-light);">⚠️ 极端亏损超20%→需减仓或对冲</span>' : '');
 }
 </script>
+
+<script>
+function initCharts() {
+  if (typeof echarts === 'undefined') { setTimeout(initCharts, 500); return; }
+  const darkAxis = { axisLine: { lineStyle: { color: '#2A3040' } }, axisLabel: { color: '#A0A8B8' }, splitLine: { lineStyle: { color: '#1A1F28' } } };
+
+  // 图3-1：亏损回本不对称曲线
+  const c1 = document.getElementById('chart-loss-recovery');
+  if (c1 && c1.offsetParent !== null) {
+    const ch1 = echarts.init(c1);
+    const losses = [], recoveries = [];
+    for (let i = 0; i <= 90; i += 2) {
+      losses.push(-i);
+      recoveries.push(+(100 / (100 - i) * 100 - 100).toFixed(1));
+    }
+    ch1.setOption({
+      tooltip: { trigger: 'axis', formatter: function(p) { return '亏损' + p[0].value + '% → 需涨' + p[1].value + '%回本'; } },
+      legend: { data: ['亏损幅度', '回本所需涨幅'], textStyle: { color: '#A0A8B8' }, top: 5 },
+      grid: { left: '10%', right: '8%', top: '15%', bottom: '12%' },
+      xAxis: { type: 'category', data: losses.map(v => v + '%'), ...darkAxis, axisLabel: { color: '#A0A8B8', interval: 9 } },
+      yAxis: { type: 'value', name: '%', nameTextStyle: { color: '#A0A8B8' }, ...darkAxis, axisLabel: { formatter: '{value}%', color: '#A0A8B8' } },
+      series: [
+        { name: '亏损幅度', type: 'line', data: losses, lineStyle: { color: '#EF4444', width: 2 }, itemStyle: { color: '#EF4444' }, symbol: 'none', areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(239,68,68,0)' }, { offset: 1, color: 'rgba(239,68,68,0.3)' }] } } },
+        { name: '回本所需涨幅', type: 'line', data: recoveries, lineStyle: { color: '#F59E0B', width: 2 }, itemStyle: { color: '#F59E0B' }, symbol: 'none' }
+      ],
+      markLine: { silent: true, lineStyle: { color: '#EF4444', type: 'dashed' }, data: [{ xAxis: '25%' }, { xAxis: '50%' }], label: { color: '#EF4444', formatter: function(p) { return p.axisValue + '→' + (100/(100-parseInt(p.axisValue))*100-100).toFixed(0) + '%'; } } }
+    });
+    window.addEventListener('resize', () => ch1.resize());
+  }
+
+  // 图14-1：情绪温度计仪表盘
+  const c2 = document.getElementById('chart-emotion-gauge');
+  if (c2 && c2.offsetParent !== null) {
+    const ch2 = echarts.init(c2);
+    ch2.setOption({
+      series: [
+        {
+          type: 'gauge', center: ['25%', '55%'], radius: '35%',
+          min: 0, max: 4, splitNumber: 4, startAngle: 200, endAngle: -20,
+          axisLine: { lineStyle: { width: 15, color: [[0.25, '#22C55E'], [0.5, '#F59E0B'], [0.75, '#F97316'], [1, '#EF4444']] } },
+          axisTick: { show: false }, axisLabel: { color: '#A0A8B8', fontSize: 10, formatter: function(v) { return ['🟢','🟡','🟠','🔴'][v-1] || ''; } },
+          pointer: { show: false },
+          title: { offsetCenter: [0, '70%'], color: '#22C55E', fontSize: 14, fontWeight: 'bold' },
+          detail: { show: false },
+          data: [{ name: '冷静', value: 1 }]
+        },
+        {
+          type: 'gauge', center: ['50%', '55%'], radius: '35%',
+          min: 0, max: 4, splitNumber: 4, startAngle: 200, endAngle: -20,
+          axisLine: { lineStyle: { width: 15, color: [[0.25, '#22C55E'], [0.5, '#F59E0B'], [0.75, '#F97316'], [1, '#EF4444']] } },
+          axisTick: { show: false }, axisLabel: { color: '#A0A8B8', fontSize: 10, formatter: function(v) { return ['','🟢','🟡','🟠','🔴'][v] || ''; } },
+          pointer: { show: false },
+          title: { offsetCenter: [0, '70%'], color: '#F59E0B', fontSize: 14, fontWeight: 'bold' },
+          detail: { show: false },
+          data: [{ name: '犹豫', value: 2 }]
+        },
+        {
+          type: 'gauge', center: ['75%', '55%'], radius: '35%',
+          min: 0, max: 4, splitNumber: 4, startAngle: 200, endAngle: -20,
+          axisLine: { lineStyle: { width: 15, color: [[0.25, '#22C55E'], [0.5, '#F59E0B'], [0.75, '#F97316'], [1, '#EF4444']] } },
+          axisTick: { show: false }, axisLabel: { color: '#A0A8B8', fontSize: 10, formatter: function(v) { return ['','🟢','🟡','🟠','🔴'][v] || ''; } },
+          pointer: { show: false },
+          title: { offsetCenter: [0, '70%'], color: '#F97316', fontSize: 14, fontWeight: 'bold' },
+          detail: { show: false },
+          data: [{ name: '冲动', value: 3 }]
+        }
+      ],
+      graphic: [
+        { type: 'text', left: '25%', top: 82, style: { text: '正常交易', fill: '#22C55E', fontSize: 11, textAlign: 'center' } },
+        { type: 'text', left: '50%', top: 82, style: { text: '减半操作', fill: '#F59E0B', fontSize: 11, textAlign: 'center' } },
+        { type: 'text', left: '75%', top: 82, style: { text: '禁止开新仓', fill: '#EF4444', fontSize: 11, textAlign: 'center' } }
+      ]
+    });
+    window.addEventListener('resize', () => ch2.resize());
+  }
+
+  // 图20-1：成长四阶段路径图
+  const c3 = document.getElementById('chart-growth-stages');
+  if (c3 && c3.offsetParent !== null) {
+    const ch3 = echarts.init(c3);
+    ch3.setOption({
+      tooltip: { formatter: '{b}' },
+      series: [{
+        type: 'graph', layout: 'none', symbolSize: 80,
+        roam: false, label: { show: true, fontSize: 11, color: '#E8ECF1', fontWeight: 'bold', formatter: function(p) { return p.name; } },
+        edgeSymbol: ['none', 'arrow'], edgeSymbolSize: [0, 10],
+        data: [
+          { name: '阶段一\n不知道自己不懂', x: 50, y: 200, itemStyle: { color: '#EF4444' } },
+          { name: '阶段二\n知道自己不懂', x: 200, y: 80, itemStyle: { color: '#F59E0B' } },
+          { name: '阶段三\n知道且能做到', x: 380, y: 80, itemStyle: { color: '#3B82F6' } },
+          { name: '阶段四\n纪律成本能', x: 530, y: 200, itemStyle: { color: '#22C55E' } }
+        ],
+        links: [
+          { source: '阶段一\n不知道自己不懂', target: '阶段二\n知道自己不懂', lineStyle: { color: '#EF4444', width: 3 } },
+          { source: '阶段二\n知道自己不懂', target: '阶段三\n知道且能做到', lineStyle: { color: '#F59E0B', width: 3 } },
+          { source: '阶段三\n知道且能做到', target: '阶段四\n纪律成本能', lineStyle: { color: '#22C55E', width: 3 } }
+        ]
+      }],
+      graphic: [
+        { type: 'text', left: 10, top: 250, style: { text: '⚠ 最危险：满仓+杠杆+不止损', fill: '#EF4444', fontSize: 11 } },
+        { type: 'text', left: 150, top: 35, style: { text: '📈 痛苦期：1-2年，60%的人放弃', fill: '#F59E0B', fontSize: 11 } },
+        { type: 'text', left: 330, top: 35, style: { text: '🎯 疲劳期：刻意控制，消耗意志力', fill: '#3B82F6', fontSize: 11 } },
+        { type: 'text', left: 450, top: 250, style: { text: '🏆 纪律即本能', fill: '#22C55E', fontSize: 11 } }
+      ]
+    });
+    window.addEventListener('resize', () => ch3.resize());
+  }
+
+  // 图21-1：复利增长对比曲线
+  const c4 = document.getElementById('chart-compound-growth');
+  if (c4 && c4.offsetParent !== null) {
+    const ch4 = echarts.init(c4);
+    const years = [];
+    const r5 = [], r10 = [], r15 = [], r20 = [];
+    for (let i = 0; i <= 20; i++) {
+      years.push('第' + i + '年');
+      r5.push(+(100000 * Math.pow(1.05, i)).toFixed(0));
+      r10.push(+(100000 * Math.pow(1.10, i)).toFixed(0));
+      r15.push(+(100000 * Math.pow(1.15, i)).toFixed(0));
+      r20.push(+(100000 * Math.pow(1.20, i)).toFixed(0));
+    }
+    ch4.setOption({
+      tooltip: { trigger: 'axis', formatter: function(ps) { let s = ps[0].axisValue + '<br/>'; ps.forEach(p => { s += p.seriesName + ': ' + (p.value/10000).toFixed(1) + '万<br/>'; }); return s; } },
+      legend: { data: ['年化5%', '年化10%', '年化15%', '年化20%'], textStyle: { color: '#A0A8B8' }, top: 5 },
+      grid: { left: '10%', right: '4%', top: '15%', bottom: '12%' },
+      xAxis: { type: 'category', data: years, ...darkAxis, axisLabel: { color: '#A0A8B8', interval: 1 } },
+      yAxis: { type: 'value', name: '资产(元)', nameTextStyle: { color: '#A0A8B8' }, ...darkAxis, axisLabel: { color: '#A0A8B8', formatter: function(v) { return (v/10000).toFixed(0) + '万'; } } },
+      series: [
+        { name: '年化5%', type: 'line', data: r5, lineStyle: { color: '#6B7280', width: 1.5 }, itemStyle: { color: '#6B7280' }, symbol: 'none' },
+        { name: '年化10%', type: 'line', data: r10, lineStyle: { color: '#3B82F6', width: 2 }, itemStyle: { color: '#3B82F6' }, symbol: 'none' },
+        { name: '年化15%', type: 'line', data: r15, lineStyle: { color: '#22C55E', width: 2 }, itemStyle: { color: '#22C55E' }, symbol: 'none', areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(34,197,94,0.15)' }, { offset: 1, color: 'rgba(34,197,94,0)' }] } } },
+        { name: '年化20%', type: 'line', data: r20, lineStyle: { color: '#F59E0B', width: 2.5 }, itemStyle: { color: '#F59E0B' }, symbol: 'none', areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(245,158,11,0.1)' }, { offset: 1, color: 'rgba(245,158,11,0)' }] } } }
+      ]
+    });
+    window.addEventListener('resize', () => ch4.resize());
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() { setTimeout(initCharts, 800); });
+</script>
+
 </body>
 </html>

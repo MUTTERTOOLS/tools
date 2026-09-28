@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>财报与基本面投资手册 | Fundamentals 101</title>
-<script src="../../cdn/echarts/5.5.0/echarts.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js" defer></script>
 <style>
 :root {
   --bg-deep:#0B0E14;--bg-card:#141820;--bg-sidebar:#0F1219;--bg-hover:#1A2030;
@@ -311,7 +311,7 @@ a:hover{color:var(--accent);}
 <div class="path-section">
 <h4>🚀 快速上手（1-2小时）</h4>
 <ol>
-<li>第1章（为什么读财报）→ 第2章（三大报表速览）→ 第8章（商业模式与护城河）→ 第7章（杜邦分析）→ 附录A指标速查</li>
+<li>第1章（为什么读财报）→ 第2章（三大报表速览）→ 第8章（商业模式与护城河）→ 第7章（<a class="term-ref" href="#term-dupont-analysis">杜邦分析</a>）→ 附录A指标速查</li>
 </ol>
 </div>
 <div class="path-section">
@@ -323,7 +323,7 @@ a:hover{color:var(--accent);}
 <div class="path-section">
 <h4>⚡ 已有基础</h4>
 <ol>
-<li>第3-5章（科目深化）→ 第6章（勾稽关系）→ 第7章（杜邦分析）→ 第8-9章（商业模式+行业）→ 第10章（单季分析）→ 第16-19章（排雷）→ 第22-24章（预期差+实战+管理层）</li>
+<li>第3-5章（科目深化）→ 第6章（<a class="term-ref" href="#term-articulation">勾稽关系</a>）→ 第7章（杜邦分析）→ 第8-9章（商业模式+行业）→ 第10章（单季分析）→ 第16-19章（排雷）→ 第22-24章（<a class="term-ref" href="#term-expectation-gap">预期差</a>+实战+管理层）</li>
 </ol>
 </div>
 <div class="path-section">
@@ -444,7 +444,7 @@ a:hover{color:var(--accent);}
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>现金健康</div>
-<div class="ici-body">经营现金流、自由现金流——赚的是"纸上的"还是"真金白银"</div>
+<div class="ici-body">经营现金流、<a class="term-ref" href="#term-free-cash-flow">自由现金流</a>——赚的是"纸上的"还是"真金白银"</div>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>成长轨迹</div>
@@ -508,7 +508,7 @@ a:hover{color:var(--accent);}
 <div class="rule-title">第1章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>我想买一只股票时，<span class="action">我将先问自己：我对这家公司的假设是什么？然后用财报验证——如果财报不支持假设，不买。</span></div>
 <div class="rule-item"><span class="trigger">当</span>财报数据很好但股价下跌时，<span class="action">我不会认为"市场错了"，而是检查：市场预期是否已经计价（price in）？财报是"后视镜"，股价是"前灯"。</span></div>
-<div class="rule-item"><span class="trigger">当</span>我看到一份财报时，<span class="action">我将先看三个数字：扣非净利润、经营现金流净额、净资产——三个数字健康再深入分析，任何一个异常先进入排雷模式。</span></div>
+<div class="rule-item"><span class="trigger">当</span>我看到一份财报时，<span class="action">我将先看三个数字：<a class="term-ref" href="#term-recurring-ni">扣非净利润</a>、经营现金流净额、净资产——三个数字健康再深入分析，任何一个异常先进入排雷模式。</span></div>
 </div>
 
 <div class="practice-box">
@@ -651,7 +651,7 @@ a:hover{color:var(--accent);}
 <div class="section">
 <h3>2.6 权责发生制——理解"利润≠现金"的根基</h3>
 
-<p>权责发生制（Accrual Basis）：交易发生就确认收入和成本，<strong>不论现金是否到账</strong>。</p>
+<p><a class="term-ref" href="#term-accrual-basis">权责发生制</a>（Accrual Basis）：交易发生就确认收入和成本，<strong>不论现金是否到账</strong>。</p>
 
 <div class="callout callout-tip">
 <div class="callout-title">💡 通俗解释</div>
@@ -692,7 +692,7 @@ a:hover{color:var(--accent);}
 <div class="info-card ic-green">
 <div class="info-card-header">货币资金</div>
 <div class="info-card-title">最"硬"的资产</div>
-<div class="info-card-body"><p>现金和银行存款，没什么可争议的空间。但"存贷双高"（大量现金却大量借款）是红旗信号，详见第16章。</p></div>
+<div class="info-card-body"><p>现金和银行存款，没什么可争议的空间。但"<a class="term-ref" href="#term-high-cash-high-debt">存贷双高</a>"（大量现金却大量借款）是红旗信号，详见第16章。</p></div>
 </div>
 <div class="info-card ic-yellow">
 <div class="info-card-header">应收账款</div>
@@ -826,7 +826,7 @@ a:hover{color:var(--accent);}
 <div class="rule-box">
 <div class="rule-title">第3章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>应收账款增速远超营收增速+存货增速远超营收增速+经营现金流为负时，<span class="action">我将立刻进入排雷模式——这是"A股造假温床"信号，不排雷不买入。</span></div>
-<div class="rule-item"><span class="trigger">当</span>商誉/净资产 > 30%时，<span class="action">我将标记为"高危险区"，检查被并购方业绩承诺是否完成——一旦商誉减值可能吞噬全部利润。</span></div>
+<div class="rule-item"><span class="trigger">当</span>商誉/净资产 > 30%时，<span class="action">我将标记为"高危险区"，检查被并购方业绩承诺是否完成——一旦<a class="term-ref" href="#term-goodwill-impairment">商誉减值</a>可能吞噬全部利润。</span></div>
 <div class="rule-item"><span class="trigger">当</span>在建工程长期不转固（超过2年）时，<span class="action">我将追问：钱花到哪里了？项目为什么完不了？可能资金被挪用。</span></div>
 </div>
 
@@ -1879,7 +1879,7 @@ Q4单季 = 年报 - 三季报</p>
 
 <div class="callout callout-warn">
 <div class="callout-title">⚠️ ROE可以被杠杆放大</div>
-<p>ROE=ROA×权益乘数。如果一家公司ROE=20%但ROA只有3%=ROE主要靠高杠杆撑着。一旦去杠杆，ROE会迅速回落。<strong>高ROE+低ROA=杠杆撑的，不算真好</strong>。</p>
+<p>ROE=ROA×<a class="term-ref" href="#term-equity-multiplier">权益乘数</a>。如果一家公司ROE=20%但ROA只有3%=ROE主要靠高杠杆撑着。一旦去杠杆，ROE会迅速回落。<strong>高ROE+低ROA=杠杆撑的，不算真好</strong>。</p>
 </div>
 </div>
 
@@ -1893,7 +1893,7 @@ Q4单季 = 年报 - 三季报</p>
 <div class="info-card-body"><p>ROA=净利润/总资产——每1元资产赚多少。ROA排除了杠杆影响，比ROE更"真实"地反映资产使用效率。</p></div>
 </div>
 <div class="info-card ic-accent">
-<div class="info-card-header">ROIC</div>
+<div class="info-card-header"><a class="term-ref" href="#term-return-on-invested-capital">ROIC</a></div>
 <div class="info-card-title">投入资本回报率</div>
 <div class="info-card-body"><p>ROIC=税后经营利润/（净资产+有息负债）——投入资本的回报率，不受融资结构影响。ROIC>WACC=在创造价值；ROIC<WACC=在毁灭价值。</p></div>
 </div>
@@ -1925,6 +1925,12 @@ Q4单季 = 年报 - 三季报</p>
 <tr><td>杠杆撑</td><td>→</td><td>→</td><td>↑</td><td>靠加杠杆提升ROE=虚高 ⚠️</td></tr>
 </tbody>
 </table>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图12-1 杜邦分析：不同行业ROE拆解对比</div>
+<div class="chart-container" id="chart-dupont"></div>
 </div>
 
 <div class="rule-box">
@@ -2151,7 +2157,7 @@ Q4单季 = 年报 - 三季报</p>
 <div class="section">
 <h3>14.1 净现比——最重要的单一指标</h3>
 
-<p>净现比=经营现金流/净利润。这是衡量<strong>利润含金量最重要的单一指标</strong>。</p>
+<p><a class="term-ref" href="#term-cfo-ni-ratio">净现比</a>=经营现金流/净利润。这是衡量<strong>利润含金量最重要的单一指标</strong>。</p>
 
 <div class="info-grid cols-2">
 <div class="info-card ic-green">
@@ -2190,7 +2196,7 @@ Q4单季 = 年报 - 三季报</p>
 <div class="section">
 <h3>14.2 收现比——回款质量</h3>
 
-<p>收现比=销售收现/营收。它回答：<strong>每确认1元收入，实际收到多少现金？</strong></p>
+<p><a class="term-ref" href="#term-cash-sales-revenue">收现比</a>=销售收现/营收。它回答：<strong>每确认1元收入，实际收到多少现金？</strong></p>
 
 <div class="info-grid cols-2">
 <div class="info-card ic-green">
@@ -2291,6 +2297,12 @@ Q4单季 = 年报 - 三季报</p>
 <div class="flow-arrow">↓ 否</div>
 <div class="flow-node">第五种：虚增收入嫌疑 → 🚨 排除</div>
 </div>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图14-1 经营/投资/筹资现金流对比（典型健康企业）</div>
+<div class="chart-container" id="chart-cashflow-bars"></div>
 </div>
 
 <div class="rule-box">
@@ -2608,7 +2620,7 @@ Q4单季 = 年报 - 三季报</p>
 <div class="callout callout-key">
 <div class="callout-title">🔑 虚减成本的识别信号</div>
 <p>毛利率畸高于同业且无技术壁垒<br>
-资本化率异常（同行业10%，这家30%）<br>
+<a class="term-ref" href="#term-capitalization-rate">资本化率</a>异常（同行业10%，这家30%）<br>
 折旧年限比同行长很多<br>
 存货激增+毛利率异常上升（正常应下降）</p>
 </div>
@@ -2652,7 +2664,7 @@ Q4单季 = 年报 - 三季报</p>
 
 <div class="info-grid cols-2">
 <div class="info-card ic-yellow">
-<div class="info-card-header">明股实债</div>
+<div class="info-card-header"><a class="term-ref" href="#term-disguised-debt">明股实债</a></div>
 <div class="info-card-title">表面股权实际债权</div>
 <div class="info-card-body"><p>引入"战略投资者"但有固定回购条款——实际是借款，但不在负债端体现。</p></div>
 </div>
@@ -3548,6 +3560,12 @@ ARPU趋势上升 + CAC趋势下降 = 变现飞轮正在转起来</p>
 </div>
 </div>
 
+
+<div class="chart-box">
+<div class="chart-title">图20-1 四行业核心指标对比热力图</div>
+<div class="chart-container" id="chart-industry-heatmap"></div>
+</div>
+
 <div class="rule-box">
 <div class="rule-title">第20章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>我分析一家新公司时，<span class="action">我将先确认它属于哪个行业，然后调出该行业的核心指标清单——用对指标比算对数字更重要。</span></div>
@@ -4144,20 +4162,20 @@ ARPU趋势上升 + CAC趋势下降 = 变现飞轮正在转起来</p>
 <table class="data-table">
 <thead><tr><th>术语</th><th>英文</th><th>定义</th><th>章节</th></tr></thead>
 <tbody>
-<tr><td>权责发生制</td><td>Accrual Basis</td><td>交易发生即确认收入/成本，不论现金是否到账</td><td>第2章</td></tr>
-<tr><td>勾稽关系</td><td>Articulation</td><td>三张表之间的数据联动与交叉验证逻辑</td><td>第6章</td></tr>
-<tr><td>杜邦分析</td><td>DuPont Analysis</td><td>ROE=净利率×周转率×权益乘数</td><td>第7章</td></tr>
-<tr><td>净现比</td><td>CFO/NI Ratio</td><td>经营现金流/净利润，衡量利润含金量</td><td>第14章</td></tr>
-<tr><td>收现比</td><td>Cash Sales/Revenue</td><td>销售收现/营收，衡量回款效率</td><td>第14章</td></tr>
-<tr><td>自由现金流</td><td>Free Cash Flow</td><td>经营现金流-资本支出</td><td>第5章</td></tr>
-<tr><td>扣非净利润</td><td>Recurring NI</td><td>扣除非经常性损益后的净利润</td><td>第4章</td></tr>
-<tr><td>商誉减值</td><td>Goodwill Impairment</td><td>并购溢价对应的资产价值下降</td><td>第3章</td></tr>
-<tr><td>存贷双高</td><td>High Cash+High Debt</td><td>账上大量现金同时大量借款</td><td>第16章</td></tr>
-<tr><td>明股实债</td><td>Disguised Debt</td><td>表面是股权实际是债权</td><td>第17章</td></tr>
-<tr><td>预期差</td><td>Expectation Gap</td><td>市场预期vs实际数据的差距</td><td>第22章</td></tr>
-<tr><td>资本化率</td><td>Capitalization Rate</td><td>支出记为资产而非费用的比例</td><td>第17章</td></tr>
-<tr><td>权益乘数</td><td>Equity Multiplier</td><td>总资产/净资产，衡量杠杆水平</td><td>第7章</td></tr>
-<tr><td>ROIC</td><td>Return on Invested Capital</td><td>投入资本回报率</td><td>第12章</td></tr>
+<tr id="term-accrual-basis"><td>权责发生制</td><td>Accrual Basis</td><td>交易发生即确认收入/成本，不论现金是否到账</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-articulation"><td>勾稽关系</td><td>Articulation</td><td>三张表之间的数据联动与交叉验证逻辑</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-dupont-analysis"><td>杜邦分析</td><td>DuPont Analysis</td><td>ROE=净利率×周转率×权益乘数</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-cfo-ni-ratio"><td>净现比</td><td>CFO/NI Ratio</td><td>经营现金流/净利润，衡量利润含金量</td><td><a class="term-ref" href="#ch14">第14章</a></td></tr>
+<tr id="term-cash-sales-revenue"><td>收现比</td><td>Cash Sales/Revenue</td><td>销售收现/营收，衡量回款效率</td><td><a class="term-ref" href="#ch14">第14章</a></td></tr>
+<tr id="term-free-cash-flow"><td>自由现金流</td><td>Free Cash Flow</td><td>经营现金流-资本支出</td><td><a class="term-ref" href="#ch5">第5章</a></td></tr>
+<tr id="term-recurring-ni"><td>扣非净利润</td><td>Recurring NI</td><td>扣除非经常性损益后的净利润</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr id="term-goodwill-impairment"><td>商誉减值</td><td>Goodwill Impairment</td><td>并购溢价对应的资产价值下降</td><td><a class="term-ref" href="#ch3">第3章</a></td></tr>
+<tr id="term-high-cash-high-debt"><td>存贷双高</td><td>High Cash+High Debt</td><td>账上大量现金同时大量借款</td><td><a class="term-ref" href="#ch16">第16章</a></td></tr>
+<tr id="term-disguised-debt"><td>明股实债</td><td>Disguised Debt</td><td>表面是股权实际是债权</td><td><a class="term-ref" href="#ch17">第17章</a></td></tr>
+<tr id="term-expectation-gap"><td>预期差</td><td>Expectation Gap</td><td>市场预期vs实际数据的差距</td><td><a class="term-ref" href="#ch22">第22章</a></td></tr>
+<tr id="term-capitalization-rate"><td>资本化率</td><td>Capitalization Rate</td><td>支出记为资产而非费用的比例</td><td><a class="term-ref" href="#ch17">第17章</a></td></tr>
+<tr id="term-equity-multiplier"><td>权益乘数</td><td>Equity Multiplier</td><td>总资产/净资产，衡量杠杆水平</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-return-on-invested-capital"><td>ROIC</td><td>Return on Invested Capital</td><td>投入资本回报率</td><td><a class="term-ref" href="#ch12">第12章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -4399,6 +4417,56 @@ function initCharts() {
     });
     window.addEventListener('resize', () => ch2.resize());
   }
+
+
+  // === 新增图表：现金流三柱对比 ===
+  const c3 = document.getElementById('chart-cashflow-bars');
+  if (c3 && c3.offsetParent !== null) {
+    const ch3 = echarts.init(c3);
+    ch3.setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      legend: { data: ['经营活动', '投资活动', '筹资活动'], textStyle: { color: '#8B95A5' }, top: 5 },
+      grid: { left: '10%', right: '4%', top: '18%', bottom: '8%' },
+      xAxis: { type: 'category', data: ['2020', '2021', '2022', '2023', '2024'], axisLine: { lineStyle: { color: '#2A3142' } }, axisLabel: { color: '#8B95A5' } },
+      yAxis: { type: 'value', name: '亿元', nameTextStyle: { color: '#8B95A5' }, axisLine: { lineStyle: { color: '#2A3142' } }, splitLine: { lineStyle: { color: '#1A2030' } }, axisLabel: { color: '#8B95A5' } },
+      series: [
+        { name: '经营活动', type: 'bar', data: [100, 120, 150, 180, 200], itemStyle: { color: '#22C55E' } },
+        { name: '投资活动', type: 'bar', data: [-50, -60, -80, -100, -120], itemStyle: { color: '#3B82F6' } },
+        { name: '筹资活动', type: 'bar', data: [30, -20, 40, -30, 20], itemStyle: { color: '#F59E0B' } }
+      ]
+    });
+    window.addEventListener('resize', () => ch3.resize());
+  }
+
+  // === 新增图表：四行业指标热力图 ===
+  const c4 = document.getElementById('chart-industry-heatmap');
+  if (c4 && c4.offsetParent !== null) {
+    const ch4 = echarts.init(c4);
+    const industries = ['制造业', '零售业', '互联网', '金融业'];
+    const indicators = ['ROE', '毛利率', '资产周转率', '杠杆率', '增速', '现金流质量', '分红率'];
+    const heatData = [];
+    const values = [
+      [12, 25, 65, 50, 40, 70, 45],
+      [15, 30, 85, 60, 35, 60, 40],
+      [18, 55, 45, 30, 75, 80, 15],
+      [12, 60, 5, 90, 20, 50, 55]
+    ];
+    for (let i = 0; i < industries.length; i++) {
+      for (let j = 0; j < indicators.length; j++) {
+        heatData.push([j, i, values[i][j]]);
+      }
+    }
+    ch4.setOption({
+      tooltip: { formatter: function(p) { return industries[p.data[1]] + ' · ' + indicators[p.data[0]] + ': ' + p.data[2]; } },
+      grid: { left: '12%', right: '12%', top: '4%', bottom: '12%' },
+      xAxis: { type: 'category', data: indicators, axisLine: { lineStyle: { color: '#2A3142' } }, axisLabel: { color: '#8B95A5', fontSize: 11 } },
+      yAxis: { type: 'category', data: industries, axisLine: { lineStyle: { color: '#2A3142' } }, axisLabel: { color: '#8B95A5' } },
+      visualMap: { min: 0, max: 100, orient: 'horizontal', left: 'center', bottom: 0, inRange: { color: ['#1A3A2A', '#22C55E', '#86EFAC'] }, textStyle: { color: '#8B95A5' }, text: ['高', '低'] },
+      series: [{ type: 'heatmap', data: heatData, label: { show: true, color: '#E8ECF1', fontSize: 12 }, emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.5)' } } }]
+    });
+    window.addEventListener('resize', () => ch4.resize());
+  }
+
 }
 
 let chartsInitialized = false;

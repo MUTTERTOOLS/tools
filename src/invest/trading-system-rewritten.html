@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>交易系统与实战投资手册 · System 101</title>
+<title><a class="term-ref" href="#term-trading-system">交易系统</a>与实战投资手册 · System 101</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js" defer></script>
 <style>
 :root{--bg:#0B0E14;--bg2:#111520;--card:#141820;--card2:#1A2030;--border:#2A3040;--text-primary:#E8ECF4;--text-secondary:#A0A8B8;--text-muted:#6A7280;--accent:#0D9488;--accent-light:#14B8A6;--accent-dim:rgba(13,148,136,0.15);--accent-glow:rgba(13,148,136,0.3);--orange:#F59E0B;--yellow:#EAB308;--red:#EF4444;--green:#22C55E;--blue:#3B82F6;--cyan:#06B6D4;--font:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -226,6 +227,12 @@ strong{color:var(--text-primary);}
 /* === TERM REFERENCE LINKS（首现术语→附录E词条锚点） === */
 .term-ref { color:inherit; text-decoration:underline dotted var(--text-muted); text-underline-offset:3px; }
 .term-ref:hover { color:var(--accent); text-decoration-color:var(--accent); }
+
+/* Chart Box */
+.chart-box{margin:20px 0;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);}
+.chart-title{color:var(--text-secondary);font-size:12px;margin-bottom:8px;text-align:center;}
+.chart-container{width:100%;height:320px;}
+
 </style>
 </head>
 <body>
@@ -234,7 +241,7 @@ strong{color:var(--text-primary);}
 <div class="cover">
 <div class="cover-badge">SYSTEM 101</div>
 <h1>交易系统与实战<br><span>投资手册</span></h1>
-<p class="subtitle">从散件到闭环——把所有知识组装成一套可运行、可回测、可迭代的交易系统</p>
+<p class="subtitle">从散件到<a class="term-ref" href="#term-closed-loop">闭环</a>——把所有知识组装成一套可运行、可<a class="term-ref" href="#term-backtesting">回测</a>、可迭代的交易系统</p>
 <div class="cover-meta">
 <span>📘 6篇 · 21章 · 7附录</span>
 <span>🎯 强调色：青绿 #0D9488</span>
@@ -251,7 +258,7 @@ strong{color:var(--text-primary);}
 <div class="path-item"><span class="path-tag path-fast">快速上手</span>第1章（为什么需要系统）→ 第2章（系统全景）→ 第8章（标准模板）→ 附录A系统模板</div>
 <div class="path-item"><span class="path-tag path-full">系统学习</span>从第1章顺序读到第21章 → 附录A-G完整查漏补缺</div>
 <div class="path-item"><span class="path-tag path-opt">已有散件</span>第3-7章（六大组件设计）→ 第8章（组装）→ 第9-10章（回测）→ 第14-17章（实盘）→ 第20-21章（迭代与长期）</div>
-<div class="path-item"><span class="path-tag path-opt">已有系统想优化</span>第10章（评估指标）→ 第18-19章（误区与案例）→ 第20章（多系统并行）→ 附录C绩效自检</div>
+<div class="path-item"><span class="path-tag path-opt">已有系统想优化</span>第10章（评估指标）→ 第18-19章（误区与案例）→ 第20章（<a class="term-ref" href="#term-multi-system">多系统</a>并行）→ 附录C绩效自检</div>
 </div>
 </div>
 
@@ -326,7 +333,7 @@ strong{color:var(--text-primary);}
 
 <div class="callout callout-warn">
 <div class="callout-title">⚠️ 致命认知</div>
-<p>"我懂技术分析/基本面/宏观，所以我能赚钱"——这是散户最大的错觉。<strong>知识≠系统，散装知识不闭环等于没学</strong>。正期望值系统+0%执行率=确定亏损。</p>
+<p>"我懂技术分析/基本面/宏观，所以我能赚钱"——这是散户最大的错觉。<strong>知识≠系统，散装知识不闭环等于没学</strong>。正<a class="term-ref" href="#term-expectancy">期望值</a>系统+0%执行率=确定亏损。</p>
 </div>
 </div>
 
@@ -525,11 +532,11 @@ strong{color:var(--text-primary);}
 <div class="info-card-body"><p>每笔交易的平均预期盈亏。正期望值=长期盈利，负期望值=长期亏损。详见第10章。</p></div>
 </div>
 <div class="info-card ic-yellow">
-<div class="info-card-header">R倍数 R-Multiple</div>
+<div class="info-card-header"><a class="term-ref" href="#term-r-multiple">R倍数</a> R-Multiple</div>
 <div class="info-card-body"><p>以初始风险（入场价-止损价）为单位衡量盈亏。+2R=赚了2倍初始风险。详见第10章。</p></div>
 </div>
 <div class="info-card ic-red">
-<div class="info-card-header">最大回撤 Max Drawdown</div>
+<div class="info-card-header"><a class="term-ref" href="#term-max-drawdown">最大回撤</a> Max Drawdown</div>
 <div class="info-card-body"><p>账户从最高点到最低点的最大跌幅。衡量系统的风险水平。详见第10章。</p></div>
 </div>
 <div class="info-card ic-accent">
@@ -1137,7 +1144,7 @@ strong{color:var(--text-primary);}
     <h4>模式A：趋势回踩低吸</h4>
     <p><strong>核心思想：</strong>在上升趋势中，等股价回调到支撑位时买入。就像冲浪——浪在往前涌（趋势向上），等浪稍微回落时站上去（回踩低吸），然后顺着浪走。</p>
     <p><strong>适合人群：</strong>偏中线（持股1-4周），性格稳重的投资者。</p>
-    <p><strong>优势：</strong>买入价格相对低，止损空间小，盈亏比好。</p>
+    <p><strong>优势：</strong>买入价格相对低，止损空间小，<a class="term-ref" href="#term-risk-reward">盈亏比</a>好。</p>
     <p><strong>劣势：</strong>需要耐心等待回踩，有时趋势太强根本不给回踩机会。</p>
   </div>
   <div class="info-card ic-blue">
@@ -1677,12 +1684,12 @@ strong{color:var(--text-primary);}
 
 <h3>四、方法二：ATR仓位法——波动大的少买，波动小的多买</h3>
 
-<p>固定分数法有个问题：它只看止损距离，不看股票的波动性。两只止损距离相同的股票，一只每天波动2%，一只每天波动0.5%，你的持仓体验完全不同。ATR仓位法解决了这个问题。</p>
+<p>固定分数法有个问题：它只看止损距离，不看股票的波动性。两只止损距离相同的股票，一只每天波动2%，一只每天波动0.5%，你的持仓体验完全不同。<a class="term-ref" href="#term-volatility-sizing">ATR仓位</a>法解决了这个问题。</p>
 
 <div class="info-grid cols-2">
   <div class="info-card ic-blue">
     <h4>📏 什么是ATR？</h4>
-    <p>ATR（Average True Range，平均真实波幅）衡量股票的"平均每天波动多少"。就像天气预报中的"温差"——温差大的地方穿衣要留余地，温差小的地方可以精确穿搭。</p>
+    <p><a class="term-ref" href="#term-atr">ATR</a>（Average True Range，平均真实波幅）衡量股票的"平均每天波动多少"。就像天气预报中的"温差"——温差大的地方穿衣要留余地，温差小的地方可以精确穿搭。</p>
     <p>ATR的计算涉及：当日最高-最低、前收盘-当日最高、前收盘-当日最低，三者取最大值，再求14日平均值。</p>
     <p>你不需要自己算，所有行情软件都能直接显示ATR值。</p>
   </div>
@@ -1945,6 +1952,12 @@ strong{color:var(--text-primary);}
 
 <!-- ==================== 行动规则 ==================== -->
 
+
+<div class="chart-box">
+<div class="chart-title">图6-1 <a class="term-ref" href="#term-kelly-criterion">凯利公式</a>f*曲线——仓位与胜率/赔率的关系</div>
+<div class="chart-container" id="chart-kelly-curve"></div>
+</div>
+
 <div class="rule-box">
   <h4>📋 第6章 行动规则</h4>
   <div class="rule-item">
@@ -2030,7 +2043,7 @@ strong{color:var(--text-primary);}
 <!-- 固定比例止损 -->
 <h4>方法1：固定比例止损</h4>
 
-<p>最简单的止损方法：买入后下跌固定比例就止损。</p>
+<p>最简单的止损方法：买入后下跌<a class="term-ref" href="#term-fixed-fractional">固定比例</a>就止损。</p>
 
 <div class="info-grid cols-2">
   <div class="info-card ic-blue">
@@ -2523,7 +2536,7 @@ strong{color:var(--text-primary);}
   </div>
   <div class="info-card ic-red">
     <h4>字段5：出场条件（止损+止盈）</h4>
-    <p><strong>填写内容：</strong>止损触发条件、止盈触发条件、移动止损规则。</p>
+    <p><strong>填写内容：</strong>止损触发条件、止盈触发条件、<a class="term-ref" href="#term-trailing-stop">移动止损</a>规则。</p>
     <p><strong>填写指南：</strong>止损必须写在入场之前，不能事后补。止盈可以是一根均线、一个目标价位、或者移动止损跟踪。最忌讳的是"赚了就跑、亏了就扛"——这等于没有出场规则。</p>
     <p><strong>类比：</strong>开车系安全带——你不会因为"今天觉得不会出事"就不系。止损就是你的安全带。</p>
   </div>
@@ -3343,7 +3356,7 @@ strong{color:var(--text-primary);}
     <h4>原因5：过度优化导致过拟合</h4>
     <p><strong>机制：</strong>回测时反复调整参数，直到找到一组完美适配历史数据的参数。但这组参数只是"恰好"适配了历史，对未来没有预测力。</p>
     <p><strong>表现：</strong>回测的资金曲线非常平滑漂亮，但实盘第一笔就亏，且持续亏损。</p>
-    <p><strong>解决：</strong>用"样本外验证"——把回测数据分成两段，前70%用来开发和调参，后30%用来验证。如果后30%的表现和前70%差距很大，说明过拟合了。</p>
+    <p><strong>解决：</strong>用"<a class="term-ref" href="#term-out-of-sample">样本外</a>验证"——把回测数据分成两段，前70%用来开发和调参，后30%用来验证。如果后30%的表现和前70%差距很大，说明<a class="term-ref" href="#term-curve-fitting">过拟合</a>了。</p>
   </div>
   <div class="info-card ic-yellow">
     <h4>原因6：流动性问题</h4>
@@ -3890,6 +3903,22 @@ strong{color:var(--text-primary);}
     <p><strong>脉冲型：</strong>长期横盘偶尔暴赚——系统依赖少数极端交易，不稳定</p>
     <p><strong>温水煮青蛙型：</strong>缓慢但持续地阴跌——每笔小亏累积成大亏</p>
   </div>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图10-1 资金曲线与回撤曲线——系统表现的核心可视化</div>
+<div class="chart-container" id="chart-equity-drawdown"></div>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图10-2 系统评估雷达图——五维指标一览</div>
+<div class="chart-container" id="chart-system-radar"></div>
+</div>
+
+<div class="chart-box">
+<div class="chart-title">图10-3 月度收益分布直方图——系统收益的正态性检验</div>
+<div class="chart-container" id="chart-monthly-hist"></div>
 </div>
 
 <div class="rule-box">
@@ -5985,7 +6014,7 @@ strong{color:var(--text-primary);}
 </div><!-- end chapter -->
 
 <div class="chapter" id="ch16">
-<h2 class="chapter-title"><span class="ch-num">第16章</span>系统失效——什么时候该坚持，什么时候该改变</h2>
+<h2 class="chapter-title"><span class="ch-num">第16章</span><a class="term-ref" href="#term-system-failure">系统失效</a>——什么时候该坚持，什么时候该改变</h2>
 
 <div class="section">
 <h3>16.1 亏损了就该改系统吗——正常回撤 vs 系统失效</h3>
@@ -7245,7 +7274,7 @@ strong{color:var(--text-primary);}
     <p>注意：海龟不用固定目标价止盈。它"让利润奔跑"——只要趋势在，就持有；趋势结束才离场。这保证了它的盈亏比极高——一笔大趋势的利润可以覆盖多次小止损的亏损。</p>
   </div>
   <div class="info-card ic-blue">
-    <div class="ic-title">金字塔加仓</div>
+    <div class="ic-title"><a class="term-ref" href="#term-pyramiding">金字塔加仓</a></div>
     <p>海龟交易法允许在盈利后加仓：每上涨0.5×ATR加一个单位，最多加4个单位。</p>
     <p>加仓时，前面单位的止损同步上移，确保整体风险始终可控。</p>
     <p>这是"赢时加码"的典范——在盈利的方向上加仓，而不是在亏损方向上摊平。每加一次仓，都是在用"已经浮盈的钱"去博取更大的趋势——即使加仓后反转，止损也只是还回部分利润，不会伤到本金。</p>
@@ -8361,28 +8390,28 @@ strong{color:var(--text-primary);}
 <table class="data-table">
 <thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>章节</th></tr></thead>
 <tbody>
-<tr><td class="highlight">交易系统</td><td>Trading System</td><td>定义"买什么/何时买/买多少/何时卖/错了怎么办"的规则集</td><td>第1章</td></tr>
-<tr><td class="highlight">闭环</td><td>Closed Loop</td><td>执行→记录→复盘→优化→再执行</td><td>第2章</td></tr>
-<tr><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益=胜率×均盈-败率×均亏</td><td>第10章</td></tr>
-<tr><td class="highlight">盈亏比</td><td>Risk/Reward</td><td>平均盈利/平均亏损，系统要求≥2:1</td><td>第7章</td></tr>
-<tr><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险R为单位的盈亏衡量</td><td>第10章</td></tr>
-<tr><td class="highlight">利润因子</td><td>Profit Factor</td><td>总盈利/总亏损，>1.5可用，>2.0优秀</td><td>第10章</td></tr>
-<tr><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>资金曲线从峰值到谷底的最大跌幅</td><td>第10章</td></tr>
-<tr><td class="highlight">夏普比率</td><td>Sharpe Ratio</td><td>(年化收益-无风险利率)/年化波动</td><td>第10章</td></tr>
-<tr><td class="highlight">回测</td><td>Backtesting</td><td>用历史数据模拟系统表现</td><td>第9章</td></tr>
-<tr><td class="highlight">曲线拟合</td><td>Curve Fitting</td><td>参数过度优化以适应历史，实盘失效</td><td>第9章</td></tr>
-<tr><td class="highlight">样本外测试</td><td>Out-of-Sample</td><td>用回测未使用的数据验证系统</td><td>第9章</td></tr>
-<tr><td class="highlight">ATR</td><td>Average True Range</td><td>平均真实波幅，衡量波动率</td><td>第6章</td></tr>
-<tr><td class="highlight">移动止盈</td><td>Trailing Stop</td><td>盈利后止损线随价格上移</td><td>第7章</td></tr>
-<tr><td class="highlight">金字塔加仓</td><td>Pyramiding</td><td>盈利后加仓，每次递减</td><td>第6章</td></tr>
-<tr><td class="highlight">凯利公式</td><td>Kelly Criterion</td><td>f*=(bp-q)/b，最优仓位比例，实际用半凯利</td><td>第6章</td></tr>
-<tr><td class="highlight">固定分数法</td><td>Fixed Fractional</td><td>每笔冒固定比例的风险反推仓位</td><td>第6章</td></tr>
-<tr><td class="highlight">波动率仓位法</td><td>Volatility Sizing</td><td>根据ATR调整仓位大小</td><td>第6章</td></tr>
-<tr><td class="highlight">系统失效</td><td>System Failure</td><td>系统逻辑被市场变化证伪</td><td>第16章</td></tr>
-<tr><td class="highlight">系统半衰期</td><td>Half-Life</td><td>系统随市场变化衰减的速度</td><td>第17章</td></tr>
-<tr><td class="highlight">多系统并行</td><td>Multi-System</td><td>同时运行多套系统分散市场状态风险</td><td>第20章</td></tr>
-<tr><td class="highlight">马丁格尔</td><td>Martingale</td><td>亏损后加倍下注，长期必爆</td><td>第6章</td></tr>
-<tr><td class="highlight">反马丁格尔</td><td>Anti-Martingale</td><td>盈利后加仓，趋势跟踪策略</td><td>第6章</td></tr>
+<tr id="term-trading-system"><td class="highlight">交易系统</td><td>Trading System</td><td>定义"买什么/何时买/买多少/何时卖/错了怎么办"的规则集</td><td><a class="term-ref" href="#ch1">第1章</a></td></tr>
+<tr id="term-closed-loop"><td class="highlight">闭环</td><td>Closed Loop</td><td>执行→记录→复盘→优化→再执行</td><td><a class="term-ref" href="#ch2">第2章</a></td></tr>
+<tr id="term-expectancy"><td class="highlight">期望值</td><td>Expectancy</td><td>每笔交易的平均预期收益=胜率×均盈-败率×均亏</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-risk-reward"><td class="highlight">盈亏比</td><td>Risk/Reward</td><td>平均盈利/平均亏损，系统要求≥2:1</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-r-multiple"><td class="highlight">R倍数</td><td>R-Multiple</td><td>以初始风险R为单位的盈亏衡量</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-profit-factor"><td class="highlight">利润因子</td><td>Profit Factor</td><td>总盈利/总亏损，>1.5可用，>2.0优秀</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-max-drawdown"><td class="highlight">最大回撤</td><td>Max Drawdown</td><td>资金曲线从峰值到谷底的最大跌幅</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-sharpe-ratio"><td class="highlight">夏普比率</td><td>Sharpe Ratio</td><td>(年化收益-无风险利率)/年化波动</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-backtesting"><td class="highlight">回测</td><td>Backtesting</td><td>用历史数据模拟系统表现</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-curve-fitting"><td class="highlight">曲线拟合</td><td>Curve Fitting</td><td>参数过度优化以适应历史，实盘失效</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-out-of-sample"><td class="highlight">样本外测试</td><td>Out-of-Sample</td><td>用回测未使用的数据验证系统</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-atr"><td class="highlight">ATR</td><td>Average True Range</td><td>平均真实波幅：TR=max(H−L,|H−Cp|,|L−Cp|)的14日均值，衡量波动率</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-trailing-stop"><td class="highlight">移动止盈</td><td>Trailing Stop</td><td>盈利后止损线随价格上移</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-pyramiding"><td class="highlight">金字塔加仓</td><td>Pyramiding</td><td>盈利后加仓，每次递减</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-kelly-criterion"><td class="highlight">凯利公式</td><td>Kelly Criterion</td><td>f*=(bp-q)/b，最优仓位比例，实际用半凯利</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-fixed-fractional"><td class="highlight">固定分数法</td><td>Fixed Fractional</td><td>每笔冒固定比例的风险反推仓位</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-volatility-sizing"><td class="highlight">波动率仓位法</td><td>Volatility Sizing</td><td>根据ATR调整仓位大小</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-system-failure"><td class="highlight">系统失效</td><td>System Failure</td><td>系统逻辑被市场变化证伪</td><td><a class="term-ref" href="#ch16">第16章</a></td></tr>
+<tr id="term-half-life"><td class="highlight">系统半衰期</td><td>Half-Life</td><td>系统随市场变化衰减的速度</td><td><a class="term-ref" href="#ch17">第17章</a></td></tr>
+<tr id="term-multi-system"><td class="highlight">多系统并行</td><td>Multi-System</td><td>同时运行多套系统分散市场状态风险</td><td><a class="term-ref" href="#ch20">第20章</a></td></tr>
+<tr id="term-martingale"><td class="highlight">马丁格尔</td><td>Martingale</td><td>亏损后加倍下注，长期必爆</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-anti-martingale"><td class="highlight">反马丁格尔</td><td>Anti-Martingale</td><td>盈利后加仓，趋势跟踪策略</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -8601,5 +8630,130 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() { calcExpectancy(); }, 500);
 });
 </script>
+
+<script>
+function initCharts() {
+  if (typeof echarts === 'undefined') { setTimeout(initCharts, 500); return; }
+  const darkAxis = { axisLine: { lineStyle: { color: '#2A3040' } }, axisLabel: { color: '#A0A8B8' }, splitLine: { lineStyle: { color: '#1A2030' } } };
+
+  // 图6-1：凯利公式f*曲线
+  const c1 = document.getElementById('chart-kelly-curve');
+  if (c1 && c1.offsetParent !== null) {
+    const ch1 = echarts.init(c1);
+    const odds = [];
+    const kelly50 = [], kelly60 = [], kelly40 = [];
+    for (let r = 1; r <= 5; r += 0.1) {
+      odds.push(r.toFixed(1));
+      kelly50.push(Math.max(0, +(0.5 - (1-0.5)/r).toFixed(3)));
+      kelly60.push(Math.max(0, +(0.6 - (1-0.6)/r).toFixed(3)));
+      kelly40.push(Math.max(0, +(0.4 - (1-0.4)/r).toFixed(3)));
+    }
+    ch1.setOption({
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['胜率60%', '胜率50%', '胜率40%'], textStyle: { color: '#A0A8B8' }, top: 5 },
+      grid: { left: '10%', right: '4%', top: '15%', bottom: '12%' },
+      xAxis: { type: 'category', name: '赔率(R)', nameTextStyle: { color: '#A0A8B8' }, data: odds, ...darkAxis, axisLabel: { color: '#A0A8B8', interval: 9 } },
+      yAxis: { type: 'value', name: 'f*(最优仓位%)', nameTextStyle: { color: '#A0A8B8' }, max: 80, ...darkAxis },
+      series: [
+        { name: '胜率60%', type: 'line', data: kelly60, smooth: true, lineStyle: { color: '#22C55E', width: 2 }, itemStyle: { color: '#22C55E' }, symbol: 'none' },
+        { name: '胜率50%', type: 'line', data: kelly50, smooth: true, lineStyle: { color: '#F59E0B', width: 2 }, itemStyle: { color: '#F59E0B' }, symbol: 'none' },
+        { name: '胜率40%', type: 'line', data: kelly40, smooth: true, lineStyle: { color: '#EF4444', width: 2 }, itemStyle: { color: '#EF4444' }, symbol: 'none' }
+      ]
+    });
+    window.addEventListener('resize', () => ch1.resize());
+  }
+
+  // 图10-1：资金曲线与回撤曲线
+  const c2 = document.getElementById('chart-equity-drawdown');
+  if (c2 && c2.offsetParent !== null) {
+    const ch2 = echarts.init(c2);
+    const trades = 60;
+    const equity = [100000], dates = ['起点'];
+    let eq = 100000;
+    for (let i = 1; i <= trades; i++) {
+      const win = Math.random() > 0.45;
+      const r = win ? (1 + 0.02 * (1 + Math.random())) : (1 - 0.015 * (1 + Math.random()));
+      eq = Math.round(eq * r);
+      equity.push(eq);
+      dates.push('T' + i);
+    }
+    const peak = []; let pk = equity[0];
+    const drawdown = [];
+    for (let i = 0; i < equity.length; i++) {
+      pk = Math.max(pk, equity[i]);
+      peak.push(pk);
+      drawdown.push(+((equity[i] - pk) / pk * 100).toFixed(1));
+    }
+    ch2.setOption({
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['资金曲线', '回撤(%)'], textStyle: { color: '#A0A8B8' }, top: 5 },
+      grid: { left: '8%', right: '8%', top: '15%', bottom: '12%' },
+      xAxis: { type: 'category', data: dates, ...darkAxis, axisLabel: { color: '#A0A8B8', interval: 9 } },
+      yAxis: [
+        { type: 'value', name: '资金(元)', nameTextStyle: { color: '#A0A8B8' }, ...darkAxis },
+        { type: 'value', name: '回撤%', nameTextStyle: { color: '#A0A8B8' }, ...darkAxis, axisLabel: { formatter: '{value}%' } }
+      ],
+      series: [
+        { name: '资金曲线', type: 'line', data: equity, lineStyle: { color: '#22C55E', width: 2 }, itemStyle: { color: '#22C55E' }, symbol: 'none', areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(34,197,94,0.2)' }, { offset: 1, color: 'rgba(34,197,94,0)' }] } } },
+        { name: '回撤(%)', type: 'line', yAxisIndex: 1, data: drawdown, lineStyle: { color: '#EF4444', width: 1.5, type: 'dashed' }, itemStyle: { color: '#EF4444' }, symbol: 'none', areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(239,68,68,0)' }, { offset: 1, color: 'rgba(239,68,68,0.15)' }] } } }
+      ]
+    });
+    window.addEventListener('resize', () => ch2.resize());
+  }
+
+  // 图10-2：系统评估雷达图
+  const c3 = document.getElementById('chart-system-radar');
+  if (c3 && c3.offsetParent !== null) {
+    const ch3 = echarts.init(c3);
+    ch3.setOption({
+      tooltip: {},
+      radar: {
+        indicator: [
+          { name: '胜率', max: 100 }, { name: '盈亏比', max: 5 }, { name: '夏普比率', max: 4 },
+          { name: '回撤控制', max: 50 }, { name: '执行率', max: 100 }
+        ],
+        axisName: { color: '#A0A8B8' },
+        splitLine: { lineStyle: { color: '#2A3040' } },
+        splitArea: { areaStyle: { color: ['rgba(34,197,94,0.02)', 'rgba(34,197,94,0.05)'] } },
+        axisLine: { lineStyle: { color: '#2A3040' } }
+      },
+      series: [{
+        type: 'radar',
+        data: [
+          { value: [55, 2.0, 1.5, 32, 85], name: '你的系统', areaStyle: { color: 'rgba(34,197,94,0.2)' }, lineStyle: { color: '#22C55E' }, itemStyle: { color: '#22C55E' } },
+          { value: [45, 1.5, 0.8, 20, 60], name: '平均水平', areaStyle: { color: 'rgba(245,158,11,0.1)' }, lineStyle: { color: '#F59E0B', type: 'dashed' }, itemStyle: { color: '#F59E0B' } }
+        ]
+      }]
+    });
+    window.addEventListener('resize', () => ch3.resize());
+  }
+
+  // 图10-3：月度收益分布直方图
+  const c4 = document.getElementById('chart-monthly-hist');
+  if (c4 && c4.offsetParent !== null) {
+    const ch4 = echarts.init(c4);
+    const bins = ['<-5%', '-5~-3%', '-3~-1%', '-1~0%', '0~1%', '1~3%', '3~5%', '>5%'];
+    const freq = [2, 4, 8, 6, 7, 9, 5, 3];
+    ch4.setOption({
+      tooltip: { trigger: 'axis' },
+      grid: { left: '10%', right: '4%', top: '8%', bottom: '12%' },
+      xAxis: { type: 'category', data: bins, ...darkAxis, axisLabel: { color: '#A0A8B8', fontSize: 10 } },
+      yAxis: { type: 'value', name: '月数', nameTextStyle: { color: '#A0A8B8' }, ...darkAxis },
+      series: [{
+        type: 'bar', data: freq.map((v, i) => ({
+          value: v,
+          itemStyle: { color: i < 3 ? '#EF4444' : i === 3 ? '#F59E0B' : '#22C55E' }
+        })),
+        barWidth: '60%',
+        label: { show: true, position: 'top', color: '#A0A8B8', fontSize: 11 }
+      }]
+    });
+    window.addEventListener('resize', () => ch4.resize());
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() { setTimeout(initCharts, 800); });
+</script>
+
 </body>
 </html>

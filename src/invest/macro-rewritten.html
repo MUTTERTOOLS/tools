@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>宏观经济分析投资手册 | Macro 101</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js" defer></script>
 <style>
 :root {
   --bg-deep:#0B0E14;--bg-card:#141820;--bg-sidebar:#0F1219;--bg-hover:#1A2030;
@@ -160,6 +161,12 @@ a:hover{color:var(--accent);}
   .signal-grid{grid-template-columns:1fr;}
   .data-table{display:block;max-width:100%;overflow-x:auto;}
 }
+
+/* Chart Box */
+.chart-box{margin:20px 0;padding:16px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);}
+.chart-title{color:var(--text-secondary);font-size:12px;margin-bottom:8px;text-align:center;}
+.chart-container{width:100%;height:320px;}
+
 </style>
 </head>
 <body>
@@ -241,7 +248,7 @@ a:hover{color:var(--accent);}
 <ol>
 <li>第1章：为什么必须看宏观 → 建立直觉</li>
 <li>第2章：全景地图 + 术语速释 → 拿到工具箱</li>
-<li>第7章：美林时钟 → 最经典的宏观-资产框架</li>
+<li>第7章：<a class="term-ref" href="#term-merrill-lynch-clock">美林时钟</a> → 最经典的宏观-资产框架</li>
 <li>第11章：中国特色政策市 → A股的特殊逻辑</li>
 <li>第20章：宏观信号灯跟踪体系 → 立即可用</li>
 </ol>
@@ -401,10 +408,10 @@ a:hover{color:var(--accent);}
 <div class="info-card-title">经济在扩张还是收缩？</div>
 <div class="info-card-items">
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>GDP</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-gross-domestic-product">GDP</a></div>
 </div>
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>PMI</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-purchasing-managers-index">PMI</a></div>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>工业增加值</div>
@@ -416,10 +423,10 @@ a:hover{color:var(--accent);}
 <div class="info-card-title">通胀在升还是降？</div>
 <div class="info-card-items">
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>CPI</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-consumer-price-index">CPI</a></div>
 </div>
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>PPI</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-producer-price-index">PPI</a></div>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>核心CPI</div>
@@ -431,13 +438,13 @@ a:hover{color:var(--accent);}
 <div class="info-card-title">央行在放水还是收水？</div>
 <div class="info-card-items">
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>M2</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-broad-money-supply">M2</a></div>
 </div>
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>社融</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-total-social-financing">社融</a></div>
 </div>
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>LPR/降准降息</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-loan-prime-rate">LPR</a>/降准降息</div>
 </div>
 </div>
 </div>
@@ -446,10 +453,10 @@ a:hover{color:var(--accent);}
 <div class="info-card-title">政府在花钱还是省钱？</div>
 <div class="info-card-items">
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>赤字率</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-deficit-gdp-ratio">赤字率</a></div>
 </div>
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>专项债</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-special-purpose-bonds">专项债</a></div>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>基建投资</div>
@@ -461,10 +468,10 @@ a:hover{color:var(--accent);}
 <div class="info-card-title">海外是风还是浪？</div>
 <div class="info-card-items">
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>汇率</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-exchange-rate">汇率</a></div>
 </div>
 <div class="info-card-item">
-<div class="ici-title"><span class="ici-mark"></span>美联储</div>
+<div class="ici-title"><span class="ici-mark"></span><a class="term-ref" href="#term-federal-reserve">美联储</a></div>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>全球PMI</div>
@@ -701,6 +708,12 @@ a:hover{color:var(--accent);}
 </div>
 </div>
 
+
+<div class="chart-box">
+<div class="chart-title">图3-1 经济周期波形图——复苏→扩张→滞胀→衰退的循环</div>
+<div class="chart-container" id="chart-cycle-wave"></div>
+</div>
+
 <div class="rule-box">
 <div class="rule-title">第3章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>我做宏观分析时，<span class="action">我将先判断当前经济大概在周期的哪个阶段（复苏/过热/滞胀/衰退）——这决定大类资产配置方向。</span></div>
@@ -744,7 +757,7 @@ a:hover{color:var(--accent);}
 
 <div class="callout callout-warn">
 <div class="callout-title">⚠️ GDP的局限</div>
-<p>GDP告诉你"经济好不好"，但不告诉你"市场怎么想"。<strong>GDP超预期但市场不涨</strong>——说明预期已经price in了。<strong>GDP不及预期但市场不跌</strong>——说明悲观预期已充分反映。市场交易的是"预期差"，不是绝对值。</p>
+<p>GDP告诉你"经济好不好"，但不告诉你"市场怎么想"。<strong>GDP超预期但市场不涨</strong>——说明预期已经price in了。<strong>GDP不及预期但市场不跌</strong>——说明悲观预期已充分反映。市场交易的是"<a class="term-ref" href="#term-expectation-gap">预期差</a>"，不是绝对值。</p>
 </div>
 </div>
 
@@ -1329,6 +1342,12 @@ a:hover{color:var(--accent);}
 </div>
 </div>
 
+
+<div class="chart-box">
+<div class="chart-title">图7-1 美林投资时钟——经济周期与资产配置的经典框架</div>
+<div class="chart-container" id="chart-merrill-clock"></div>
+</div>
+
 <div class="rule-box">
 <div class="rule-title">第7章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>我判断经济处于复苏期时，<span class="action">我将满仓股票——超配金融、可选消费、科技成长——这是戴维斯双击的最佳窗口。</span></div>
@@ -1373,7 +1392,7 @@ a:hover{color:var(--accent);}
 </div>
 
 <div class="callout callout-key">
-<div class="callout-title">🔑 利率传导链</div>
+<div class="callout-title">🔑 <a class="term-ref" href="#term-rate-transmission">利率传导链</a></div>
 <p><strong>国债利率 → 企业债利率 → 银行贷款利率 → 企业融资成本 → 企业盈利 → 股价</strong>。10年期国债收益率是整条链的起点，它的变化决定了估值的方向。</p>
 </div>
 </div>
@@ -1436,7 +1455,7 @@ a:hover{color:var(--accent);}
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>对股市影响</div>
-<div class="ici-body">强利好——估值直接提升（贴现率下降）</div>
+<div class="ici-body">强利好——估值直接提升（<a class="term-ref" href="#term-discount-rate">贴现率</a>下降）</div>
 </div>
 </div>
 </div>
@@ -1724,7 +1743,7 @@ a:hover{color:var(--accent);}
 <div class="info-card-body"><p>建筑业+相关服务业就业人数超过5000万。地产下滑→失业率上升→消费萎缩。</p></div>
 </div>
 <div class="info-card ic-red">
-<div class="info-card-header">土地财政</div>
+<div class="info-card-header"><a class="term-ref" href="#term-land-finance">土地财政</a></div>
 <div class="info-card-body"><p>地方政府收入严重依赖土地出让金（占地方财政收入30-50%）。地产下滑→地方财政承压→基建投资受限。</p></div>
 </div>
 <div class="info-card ic-yellow">
@@ -2142,7 +2161,7 @@ a:hover{color:var(--accent);}
 <div class="info-card-body"><p>外资流入→买人民币→升值；外资流出→卖人民币→贬值。<strong>短期汇率主要看资本流动</strong>。</p></div>
 </div>
 <div class="info-card ic-yellow">
-<div class="info-card-header">中美利差</div>
+<div class="info-card-header"><a class="term-ref" href="#term-us-china-yield-spread">中美利差</a></div>
 <div class="info-card-body"><p>中国利率>美国→资本流入→升值；利差倒挂（美国利率>中国）→资本流出→贬值。</p></div>
 </div>
 <div class="info-card ic-red">
@@ -2566,7 +2585,7 @@ a:hover{color:var(--accent);}
 <div class="section">
 <h3>13.6 QE与QT——美联储资产负债表的"膨胀"与"收缩"</h3>
 
-<p>利率只是美联储工具箱的一部分。当利率降到零还不够时，美联储会动用<strong>量化宽松（QE）</strong>——直接在市场上大规模购买国债和MBS（抵押贷款支持证券），向金融体系注入流动性。反之，<strong>量化紧缩（QT）</strong>则是让到期的债券不续作，被动缩减资产负债表。</p>
+<p>利率只是美联储工具箱的一部分。当利率降到零还不够时，美联储会动用<strong>量化宽松（<a class="term-ref" href="#term-quantitative-easing">QE</a>）</strong>——直接在市场上大规模购买国债和MBS（抵押贷款支持证券），向金融体系注入流动性。反之，<strong>量化紧缩（QT）</strong>则是让到期的债券不续作，被动缩减资产负债表。</p>
 
 <div class="info-grid cols-2">
 <div class="info-card ic-green">
@@ -2717,6 +2736,12 @@ a:hover{color:var(--accent);}
 <div class="callout-title">🚨 缩减恐慌的核心逻辑</div>
 <p>市场不怕坏消息，怕<strong>意外</strong>。伯南克的暗示是"意外"——市场没准备好。之后每次美联储进入边际收紧期（哪怕只是缩减QE而非加息），都可能引发类似恐慌。<strong>对A股投资者而言：当美联储从"极度宽松"转向"边际收紧"时，即使还没有加息，也要提高警惕</strong>——边际变化比绝对水平更关键。</p>
 </div>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图13-1 美联储加息对A股的三条传导路径</div>
+<div class="chart-container" id="chart-rate-sankey"></div>
 </div>
 
 <div class="rule-box">
@@ -3060,6 +3085,12 @@ a:hover{color:var(--accent);}
 </div>
 </div>
 
+
+<div class="chart-box">
+<div class="chart-title">图14-1 猪周期曲线——能繁母猪存栏与猪价的反向关系</div>
+<div class="chart-container" id="chart-pig-cycle"></div>
+</div>
+
 <div class="rule-box">
 <div class="rule-title">第14章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>布伦特油价突破100美元/桶时，<span class="action">我将关注通胀风险——减仓航空/物流，增配石油开采/炼化，警惕央行收紧货币政策的可能。</span></div>
@@ -3347,7 +3378,7 @@ PMI上升1个月后回落=噪音<br>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>2007年下半年</div>
-<div class="ici-body">信用利差扩大</div>
+<div class="ici-body"><a class="term-ref" href="#term-credit-spread">信用利差</a>扩大</div>
 </div>
 <div class="info-card-item">
 <div class="ici-title"><span class="ici-mark"></span>2008年9月</div>
@@ -3807,6 +3838,12 @@ PMI上升1个月后回落=噪音<br>
 </div>
 </div>
 
+
+<div class="chart-box">
+<div class="chart-title">图18-1 宏观×估值四象限——不同组合下的最优资产配置</div>
+<div class="chart-container" id="chart-macro-quad"></div>
+</div>
+
 <div class="rule-box">
 <div class="rule-title">第19章 行动规则</div>
 <div class="rule-item"><span class="trigger">当</span>央行进入降息周期且估值在历史低位时，<span class="action">我将满仓——降息推升估值+估值有安全边际=最佳布局窗口。</span></div>
@@ -4057,6 +4094,12 @@ PMI上升1个月后回落=噪音<br>
 </div>
 </div>
 </div>
+</div>
+
+
+<div class="chart-box">
+<div class="chart-title">图19-1 宏观指标发布日历——每月重点跟踪节点</div>
+<div class="chart-container" id="chart-macro-calendar"></div>
 </div>
 
 <div class="rule-box">
@@ -4660,28 +4703,28 @@ PMI上升1个月后回落=噪音<br>
 <table class="data-table">
 <thead><tr><th>术语</th><th>英文</th><th>一句话定义</th><th>章节</th></tr></thead>
 <tbody>
-<tr><td>GDP</td><td>Gross Domestic Product</td><td>经济体一定时期内生产的全部最终产品和服务的总价值</td><td>第4章</td></tr>
-<tr><td>PMI</td><td>Purchasing Managers' Index</td><td>采购经理指数，>50扩张/<50收缩</td><td>第4章</td></tr>
-<tr><td>CPI</td><td>Consumer Price Index</td><td>居民消费价格指数，衡量物价涨跌</td><td>第6章</td></tr>
-<tr><td>PPI</td><td>Producer Price Index</td><td>工业品出厂价格指数，衡量上游成本变化</td><td>第6章</td></tr>
-<tr><td>M2</td><td>Broad Money Supply</td><td>广义货币供应量，"市场上有多少钱"</td><td>第8章</td></tr>
-<tr><td>社融</td><td>Total Social Financing</td><td>社会融资规模，实体经济从金融体系借的钱</td><td>第8章</td></tr>
-<tr><td>M1-M2剪刀差</td><td>M1-M2 Growth Spread</td><td>M1与M2增速之差，衡量资金活化程度</td><td>第8章</td></tr>
-<tr><td>LPR</td><td>Loan Prime Rate</td><td>贷款市场报价利率，银行贷款定价锚</td><td>第8章</td></tr>
-<tr><td>美林时钟</td><td>Merrill Lynch Clock</td><td>经济增速×通胀=四阶段资产配置框架</td><td>第7章</td></tr>
-<tr><td>QE</td><td>Quantitative Easing</td><td>量化宽松，央行直接购买资产注入流动性</td><td>第8章</td></tr>
-<tr><td>利率传导链</td><td>Rate Transmission</td><td>政策利率→LPR→贷款利率→融资成本→盈利→估值</td><td>第8章</td></tr>
-<tr><td>赤字率</td><td>Deficit/GDP Ratio</td><td>财政赤字占GDP比例，>3%为扩张</td><td>第9章</td></tr>
-<tr><td>专项债</td><td>Special Purpose Bonds</td><td>地方政府为特定项目发行的债券</td><td>第9章</td></tr>
-<tr><td>土地财政</td><td>Land Finance</td><td>地方政府依赖土地出让收入的模式</td><td>第10章</td></tr>
-<tr><td>汇率</td><td>Exchange Rate</td><td>一种货币兑换另一种货币的比率</td><td>第12章</td></tr>
-<tr><td>美联储</td><td>Federal Reserve</td><td>美国央行，全球最重要的央行</td><td>第13章</td></tr>
-<tr><td>中美利差</td><td>US-China Yield Spread</td><td>中美10年期国债收益率之差</td><td>第12-13章</td></tr>
-<tr><td>预期差</td><td>Expectation Gap</td><td>数据公布值与市场预期的差距</td><td>第15章</td></tr>
-<tr><td>逆周期调节</td><td>Countercyclical Policy</td><td>经济差时刺激、经济好时收紧的政策</td><td>第9章</td></tr>
-<tr><td>信用利差</td><td>Credit Spread</td><td>企业债与国债的收益率差，衡量信用松紧</td><td>第8章</td></tr>
-<tr><td>VIX</td><td>Volatility Index</td><td>恐慌指数，>30=市场恐慌</td><td>第13章</td></tr>
-<tr><td>贴现率</td><td>Discount Rate</td><td>无风险利率+风险溢价，决定估值中枢</td><td>第19章</td></tr>
+<tr id="term-gross-domestic-product"><td>GDP</td><td>Gross Domestic Product</td><td>经济体一定时期内生产的全部最终产品和服务的总价值</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr id="term-purchasing-managers-index"><td>PMI</td><td>Purchasing Managers' Index</td><td>采购经理指数，>50扩张/<50收缩</td><td><a class="term-ref" href="#ch4">第4章</a></td></tr>
+<tr id="term-consumer-price-index"><td>CPI</td><td>Consumer Price Index</td><td>居民消费价格指数，衡量物价涨跌</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-producer-price-index"><td>PPI</td><td>Producer Price Index</td><td>工业品出厂价格指数，衡量上游成本变化</td><td><a class="term-ref" href="#ch6">第6章</a></td></tr>
+<tr id="term-broad-money-supply"><td>M2</td><td>Broad Money Supply</td><td>广义货币供应量，"市场上有多少钱"</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-total-social-financing"><td>社融</td><td>Total Social Financing</td><td>社会融资规模，实体经济从金融体系借的钱</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-m1-m2-growth-spread"><td>M1-M2剪刀差</td><td>M1-M2 Growth Spread</td><td>M1与M2增速之差，衡量资金活化程度</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-loan-prime-rate"><td>LPR</td><td>Loan Prime Rate</td><td>贷款市场报价利率，银行贷款定价锚</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-merrill-lynch-clock"><td>美林时钟</td><td>Merrill Lynch Clock</td><td>经济增速×通胀=四阶段资产配置框架</td><td><a class="term-ref" href="#ch7">第7章</a></td></tr>
+<tr id="term-quantitative-easing"><td>QE</td><td>Quantitative Easing</td><td>量化宽松，央行直接购买资产注入流动性</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-rate-transmission"><td>利率传导链</td><td>Rate Transmission</td><td>政策利率→LPR→贷款利率→融资成本→盈利→估值</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-deficit-gdp-ratio"><td>赤字率</td><td>Deficit/GDP Ratio</td><td>财政赤字占GDP比例，>3%为扩张</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-special-purpose-bonds"><td>专项债</td><td>Special Purpose Bonds</td><td>地方政府为特定项目发行的债券</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-land-finance"><td>土地财政</td><td>Land Finance</td><td>地方政府依赖土地出让收入的模式</td><td><a class="term-ref" href="#ch10">第10章</a></td></tr>
+<tr id="term-exchange-rate"><td>汇率</td><td>Exchange Rate</td><td>一种货币兑换另一种货币的比率</td><td><a class="term-ref" href="#ch12">第12章</a></td></tr>
+<tr id="term-federal-reserve"><td>美联储</td><td>Federal Reserve</td><td>美国央行，全球最重要的央行</td><td><a class="term-ref" href="#ch13">第13章</a></td></tr>
+<tr id="term-us-china-yield-spread"><td>中美利差</td><td>US-China Yield Spread</td><td>中美10年期国债收益率之差</td><td>第12-13章</td></tr>
+<tr id="term-expectation-gap"><td>预期差</td><td>Expectation Gap</td><td>数据公布值与市场预期的差距</td><td><a class="term-ref" href="#ch15">第15章</a></td></tr>
+<tr id="term-countercyclical-policy"><td>逆周期调节</td><td>Countercyclical Policy</td><td>经济差时刺激、经济好时收紧的政策</td><td><a class="term-ref" href="#ch9">第9章</a></td></tr>
+<tr id="term-credit-spread"><td>信用利差</td><td>Credit Spread</td><td>企业债与国债的收益率差，衡量信用松紧</td><td><a class="term-ref" href="#ch8">第8章</a></td></tr>
+<tr id="term-volatility-index"><td>VIX</td><td>Volatility Index</td><td>恐慌指数，>30=市场恐慌</td><td><a class="term-ref" href="#ch13">第13章</a></td></tr>
+<tr id="term-discount-rate"><td>贴现率</td><td>Discount Rate</td><td>无风险利率+风险溢价，决定估值中枢</td><td><a class="term-ref" href="#ch19">第19章</a></td></tr>
 </tbody>
 </table>
 </div>
@@ -4844,5 +4887,211 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() { calcRatePE(); }, 500);
 });
 </script>
+
+<script>
+function initCharts() {
+  if (typeof echarts === 'undefined') { setTimeout(initCharts, 500); return; }
+  const darkAxis = { axisLine: { lineStyle: { color: '#2A3142' } }, axisLabel: { color: '#8B95A5' }, splitLine: { lineStyle: { color: '#1A2030' } } };
+
+  // 图3-1：经济周期波形图
+  const c1 = document.getElementById('chart-cycle-wave');
+  if (c1 && c1.offsetParent !== null) {
+    const ch1 = echarts.init(c1);
+    const years = [];
+    const gdp = [], cpi = [], rate = [];
+    for (let i = 0; i < 40; i++) {
+      years.push(2005 + i);
+      const cycle = Math.sin(i * Math.PI / 10);
+      const phase = ((i % 10) < 5) ? 1 : -1;
+      gdp.push(+(5.5 + 3 * cycle + (Math.random()-0.5)*0.5).toFixed(1));
+      cpi.push(+(2.5 + 2.5 * Math.sin(i * Math.PI / 10 + 1.2) + (Math.random()-0.5)*0.3).toFixed(1));
+      rate.push(+(3.0 + 1.5 * Math.sin(i * Math.PI / 10 + 2.0) + (Math.random()-0.5)*0.2).toFixed(1));
+    }
+    ch1.setOption({
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['GDP增速(%)', 'CPI(%)', '基准利率(%)'], textStyle: { color: '#8B95A5' }, top: 5 },
+      grid: { left: '8%', right: '4%', top: '15%', bottom: '12%' },
+      xAxis: { type: 'category', data: years, ...darkAxis },
+      yAxis: { type: 'value', name: '%', nameTextStyle: { color: '#8B95A5' }, ...darkAxis },
+      series: [
+        { name: 'GDP增速(%)', type: 'line', data: gdp, smooth: true, lineStyle: { color: '#22C55E', width: 2 }, itemStyle: { color: '#22C55E' }, symbol: 'none' },
+        { name: 'CPI(%)', type: 'line', data: cpi, smooth: true, lineStyle: { color: '#F59E0B', width: 2 }, itemStyle: { color: '#F59E0B' }, symbol: 'none' },
+        { name: '基准利率(%)', type: 'line', data: rate, smooth: true, lineStyle: { color: '#3B82F6', width: 2 }, itemStyle: { color: '#3B82F6' }, symbol: 'none' }
+      ],
+      visualMap: { show: false, dimension: 0, pieces: [
+        { lt: 5, color: '#22C55E' }, { gte: 5, lt: 10, color: '#22C55E' },
+        { gte: 10, lt: 15, color: '#F59E0B' }, { gte: 15, lt: 20, color: '#EF4444' },
+        { gte: 20, lt: 25, color: '#EF4444' }, { gte: 25, lt: 30, color: '#3B82F6' },
+        { gte: 30, lt: 35, color: '#3B82F6' }, { gte: 35, color: '#22C55E' }
+      ] }
+    });
+    window.addEventListener('resize', () => ch1.resize());
+  }
+
+  // 图7-1：美林投资时钟
+  const c2 = document.getElementById('chart-merrill-clock');
+  if (c2 && c2.offsetParent !== null) {
+    const ch2 = echarts.init(c2);
+    ch2.setOption({
+      tooltip: { formatter: '{b}' },
+      graphic: [{
+        type: 'circle', shape: { cx: 260, cy: 180, r: 150 }, style: { stroke: '#2A3142', lineWidth: 2, fill: 'none' }
+      }, {
+        type: 'circle', shape: { cx: 260, cy: 180, r: 3 }, style: { fill: '#8B95A5' }
+      }, {
+        type: 'text', left: 'center', top: 80, style: { text: '美林投资时钟', fill: '#E8ECF1', fontSize: 16, fontWeight: 'bold' }
+      }],
+      series: [{
+        type: 'graph', layout: 'circular', circular: { rotateLabel: true }, symbolSize: 70,
+        label: { show: true, fontSize: 11, color: '#E8ECF1', fontWeight: 'bold' },
+        edgeSymbol: ['none', 'arrow'], edgeSymbolSize: [0, 8], edgeLabel: { fontSize: 10, color: '#8B95A5' },
+        data: [
+          { name: '复苏期\n📈股票', x: 260, y: 30, itemStyle: { color: '#22C55E' } },
+          { name: '过热期\n⛽商品', x: 440, y: 180, itemStyle: { color: '#F59E0B' } },
+          { name: '滞胀期\n💰现金', x: 260, y: 330, itemStyle: { color: '#EF4444' } },
+          { name: '衰退期\n📜债券', x: 80, y: 180, itemStyle: { color: '#3B82F6' } }
+        ],
+        links: [
+          { source: '复苏期\n📈股票', target: '过热期\n⛽商品', label: { show: true, formatter: 'GDP↑CPI↑' } },
+          { source: '过热期\n⛽商品', target: '滞胀期\n💰现金', label: { show: true, formatter: 'GDP↓CPI↑' } },
+          { source: '滞胀期\n💰现金', target: '衰退期\n📜债券', label: { show: true, formatter: 'GDP↓CPI↓' } },
+          { source: '衰退期\n📜债券', target: '复苏期\n📈股票', label: { show: true, formatter: 'GDP↑CPI↓' } }
+        ],
+        lineStyle: { color: '#4B5563', width: 2, curveness: 0.2 }
+      }]
+    });
+    window.addEventListener('resize', () => ch2.resize());
+  }
+
+  // 图13-1：加息传导路径桑基图
+  const c3 = document.getElementById('chart-rate-sankey');
+  if (c3 && c3.offsetParent !== null) {
+    const ch3 = echarts.init(c3);
+    ch3.setOption({
+      tooltip: { trigger: 'item' },
+      series: [{
+        type: 'sankey', layout: 'none', emphasis: { focus: 'adjacency' },
+        lineStyle: { color: 'gradient', curveness: 0.5 },
+        label: { color: '#E8ECF1', fontSize: 12 },
+        data: [
+          { name: '美联储加息', itemStyle: { color: '#EF4444' } },
+          { name: '中美利差收窄', itemStyle: { color: '#F59E0B' } },
+          { name: '美元走强', itemStyle: { color: '#F59E0B' } },
+          { name: '全球风险偏好下降', itemStyle: { color: '#F59E0B' } },
+          { name: '北向资金流出', itemStyle: { color: '#3B82F6' } },
+          { name: '人民币贬值', itemStyle: { color: '#3B82F6' } },
+          { name: '外资减持A股', itemStyle: { color: '#3B82F6' } },
+          { name: '成长股杀估值', itemStyle: { color: '#EF4444' } },
+          { name: '人民币贬值压力', itemStyle: { color: '#F97316' } },
+          { name: 'A股承压', itemStyle: { color: '#EF4444' } }
+        ],
+        links: [
+          { source: '美联储加息', target: '中美利差收窄', value: 40 },
+          { source: '美联储加息', target: '美元走强', value: 35 },
+          { source: '美联储加息', target: '全球风险偏好下降', value: 25 },
+          { source: '中美利差收窄', target: '北向资金流出', value: 30 },
+          { source: '中美利差收窄', target: '人民币贬值', value: 20 },
+          { source: '美元走强', target: '人民币贬值', value: 25 },
+          { source: '美元走强', target: '人民币贬值压力', value: 20 },
+          { source: '全球风险偏好下降', target: '外资减持A股', value: 25 },
+          { source: '北向资金流出', target: 'A股承压', value: 30 },
+          { source: '人民币贬值', target: '成长股杀估值', value: 25 },
+          { source: '外资减持A股', target: '成长股杀估值', value: 20 },
+          { source: '成长股杀估值', target: 'A股承压', value: 35 },
+          { source: '人民币贬值压力', target: '成长股杀估值', value: 15 }
+        ]
+      }]
+    });
+    window.addEventListener('resize', () => ch3.resize());
+  }
+
+  // 图14-1：猪周期曲线图
+  const c4 = document.getElementById('chart-pig-cycle');
+  if (c4 && c4.offsetParent !== null) {
+    const ch4 = echarts.init(c4);
+    const months = [];
+    const pigPrice = [], sowStock = [];
+    for (let i = 0; i < 48; i++) {
+      const y = 2018 + Math.floor(i/12);
+      const m = (i%12)+1;
+      months.push(y + '/' + (m<10?'0':'') + m);
+      const cycle = Math.sin(i * Math.PI / 20);
+      pigPrice.push(+(15 + 15 * cycle + (Math.random()-0.5)*2).toFixed(1));
+      sowStock.push(+(3200 - 400 * cycle + (Math.random()-0.5)*50).toFixed(0));
+    }
+    ch4.setOption({
+      tooltip: { trigger: 'axis' },
+      legend: { data: ['猪肉价格(元/kg)', '能繁母猪存栏(万头)'], textStyle: { color: '#8B95A5' }, top: 5 },
+      grid: { left: '8%', right: '8%', top: '15%', bottom: '12%' },
+      xAxis: { type: 'category', data: months, axisLabel: { color: '#8B95A5', interval: 5, rotate: 30 }, axisLine: { lineStyle: { color: '#2A3142' } } },
+      yAxis: [
+        { type: 'value', name: '元/kg', nameTextStyle: { color: '#8B95A5' }, axisLabel: { color: '#8B95A5' }, axisLine: { lineStyle: { color: '#2A3142' } }, splitLine: { lineStyle: { color: '#1A2030' } } },
+        { type: 'value', name: '万头', nameTextStyle: { color: '#8B95A5' }, axisLabel: { color: '#8B95A5' }, axisLine: { lineStyle: { color: '#2A3142' } }, splitLine: { show: false } }
+      ],
+      series: [
+        { name: '猪肉价格(元/kg)', type: 'line', data: pigPrice, smooth: true, lineStyle: { color: '#EF4444', width: 2 }, itemStyle: { color: '#EF4444' }, symbol: 'none', areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(239,68,68,0.3)' }, { offset: 1, color: 'rgba(239,68,68,0)' }] } } },
+        { name: '能繁母猪存栏(万头)', type: 'line', yAxisIndex: 1, data: sowStock, smooth: true, lineStyle: { color: '#3B82F6', width: 2, type: 'dashed' }, itemStyle: { color: '#3B82F6' }, symbol: 'none' }
+      ]
+    });
+    window.addEventListener('resize', () => ch4.resize());
+  }
+
+  // 图18-1：宏观×估值四象限散点图
+  const c5 = document.getElementById('chart-macro-quad');
+  if (c5 && c5.offsetParent !== null) {
+    const ch5 = echarts.init(c5);
+    ch5.setOption({
+      tooltip: { formatter: function(p) { return p.data[3] + ': 宏观' + p.data[0] + ', 估值' + p.data[1]; } },
+      grid: { left: '12%', right: '8%', top: '8%', bottom: '12%' },
+      xAxis: { name: '宏观景气度 →', nameLocation: 'center', nameGap: 30, nameTextStyle: { color: '#E8ECF1', fontSize: 13 }, type: 'value', min: 0, max: 100, ...darkAxis },
+      yAxis: { name: '估值水平 →', nameLocation: 'center', nameGap: 40, nameTextStyle: { color: '#E8ECF1', fontSize: 13 }, type: 'value', min: 0, max: 100, ...darkAxis },
+      series: [
+        { type: 'scatter', data: [[20, 80, 80, '2018年初']], symbolSize: 14, itemStyle: { color: '#EF4444' }, label: { show: true, formatter: '{b}', color: '#E8ECF1', position: 'top' } },
+        { type: 'scatter', data: [[70, 25, 25, '2019年初']], symbolSize: 14, itemStyle: { color: '#22C55E' }, label: { show: true, formatter: '{b}', color: '#E8ECF1', position: 'top' } },
+        { type: 'scatter', data: [[85, 70, 70, '2021年初']], symbolSize: 14, itemStyle: { color: '#F59E0B' }, label: { show: true, formatter: '{b}', color: '#E8ECF1', position: 'top' } },
+        { type: 'scatter', data: [[30, 40, 40, '2022年底']], symbolSize: 14, itemStyle: { color: '#3B82F6' }, label: { show: true, formatter: '{b}', color: '#E8ECF1', position: 'top' } },
+        { type: 'scatter', data: [[55, 35, 35, '2024年中']], symbolSize: 14, itemStyle: { color: '#22C55E' }, label: { show: true, formatter: '{b}', color: '#E8ECF1', position: 'top' } }
+      ],
+      graphic: [
+        { type: 'text', left: '15%', top: '15%', style: { text: '股票+商品\n(高增长高估值)', fill: '#F59E0B', fontSize: 12 } },
+        { type: 'text', right: '15%', top: '15%', style: { text: '现金为主\n(低增长高估值)', fill: '#EF4444', fontSize: 12 } },
+        { type: 'text', left: '15%', bottom: '15%', style: { text: '股票+债券\n(高增长低估值)', fill: '#22C55E', fontSize: 12 } },
+        { type: 'text', right: '15%', bottom: '15%', style: { text: '债券为主\n(低增长低估值)', fill: '#3B82F6', fontSize: 12 } }
+      ],
+      markLine: { silent: true, lineStyle: { color: '#2A3142', type: 'dashed' }, data: [{ xAxis: 50 }, { yAxis: 50 }] }
+    });
+    window.addEventListener('resize', () => ch5.resize());
+  }
+
+  // 图19-1：宏观指标发布日历
+  const c6 = document.getElementById('chart-macro-calendar');
+  if (c6 && c6.offsetParent !== null) {
+    const ch6 = echarts.init(c6);
+    const data = [
+      [0,0,3,'PMI'],[0,2,2,'CPI/PPI'],[0,3,3,'M2/社融'],[0,4,2,'贸易数据'],[0,6,3,'LPR'],[0,8,2,'PMI'],[0,9,3,'CPI/PPI'],[0,10,3,'M2/社融'],[0,11,2,'中央经济工作会议'],
+      [1,0,3,'PMI'],[1,1,3,'CPI/PPI'],[1,1,2,'GDP'],[1,2,3,'M2/社融'],[1,2,2,'财政收支'],[1,3,2,'PMI'],[1,4,3,'CPI/PPI'],[1,5,3,'M2/社融'],[1,5,2,'LPR'],
+      [2,6,3,'PMI'],[2,7,2,'CPI/PPI'],[2,7,3,'美联储议息'],[2,8,3,'M2/社融'],[2,9,2,'PMI'],[2,10,3,'CPI/PPI'],[2,11,3,'中央政治局会议'],[2,12,2,'美联储议息']
+    ];
+    const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    const categories = ['经济指标', '金融指标', '政策/海外'];
+    ch6.setOption({
+      tooltip: { formatter: function(p) { return months[p.data[1]] + ' · ' + categories[p.data[0]] + ': ' + p.data[3]; } },
+      grid: { left: '12%', right: '4%', top: '4%', bottom: '8%' },
+      xAxis: { type: 'category', data: months, axisLine: { lineStyle: { color: '#2A3142' } }, axisLabel: { color: '#8B95A5' } },
+      yAxis: { type: 'category', data: categories, axisLine: { lineStyle: { color: '#2A3142' } }, axisLabel: { color: '#8B95A5' } },
+      series: [{
+        type: 'scatter', symbolSize: function(d) { return d[2] * 10; },
+        data: data,
+        itemStyle: { color: function(p) { return ['#22C55E','#3B82F6','#F59E0B'][p.data[0]]; } },
+        label: { show: true, formatter: function(p) { return p.data[3]; }, color: '#E8ECF1', fontSize: 9 }
+      }]
+    });
+    window.addEventListener('resize', () => ch6.resize());
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() { setTimeout(initCharts, 800); });
+</script>
+
 </body>
 </html>
