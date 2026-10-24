@@ -75,7 +75,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 /* === MAIN CONTENT === */
 #main { margin-left: var(--sidebar-w); min-height:100vh; }
-.container { max-width:880px; margin:0 auto; padding:40px 48px 120px; }
+.container { max-width:840px; margin:0 auto; padding:40px 48px 120px; }
 
 /* === COVER === */
 .cover {
@@ -156,7 +156,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 .reading-path .step-num.p1 { background:var(--blue-dim); color:var(--blue); border:1px solid var(--blue); }
 .reading-path .step-num.p2 { background:var(--purple-dim); color:var(--purple); border:1px solid var(--purple); }
 .reading-path .step-num.p3 { background:var(--green-dim); color:var(--green); border:1px solid var(--green); }
-.reading-path .step-text { font-size:14px; color:var(--text-secondary); line-height:1.6; }
+.reading-path .step-text { font-size:15px; color:var(--text-secondary); line-height:1.6; }
 .reading-path .step-text strong { color:var(--text-primary); }
 .reading-path .survival-notice {
   margin-top:20px; padding:16px 20px; border-radius:var(--radius-sm);
@@ -178,7 +178,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
   text-transform:uppercase; margin-bottom:8px;
 }
 .part-header h2 { font-size:28px; font-weight:800; line-height:1.3; margin-bottom:12px; }
-.part-header .part-goal { font-size:14px; color:var(--text-secondary); line-height:1.7; }
+.part-header .part-goal { font-size:15px; color:var(--text-secondary); line-height:1.7; }
 
 /* === CHAPTERS === */
 .chapter { margin:48px 0; scroll-margin-top:40px; }
@@ -196,9 +196,9 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
   display:flex; align-items:center; gap:8px;
 }
 .section h3::before { content:''; width:3px; height:20px; background:var(--accent); border-radius:2px; flex-shrink:0; }
-.section p { font-size:15px; color:var(--text-secondary); line-height:1.9; margin-bottom:14px; }
+.section p { font-size:16px; color:var(--text-secondary); line-height:1.9; margin-bottom:18px; }
 .section ul, .section ol { margin:12px 0; padding-left:24px; }
-.section li { font-size:14.5px; color:var(--text-secondary); line-height:1.8; margin-bottom:6px; }
+.section li { font-size:15.5px; color:var(--text-secondary); line-height:1.85; margin-bottom:8px; }
 .section li strong { color:var(--text-primary); }
 
 /* === CALLOUTS === */
@@ -217,19 +217,19 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 .callout-warn .callout-title { color:var(--yellow); }
 .callout-danger { background:var(--red-dim); border-color:var(--red); }
 .callout-danger .callout-title { color:var(--red); }
-.callout p, .callout ul, .callout ol { font-size:13.5px; color:var(--text-secondary); line-height:1.7; margin-bottom:6px; }
+.callout p, .callout ul, .callout ol { font-size:14.5px; color:var(--text-secondary); line-height:1.7; margin-bottom:6px; }
 .callout p:last-child { margin-bottom:0; }
 
 /* === 流程图（决策链） === */
 .flow-chart { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin:28px 0; }
 .flow-chart .flow-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:16px; text-align:center; }
-.flow-node { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px; font-size:13.5px; color:var(--text-secondary); text-align:center; line-height:1.7; }
+.flow-node { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px; font-size:14.5px; color:var(--text-secondary); text-align:center; line-height:1.7; }
 .flow-node strong { color:var(--text-primary); }
 .flow-arrow { text-align:center; color:var(--accent); font-size:14px; margin:8px 0; line-height:1.5; }
 .flow-split { display:flex; gap:12px; margin:8px 0 0; flex-wrap:wrap; }
 .flow-no { flex:1; min-width:220px; border:1px dashed rgba(239,68,68,0.4); background:var(--red-dim); border-radius:var(--radius-sm); padding:10px 12px; font-size:12.5px; color:var(--red); line-height:1.7; }
 .flow-no strong { font-weight:700; }
-.flow-final { border:1px solid var(--accent); background:var(--accent-dim); border-radius:var(--radius-sm); padding:14px 16px; font-size:13.5px; color:var(--text-primary); line-height:1.8; }
+.flow-final { border:1px solid var(--accent); background:var(--accent-dim); border-radius:var(--radius-sm); padding:14px 16px; font-size:14.5px; color:var(--text-primary); line-height:1.8; }
 .flow-final strong { color:var(--accent); }
 
 /* === RULE BOX === */
@@ -239,7 +239,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 }
 .rule-box .rule-title { font-size:12px; font-weight:700; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
 .rule-box .rule-item {
-  font-size:14px; color:var(--text-secondary); padding:8px 0;
+  font-size:15px; color:var(--text-secondary); padding:8px 0;
   border-bottom:1px solid var(--border); line-height:1.7;
 }
 .rule-box .rule-item:last-child { border-bottom:none; }
@@ -252,7 +252,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
   padding:24px; margin:28px 0; position:relative;
 }
 .chart-box .chart-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:12px; text-align:center; }
-.chart-box .chart-container { width:100%; height:360px; }
+.chart-box .chart-container { width:100%; height:420px; }
 
 /* === CHART TABS（图集：Tab切换，节省纵向空间） === */
 .chart-tabs { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); margin:28px 0; overflow:hidden; }
@@ -263,7 +263,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 .chart-tab-panel { display:none; padding:16px 16px 8px; }
 .chart-tab-panel.active { display:block; }
 .chart-tab-panel .chart-title { font-size:13px; font-weight:600; color:var(--text-muted); margin-bottom:8px; text-align:center; }
-.chart-tab-panel .chart-container { width:100%; height:320px; }
+.chart-tab-panel .chart-container { width:100%; height:460px; }
 
 /* === 附录B 迷你K线图例 === */
 .data-table td.mini-cell { width:64px; padding:4px 6px; }
@@ -318,8 +318,8 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
   display:flex; align-items:center; gap:8px; margin-bottom:12px;
   font-size:14px; font-weight:700; color:var(--accent);
 }
-.practice-box p { font-size:13.5px; color:var(--text-secondary); margin-bottom:8px; }
-.practice-box .checklist li { font-size:13px; }
+.practice-box p { font-size:14.5px; color:var(--text-secondary); margin-bottom:8px; }
+.practice-box .checklist li { font-size:14.5px; }
 
 /* === INFO CARDS（通用内容卡片系统） === */
 .info-grid {
@@ -1973,6 +1973,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
         <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-pin-bull')">看涨Pin Bar</button>
         <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-pin-bear')">看跌Pin Bar</button>
         <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-pin-perfect')">完美Pin Bar</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-pin-fail')">失败Pin Bar</button>
         <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-pin-entry')">入场逻辑</button>
       </div>
       <div class="chart-tab-panel active" id="panel-chart-pin-anatomy">
@@ -1990,6 +1991,10 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
       <div class="chart-tab-panel" id="panel-chart-pin-perfect">
         <div class="chart-title">完美Pin Bar</div>
         <div class="chart-container" id="chart-pin-perfect"></div>
+      </div>
+      <div class="chart-tab-panel" id="panel-chart-pin-fail">
+        <div class="chart-title">失败Pin Bar：下影被前K包含——拒绝无效，无确认即续跌</div>
+        <div class="chart-container" id="chart-pin-fail"></div>
       </div>
       <div class="chart-tab-panel" id="panel-chart-pin-entry">
         <div class="chart-title">入场逻辑</div>
@@ -2211,36 +2216,61 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
     <div class="chart-tabs">
       <div class="chart-tabs-bar">
-        <button class="chart-tab-btn active" onclick="switchChartTab(this, 'chart-cb-engulfing')">吞没线</button>
+        <button class="chart-tab-btn active" onclick="switchChartTab(this, 'chart-cb-eng-bull')">看涨吞没</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-eng-bear')">看跌吞没</button>
         <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-inside')">内包线</button>
-        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-piercing')">刺透形态</button>
-        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-star')">星形形态</button>
-        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-wm')">W/M底顶</button>
-        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-hns')">头肩形态</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-pierce')">刺透形态</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-cloud')">乌云盖顶</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-ms')">早晨之星</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-es')">黄昏之星</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-wbot')">双底W底</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-wtop')">双顶M顶</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-hs-top')">头肩顶</button>
+        <button class="chart-tab-btn" onclick="switchChartTab(this, 'chart-cb-hs-bot')">头肩底</button>
       </div>
-      <div class="chart-tab-panel active" id="panel-chart-cb-engulfing">
-        <div class="chart-title">吞没线</div>
-        <div class="chart-container" id="chart-cb-engulfing"></div>
+      <div class="chart-tab-panel active" id="panel-chart-cb-eng-bull">
+        <div class="chart-title">看涨吞没：下跌趋势中，阳线实体包裹前阴实体</div>
+        <div class="chart-container" id="chart-cb-eng-bull"></div>
+      </div>
+      <div class="chart-tab-panel" id="panel-chart-cb-eng-bear">
+        <div class="chart-title">看跌吞没：上涨趋势中，阴线实体包裹前阳实体</div>
+        <div class="chart-container" id="chart-cb-eng-bear"></div>
       </div>
       <div class="chart-tab-panel" id="panel-chart-cb-inside">
-        <div class="chart-title">内包线</div>
+        <div class="chart-title">内包线：子线被母线完全包裹——收敛，等突破</div>
         <div class="chart-container" id="chart-cb-inside"></div>
       </div>
-      <div class="chart-tab-panel" id="panel-chart-cb-piercing">
-        <div class="chart-title">刺透形态</div>
-        <div class="chart-container" id="chart-cb-piercing"></div>
+      <div class="chart-tab-panel" id="panel-chart-cb-pierce">
+        <div class="chart-title">刺透形态：跳空低开后阳线收进前阴实体过半</div>
+        <div class="chart-container" id="chart-cb-pierce"></div>
       </div>
-      <div class="chart-tab-panel" id="panel-chart-cb-star">
-        <div class="chart-title">星形形态</div>
-        <div class="chart-container" id="chart-cb-star"></div>
+      <div class="chart-tab-panel" id="panel-chart-cb-cloud">
+        <div class="chart-title">乌云盖顶：跳空高开后阴线收进前阳实体过半</div>
+        <div class="chart-container" id="chart-cb-cloud"></div>
       </div>
-      <div class="chart-tab-panel" id="panel-chart-cb-wm">
-        <div class="chart-title">W/M底顶</div>
-        <div class="chart-container" id="chart-cb-wm"></div>
+      <div class="chart-tab-panel" id="panel-chart-cb-ms">
+        <div class="chart-title">早晨之星：长阴→缩量星线→大阳收复过半</div>
+        <div class="chart-container" id="chart-cb-ms"></div>
       </div>
-      <div class="chart-tab-panel" id="panel-chart-cb-hns">
-        <div class="chart-title">头肩形态</div>
-        <div class="chart-container" id="chart-cb-hns"></div>
+      <div class="chart-tab-panel" id="panel-chart-cb-es">
+        <div class="chart-title">黄昏之星：长阳→缩量星线→大阴收复过半</div>
+        <div class="chart-container" id="chart-cb-es"></div>
+      </div>
+      <div class="chart-tab-panel" id="panel-chart-cb-wbot">
+        <div class="chart-title">双底（W底）：颈线突破+回踩确认才算成立</div>
+        <div class="chart-container" id="chart-cb-wbot"></div>
+      </div>
+      <div class="chart-tab-panel" id="panel-chart-cb-wtop">
+        <div class="chart-title">双顶（M顶）：颈线跌破+反抽受阻才算成立</div>
+        <div class="chart-container" id="chart-cb-wtop"></div>
+      </div>
+      <div class="chart-tab-panel" id="panel-chart-cb-hs-top">
+        <div class="chart-title">头肩顶：三个高点、两条肩、一条颈线、一个测量目标</div>
+        <div class="chart-container" id="chart-cb-hs-top"></div>
+      </div>
+      <div class="chart-tab-panel" id="panel-chart-cb-hs-bot">
+        <div class="chart-title">头肩底：头肩顶的镜像——放量突破颈线入场</div>
+        <div class="chart-container" id="chart-cb-hs-bot"></div>
       </div>
     </div>
 
@@ -5471,35 +5501,48 @@ function initCharts() {
     window.addEventListener('resize', () => ch1.resize());
   }
 
-  // Chart 2: Gap Types
+    // Chart 2: Gap Types
   const c2 = document.getElementById('chart-gap-types');
   if (c2 && c2.offsetParent !== null) {
     const ch2 = echarts.init(c2);
-    const gapK = [[50,51,49.5,51.5],[51,52,50.5,52.5],[52,51.5,51,52.5],[51.5,52.5,51.2,53],[54,55,53.8,55.5],[58,60,57.5,60.5],[60,61.5,59.5,62],[61.5,60.5,60,62],[60.5,61,59.8,61.5],[61,62.5,60.8,63],[64.5,65.5,64,66],[65.5,64.5,64,66],[64.5,65.2,64,65.5],[65.2,66,64.8,66.3],[67,67.5,66.5,68],[67.5,64.5,64,67.8],[64.5,63,62.5,65],[63,61.5,61,63.5],[61.5,60,59.5,62],[60,58.5,58,60.8]];
-    const dates = Array.from({length:20},(_,i)=>'T'+(i+1));
     ch2.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
-      grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
-      xAxis: { type: 'category', data: dates, axisLine:{lineStyle:{color:'#5A6478'}} },
-      yAxis: { type: 'value', splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
-      series: [{
-        type: 'candlestick', data: gapK, itemStyle: kStyle, barWidth: '60%',
-        markArea: {
-          silent: true,
-          data: [
-            [{ name:'普通缺口', xAxis:'T4', itemStyle:{color:'rgba(234,179,8,0.1)'} }, { xAxis:'T5' }],
-            [{ name:'突破缺口', xAxis:'T5', itemStyle:{color:'rgba(34,197,94,0.1)'} }, { xAxis:'T6' }],
-            [{ name:'持续缺口', xAxis:'T10', itemStyle:{color:'rgba(59,130,246,0.1)'} }, { xAxis:'T11' }],
-            [{ name:'衰竭缺口', xAxis:'T15', itemStyle:{color:'rgba(239,68,68,0.1)'} }, { xAxis:'T16' }]
-          ]
-        }
-      }]
+      grid: [
+        { left: '8%', right: '4%', top: '9%', bottom: '37%' },
+        { left: '8%', right: '4%', top: '68%', bottom: '14%' }
+      ],
+      xAxis: [
+        { type: 'category', data: Array.from({length:28},(_,i)=>'T'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'category', data: Array.from({length:28},(_,i)=>'T'+(i+1)), gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} }
+      ],
+      yAxis: [
+        { type: 'value', gridIndex:0, scale:true, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'value', gridIndex:1, splitLine:{show:false}, axisLine:{lineStyle:{color:'#5A6478'}} }
+      ],
+      series: [
+        {
+          type: 'candlestick', data: [[50.5,51.2,50.0,51.8],[51.2,51.8,50.8,52.2],[51.8,52.4,51.4,52.8],[53.0,53.6,52.8,54.0],[53.2,53.0,52.9,53.7],[52.8,52.5,52.2,53.1],[52.4,52.7,52.1,53.0],[52.6,53.0,52.3,53.3],[53.1,53.4,52.9,53.6],[55.5,56.5,55.2,56.9],[56.5,57.2,56.1,57.6],[57.2,58.0,56.9,58.4],[58.0,58.6,57.7,59.0],[58.5,59.0,58.2,59.3],[59.0,59.5,58.7,59.8],[61.5,62.2,61.2,62.6],[62.2,62.8,61.9,63.1],[62.8,63.4,62.5,63.7],[63.5,64.0,63.2,64.3],[64.0,64.4,63.7,64.7],[66.5,66.8,66.2,67.1],[66.6,66.0,65.8,67.0],[65.5,64.5,64.2,65.9],[63.8,62.5,62.2,64.1],[62.0,60.5,60.0,62.3],[60.0,58.5,58.0,60.3],[58.3,56.8,56.3,58.6],[56.5,55.0,54.6,56.8]], itemStyle: kStyle, barWidth: '55%',
+          xAxisIndex: 0, yAxisIndex: 0,
+          markArea: { silent: true, data: [
+            [{ name:'① 普通缺口', xAxis:'T4', yAxis:54.5, itemStyle:{color:'rgba(139,149,165,0.12)'} }, { xAxis:'T7', yAxis:52.0 }],
+            [{ name:'② 突破缺口', xAxis:'T10', yAxis:59.8, itemStyle:{color:'rgba(34,197,94,0.12)'} }, { xAxis:'T13', yAxis:54.8 }],
+            [{ name:'③ 测量缺口', xAxis:'T16', yAxis:64.5, itemStyle:{color:'rgba(59,130,246,0.12)'} }, { xAxis:'T19', yAxis:59.6 }],
+            [{ name:'④ 衰竭缺口', xAxis:'T21', yAxis:67.6, itemStyle:{color:'rgba(239,68,68,0.15)'} }, { xAxis:'T24', yAxis:64.0 }]
+          ]},
+          markPoint: { symbol:'circle', symbolSize:1, data: [
+            { coord:['T4',54.2], name:'跳空不补：普通缺口（盘整内，2-3根回补）', label:{show:true,position:'top',color:'#8B95A5',fontSize:10,fontWeight:600} },
+            { coord:['T10',56.9], name:'放量跳空：突破缺口（不回补）', label:{show:true,position:'top',color:'#22C55E',fontSize:10,fontWeight:600} },
+            { coord:['T16',62.6], name:'趋势中段跳空：测量缺口（量度升幅）', label:{show:true,position:'top',color:'#3B82F6',fontSize:10,fontWeight:600} },
+            { coord:['T21',67.1], name:'天量滞涨：衰竭缺口（立即回补→反转）', label:{show:true,position:'top',color:'#EF4444',fontSize:10,fontWeight:600} }
+          ]}
+        },
+        { type:'bar', data: [{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:15,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:16,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:35,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:85,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:86,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:37,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:91,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:29,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:38,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:32,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:89,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:90,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:91,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:33,itemStyle:{color:'rgba(139,149,165,0.40)'}}], xAxisIndex:1, yAxisIndex:1, barWidth:'55%' }
+      ]
     });
     window.addEventListener('resize', () => ch2.resize());
   }
-
-  // Chart 3: Impulse vs Corrective Waves
+// Chart 3: Impulse vs Corrective Waves
   const cImpulse = document.getElementById('chart-impulse-corrective');
   if (cImpulse && cImpulse.offsetParent !== null) {
     const impulseChart = echarts.init(cImpulse);
@@ -5523,111 +5566,149 @@ function initCharts() {
     window.addEventListener('resize', () => impulseChart.resize());
   }
 
-  // Chart 4: Supply/Demand Zones
+    // Chart 4: Supply/Demand Zones
   const c3 = document.getElementById('chart-supply-demand');
   if (c3 && c3.offsetParent !== null) {
     const ch3 = echarts.init(c3);
-    const sdCloses = [45, 48, 46, 50, 53, 51, 48, 44, 42, 43, 46, 50, 55, 58, 56, 52, 48, 45, 43, 42, 44, 48, 52, 56, 60];
-    const sdData = sdCloses.map((c,i)=>{ const o=i?sdCloses[i-1]:44.5; return [o,c,Math.min(o,c)-0.4,Math.max(o,c)+0.4]; });
     ch3.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
-      grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
-      xAxis: { type: 'category', data: Array.from({length:25},(_,i)=>'D'+(i+1)), axisLine:{lineStyle:{color:'#5A6478'}} },
-      yAxis: { type: 'value', min: 38, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
-      series: [{
-        type: 'candlestick', data: sdData, itemStyle: kStyle, barWidth: '60%',
-        markArea: {
-          silent: true,
-          data: [
-            [{ name:'供应区', yAxis:53, itemStyle:{color:'rgba(239,68,68,0.15)'} }, { yAxis:58 }],
-            [{ name:'需求区', yAxis:42, itemStyle:{color:'rgba(34,197,94,0.15)'} }, { yAxis:46 }]
-          ]
-        }
-      }]
+      grid: [
+        { left: '8%', right: '4%', top: '9%', bottom: '37%' },
+        { left: '8%', right: '4%', top: '68%', bottom: '14%' }
+      ],
+      xAxis: [
+        { type: 'category', data: Array.from({length:31},(_,i)=>'D'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'category', data: Array.from({length:31},(_,i)=>'D'+(i+1)), gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} }
+      ],
+      yAxis: [
+        { type: 'value', gridIndex:0, scale:true, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'value', gridIndex:1, splitLine:{show:false}, axisLine:{lineStyle:{color:'#5A6478'}} }
+      ],
+      series: [
+        {
+          type: 'candlestick', data: [[42.0,44.22,41.6,44.62],[44.22,46.45,43.82,46.85],[46.45,47.12,46.05,47.52],[47.12,49.44,46.72,49.84],[49.44,51.57,49.04,51.97],[51.57,52.25,51.17,52.65],[52.25,54.5,51.85,54.9],[54.5,56.5,54.1,56.9],[56.5,55.0,54.6,56.9],[55.0,57.5,54.6,57.9],[57.5,56.0,55.6,57.9],[56.0,54.5,54.1,56.4],[54.5,50.85,50.45,58.2],[50.85,50.38,49.98,51.25],[50.38,47.83,47.43,50.78],[47.83,47.49,47.09,48.23],[47.49,46.89,46.49,47.89],[46.89,44.36,43.96,47.29],[44.36,44.13,43.73,44.76],[44.13,42.8,42.0,45.0],[42.8,43.5,42.4,43.9],[43.5,44.5,42.5,45.2],[44.5,47.88,44.1,48.28],[47.88,50.03,47.48,50.43],[50.03,49.84,49.44,50.43],[49.84,52.13,49.44,52.53],[52.13,54.12,51.73,54.52],[54.12,53.95,53.55,54.52],[53.95,56.37,53.55,56.77],[56.37,58.21,55.97,58.61],[58.21,58.07,55.5,59.8]], itemStyle: kStyle, barWidth: '55%',
+          xAxisIndex: 0, yAxisIndex: 0,
+          markArea: { silent: true, data: [
+            [{ name:'供应区：放量冲高后滞涨', xAxis:'D7', yAxis:53.5, itemStyle:{color:'rgba(239,68,68,0.15)'} }, { xAxis:'D13', yAxis:58.5 }],
+            [{ name:'需求区：缩量测试后反弹', xAxis:'D19', yAxis:41.8, itemStyle:{color:'rgba(34,197,94,0.15)'} }, { xAxis:'D23', yAxis:45.5 }]
+          ]},
+          markPoint: { symbol:'circle', symbolSize:1, data: [
+            { coord:['D8',58.5], name:'放量冲高（机构卖）', label:{show:true,position:'top',color:'#EF4444',fontSize:10,fontWeight:600} },
+            { coord:['D21',41.8], name:'缩量回踩需求区→入场', label:{show:true,position:'bottom',color:'#22C55E',fontSize:10,fontWeight:600} },
+            { coord:['D31',59.8], name:'回到供应区→关注受阻', label:{show:true,position:'top',color:'#F97316',fontSize:10,fontWeight:600} }
+          ]}
+        },
+        { type:'bar', data: [{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:32,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:38,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:91,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:92,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:93,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:88,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:89,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:90,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:34,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:29,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:38,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:14,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:92,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:93,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:33,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:38,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:28,itemStyle:{color:'rgba(139,149,165,0.40)'}}], xAxisIndex:1, yAxisIndex:1, barWidth:'55%' }
+      ]
     });
     window.addEventListener('resize', () => ch3.resize());
   }
-
-  // Chart 5: Fibonacci
+// Chart 5: Fibonacci
   const c4 = document.getElementById('chart-fibonacci');
   if (c4 && c4.offsetParent !== null) {
     const ch4 = echarts.init(c4);
-    const fibCloses = [103,106,110,114,115,113,110,107.5,105.8,107,109.5,112];
-    const fibData = fibCloses.map((c,i)=>{ const o=i?fibCloses[i-1]:100; return [o,c,Math.min(o,c)-0.3,Math.max(o,c)+0.3]; });
-    fibData[4][3] = 115.5;   // 波段高点
-    fibData[8][2] = 105.4;   // 回调触及61.8%位
     ch4.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
-      grid: { left: '8%', right: '4%', top: '10%', bottom: '15%' },
-      xAxis: { type: 'category', data: Array.from({length:12},(_,i)=>'D'+(i+1)), axisLine:{lineStyle:{color:'#5A6478'}} },
-      yAxis: { type: 'value', min: 98, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
-      series: [{
-        type: 'candlestick', data: fibData, itemStyle: kStyle, barWidth: '60%',
-        markLine: {
-          data: [
-            { yAxis: 115, name:'波段高点', lineStyle:{color:'#EF4444',type:'dashed'}, label:{color:'#EF4444',fontSize:10} },
-            { yAxis: 109.3, name:'38.2%', lineStyle:{color:'#22C55E',type:'dashed'}, label:{color:'#22C55E',fontSize:10} },
-            { yAxis: 107.5, name:'50%', lineStyle:{color:'#3B82F6',type:'dashed'}, label:{color:'#3B82F6',fontSize:10} },
-            { yAxis: 105.7, name:'61.8%', lineStyle:{color:'#A855F7',type:'dashed'}, label:{color:'#A855F7',fontSize:10} },
-            { yAxis: 100, name:'波段起点', lineStyle:{color:'#8B95A5',type:'dashed'}, label:{color:'#8B95A5',fontSize:10} }
-          ]
+      grid: [
+        { left: '8%', right: '4%', top: '9%', bottom: '37%' },
+        { left: '8%', right: '4%', top: '68%', bottom: '14%' }
+      ],
+      xAxis: [
+        { type: 'category', data: Array.from({length:27},(_,i)=>'D'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'category', data: Array.from({length:27},(_,i)=>'D'+(i+1)), gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} }
+      ],
+      yAxis: [
+        { type: 'value', gridIndex:0, scale:true, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'value', gridIndex:1, splitLine:{show:false}, axisLine:{lineStyle:{color:'#5A6478'}} }
+      ],
+      series: [
+        {
+          type: 'candlestick', data: [[100.0,101.65,99.6,102.05],[101.65,103.4,101.25,103.8],[103.4,103.33,102.93,103.8],[103.33,105.19,102.93,105.59],[105.19,106.82,104.79,107.22],[106.82,106.76,106.36,107.22],[106.76,108.72,106.36,109.12],[108.72,110.23,108.32,110.63],[110.23,110.2,109.8,110.63],[110.2,112.25,109.8,112.65],[112.25,113.63,111.85,114.03],[113.63,113.64,112.0,115.8],[113.64,113.5,113.1,114.04],[113.5,111.8,111.4,113.9],[111.8,110.5,110.1,112.2],[110.5,108.8,108.4,110.9],[108.8,107.2,106.8,109.2],[107.2,106.0,105.6,107.6],[106.0,105.9,105.3,106.6],[105.9,107.8,105.5,108.2],[107.8,109.6,107.4,110.0],[109.6,113.11,109.2,113.51],[113.11,115.4,112.71,115.8],[115.4,115.61,115.0,116.01],[115.61,118.02,115.21,118.42],[118.02,120.18,117.62,120.58],[120.18,120.4,119.78,120.8]], itemStyle: kStyle, barWidth: '55%',
+          xAxisIndex: 0, yAxisIndex: 0,
+          markLine: { symbol:'none', data: [
+            { yAxis: 115.5, name:'波段高点 115.5', lineStyle:{color:'#EF4444',type:'dashed'}, label:{color:'#EF4444',fontSize:10} },
+            { yAxis: 111.8, name:'23.6% 111.8', lineStyle:{color:'#8B95A5',type:'dashed'}, label:{color:'#8B95A5',fontSize:10} },
+            { yAxis: 109.6, name:'38.2% 109.6', lineStyle:{color:'#22C55E',type:'dashed'}, label:{color:'#22C55E',fontSize:10} },
+            { yAxis: 107.8, name:'50% 107.8', lineStyle:{color:'#3B82F6',type:'dashed'}, label:{color:'#3B82F6',fontSize:10} },
+            { yAxis: 105.9, name:'61.8% 105.9', lineStyle:{color:'#A855F7',type:'dashed'}, label:{color:'#A855F7',fontSize:10} },
+            { yAxis: 100, name:'波段起点 100', lineStyle:{color:'#8B95A5',type:'dashed'}, label:{color:'#8B95A5',fontSize:10} },
+            { yAxis: 125.1, name:'扩展目标 161.8% 125.1', lineStyle:{color:'#F97316',type:'dashed'}, label:{color:'#F97316',fontSize:10} }
+          ]},
+          markArea: { silent: true, data: [[
+            { name:'扩展行情区（161.8%目标）', xAxis:'D22', yAxis:115.5, itemStyle:{color:'rgba(249,115,22,0.08)'} },
+            { xAxis:'D27', yAxis:126 }
+          ]]},
+          markPoint: { symbol:'circle', symbolSize:1, data: [
+            { coord:['D12',115.8], name:'波段高点', label:{show:true,position:'top',color:'#EF4444',fontSize:10,fontWeight:600} },
+            { coord:['D19',105.3], name:'回踩61.8%企稳（缩量）', label:{show:true,position:'bottom',color:'#A855F7',fontSize:10,fontWeight:600} },
+            { coord:['D21',109.8], name:'放量收复50%→确认入场', label:{show:true,position:'top',color:'#22C55E',fontSize:10,fontWeight:600} }
+          ]}
         },
-        markArea: {
-          silent: true,
-          data: [[
-            { name:'扩展161.8%', xAxis:'D10', yAxis:116, itemStyle:{color:'rgba(249,115,22,0.08)'} },
-            { xAxis:'D12', yAxis:122 }
-          ]]
-        }
-      }]
+        { type:'bar', data: [{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:32,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:38,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:29,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:35,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:41,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:15,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:16,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:14,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:15,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:86,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:87,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:31,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:40,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}}], xAxisIndex:1, yAxisIndex:1, barWidth:'55%' }
+      ]
     });
     window.addEventListener('resize', () => ch4.resize());
   }
-
   // Chart 6: Wyckoff
   const c5 = document.getElementById('chart-wyckoff');
   if (c5 && c5.offsetParent !== null) {
     const ch5 = echarts.init(c5);
-    // Accumulation: decline → base → spring → breakout（由收盘价序列合成OHLC，并给Spring/UTAD加长影线）
-    const mkOHLC = (closes, base) => closes.map((c,i)=>{ const o=i?closes[i-1]:base; return [o,c,Math.min(o,c)-0.5,Math.max(o,c)+0.5]; });
-    const accK = mkOHLC([80,72,65,60,55,52,48,50,53,51,49,52,55,53,51,53,56,58,55,57,60,63,66,70,75], 82);
-    accK[13][2] = 46;  accK[13][1] = 49.5; accK[13][0] = 50;   // W14 Spring长下影
-    // Distribution: rise → top → UTAD → breakdown
-    const distK = mkOHLC([50,55,60,65,70,75,80,78,76,79,82,80,78,81,83,81,78,76,73,75,72,68,64,60,55], 48);
-    distK[10][3] = 84.5; distK[10][1] = 80.5; distK[10][0] = 80; // W11 UTAD长上影
     ch5.setOption({
       ...darkTheme,
       tooltip: { trigger: 'axis' },
-      legend: { data: ['吸筹区', '派发区'], textStyle: { color: '#8B95A5' }, top: 5 },
-      grid: [{ left: '8%', right: '4%', top: '15%', bottom: '15%', width: '42%' },
-             { left: '54%', right: '4%', top: '15%', bottom: '15%', width: '42%' }],
-      xAxis: [{ type: 'category', data: Array.from({length:25},(_,i)=>'W'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}} },
-              { type: 'category', data: Array.from({length:25},(_,i)=>'W'+(i+1)), gridIndex:1, axisLine:{lineStyle:{color:'#5A6478'}} }],
-      yAxis: [{ type: 'value', gridIndex:0, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
-              { type: 'value', gridIndex:1, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} }],
+      legend: { data: ['吸筹区（左侧）', '派发区（右侧）'], textStyle: { color: '#8B95A5' }, top: 5 },
+      grid: [
+        { left: '4%', right: '55%', top: '12%', bottom: '42%' },
+        { left: '4%', right: '55%', top: '62%', bottom: '14%' },
+        { left: '57%', right: '2%', top: '12%', bottom: '42%' },
+        { left: '57%', right: '2%', top: '62%', bottom: '14%' }
+      ],
+      xAxis: [
+        { type: 'category', data: Array.from({length:31},(_,i)=>'W'+(i+1)), gridIndex:0, axisLine:{lineStyle:{color:'#5A6478'}}, axisLabel:{color:'#8B95A5',fontSize:9} },
+        { type: 'category', data: Array.from({length:31},(_,i)=>'W'+(i+1)), gridIndex:1, axisLine:{show:false}, axisLabel:{show:false} },
+        { type: 'category', data: Array.from({length:30},(_,i)=>'W'+(i+1)), gridIndex:2, axisLine:{lineStyle:{color:'#5A6478'}}, axisLabel:{color:'#8B95A5',fontSize:9} },
+        { type: 'category', data: Array.from({length:30},(_,i)=>'W'+(i+1)), gridIndex:3, axisLine:{show:false}, axisLabel:{show:false} }
+      ],
+      yAxis: [
+        { type: 'value', gridIndex:0, scale:true, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'value', gridIndex:1, splitLine:{show:false}, axisLabel:{show:false}, axisLine:{show:false} },
+        { type: 'value', gridIndex:2, scale:true, splitLine:{lineStyle:{color:'rgba(255,255,255,0.04)'}}, axisLine:{lineStyle:{color:'#5A6478'}} },
+        { type: 'value', gridIndex:3, splitLine:{show:false}, axisLabel:{show:false}, axisLine:{show:false} }
+      ],
       series: [
-        { name:'吸筹区', type:'candlestick', data:accK, xAxisIndex:0, yAxisIndex:0, itemStyle:kStyle, barWidth:'60%',
+        { name:'吸筹区（左侧）', type:'candlestick', data:[[82,80,79.6,82.4],[80,72,71.6,80.4],[72,65,64.6,72.4],[65,60,59.6,65.4],[60,55,54.6,60.4],[55,52,51.6,55.4],[52,50,49.3,52.4],[50,53,49.6,53.4],[53,56,52.6,56.4],[56,52,51.6,56.4],[52,50,49.6,52.4],[50,51.5,49.6,51.9],[51.5,49.5,49.1,51.9],[49.5,51,49.1,51.4],[51,52.5,50.6,52.9],[52.5,51.5,51.1,52.9],[51.5,52.8,51.1,53.2],[52.8,51.8,51.4,53.2],[51.8,52.2,51.4,52.6],[52.2,50.5,46.0,52.9],[50.5,49.2,48.8,50.9],[49.2,53.5,48.8,53.9],[53.5,56.5,53.1,56.9],[56.5,59,56.1,59.4],[59,62,58.6,62.4],[62,65,61.6,65.4],[65,68,64.6,68.4],[68,72,67.6,72.4],[72,76,71.6,76.4],[76,80,75.6,80.4],[80,84,79.6,84.4]], xAxisIndex:0, yAxisIndex:0, itemStyle:kStyle, barWidth:'55%',
           markArea:{silent:true,data:[
-            [{name:'Phase A: PS',xAxis:'W5',itemStyle:{color:'rgba(59,130,246,0.1)'}},{xAxis:'W7'}],
-            [{name:'Phase B: SC→ST',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.1)'}},{xAxis:'W14'}],
-            [{name:'Phase C: Spring',xAxis:'W14',itemStyle:{color:'rgba(239,68,68,0.15)'}},{xAxis:'W16'}],
-            [{name:'Phase D: SOS',xAxis:'W16',itemStyle:{color:'rgba(34,197,94,0.1)'}},{xAxis:'W20'}],
-            [{name:'Phase E: 突破',xAxis:'W20',itemStyle:{color:'rgba(168,85,247,0.1)'}},{xAxis:'W25'}]
+            [{name:'PS→SC 恐慌抛售（放量）',xAxis:'W1',itemStyle:{color:'rgba(59,130,246,0.10)'},label:{show:false}},{xAxis:'W6'}],
+            [{name:'AR→ST 建仓',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.10)'},label:{show:false}},{xAxis:'W13'}],
+            [{name:'无供给测试（缩量）',xAxis:'W14',itemStyle:{color:'rgba(234,179,8,0.05)'},label:{show:false}},{xAxis:'W18'}],
+            [{name:'Spring 探底',xAxis:'W19',itemStyle:{color:'rgba(239,68,68,0.14)'},label:{show:false}},{xAxis:'W21'}],
+            [{name:'SOS 放量突破',xAxis:'W22',itemStyle:{color:'rgba(34,197,94,0.12)'},label:{show:false}},{xAxis:'W25'}],
+            [{name:'Markup 上涨',xAxis:'W26',itemStyle:{color:'rgba(168,85,247,0.10)'},label:{show:false}},{xAxis:'W31'}]
           ]},
-          markPoint:{data:[{coord:['W14',46],name:'Spring',symbol:'triangle',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
+          markPoint:{symbol:'circle',symbolSize:1,data:[
+            {coord:['W7',49.3],name:'SC 卖货高潮',label:{show:true,position:'bottom',color:'#EF4444',fontSize:10,fontWeight:600}},
+            {coord:['W20',45.8],name:'Spring：缩量探底',label:{show:true,position:'bottom',color:'#F97316',fontSize:10,fontWeight:600}},
+            {coord:['W22',62.6],name:'SOS',label:{show:true,position:'top',color:'#22C55E',fontSize:10,fontWeight:600}}
+          ]}
         },
-        { name:'派发区', type:'candlestick', data:distK, xAxisIndex:1, yAxisIndex:1, itemStyle:kStyle, barWidth:'60%',
+        { name:'吸筹量能', type:'bar', data:[{value:85,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:86,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:87,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:24,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:33,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:16,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:14,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:15,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:16,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:14,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:15,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:30,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:88,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:89,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:90,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:38,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:28,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:24,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:31,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:26,itemStyle:{color:'rgba(139,149,165,0.40)'}}], xAxisIndex:1, yAxisIndex:1, barWidth:'55%' },
+        { name:'派发区（右侧）', type:'candlestick', data:[[46,48,45.6,48.4],[48,55,47.6,55.4],[55,62,54.6,62.4],[62,68,61.6,68.4],[68,75,67.6,75.4],[75,80,74.6,80.4],[80,82,79.0,84.5],[82,78,77.6,82.4],[78,79.5,77.6,79.9],[79.5,77.5,77.1,79.9],[77.5,79,77.1,79.4],[79,78,77.6,79.4],[78,80.5,77.6,80.9],[80.5,79.5,79.1,80.9],[79.5,81,79.1,81.4],[81,82.5,80.2,83.4],[82.5,80.8,80.4,82.9],[80.8,79,78.6,81.2],[79,77,76.6,79.4],[77,75.5,75.1,77.4],[75.5,73,72.6,75.9],[73,70,69.6,73.4],[70,66,65.6,70.4],[66,62,61.6,66.4],[62,58,57.6,62.4],[58,54,53.6,58.4],[54,50,49.6,54.4],[50,46,45.6,50.4],[46,42,41.6,46.4],[42,38,37.6,42.4]], xAxisIndex:2, yAxisIndex:2, itemStyle:kStyle, barWidth:'55%',
           markArea:{silent:true,data:[
-            [{name:'Phase A: PSY',xAxis:'W5',itemStyle:{color:'rgba(59,130,246,0.1)'}},{xAxis:'W7'}],
-            [{name:'Phase B: BC→ST',xAxis:'W7',itemStyle:{color:'rgba(234,179,8,0.1)'}},{xAxis:'W14'}],
-            [{name:'Phase C: UTAD',xAxis:'W14',itemStyle:{color:'rgba(239,68,68,0.15)'}},{xAxis:'W16'}],
-            [{name:'Phase D: LPSY',xAxis:'W16',itemStyle:{color:'rgba(34,197,94,0.1)'}},{xAxis:'W20'}],
-            [{name:'Phase E: 下跌',xAxis:'W20',itemStyle:{color:'rgba(168,85,247,0.1)'}},{xAxis:'W25'}]
+            [{name:'PSY→BC 买入高潮（天量）',xAxis:'W1',itemStyle:{color:'rgba(59,130,246,0.10)'},label:{show:false}},{xAxis:'W7'}],
+            [{name:'AR→ST 派发（缩量盘整）',xAxis:'W8',itemStyle:{color:'rgba(234,179,8,0.10)'},label:{show:false}},{xAxis:'W14'}],
+            [{name:'UTAD 冲高失败（背离）',xAxis:'W15',itemStyle:{color:'rgba(239,68,68,0.14)'},label:{show:false}},{xAxis:'W17'}],
+            [{name:'LPSY 最后供应',xAxis:'W18',itemStyle:{color:'rgba(234,179,8,0.05)'},label:{show:false}},{xAxis:'W20'}],
+            [{name:'SOW→下跌',xAxis:'W21',itemStyle:{color:'rgba(168,85,247,0.12)'},label:{show:false}},{xAxis:'W30'}]
           ]},
-          markPoint:{data:[{coord:['W11',84.5],name:'UTAD',symbol:'diamond',symbolSize:12,itemStyle:{color:'#EF4444'},label:{color:'#EF4444',fontSize:10}}]}
-        }
+          markPoint:{symbol:'circle',symbolSize:1,data:[
+            {coord:['W7',84.7],name:'BC 买入高潮（天量）',label:{show:true,position:'top',color:'#EF4444',fontSize:10,fontWeight:600}},
+            {coord:['W16',83.6],name:'UTAD',label:{show:true,position:'top',color:'#F97316',fontSize:10,fontWeight:600}},
+            {coord:['W20',75.3],name:'LPSY 最后供应点',label:{show:true,position:'bottom',color:'#F97316',fontSize:10,fontWeight:600}}
+          ]}
+        },
+        { name:'派发量能', type:'bar', data:[{value:85,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:86,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:87,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:88,itemStyle:{color:'rgba(34,197,94,0.88)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:24,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:33,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:14,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:15,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:16,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:12,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:13,itemStyle:{color:'rgba(139,149,165,0.22)'}},{value:27,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:87,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:88,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:89,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:90,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:91,itemStyle:{color:'rgba(239,68,68,0.88)'}},{value:28,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:24,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:31,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:39,itemStyle:{color:'rgba(139,149,165,0.40)'}},{value:36,itemStyle:{color:'rgba(139,149,165,0.40)'}}], xAxisIndex:3, yAxisIndex:3, barWidth:'55%' }
       ]
     });
     window.addEventListener('resize', () => ch5.resize());
@@ -5771,18 +5852,7 @@ regChart('chart-pin-bear', kInit('chart-pin-bear', {
     markPoint: mps([mp('Pin Bar：长上影=卖方坚决拒绝',['D5',12.5],'top'), mp('反转下行',['D8',10.25],'bottom')]),
     markLine: {data:[ml(13.1,'止损=最高价12.5+1ATR≈13.1',KP.dn,'insideEndTop')]}})]
 }));
-regChart('chart-pin-perfect', kInit('chart-pin-perfect', {
-  title: twinTitles('✅ 完美：影线突出于近期K线','❌ 失败：影线被前K包裹'),
-  grid: twinGrids(),
-  xAxis: [kCat(5,0), kCat(5,1)],
-  yAxis: [kVal(0), kVal(1)],
-  series: [
-    kSeries([[10.8,10.4,10.3,10.9],[10.4,10.1,10.0,10.5],[10.1,10.3,9.9,10.4],[10.05,10.2,9.4,10.3],[10.2,10.6,10.15,10.65]],
-      {xAxisIndex:0, yAxisIndex:0, markPoint: mps([mp('影线9.4 突出于近期低点',['D4',9.4],'bottom')])}),
-    kSeries([[10.6,10.2,9.7,10.7],[10.2,9.9,9.5,10.3],[9.9,10.1,9.6,10.2],[10.1,10.25,9.5,10.3],[10.25,10.5,10.2,10.55]],
-      {xAxisIndex:1, yAxisIndex:1, markPoint: mps([mp('影线9.5 未低于前K低点',['D4',9.5],'bottom')])})
-  ]
-}));
+// --- Pin Bar 完美/失败对照已重构：见下方 chart-pin-perfect / chart-pin-fail ---
 regChart('chart-pin-entry', kInit('chart-pin-entry', {
   grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
   xAxis: [kCat(8,0)], yAxis: [kVal(0)],
@@ -5792,119 +5862,353 @@ regChart('chart-pin-entry', kInit('chart-pin-entry', {
 }));
 
 // --- 图6-1 组合形态图鉴 ---
-regChart('chart-cb-engulfing', kInit('chart-cb-engulfing', {
-  title: twinTitles('看涨吞没：阳线包裹前阴','看跌吞没：阴线包裹前阳'),
-  grid: twinGrids(),
-  xAxis: [kCat(2,0), kCat(2,1)],
-  yAxis: [kVal(0), kVal(1)],
+// --- 价格+量能双grid助手（形态图新人友好重构） ---
+const VC = {n:'rgba(139,149,165,0.40)', up:'rgba(34,197,94,0.88)', dn:'rgba(239,68,68,0.88)', lo:'rgba(139,149,165,0.22)'};
+function pvGrids(){ return [
+  {left:'7%', right:'3%', top:'9%', bottom:'37%'},
+  {left:'7%', right:'3%', top:'68%', bottom:'14%'}
+]; }
+function vSeries(cs){ return { type:'bar', xAxisIndex:1, yAxisIndex:1, barWidth:'55%',
+  data: cs.map(p=>({value:p[0], itemStyle:{color:VC[p[1]]}})) }; }
+
+regChart('chart-cb-eng-bull', kInit('chart-cb-eng-bull', {
+  grid: pvGrids(),
+  xAxis: [kCat(22,0), kCat(22,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
   series: [
-    kSeries([[11,10.6,10.4,11.1],[10.5,11.5,10.35,11.6]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('吞没阳线',['D2',11.6],'top')])}),
-    kSeries([[10.6,11,10.5,11.2],[11.1,10.1,10.0,11.25]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('吞没阴线',['D2',10.0],'bottom')])})
+    kSeries([
+    [20.38,20.33,20.26,20.45],[20.33,20.2,20.13,20.4],[20.2,19.78,19.71,20.27],[19.78,19.67,19.6,19.85],[19.67,19.52,19.45,19.74],[19.52,19.11,19.04,19.59],[19.11,19.01,18.94,19.18],[19.01,18.84,18.77,19.08],[18.84,18.43,18.36,18.91],[18.43,18.35,18.28,18.5],[18.35,18.16,18.09,18.42],[18.16,17.76,17.69,18.23],[17.76,17.42,17.35,17.83],[17.42,17.15,17.08,17.5],[17.05,17.98,16.98,18.05],[17.98,18.15,17.91,18.22],[18.15,18.43,18.08,18.5],[18.43,18.61,18.36,18.68],[18.61,18.58,18.51,18.68],[18.58,18.77,18.51,18.84],[18.77,18.93,18.7,19.0],[18.93,18.9,18.83,19.0]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(16.95,'止损位：吞没低点下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('前阴线',['D14',17.08],'bottom'),
+      mp('吞没阳线：实体包裹前阴',['D15',18.05],'top'),
+      mp('放量确认→入场',['D16',18.22],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[16,"lo"],[91,"up"],[36,"n"],[26,"n"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"]
+    ])
+  ]
+}));
+regChart('chart-cb-eng-bear', kInit('chart-cb-eng-bear', {
+  grid: pvGrids(),
+  xAxis: [kCat(22,0), kCat(22,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [16.72,16.67,16.6,16.79],[16.67,16.99,16.6,17.06],[16.99,17.02,16.92,17.09],[17.02,17.36,16.95,17.43],[17.36,17.65,17.29,17.72],[17.65,17.69,17.58,17.76],[17.69,18.04,17.62,18.11],[18.04,18.32,17.97,18.39],[18.32,18.35,18.25,18.42],[18.35,18.72,18.28,18.79],[18.72,18.98,18.65,19.05],[18.98,19.02,18.91,19.09],[19.02,19.58,18.95,19.65],[19.58,20.15,19.51,20.22],[20.25,19.32,19.25,20.32],[19.32,19.1,19.03,19.39],[19.1,18.87,18.8,19.17],[18.87,18.85,18.78,18.94],[18.85,18.63,18.56,18.92],[18.63,18.63,18.56,18.7],[18.63,18.6,18.53,18.7],[18.6,18.38,18.31,18.67]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(20.40,'止损位：吞没高点上方',KP.dn,'insideStartTop')]},
+      markPoint: mps([mp('前阳线',['D14',20.22],'top'),
+      mp('吞没阴线：实体包裹前阳',['D15',19.28],'bottom'),
+      mp('放量确认→离场',['D16',19.06],'bottom')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[16,"lo"],[91,"dn"],[36,"n"],[26,"n"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"]
+    ])
   ]
 }));
 regChart('chart-cb-inside', kInit('chart-cb-inside', {
-  grid: {left:'15%',right:'15%',top:'10%',bottom:'10%'},
-  xAxis: [kCat(2,0)], yAxis: [kVal(0)],
-  series: [kSeries([[10,11.2,9.8,11.4],[10.6,10.9,10.1,11.1]], {barWidth:'30%',
-    markPoint: mps([mp('母线',['D1',11.4],'top'), mp('子线：完全被包裹',['D2',11.1],'top')])})]
-}));
-regChart('chart-cb-piercing', kInit('chart-cb-piercing', {
-  title: twinTitles('刺透形态（看涨）','乌云盖顶（看跌）'),
-  grid: twinGrids(),
-  xAxis: [kCat(2,0), kCat(2,1)],
-  yAxis: [kVal(0), kVal(1)],
+  grid: pvGrids(),
+  xAxis: [kCat(23,0), kCat(23,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
   series: [
-    kSeries([[11,10.4,10.3,11.1],[10.2,10.9,10.1,11.0]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('阳线深入前阴实体>50%',['D2',11.0],'top')])}),
-    kSeries([[10.4,11,10.3,11.1],[11.2,10.5,10.4,11.3]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('阴线深入前阳实体>50%',['D2',10.4],'bottom')])})
+    kSeries([
+    [19.46,19.41,19.34,19.53],[19.41,19.36,19.29,19.48],[19.36,19.05,18.98,19.43],[19.05,19.01,18.94,19.12],[19.01,18.94,18.87,19.08],[18.94,18.63,18.56,19.01],[18.63,18.6,18.53,18.7],[18.6,18.52,18.45,18.67],[18.52,18.21,18.14,18.59],[18.21,18.2,18.13,18.28],[18.2,18.1,18.03,18.27],[18.1,17.79,17.72,18.17],[17.79,17.8,17.72,17.87],[17.8,17.3,17.23,17.87],[17.3,17.48,17.23,17.6],[17.4,18.1,17.33,18.18],[18.1,18.37,18.03,18.44],[18.37,18.54,18.3,18.61],[18.54,18.49,18.42,18.61],[18.49,18.67,18.42,18.74],[18.67,18.82,18.6,18.89],[18.82,18.77,18.7,18.89],[18.77,18.96,18.7,19.03]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(17.16,'止损位：母线低点下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('母线（大阴）',['D14',17.24],'bottom'),
+      mp('子线：被包裹+缩量',['D15',17.62],'top'),
+      mp('放量突破→入场',['D16',18.18],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[17,"lo"],[92,"up"],[26,"n"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"],[31,"n"]
+    ])
   ]
 }));
-regChart('chart-cb-star', kInit('chart-cb-star', {
-  title: twinTitles('早晨之星（底部反转）','黄昏之星（顶部反转）'),
-  grid: twinGrids(),
-  xAxis: [kCat(3,0), kCat(3,1)],
-  yAxis: [kVal(0), kVal(1)],
+regChart('chart-cb-pierce', kInit('chart-cb-pierce', {
+  grid: pvGrids(),
+  xAxis: [kCat(24,0), kCat(24,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
   series: [
-    kSeries([[11.2,10.7,10.6,11.3],[10.45,10.5,10.3,10.65],[10.7,11.3,10.65,11.4]], {xAxisIndex:0, yAxisIndex:0, barWidth:'35%', markPoint: mps([mp('星线',['D2',10.3],'bottom')])}),
-    kSeries([[10.8,11.3,10.7,11.4],[11.35,11.3,11.15,11.5],[11.2,10.6,10.5,11.25]], {xAxisIndex:1, yAxisIndex:1, barWidth:'35%', markPoint: mps([mp('星线',['D2',11.5],'top')])})
+    kSeries([
+    [19.72,19.67,19.6,19.79],[19.67,19.59,19.52,19.74],[19.59,19.22,19.15,19.66],[19.22,19.15,19.08,19.29],[19.15,19.05,18.98,19.22],[19.05,18.68,18.61,19.12],[18.68,18.63,18.56,18.75],[18.63,18.51,18.44,18.7],[18.51,18.15,18.08,18.58],[18.15,18.11,18.04,18.22],[18.11,17.97,17.9,18.18],[17.97,17.61,17.54,18.04],[17.61,17.59,17.52,17.68],[17.59,17.43,17.36,17.66],[17.43,17.08,17.01,17.5],[17.08,16.72,16.62,17.18],[16.45,17.28,16.38,17.35],[17.28,17.55,17.21,17.62],[17.55,17.84,17.48,17.91],[17.84,18.04,17.77,18.11],[18.04,18.02,17.95,18.11],[18.02,18.23,17.95,18.3],[18.23,18.41,18.16,18.48],[18.41,18.39,18.32,18.48]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(16.34,'止损位：刺透低点下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('长阴线',['D16',16.62],'bottom'),
+      mp('跳空低开+深入实体>50%',['D17',17.35],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[43,"n"],[13,"lo"],[93,"up"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"],[31,"n"],[42,"n"]
+    ])
   ]
 }));
-regChart('chart-cb-wm', kInit('chart-cb-wm', {
-  title: twinTitles('双底（W底）','双顶（M顶）'),
-  grid: twinGrids(),
-  xAxis: [kCat(9,0), kCat(9,1)],
-  yAxis: [kVal(0), kVal(1)],
+regChart('chart-cb-cloud', kInit('chart-cb-cloud', {
+  grid: pvGrids(),
+  xAxis: [kCat(24,0), kCat(24,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
   series: [
-    kSeries([[11,10.5,10.4,11.1],[10.5,10.1,9.9,10.6],[10.1,10.7,10.05,10.8],[10.7,10.4,10.2,10.8],[10.4,10.0,9.85,10.5],[10.0,10.6,9.95,10.7],[10.6,10.9,10.55,11.0],[10.9,11.3,10.85,11.4],[11.3,11.7,11.25,11.8]],
-      {xAxisIndex:0, yAxisIndex:0, markLine:{data:[ml(10.8,'颈线 10.8',KP.blue,'insideEndTop')]},
-       markPoint: mps([mp('低点1',['D2',9.9],'bottom'), mp('低点2',['D5',9.85],'bottom'), mp('放量突破颈线',['D8',11.4],'top')])}),
-    kSeries([[10.4,10.9,10.3,11.0],[10.9,11.5,10.85,11.6],[11.5,11.1,11.0,11.6],[11.1,11.45,11.05,11.55],[11.45,11.0,10.95,11.6],[11.0,10.5,10.45,11.05],[10.5,10.2,10.1,10.6],[10.2,9.8,9.7,10.3],[9.8,9.5,9.4,9.9]],
-      {xAxisIndex:1, yAxisIndex:1, markLine:{data:[ml(11.0,'颈线 11.0',KP.blue,'insideEndTop')]},
-       markPoint: mps([mp('顶1',['D2',11.6],'top'), mp('顶2',['D5',11.6],'top'), mp('跌破颈线',['D7',10.1],'bottom')])})
+    kSeries([
+    [17.38,17.33,17.26,17.45],[17.33,17.6,17.26,17.67],[17.6,17.58,17.51,17.67],[17.58,17.87,17.51,17.94],[17.87,18.12,17.8,18.19],[18.12,18.11,18.04,18.19],[18.11,18.41,18.04,18.48],[18.41,18.65,18.34,18.72],[18.65,18.64,18.57,18.72],[18.64,18.96,18.57,19.03],[18.96,19.17,18.89,19.24],[19.17,19.17,19.1,19.24],[19.17,19.5,19.1,19.57],[19.5,19.69,19.43,19.76],[19.69,19.7,19.62,19.77],[19.7,20.28,19.63,20.35],[20.55,19.72,19.65,20.62],[19.72,19.45,19.38,19.79],[19.45,19.19,19.12,19.52],[19.19,19.17,19.1,19.26],[19.17,18.95,18.88,19.24],[18.95,18.94,18.87,19.02],[18.94,18.91,18.84,19.01],[18.91,18.68,18.61,18.98]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(20.70,'止损位：乌云高点上方',KP.dn,'insideStartTop')]},
+      markPoint: mps([mp('长阳线',['D16',20.35],'top'),
+      mp('跳空高开+收进实体>50%',['D17',19.65],'bottom')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[43,"n"],[13,"lo"],[93,"dn"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"],[31,"n"],[42,"n"]
+    ])
   ]
 }));
-regChart('chart-cb-hns', kInit('chart-cb-hns', {
-  title: twinTitles('头肩顶（含测量目标位）','头肩底'),
-  grid: twinGrids(),
-  xAxis: [kCat(9,0), kCat(9,1)],
-  yAxis: [kVal(0), kVal(1)],
+regChart('chart-cb-ms', kInit('chart-cb-ms', {
+  grid: pvGrids(),
+  xAxis: [kCat(23,0), kCat(23,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
   series: [
-    kSeries([[10.5,11,10.4,11.1],[11,11.6,10.9,11.7],[11.6,11.2,11.1,11.7],[11.2,12.3,11.1,12.4],[12.3,11.6,11.5,12.4],[11.6,11.9,11.1,12.0],[11.9,11.4,11.3,11.8],[11.4,10.7,10.6,11.5],[10.7,10.2,10.1,10.8]],
-      {xAxisIndex:0, yAxisIndex:0, markLine:{data:[ml(11.1,'颈线 11.1',KP.blue,'insideEndTop'), ml(9.8,'测量目标位=11.1-(12.4-11.1)',KP.pur,'insideEndTop')]},
-       markPoint: mps([mp('左肩',['D2',11.7],'top'), mp('头',['D4',12.4],'top'), mp('右肩',['D7',11.8],'top'), mp('跌破颈线',['D8',10.6],'bottom')])}),
-    kSeries([[11.5,11,11.4,11.6],[11,10.4,10.3,11.1],[10.4,10.8,10.3,10.5],[10.8,9.7,9.6,10.9],[9.7,10.4,9.6,10.5],[10.4,10.1,10.0,10.5],[10.1,10.6,10.2,10.7],[10.6,11.3,10.5,11.4],[11.3,11.8,11.25,11.9]],
-      {xAxisIndex:1, yAxisIndex:1, markLine:{data:[ml(10.5,'颈线 10.5',KP.blue,'insideEndTop'), ml(11.4,'测量目标位=10.5+(10.5-9.6)',KP.pur,'insideEndTop')]},
-       markPoint: mps([mp('左肩',['D2',10.3],'bottom'), mp('头',['D4',9.6],'bottom'), mp('右肩',['D7',10.2],'bottom'), mp('突破颈线',['D8',11.4],'top')])})
+    kSeries([
+    [19.53,19.48,19.41,19.6],[19.48,19.39,19.32,19.55],[19.39,19.04,18.97,19.46],[19.04,18.97,18.9,19.11],[18.97,18.86,18.79,19.04],[18.86,18.51,18.44,18.93],[18.51,18.46,18.39,18.58],[18.46,18.33,18.26,18.53],[18.33,17.99,17.92,18.4],[17.99,17.95,17.88,18.06],[17.95,17.8,17.73,18.02],[17.8,17.47,17.4,17.87],[17.47,17.43,17.36,17.54],[17.43,17.27,17.2,17.5],[17.27,16.78,16.7,17.34],[16.78,16.68,16.55,16.85],[16.6,17.55,16.53,17.62],[16.82,17.82,16.75,17.89],[17.82,18.11,17.75,18.18],[18.11,18.28,18.04,18.35],[18.28,18.25,18.18,18.35],[18.25,18.44,18.18,18.51],[18.44,18.6,18.37,18.67]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(16.45,'止损位：星线低点下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('长阴线',['D15',16.70],'bottom'),
+      mp('星线：小实体+缩量',['D16',16.55],'bottom'),
+      mp('大阳收复过半→入场',['D17',17.62],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[43,"n"],[13,"lo"],[93,"up"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"],[31,"n"]
+    ])
   ]
 }));
-
+regChart('chart-cb-es', kInit('chart-cb-es', {
+  grid: pvGrids(),
+  xAxis: [kCat(23,0), kCat(23,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [17.27,17.22,17.15,17.34],[17.22,17.48,17.15,17.55],[17.48,17.47,17.4,17.55],[17.47,17.75,17.4,17.82],[17.75,17.99,17.68,18.06],[17.99,17.99,17.92,18.06],[17.99,18.27,17.92,18.34],[18.27,18.49,18.2,18.56],[18.49,18.5,18.42,18.57],[18.5,18.8,18.43,18.87],[18.8,19.0,18.73,19.07],[19.0,19.01,18.93,19.08],[19.01,19.32,18.94,19.39],[19.32,19.51,19.25,19.58],[19.51,19.92,19.44,20.0],[19.92,20.08,19.85,20.22],[20.15,19.15,19.08,20.28],[19.88,19.0,18.93,19.95],[19.0,18.72,18.65,19.07],[18.72,18.69,18.62,18.79],[18.69,18.45,18.38,18.76],[18.45,18.43,18.36,18.52],[18.43,18.38,18.31,18.5]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(20.32,'止损位：星线高点上方',KP.dn,'insideStartTop')]},
+      markPoint: mps([mp('长阳线',['D15',20.00],'top'),
+      mp('星线：小实体+缩量',['D16',20.22],'top'),
+      mp('大阴收复过半→离场',['D17',19.08],'bottom')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[43,"n"],[13,"lo"],[93,"dn"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"],[31,"n"]
+    ])
+  ]
+}));
+regChart('chart-cb-wbot', kInit('chart-cb-wbot', {
+  grid: pvGrids(),
+  xAxis: [kCat(30,0), kCat(30,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [20.91,20.86,20.79,20.98],[20.86,20.76,20.69,20.93],[20.76,20.4,20.33,20.83],[20.4,20.31,20.24,20.47],[20.31,20.19,20.12,20.38],[20.19,19.83,19.76,20.26],[19.83,19.76,19.69,19.9],[19.76,19.62,19.55,19.83],[19.62,19.27,19.2,19.69],[19.27,19.21,19.14,19.34],[19.21,18.98,18.91,19.28],[18.98,19.18,18.66,19.25],[19.18,19.45,19.11,19.52],[19.45,19.62,19.38,19.69],[19.62,19.7,19.55,19.77],[19.7,19.55,19.48,19.77],[19.55,19.3,19.23,19.62],[19.3,19.05,18.98,19.37],[19.05,18.95,18.88,19.12],[18.95,19.02,18.88,19.09],[19.02,19.22,18.7,19.29],[19.22,19.55,19.15,19.62],[19.55,20.15,19.48,20.22],[20.15,20.42,20.08,20.49],[20.42,19.92,19.72,20.49],[19.92,20.05,19.85,20.12],[20.05,20.35,19.98,20.42],[20.35,20.6,20.28,20.67],[20.6,20.85,20.53,20.92],[20.85,21.05,20.78,21.12]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(19.75,'颈线 19.75',KP.blue,'insideEndTop'),
+      ml(20.85,'测量目标=颈线+形态高度',KP.up,'insideEndTop'),
+      ml(18.52,'止损位：形态低点下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('低点1',['D12',18.66],'bottom'),
+      mp('颈线下方受阻',['D16',19.77],'top'),
+      mp('低点2：缩量',['D21',18.70],'bottom'),
+      mp('放量突破颈线',['D23',20.22],'top'),
+      mp('回踩确认→入场',['D25',19.72],'bottom')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[43,"n"],[36,"n"],[26,"n"],[15,"lo"],[16,"lo"],[17,"lo"],[13,"lo"],[14,"lo"],[90,"up"],[91,"up"],[17,"lo"],[31,"n"],[26,"n"],[34,"n"],[43,"n"],[40,"n"]
+    ])
+  ]
+}));
+regChart('chart-cb-wtop', kInit('chart-cb-wtop', {
+  grid: pvGrids(),
+  xAxis: [kCat(30,0), kCat(30,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [19.19,19.14,19.07,19.26],[19.14,19.41,19.07,19.48],[19.41,19.42,19.34,19.49],[19.42,19.71,19.35,19.78],[19.71,19.97,19.64,20.04],[19.97,19.98,19.9,20.05],[19.98,20.28,19.91,20.35],[20.28,20.52,20.21,20.59],[20.52,20.54,20.45,20.61],[20.54,20.86,20.47,20.93],[20.86,21.02,20.79,21.09],[21.02,20.82,20.75,21.35],[20.82,20.55,20.48,20.89],[20.55,20.32,20.25,20.62],[20.32,20.15,20.08,20.39],[20.15,20.28,20.08,20.35],[20.28,20.55,20.21,20.62],[20.55,20.75,20.48,20.82],[20.75,20.88,20.68,20.95],[20.88,20.92,20.81,20.99],[20.92,21.1,20.85,21.32],[21.1,20.62,20.55,21.17],[20.62,19.72,19.65,20.69],[19.72,19.45,19.38,19.79],[19.45,19.95,19.38,20.12],[19.95,19.6,19.53,20.02],[19.6,19.3,19.23,19.67],[19.3,19.05,18.98,19.37],[19.05,18.8,18.73,19.12],[18.8,18.55,18.48,18.87]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(19.90,'颈线 19.90',KP.blue,'insideEndBottom'),
+      ml(18.45,'测量目标=颈线-形态高度',KP.up,'insideEndBottom'),
+      ml(21.45,'止损位：形态高点上方',KP.dn,'insideStartTop')]},
+      markPoint: mps([mp('顶点1',['D12',21.35],'top'),
+      mp('颈线上方企稳',['D16',20.13],'bottom'),
+      mp('顶点2：缩量',['D21',21.32],'top'),
+      mp('放量跌破颈线',['D23',19.65],'bottom'),
+      mp('反抽受阻→离场',['D25',20.12],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[43,"n"],[36,"n"],[26,"n"],[15,"lo"],[16,"lo"],[17,"lo"],[13,"lo"],[14,"lo"],[90,"dn"],[91,"dn"],[17,"lo"],[31,"n"],[26,"n"],[34,"n"],[43,"n"],[40,"n"]
+    ])
+  ]
+}));
+regChart('chart-cb-hs-top', kInit('chart-cb-hs-top', {
+  grid: pvGrids(),
+  xAxis: [kCat(32,0), kCat(32,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [18.34,18.29,18.22,18.41],[18.29,18.61,18.22,18.68],[18.61,18.7,18.54,18.77],[18.7,19.04,18.63,19.11],[19.04,19.34,18.97,19.41],[19.34,19.43,19.27,19.5],[19.43,19.78,19.36,19.85],[19.78,20.07,19.71,20.14],[20.07,20.35,20.0,20.42],[20.35,20.42,20.1,20.86],[20.42,20.15,20.08,20.49],[20.15,19.98,19.91,20.22],[19.98,20.35,19.91,20.42],[20.35,20.75,20.28,20.82],[20.75,21.15,20.68,21.68],[21.15,20.8,20.73,21.22],[20.8,20.35,20.28,20.87],[20.35,19.95,19.88,20.42],[19.95,20.3,19.88,20.37],[20.3,20.55,20.23,20.62],[20.55,20.42,20.35,20.62],[20.42,20.35,20.28,20.78],[20.35,20.05,19.98,20.42],[20.05,19.52,19.45,20.12],[19.52,19.75,19.45,19.82],[19.75,19.98,19.68,20.05],[19.98,19.55,19.48,20.05],[19.55,19.25,19.18,19.62],[19.25,19.0,18.93,19.32],[19.0,18.72,18.65,19.07],[18.72,18.45,18.38,18.79],[18.45,18.15,18.08,18.52]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(19.90,'颈线 19.90',KP.blue,'insideEndBottom'),
+      ml(18.10,'测量目标=颈线-头部高度',KP.up,'insideEndBottom'),
+      ml(20.95,'止损位：右肩上方',KP.dn,'insideStartTop')]},
+      markPoint: mps([mp('左肩',['D10',20.86],'top'),
+      mp('头部：量能背离',['D15',21.68],'top'),
+      mp('右肩：不创新高',['D22',20.78],'top'),
+      mp('放量跌破颈线',['D24',19.45],'bottom'),
+      mp('反抽受阻→离场',['D26',20.14],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[17,"lo"],[36,"n"],[26,"n"],[29,"n"],[40,"n"],[17,"lo"],[13,"lo"],[14,"lo"],[31,"n"],[91,"dn"],[41,"n"],[31,"n"],[26,"n"],[34,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"]
+    ])
+  ]
+}));
+regChart('chart-cb-hs-bot', kInit('chart-cb-hs-bot', {
+  grid: pvGrids(),
+  xAxis: [kCat(32,0), kCat(32,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [21.76,21.71,21.64,21.83],[21.71,21.54,21.47,21.78],[21.54,21.14,21.07,21.61],[21.14,20.98,20.91,21.21],[20.98,20.8,20.73,21.05],[20.8,20.4,20.33,20.87],[20.4,20.26,20.19,20.47],[20.26,20.06,19.99,20.33],[20.06,19.65,19.58,20.13],[19.65,19.58,19.1,19.88],[19.58,19.85,19.51,19.92],[19.85,20.02,19.78,20.09],[20.02,19.65,19.58,20.09],[19.65,19.25,19.18,19.72],[19.25,18.85,17.82,19.32],[18.85,19.2,18.78,19.27],[19.2,19.65,19.13,19.72],[19.65,20.05,19.58,20.12],[20.05,19.7,19.63,20.12],[19.7,19.45,19.38,19.77],[19.45,19.58,19.38,19.65],[19.58,19.65,19.2,19.72],[19.65,20.05,19.58,20.12],[20.05,20.68,19.98,20.75],[20.68,20.45,20.38,20.75],[20.45,20.15,20.08,20.52],[20.15,20.55,20.08,20.62],[20.55,20.85,20.48,20.92],[20.85,21.15,20.78,21.22],[21.15,21.45,21.08,21.52],[21.45,21.65,21.38,21.72],[21.65,21.85,21.58,21.92]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(20.10,'颈线 20.10',KP.blue,'insideEndTop'),
+      ml(22.35,'测量目标=颈线+头部高度',KP.up,'insideEndTop'),
+      ml(19.05,'止损位：右肩下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('左肩',['D10',19.10],'bottom'),
+      mp('头部：量能背离',['D15',17.82],'bottom'),
+      mp('右肩：不创新低',['D22',19.20],'bottom'),
+      mp('放量突破颈线',['D24',20.75],'top'),
+      mp('回踩确认→入场',['D26',19.94],'bottom')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[38,"n"],[17,"lo"],[36,"n"],[26,"n"],[29,"n"],[40,"n"],[17,"lo"],[13,"lo"],[14,"lo"],[31,"n"],[91,"up"],[41,"n"],[31,"n"],[26,"n"],[34,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"]
+    ])
+  ]
+}));
+regChart('chart-pin-perfect', kInit('chart-pin-perfect', {
+  grid: pvGrids(),
+  xAxis: [kCat(22,0), kCat(22,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [18.78,18.73,18.66,18.85],[18.73,18.68,18.61,18.8],[18.68,18.39,18.32,18.75],[18.39,18.36,18.29,18.46],[18.36,18.3,18.23,18.43],[18.3,18.01,17.94,18.37],[18.01,18.0,17.93,18.08],[18.0,17.92,17.85,18.07],[17.92,17.63,17.56,17.99],[17.63,17.63,17.56,17.7],[17.63,17.54,17.47,17.7],[17.54,17.25,17.18,17.61],[17.12,17.45,16.72,17.52],[17.45,18.05,17.38,18.12],[18.05,18.39,17.98,18.46],[18.39,18.57,18.32,18.64],[18.57,18.52,18.45,18.64],[18.52,18.72,18.45,18.79],[18.72,18.89,18.65,18.96],[18.89,18.84,18.77,18.96],[18.84,19.05,18.77,19.12],[19.05,19.2,18.98,19.27]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(16.62,'止损位：Pin Bar低点下方',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('长下影Pin Bar',['D13',16.72],'bottom'),
+      mp('确认阳线→入场',['D14',18.12],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[27,"n"],[90,"up"],[43,"n"],[36,"n"],[26,"n"],[29,"n"],[40,"n"],[43,"n"],[33,"n"],[26,"n"]
+    ])
+  ]
+}));
+regChart('chart-pin-fail', kInit('chart-pin-fail', {
+  grid: pvGrids(),
+  xAxis: [kCat(20,0), kCat(20,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [18.76,18.71,18.64,18.83],[18.71,18.66,18.59,18.78],[18.66,18.35,18.28,18.73],[18.35,18.31,18.24,18.42],[18.31,18.24,18.17,18.38],[18.24,17.93,17.86,18.31],[17.93,17.91,17.84,18.0],[17.91,17.82,17.75,17.98],[17.82,17.52,17.45,17.89],[17.52,17.51,17.44,17.59],[17.51,17.12,16.92,17.58],[17.12,17.28,17.05,17.35],[17.2,17.42,16.96,17.5],[17.42,17.15,17.08,17.49],[17.15,16.66,16.59,17.22],[16.66,16.52,16.45,16.73],[16.52,16.14,16.07,16.59],[16.14,16.01,15.94,16.21],[16.01,15.86,15.79,16.08],[15.86,15.48,15.41,15.93]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[]},
+      markPoint: mps([mp('前K探过更低位',['D11',16.92],'bottom'),
+      mp('影线被包含：拒绝无效',['D13',16.96],'bottom'),
+      mp('无确认→续跌',['D14',17.52],'top')])}),
+    vSeries([
+    [42,"n"],[31,"n"],[26,"n"],[33,"n"],[43,"n"],[40,"n"],[29,"n"],[26,"n"],[36,"n"],[43,"n"],[38,"n"],[27,"n"],[15,"lo"],[90,"dn"],[43,"n"],[36,"n"],[26,"n"],[29,"n"],[40,"n"],[43,"n"]
+    ])
+  ]
+}));
 // --- 交易决策篇单图 ---
 regChart('chart-slw', kInit('chart-slw', {
-  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
-  xAxis: [kCat(9,0)], yAxis: [kVal(0)],
-  series: [kSeries([[10,10.6,9.9,10.7],[10.6,11.2,10.5,11.3],[11.2,11.8,11.1,11.9],[11.8,11.4,11.3,11.9],[11.4,11.1,11.0,11.5],[11.1,10.9,10.8,11.2],[10.85,11.4,10.8,11.5],[11.4,11.9,11.35,12.0],[11.9,12.4,11.85,12.5]],
-    {markArea:{silent:true,itemStyle:{color:'rgba(34,197,94,0.1)'},data:[[{name:'位：供需区域（需求区）',yAxis:10.7},{yAxis:11.15}]]},
-     markPoint: mps([mp('势：HH/HL 上升结构',['D3',11.9],'top'), mp('形：看涨吞没=触发',['D7',11.5],'top'), mp('HL',['D7',10.8],'bottom')])})]
+  grid: pvGrids(),
+  xAxis: [kCat(36,0), kCat(36,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [10.24,10.19,10.12,10.31],[10.19,10.39,10.12,10.46],[10.39,10.39,10.32,10.46],[10.39,10.61,10.32,10.68],[10.61,10.8,10.54,10.87],[10.8,10.8,10.73,10.87],[10.8,11.03,10.73,11.1],[11.03,11.2,10.96,11.27],[11.2,11.05,10.98,11.27],[11.05,10.75,10.68,11.12],[10.75,11.03,10.68,11.1],[11.03,11.28,10.96,11.35],[11.28,11.3,11.21,11.37],[11.3,11.57,11.23,11.64],[11.57,11.81,11.5,11.88],[11.81,11.84,11.74,11.91],[11.84,12.12,11.77,12.19],[12.12,12.34,12.05,12.41],[12.34,12.1,12.03,12.41],[12.1,11.8,11.72,12.17],[11.8,12.08,11.73,12.15],[12.08,12.35,12.01,12.42],[12.35,12.35,12.28,12.42],[12.35,12.63,12.28,12.7],[12.63,12.88,12.56,12.95],[12.88,12.89,12.81,12.96],[12.89,13.19,12.82,13.26],[13.19,13.42,13.12,13.49],[13.42,13.43,13.35,13.5],[13.43,13.3,13.23,13.5],[13.3,12.95,12.85,13.37],[12.95,12.4,12.33,13.02],[12.4,12.7,12.33,12.77],[12.7,13.1,12.63,13.17],[13.1,13.45,13.03,13.52],[13.45,13.85,13.38,13.92]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markArea: {silent:true, data:[[{name:'持仓区间（趋势跟随）',xAxis:'D11',itemStyle:{color:'rgba(34,197,94,0.08)'},label:{show:true,position:'insideTopLeft',color:'#22C55E',fontSize:10}},{xAxis:'D31'}]]},
+      markLine: {symbol:'none', data:[ml(10.68,'止损：HL1下方',KP.dn,'insideStartBottom'),
+      ml(11.72,'移动止损：HL2下方',KP.yel,'insideStartBottom'),
+      ml(12.85,'最终离场：破移动止损',KP.org,'insideStartBottom')]},
+      markPoint: mps([mp('HL1（回调不破前低）',['D10',10.68],'bottom'),
+      mp('入场：回踩不破+吞没确认',['D11',11.42],'top'),
+      mp('HL2：低点抬高=趋势延续',['D20',11.68],'bottom'),
+      mp('加速段：顺势持有',['D29',13.60],'top'),
+      mp('跌破移动止损→离场',['D32',12.40],'bottom')])}),
+    vSeries([
+    [39,"n"],[29,"n"],[25,"n"],[31,"n"],[40,"n"],[37,"n"],[28,"n"],[25,"n"],[34,"n"],[16,"lo"],[35,"n"],[86,"up"],[26,"n"],[36,"n"],[40,"n"],[33,"n"],[25,"n"],[28,"n"],[37,"n"],[16,"lo"],[31,"n"],[87,"up"],[30,"n"],[39,"n"],[39,"n"],[29,"n"],[25,"n"],[32,"n"],[40,"n"],[37,"n"],[12,"lo"],[25,"n"],[89,"up"],[40,"n"],[35,"n"],[26,"n"]
+    ])
+  ]
 }));
 regChart('chart-lr', kInit('chart-lr', {
-  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
-  xAxis: [kCat(6,0)], yAxis: [kVal(0)],
-  series: [kSeries([[11.5,11.2,11.1,11.6],[11.2,10.9,10.8,11.3],[10.9,10.7,10.55,11.0],[10.65,10.8,10.1,10.9],[10.8,11.2,10.75,11.3],[11.2,11.6,11.15,11.7]],
-    {markArea:{silent:true,itemStyle:{color:'rgba(34,197,94,0.1)'},data:[[{name:'关键位（支撑）',yAxis:10.4},{yAxis:11.0}]]},
-     markPoint: mps([mp('反转K确认',['D4',10.1],'bottom'), mp('右侧：确认后加仓2/3',['D5',11.3],'top')]),
-     markLine: {data:[ml(10.75,'左侧：限价单挂10.75（试仓1/3）',KP.blue,'insideEndTop'), ml(9.55,'止损=信号最低价10.1-1ATR≈9.55',KP.dn,'insideEndTop')]}})]
+  grid: pvGrids(),
+  xAxis: [kCat(28,0), kCat(28,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [11.1,11.05,10.98,11.17],[11.05,10.55,10.48,11.12],[10.55,10.3,10.22,10.62],[10.3,10.62,10.23,10.69],[10.62,11.05,10.55,11.12],[11.05,11.32,10.98,11.39],[11.32,10.85,10.78,11.39],[10.85,10.42,10.35,10.92],[10.42,10.28,10.2,10.58],[10.28,10.58,10.21,10.65],[10.58,10.95,10.51,11.02],[10.95,11.28,10.88,11.35],[11.28,10.72,10.65,11.35],[10.72,10.35,10.28,10.79],[10.35,10.62,10.24,10.69],[10.62,11.02,10.55,11.09],[11.02,11.34,10.95,11.41],[11.34,10.8,10.73,11.41],[10.8,10.4,10.33,10.87],[10.4,10.3,10.2,10.6],[10.3,10.55,10.23,10.62],[10.55,10.9,10.48,10.97],[10.9,11.2,10.83,11.27],[11.2,10.7,10.63,11.27],[10.7,10.35,10.28,10.77],[10.35,10.6,10.22,10.67],[10.6,10.45,10.38,10.67],[10.45,10.1,10.03,10.52]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markArea: {silent:true, data:[[{name:'震荡区间',xAxis:'D1',itemStyle:{color:'rgba(59,130,246,0.07)'},label:{show:true,position:'insideTop',color:'#3B82F6',fontSize:10}},{xAxis:'D30'}]]},
+      markLine: {symbol:'none', data:[ml(11.42,'区间上沿：触顶做空',KP.org,'insideEndTop'),
+      ml(10.22,'区间下沿：触底做多',KP.blue,'insideEndBottom'),
+      ml(10.02,'破位离场：跌破下沿',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('触底做多',['D3',10.22],'bottom'),
+      mp('触顶做空',['D6',11.34],'top'),
+      mp('触底做多',['D9',10.20],'bottom'),
+      mp('区间震荡：低买高卖',['D19',10.20],'bottom'),
+      mp('放量破位→立即离场',['D32',10.02],'bottom')])}),
+    vSeries([
+    [39,"n"],[29,"n"],[14,"lo"],[31,"n"],[40,"n"],[37,"n"],[28,"n"],[25,"n"],[15,"lo"],[40,"n"],[35,"n"],[26,"n"],[26,"n"],[36,"n"],[16,"lo"],[33,"n"],[25,"n"],[28,"n"],[37,"n"],[16,"lo"],[31,"n"],[25,"n"],[30,"n"],[39,"n"],[39,"n"],[12,"lo"],[25,"n"],[32,"n"]
+    ])
+  ]
 }));
 regChart('chart-brk', kInit('chart-brk', {
-  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
-  xAxis: [kCat(10,0)], yAxis: [kVal(0)],
-  series: [kSeries([[10.1,10.3,10.0,10.4],[10.3,10.2,10.05,10.4],[10.2,10.4,10.1,10.5],[10.4,10.3,10.15,10.5],[10.3,10.45,10.2,10.5],[10.45,11.2,10.4,11.3],[11.2,10.9,10.6,11.25],[10.9,10.65,10.5,10.95],[10.7,11.1,10.65,11.15],[11.1,11.5,11.05,11.6]],
-    {markPoint: mps([mp('① 放量突破',['D6',11.3],'top'), mp('② 回踩不破',['D8',10.5],'bottom'), mp('③ 反转K确认·入场',['D9',11.15],'top')]),
-     markLine: {data:[ml(10.5,'关键位/突破位 10.5',KP.yel,'insideEndTop'), ml(10.0,'止损=回踩低点-1ATR≈10.0',KP.dn,'insideEndTop')]}})]
+  grid: pvGrids(),
+  xAxis: [kCat(31,0), kCat(31,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [10.45,10.4,10.33,10.52],[10.4,10.54,10.33,10.61],[10.54,10.42,10.35,10.61],[10.42,10.57,10.35,10.64],[10.57,10.69,10.5,10.76],[10.69,10.57,10.5,10.76],[10.57,10.74,10.5,10.81],[10.74,10.84,10.67,10.91],[10.84,10.72,10.65,10.91],[10.72,10.9,10.65,10.97],[10.9,10.99,10.83,11.06],[10.99,10.88,10.81,11.06],[10.88,11.07,10.81,11.14],[11.07,11.15,11.0,11.38],[11.15,11.3,11.08,11.48],[11.3,11.09,11.02,11.37],[11.09,11.19,11.02,11.26],[11.19,11.12,11.05,11.26],[11.12,11.23,11.02,11.3],[11.23,11.31,11.16,11.38],[11.31,11.4,11.22,11.47],[11.4,11.62,11.33,11.69],[11.62,11.82,11.55,11.89],[11.82,12.01,11.75,12.08],[12.01,11.97,11.9,12.08],[11.97,12.18,11.9,12.25],[12.18,12.36,12.11,12.43],[12.36,12.32,12.25,12.43],[12.32,12.2,12.13,12.39],[12.2,11.9,11.83,12.27],[11.9,11.55,11.48,11.97]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markArea: {silent:true, data:[[{name:'盘整区间',xAxis:'D1',itemStyle:{color:'rgba(234,179,8,0.08)'},label:{show:true,position:'insideTop',color:'#EAB308',fontSize:10}},{xAxis:'D13'}]]},
+      markLine: {symbol:'none', data:[ml(11.05,'箱体上沿（突破基准）',KP.org,'insideEndTop'),
+      ml(10.88,'止损：箱体内（假突破）',KP.dn,'insideStartBottom')]},
+      markPoint: mps([mp('箱体上沿',['D13',11.05],'top'),
+      mp('放量突破→买入1/3',['D15',11.48],'top'),
+      mp('回踩不破上沿→加仓',['D20',11.02],'bottom'),
+      mp('止损上移至成本',['D22',11.40],'top'),
+      mp('趋势延伸：移动止损持有',['D28',12.45],'top'),
+      mp('跌破移动止损→离场',['D33',11.55],'bottom')])}),
+    vSeries([
+    [39,"n"],[29,"n"],[25,"n"],[31,"n"],[40,"n"],[37,"n"],[28,"n"],[25,"n"],[34,"n"],[40,"n"],[35,"n"],[26,"n"],[26,"n"],[36,"n"],[89,"up"],[90,"up"],[25,"n"],[14,"lo"],[15,"lo"],[16,"lo"],[31,"n"],[25,"n"],[30,"n"],[39,"n"],[39,"n"],[29,"n"],[25,"n"],[32,"n"],[40,"n"],[37,"n"],[27,"n"]
+    ])
+  ]
 }));
 regChart('chart-stopw', kInit('chart-stopw', {
-  title: [{text:'太紧 <0.5ATR',left:'12%',top:'3%',textStyle:{color:'#EF4444',fontSize:12,fontWeight:600}},
-          {text:'刚好 1-1.5ATR',left:'45%',top:'3%',textStyle:{color:'#22C55E',fontSize:12,fontWeight:600}},
-          {text:'太松 >2ATR',left:'78%',top:'3%',textStyle:{color:'#F97316',fontSize:12,fontWeight:600}}],
-  grid: [{left:'6%',right:'4%',top:'14%',bottom:'12%',width:'25%'},{left:'36%',right:'4%',top:'14%',bottom:'12%',width:'25%'},{left:'66%',right:'4%',top:'14%',bottom:'12%',width:'25%'}],
-  xAxis: [kCat(5,0), kCat(5,1), kCat(5,2)],
-  yAxis: [kVal(0), kVal(1), kVal(2)],
+  grid: pvGrids(),
+  xAxis: [kCat(29,0), kCat(29,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
   series: [
-    kSeries([[10.4,10.6,10.3,10.7],[10.6,10.8,10.5,10.9],[10.8,10.7,10.38,10.9],[10.9,11.1,10.8,11.2],[11.1,11.3,11.0,11.4]],
-      {xAxisIndex:0, yAxisIndex:0, markLine:{data:[ml(10.4,'止损(太紧)',KP.dn,'insideEndTop')]},
-       markPoint: mps([mp('噪音波动即被扫掉',['D3',10.38],'bottom')])}),
-    kSeries([[10.4,10.6,10.3,10.7],[10.6,10.8,10.5,10.9],[10.8,10.7,10.38,10.9],[10.9,11.1,10.8,11.2],[11.1,11.3,11.0,11.4]],
-      {xAxisIndex:1, yAxisIndex:1, markLine:{data:[ml(10.0,'止损=关键位-1ATR',KP.up,'insideEndTop')]},
-       markPoint: mps([mp('未被猎杀，趋势延续',['D5',11.4],'top')])}),
-    kSeries([[10.4,10.6,10.3,10.7],[10.6,10.8,10.5,10.9],[10.8,10.7,10.38,10.9],[10.9,11.1,10.8,11.2],[11.1,11.3,11.0,11.4]],
-      {xAxisIndex:2, yAxisIndex:2, markLine:{data:[ml(9.0,'止损(太松)',KP.org,'insideEndTop')]},
-       markPoint: mps([mp('单笔亏损过大',['D5',11.0],'bottom')])})
+    kSeries([
+    [10.27,10.22,10.15,10.34],[10.22,10.42,10.15,10.49],[10.42,10.38,10.31,10.49],[10.38,10.59,10.31,10.66],[10.59,10.77,10.52,10.84],[10.77,10.74,10.67,10.84],[10.74,10.96,10.67,11.03],[10.96,11.13,10.89,11.2],[11.13,11.09,11.02,11.2],[11.09,11.33,11.02,11.4],[11.33,11.2,11.13,11.4],[11.2,10.85,10.78,11.27],[10.85,11.05,10.78,11.12],[11.05,11.23,10.98,11.3],[11.23,11.17,11.1,11.3],[11.17,11.37,11.1,11.44],[11.37,11.53,11.3,11.6],[11.53,11.47,11.4,11.6],[11.47,11.45,11.38,11.54],[11.45,11.15,11.08,11.52],[11.15,10.92,10.85,11.22],[10.92,10.62,10.55,10.99],[10.62,10.32,10.25,10.7],[10.32,10.27,10.2,10.39],[10.27,9.98,9.91,10.34],[9.98,9.94,9.87,10.05],[9.94,9.87,9.8,10.01],[9.87,9.6,9.53,9.94],[9.6,9.45,9.38,9.67]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(10.80,'止损位：前低下方',KP.dn,'insideStartBottom'),
+      ml(11.62,'入场价',KP.blue,'insideEndTop')]},
+      markPoint: mps([mp('入场做多',['D10',11.35],'top'),
+      mp('前低（止损参考）',['D12',10.78],'bottom'),
+      mp('跌破前低→触发止损',['D22',10.55],'bottom'),
+      mp('不止损：亏损扩大',['D28',9.45],'bottom')])}),
+    vSeries([
+    [39,"n"],[29,"n"],[25,"n"],[31,"n"],[40,"n"],[37,"n"],[28,"n"],[25,"n"],[34,"n"],[40,"n"],[35,"n"],[13,"lo"],[26,"n"],[36,"n"],[40,"n"],[33,"n"],[25,"n"],[28,"n"],[37,"n"],[16,"lo"],[31,"n"],[25,"n"],[88,"dn"],[89,"dn"],[39,"n"],[29,"n"],[25,"n"],[32,"n"],[40,"n"]
+    ])
   ]
 }));
 regChart('chart-2b', kInit('chart-2b', {
-  grid: {left:'9%',right:'4%',top:'10%',bottom:'12%'},
-  xAxis: [kCat(7,0)], yAxis: [kVal(0)],
-  series: [kSeries([[10.0,10.4,9.9,10.5],[10.4,10.8,10.3,10.9],[10.8,11.1,10.7,11.2],[11.1,11.4,11.0,11.5],[11.55,11.45,11.2,11.75],[11.45,10.9,10.8,11.5],[10.9,10.5,10.4,11.0]],
-    {markPoint: mps([mp('创新高11.75后无法维持',['D5',11.75],'top'), mp('跌回前高之下=离场信号',['D6',10.8],'bottom')]),
-     markLine: {data:[ml(11.5,'前高 11.5',KP.blue,'insideEndTop')]}})]
+  grid: pvGrids(),
+  xAxis: [kCat(31,0), kCat(31,1)],
+  yAxis: [kVal(0,{scale:true}), kVal(1,{splitLine:{show:false},min:0,axisLabel:{show:false}})],
+  series: [
+    kSeries([
+    [12.1,12.05,11.98,12.17],[12.05,11.98,11.91,12.12],[11.98,11.65,11.58,12.05],[11.65,11.6,11.53,11.72],[11.6,11.51,11.44,11.67],[11.51,11.19,11.12,11.58],[11.19,11.15,11.08,11.26],[11.15,11.05,10.98,11.22],[11.05,10.72,10.65,11.12],[10.72,10.7,10.63,10.79],[10.7,10.58,10.51,10.77],[10.58,10.26,10.19,10.65],[10.26,10.55,10.19,10.62],[10.55,10.85,10.48,10.92],[10.85,11.1,10.78,11.17],[11.1,11.32,11.03,11.39],[11.32,11.48,11.25,11.6],[11.48,11.2,11.13,11.62],[11.2,10.95,10.88,11.27],[10.95,10.7,10.63,11.02],[10.7,10.4,10.3,10.77],[10.4,10.07,10.0,10.47],[10.07,10.01,9.94,10.14],[10.01,9.72,9.65,10.08],[9.72,9.68,9.61,9.79],[9.68,9.61,9.54,9.75],[9.61,9.32,9.25,9.68],[9.32,9.2,9.13,9.39],[9.2,9.05,8.98,9.27],[9.05,8.9,8.83,9.12],[8.9,8.8,8.73,8.97]
+    ], {xAxisIndex:0, yAxisIndex:0,
+      markLine: {symbol:'none', data:[ml(11.05,'前高（突破基准）',KP.org,'insideEndTop'),
+      ml(11.55,'假突破高点：突破即离场',KP.yel,'insideEndTop')]},
+      markPoint: mps([mp('前高',['D12',10.30],'bottom'),
+      mp('假突破：盘中突破前高',['D17',11.62],'top'),
+      mp('2B信号：收盘跌回前高之下→卖出',['D21',10.30],'bottom'),
+      mp('2B之后：加速下跌',['D28',8.80],'bottom')])}),
+    vSeries([
+    [39,"n"],[29,"n"],[25,"n"],[31,"n"],[40,"n"],[37,"n"],[28,"n"],[25,"n"],[34,"n"],[40,"n"],[35,"n"],[26,"n"],[26,"n"],[36,"n"],[40,"n"],[33,"n"],[91,"up"],[92,"up"],[15,"lo"],[16,"lo"],[12,"lo"],[87,"dn"],[88,"dn"],[39,"n"],[39,"n"],[29,"n"],[25,"n"],[32,"n"],[40,"n"],[37,"n"],[27,"n"]
+    ])
+  ]
 }));
 
 // ===== 附录B：迷你K线图例（内联SVG，无额外依赖） =====
