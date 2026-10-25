@@ -411,6 +411,19 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 /* === TERM REFERENCE LINKS（首现术语→附录E词条锚点） === */
 .term-ref { color:inherit; text-decoration:underline dotted var(--text-muted); text-underline-offset:3px; }
 .term-ref:hover { color:var(--accent); text-decoration-color:var(--accent); }
+
+/* === 学习分层徽标与快速入口 === */
+.p-badge { display:inline-block; margin-left:10px; padding:1px 8px; border-radius:4px; font-size:11px; font-weight:600; vertical-align:middle; letter-spacing:0.5px; }
+.p-badge.pb-p0 { color:var(--accent); background:var(--accent-dim); border:1px solid var(--accent); }
+.p-badge.pb-p1 { color:var(--blue); background:var(--blue-dim); border:1px solid var(--blue); }
+.p-badge.pb-p2 { color:var(--purple); background:var(--purple-dim); border:1px solid var(--purple); }
+.p-badge.pb-p3 { color:var(--green); background:var(--green-dim); border:1px solid var(--green); }
+#nav .quick-link { color:var(--accent); font-weight:600; font-size:12px; padding:3px 12px; }
+#nav .quick-link:hover { background:var(--accent-dim); border-radius:4px; }
+.mvs-title { font-size:24px; font-weight:700; color:var(--text-primary); margin:28px 0 8px; padding-left:12px; border-left:4px solid var(--accent); }
+.mvs-intro { color:var(--text-secondary); font-size:14.5px; margin-bottom:16px; }
+.part-budget { color:var(--text-secondary); font-size:13px; margin:2px 0 14px; padding:8px 12px; background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-sm); }
+
 </style>
 </head>
 <body>
@@ -421,7 +434,11 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
   <nav id="nav">
     <a href="#cover" class="active">封面</a>
     <a href="#reading-path">阅读路径</a>
-    <div class="part-label">第一篇 · 认知重塑</div>
+    <a href="#mvs-page" class="quick-link">🚀 30分钟上手</a>
+    <a href="#appf" class="quick-link">📋 实战检查单</a>
+    <a href="#appb" class="quick-link">🕯 形态速查</a>
+    <a href="#appd" class="quick-link">🧮 止损仓位计算</a>
+    <div class="part-label">第一篇 · P0筑基</div>
     <div class="chapter-group">
       <a href="#ch1">第1章 抛开指标</a>
       <a href="#ch2">第2章 底层逻辑</a>
@@ -434,7 +451,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
       <a href="#ch6">第6章 组合K线</a>
       <a href="#ch7">第7章 势位形</a>
     </div>
-    <div class="part-label">第三篇 · P1进阶</div>
+    <div class="part-label">第三篇 · P1核心</div>
     <div class="chapter-group">
       <a href="#ch8">第8章 缺口理论</a>
       <a href="#ch9">第9章 推动与回调</a>
@@ -442,7 +459,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
       <a href="#ch11">第11章 位</a>
       <a href="#ch12">第12章 形</a>
     </div>
-    <div class="part-label">第四篇 · 交易决策</div>
+    <div class="part-label">第四篇 · P1核心</div>
     <div class="chapter-group">
       <a href="#ch13">第13章 入场</a>
       <a href="#ch14">第14章 趋势跟随</a>
@@ -451,7 +468,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
       <a href="#ch17">第17章 止损</a>
       <a href="#ch18">第18章 止盈仓位</a>
     </div>
-    <div class="part-label">第五篇 · P2高阶</div>
+    <div class="part-label">第五篇 · P2深度 · 选读</div>
     <div class="chapter-group">
       <a href="#ch19">第19章 假突破深度</a>
       <a href="#ch20">第20章 SMC深度</a>
@@ -512,7 +529,8 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <!-- ==================== READING PATH ==================== -->
 <div class="container" id="reading-path">
 <div class="reading-path">
-  <h2>📖 阅读路径</h2>
+  <h2>📖 阅读路径
+  <p class="part-budget">⏱️ 学习成本预算：P0 必修 ≈45分钟 ｜ P1 核心 ≈90分钟 ｜ P2 选读 ≈60分钟（可整体跳过）｜ P3 整合 ≈45分钟 —— 必修全程约 2.5 小时</p></h2>
   <div class="path-step">
     <div class="step-num p0">P0</div>
     <div class="step-text"><strong>第1-2章</strong>：理解裸K本质与底层逻辑 → <strong>第3章</strong>：市场结构骨架 → <strong>第4-6章</strong>：K线语言 → <strong>第7章</strong>：<a class="term-ref" href="#term-trend-level-trigger">势位形</a>三步法</div>
@@ -539,18 +557,71 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div>
 </div>
 
+<div class="container">
+
+<!-- ==================== 30分钟最小可行操作 ==================== -->
+<div id="mvs-page">
+<h2 class="mvs-title">🚀 30分钟最小可行操作（Minimal Viable System）</h2>
+<p class="mvs-intro">不想读完全书再开始？这一页就是最小可执行系统。<strong>先把系统跑起来，知识在实战中回填</strong>——这比先读3小时书再开图的上手速度快10倍。</p>
+
+<div class="callout callout-key">
+<div class="callout-title">🗺️ 势位形决策流程（每笔交易必走八步，缺一不入场）</div>
+<ol>
+<li><strong>开图</strong>：关掉所有指标，只留K线+成交量</li>
+<li><strong>判势</strong>：结构是HH/HL（多头）、LH/LL（空头）还是震荡？震荡只做区间不追突破</li>
+<li><strong>找位</strong>：价格在关键位附近吗？（供需区/前高前低/FVG）不在=空仓等待，什么也不做</li>
+<li><strong>等形</strong>：关键位出现反转信号了吗？（Pin Bar/吞没/刺透）没有=继续等</li>
+<li><strong>查量</strong>：突破放量、回调缩量吗？量价背离=放弃</li>
+<li><strong>定仓</strong>：单笔风险≤2%，从止损距离反推仓位</li>
+<li><strong>设损</strong>：结构位下方1个ATR挂止损单，进场前挂好</li>
+<li><strong>执行</strong>：止损触发无条件执行；到1:2盈亏比平一半，剩余跟踪止损</li>
+</ol>
+</div>
+
+<div class="rule-box">
+<div class="rule-title">最小规则集（5条，打印贴屏幕边）</div>
+<div class="rule-item"><span class="trigger">方向</span><span class="action">只做与结构方向一致的交易，震荡市只做区间两端</span></div>
+<div class="rule-item"><span class="trigger">位置</span><span class="action">只在关键位交易——无人区的"完美形态"再好看也不碰</span></div>
+<div class="rule-item"><span class="trigger">确认</span><span class="action">收盘确认再入场，不盘中抢跑（假突破专门收割抢跑者）</span></div>
+<div class="rule-item"><span class="trigger">风险</span><span class="action">单笔风险≤2%，仓位=风险额度÷止损距离——先设损再定仓</span></div>
+<div class="rule-item"><span class="trigger">盈亏比</span><span class="action">目标位距离÷止损距离&lt;2:1就不做——空间不够的机会放弃</span></div>
+</div>
+
+<div class="callout callout-danger">
+<div class="callout-title">⚠️ 生存契约（第0前提）</div>
+<p>先读《风险管理与交易心理》第6章三条资金红线：单日亏损≤5%、单周≤10%、账户最大回撤≤20%——任何一条触发，强制停止交易一周。没有红线的交易是赌博。</p>
+</div>
+
+<div class="info-grid cols-3">
+<div class="info-card ic-blue">
+<h4>🎯 现在就想试</h4>
+<p>打开<a href="#appf">附录F实战检查单</a>，用模拟盘（或1/10仓位）按八步流程跑20笔，每笔对照检查单打勾。跑完回来读第28章复盘打分。</p>
+</div>
+<div class="info-card ic-green">
+<h4>📚 想学扎实</h4>
+<p>沿P0筑基（第1-7章，约45分钟）→ P1核心（第8-18章，约90分钟）顺序读。读完必修层你对每条规则的"为什么"都有一手理解。</p>
+</div>
+<div class="info-card ic-accent">
+<h4>🧩 卡住了查哪</h4>
+<p><a href="#appb">形态速查表</a>（这是什么形态）→ <a href="#appc">关键位速查</a>（位置对不对）→ <a href="#appa">全局术语表</a>（词什么意思）。查完回来接着操作。</p>
+</div>
+</div>
+</div>
+
+</div><!-- end container mvs -->
+
 <!-- ==================== 第一篇：裸K是什么 ==================== -->
 <div class="container">
 
 <div class="part-header" id="part1">
-  <div class="part-tag">第一篇</div>
+  <div class="part-tag">第一篇 · P0筑基</div>
   <h2>裸K是什么——扔掉指标，看价格本身</h2>
   <p class="part-goal">回答"为什么裸K值得学"，建立正确认知，破除"形态崇拜"和"指标依赖"两个执念。引入流动性和机构视角的底层逻辑。</p>
 </div>
 
 <!-- ===== 第1章（重写版） ===== -->
 <div class="chapter" id="ch1">
-<h2 class="chapter-title"><span class="ch-num">第1章</span>抛开指标——裸K交易的本质与逻辑</h2>
+<h2 class="chapter-title"><span class="ch-num">第1章</span>抛开指标——裸K交易的本质与逻辑<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>1.1 什么是裸K交易</h3>
@@ -827,7 +898,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div><!-- end chapter -->
 <!-- ===== 第2章（重写版） ===== -->
 <div class="chapter" id="ch2">
-<h2 class="chapter-title"><span class="ch-num">第2章</span>裸K的底层逻辑——多空博弈与流动性</h2>
+<h2 class="chapter-title"><span class="ch-num">第2章</span>裸K的底层逻辑——多空博弈与流动性<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>2.1 每一根K线，都是真金白银的战场痕迹</h3>
@@ -1196,7 +1267,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 <!-- ===== 第3章 ===== -->
 <!-- ===== 第3章（重写版） ===== -->
 <div class="chapter" id="ch3">
-<h2 class="chapter-title"><span class="ch-num">第3章</span>市场结构——价格运行的骨架</h2>
+<h2 class="chapter-title"><span class="ch-num">第3章</span>市场结构——价格运行的骨架<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>3.1 什么是市场结构：高低点排列的规律</h3>
@@ -1483,7 +1554,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第4章（重写版） ===== -->
 <div class="chapter" id="ch4">
-<h2 class="chapter-title"><span class="ch-num">第4章</span>单根K线的语言——读懂每一根蜡烛</h2>
+<h2 class="chapter-title"><span class="ch-num">第4章</span>单根K线的语言——读懂每一根蜡烛<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>4.1 K线四要素：开、收、高、低</h3>
@@ -1773,7 +1844,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第5章（重写版） ===== -->
 <div class="chapter" id="ch5">
-<h2 class="chapter-title"><span class="ch-num">第5章</span>Pin Bar——价格最强烈的拒绝信号</h2>
+<h2 class="chapter-title"><span class="ch-num">第5章</span>Pin Bar——价格最强烈的拒绝信号<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>5.1 Pin Bar长什么样：小实体+长影线</h3>
@@ -2025,7 +2096,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第6章（重写版） ===== -->
 <div class="chapter" id="ch6">
-<h2 class="chapter-title"><span class="ch-num">第6章</span>组合K线与结构形态——信号升级</h2>
+<h2 class="chapter-title"><span class="ch-num">第6章</span>组合K线与结构形态——信号升级<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>6.1 Inside Bar（母子线/内包线）：盘整蓄势，风暴将至</h3>
@@ -2297,7 +2368,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第7章（重写版） ===== -->
 <div class="chapter" id="ch7">
-<h2 class="chapter-title"><span class="ch-num">第7章</span>势·位·形——裸K的决策公式</h2>
+<h2 class="chapter-title"><span class="ch-num">第7章</span>势·位·形——裸K的决策公式<span class="p-badge pb-p0">P0筑基</span></h2>
 
 <div class="section">
 <h3>7.1 为什么分析要有优先级</h3>
@@ -2518,9 +2589,21 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div><!-- end chapter -->
 
 
+</div><!-- end container for Part 2 -->
+
+<!-- ==================== 第三篇 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part3">
+  <div class="part-tag">第三篇 · P1核心</div>
+  <h2>决策执行——缺口、量价、关键位与信号确认</h2>
+  <p class="part-goal">势位形的落地：缺口与量价读盘，找到关键位置，等待信号确认。本篇结束你拥有完整的开图-决策流程。</p>
+</div>
+
+
 <!-- ===== 第8章（重写版） ===== -->
 <div class="chapter" id="ch8">
-<h2 class="chapter-title"><span class="ch-num">第8章</span>缺口理论——价格跳空的语言</h2>
+<h2 class="chapter-title"><span class="ch-num">第8章</span>缺口理论——价格跳空的语言<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>8.1 什么是缺口：没有成交的价格断层</h3>
@@ -2686,7 +2769,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第9章（重写版） ===== -->
 <div class="chapter" id="ch9">
-<h2 class="chapter-title"><span class="ch-num">第9章</span>推动浪与回调浪——趋势的健康度诊断</h2>
+<h2 class="chapter-title"><span class="ch-num">第9章</span>推动浪与回调浪——趋势的健康度诊断<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>9.1 推动浪与回调浪：趋势的两面</h3>
@@ -2867,7 +2950,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第10章（重写版） ===== -->
 <div class="chapter" id="ch10">
-<h2 class="chapter-title"><span class="ch-num">第10章</span>势——判断趋势方向与量价关系</h2>
+<h2 class="chapter-title"><span class="ch-num">第10章</span>势——判断趋势方向与量价关系<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>10.1 高低点结构识别法（实战细节）</h3>
@@ -3033,7 +3116,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第11章（重写版） ===== -->
 <div class="chapter" id="ch11">
-<h2 class="chapter-title"><span class="ch-num">第11章</span>位——找到关键位置</h2>
+<h2 class="chapter-title"><span class="ch-num">第11章</span>位——找到关键位置<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>11.1 关键位的三种类型</h3>
@@ -3198,7 +3281,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第12章（重写版） ===== -->
 <div class="chapter" id="ch12">
-<h2 class="chapter-title"><span class="ch-num">第12章</span>形——确认入场信号</h2>
+<h2 class="chapter-title"><span class="ch-num">第12章</span>形——确认入场信号<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>12.1 形态只是触发器，不是预测器</h3>
@@ -3320,9 +3403,21 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 </div><!-- end chapter -->
 
 
+</div><!-- end container for Part 3 -->
+
+<!-- ==================== 第四篇 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part4">
+  <div class="part-tag">第四篇 · P1核心</div>
+  <h2>策略与风控——入场、三种策略、止损止盈仓位</h2>
+  <p class="part-goal">右侧确认入场，趋势跟随/区间/突破三种可执行策略，止损止盈与仓位规则。本篇结束你拥有最小可交易系统。</p>
+</div>
+
+
 <!-- ===== 第13章（重写版） ===== -->
 <div class="chapter" id="ch13">
-<h2 class="chapter-title"><span class="ch-num">第13章</span>入场——左侧试仓与右侧确认</h2>
+<h2 class="chapter-title"><span class="ch-num">第13章</span>入场——左侧试仓与右侧确认<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>13.1 左侧交易：在关键位提前埋伏</h3>
@@ -3472,7 +3567,7 @@ body { font-family: var(--font-body); background: var(--bg-deep); color: var(--t
 
 <!-- ===== 第14章（重写版） ===== -->
 <div class="chapter" id="ch14">
-<h2 class="chapter-title"><span class="ch-num">第14章</span>趋势跟随策略——顺势而为</h2>
+<h2 class="chapter-title"><span class="ch-num">第14章</span>趋势跟随策略——顺势而为<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>14.1 趋势跟随的核心逻辑</h3>
@@ -3629,7 +3724,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第15章（重写版） ===== -->
 <div class="chapter" id="ch15">
-<h2 class="chapter-title"><span class="ch-num">第15章</span>区间交易策略——高抛低吸</h2>
+<h2 class="chapter-title"><span class="ch-num">第15章</span>区间交易策略——高抛低吸<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>15.1 箱体的识别</h3>
@@ -3781,7 +3876,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第16章（重写版） ===== -->
 <div class="chapter" id="ch16">
-<h2 class="chapter-title"><span class="ch-num">第16章</span>突破交易策略——突破-回踩-确认</h2>
+<h2 class="chapter-title"><span class="ch-num">第16章</span>突破交易策略——突破-回踩-确认<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>16.1 突破的三种类型</h3>
@@ -3949,7 +4044,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第17章（重写版） ===== -->
 <div class="chapter" id="ch17">
-<h2 class="chapter-title"><span class="ch-num">第17章</span>止损——保命的第一优先级</h2>
+<h2 class="chapter-title"><span class="ch-num">第17章</span>止损——保命的第一优先级<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>17.1 止损不是"认输"，是"成本"</h3>
@@ -4106,7 +4201,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第18章（重写版） ===== -->
 <div class="chapter" id="ch18">
-<h2 class="chapter-title"><span class="ch-num">第18章</span>止盈与仓位——守住利润的艺术</h2>
+<h2 class="chapter-title"><span class="ch-num">第18章</span>止盈与仓位——守住利润的艺术<span class="p-badge pb-p1">P1核心</span></h2>
 
 <div class="section">
 <h3>18.1 盈亏比：裸K交易的数学底座</h3>
@@ -4264,9 +4359,21 @@ BOS后回踩突破位+信号确认→入场<br>
 </div><!-- end chapter -->
 
 
+</div><!-- end container for Part 4 -->
+
+<!-- ==================== 第五篇 ==================== -->
+<div class="container">
+
+<div class="part-header" id="part5">
+  <div class="part-tag">第五篇 · P2深度 · 选读</div>
+  <h2>深度专题选读——机构视角的进阶工具箱</h2>
+  <p class="part-goal">选读层。每个专题自成一体，跳过不影响操作能力。建议完成20笔实盘并复盘后，再回来按需精读——带着实战问题读，吸收效率完全不同。</p>
+</div>
+
+
 <!-- ===== 第19章（重写版） ===== -->
 <div class="chapter" id="ch19">
-<h2 class="chapter-title"><span class="ch-num">第19章</span>假突破深度——流动性猎取与<a class="term-ref" href="#term-2b-rule">2B法则</a></h2>
+<h2 class="chapter-title"><span class="ch-num">第19章</span>假突破深度——流动性猎取与<a class="term-ref" href="#term-2b-rule">2B法则</a><span class="p-badge pb-p2">P2选读</span></h2>
 
 <div class="section">
 <h3>19.1 假突破的本质：流动性猎杀</h3>
@@ -4437,7 +4544,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第20章（重写版） ===== -->
 <div class="chapter" id="ch20">
-<h2 class="chapter-title"><span class="ch-num">第20章</span>SMC深度——读取机构的微观痕迹</h2>
+<h2 class="chapter-title"><span class="ch-num">第20章</span>SMC深度——读取机构的微观痕迹<span class="p-badge pb-p2">P2选读</span></h2>
 
 <div class="section">
 <h3>20.1 SMC是什么</h3>
@@ -4562,7 +4669,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第21章（重写版） ===== -->
 <div class="chapter" id="ch21">
-<h2 class="chapter-title"><span class="ch-num">第21章</span>斐波那契——价格回撤的自然法则</h2>
+<h2 class="chapter-title"><span class="ch-num">第21章</span>斐波那契——价格回撤的自然法则<span class="p-badge pb-p2">P2选读</span></h2>
 
 <div class="section">
 <h3>21.1 斐波那契数列与黄金比例</h3>
@@ -4691,7 +4798,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 
 <div class="chapter" id="ch22">
-<h2 class="chapter-title"><span class="ch-num">第22章</span>威科夫微观结构——吸筹与派发的完整剧本</h2>
+<h2 class="chapter-title"><span class="ch-num">第22章</span>威科夫微观结构——吸筹与派发的完整剧本<span class="p-badge pb-p2">P2选读</span></h2>
 
 <div class="section">
 <h3>22.0 威科夫全景图</h3>
@@ -4785,7 +4892,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第23章 ===== -->
 <div class="chapter" id="ch23">
-<h2 class="chapter-title"><span class="ch-num">第23章</span>Volume Profile深度——成交量的价格分布</h2>
+<h2 class="chapter-title"><span class="ch-num">第23章</span>Volume Profile深度——成交量的价格分布<span class="p-badge pb-p2">P2选读</span></h2>
 
 <div class="section">
 <h3>23.1 什么是Volume Profile</h3>
@@ -4827,7 +4934,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第24章 ===== -->
 <div class="chapter" id="ch24">
-<h2 class="chapter-title"><span class="ch-num">第24章</span>算法时代的裸K——2026年的新战场（选读/扩展）</h2>
+<h2 class="chapter-title"><span class="ch-num">第24章</span>算法时代的裸K——2026年的新战场（选读/扩展）<span class="p-badge pb-p2">P2选读</span></h2>
 
 <div class="section">
 <h3>24.1 高频交易（HFT）如何制造假突破</h3>
@@ -4874,7 +4981,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第25章 ===== -->
 <div class="chapter" id="ch25">
-<h2 class="chapter-title"><span class="ch-num">第25章</span>多时间框架深度分析——MTFA方法论</h2>
+<h2 class="chapter-title"><span class="ch-num">第25章</span>多时间框架深度分析——MTFA方法论<span class="p-badge pb-p3">P3整合</span></h2>
 
 <div class="section">
 <h3>25.1 为什么不能只看一个周期</h3>
@@ -4912,7 +5019,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第26章 ===== -->
 <div class="chapter" id="ch26">
-<h2 class="chapter-title"><span class="ch-num">第26章</span>指数PA、板块PA与个股PA——差异化应用</h2>
+<h2 class="chapter-title"><span class="ch-num">第26章</span>指数PA、板块PA与个股PA——差异化应用<span class="p-badge pb-p3">P3整合</span></h2>
 
 <div class="section">
 <h3>26.1 为什么不能只看个股</h3>
@@ -4941,7 +5048,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第27章 ===== -->
 <div class="chapter" id="ch27">
-<h2 class="chapter-title"><span class="ch-num">第27章</span>复合信号与全链路交易计划</h2>
+<h2 class="chapter-title"><span class="ch-num">第27章</span>复合信号与全链路交易计划<span class="p-badge pb-p3">P3整合</span></h2>
 
 <div class="section">
 <h3>27.1 复合信号：用2-3个独立因素交叉确认</h3>
@@ -4988,7 +5095,7 @@ BOS后回踩突破位+信号确认→入场<br>
 
 <!-- ===== 第28章 ===== -->
 <div class="chapter" id="ch28">
-<h2 class="chapter-title"><span class="ch-num">第28章</span>复盘体系与持续精进</h2>
+<h2 class="chapter-title"><span class="ch-num">第28章</span>复盘体系与持续精进<span class="p-badge pb-p3">P3整合</span></h2>
 
 <div class="section">
 <h3>28.1 为什么复盘比学新知识更重要</h3>
@@ -5179,7 +5286,7 @@ BOS后回踩突破位+信号确认→入场<br>
 </table>
 
 <h3>多K结构形态速查</h3>
-<p>多K结构形态的蜡烛图可视化见第6章图6-4/图6-5。</p>
+<p>多K结构形态的蜡烛图可视化见第6章"组合形态图鉴"（吞没线、内包线、刺透/乌云、早晚之星、双底W底、双顶M顶、头肩顶/底各tab）。</p>
 <table class="data-table">
 <thead><tr><th>形态</th><th>一句话定义</th><th>确认要点</th><th>详见</th></tr></thead>
 <tbody>
