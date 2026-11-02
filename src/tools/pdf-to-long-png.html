@@ -257,6 +257,13 @@
       word-break: break-all;
     }
 
+    .result-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
     .download-btn {
       background: #1a1a1a;
       border: 1px solid #333;
@@ -268,6 +275,10 @@
       text-decoration: none;
       transition: border-color 0.2s, background 0.2s;
       white-space: nowrap;
+    }
+
+    button.download-btn {
+      font-family: inherit;
     }
 
     .download-btn:hover {
@@ -324,6 +335,10 @@
       .result-info {
         flex-direction: column;
         align-items: stretch;
+      }
+
+      .result-actions {
+        justify-content: center;
       }
 
       .download-btn {
@@ -440,7 +455,10 @@
           <strong id="resultTitle">output.png</strong>
           <span id="resultMeta">— 页 · — × — px</span>
         </div>
-        <a class="download-btn" id="downloadLink" download>下载</a>
+        <div class="result-actions">
+          <button class="download-btn" id="copyBtn" type="button">复制</button>
+          <a class="download-btn" id="downloadLink" download>下载</a>
+        </div>
       </div>
       <button class="preview-toggle" id="previewToggle">▼ 展开预览</button>
       <div class="preview-img-wrap" id="previewWrap">
@@ -479,6 +497,7 @@
     const resultTitle = document.getElementById('resultTitle');
     const resultMeta = document.getElementById('resultMeta');
     const downloadLink = document.getElementById('downloadLink');
+    const copyBtn = document.getElementById('copyBtn');
     const previewToggle = document.getElementById('previewToggle');
     const previewWrap = document.getElementById('previewWrap');
     const previewImg = document.getElementById('previewImg');
@@ -487,6 +506,7 @@
 
     let currentFile = null;
     let currentResultUrl = null;
+    let currentResult = null;
 
     scaleRange.addEventListener('input', () => {
       scaleVal.textContent = `×${scaleRange.value}`;
@@ -532,6 +552,18 @@
       await convertPdf(currentFile);
     });
 
+    copyBtn.addEventListener('click', async () => {
+      if (!currentResult) return;
+      hideError();
+      try {
+        const pngBlob = await ensurePngBlob(currentResult.blob);
+        await writeImageToClipboard(pngBlob);
+        resultMeta.textContent = `已复制到剪贴板 · ${currentResult.width} × ${currentResult.height} px，可直接粘贴`;
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+
     previewToggle.addEventListener('click', () => {
       const visible = previewWrap.style.display === 'block';
       previewWrap.style.display = visible ? 'none' : 'block';
@@ -573,6 +605,7 @@
       convertBtn.disabled = false;
       convertBtn.textContent = '开始转换';
       hideError();
+      currentResult = null;
       resultEl.style.display = 'none';
     }
 
@@ -598,6 +631,7 @@
           URL.revokeObjectURL(currentResultUrl);
         }
         currentResultUrl = URL.createObjectURL(result.blob);
+        currentResult = result;
 
         showProgress(100, '完成！');
 
@@ -707,6 +741,41 @@
 
     function clampCrop(value, height, otherCrop) {
       return Math.min(value, Math.max(0, height - otherCrop - 1));
+    }
+
+    async function ensurePngBlob(blob) {
+      if (blob.type === 'image/png') return blob;
+      const url = URL.createObjectURL(blob);
+      try {
+        const image = await new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => reject(new Error('无法读取转换结果'));
+          img.src = url;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        canvas.getContext('2d').drawImage(image, 0, 0);
+        const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        if (!pngBlob) {
+          throw new Error('无法生成用于复制的 PNG');
+        }
+        return pngBlob;
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    async function writeImageToClipboard(pngBlob) {
+      if (!navigator.clipboard || typeof ClipboardItem === 'undefined') {
+        throw new Error('当前浏览器不支持复制图片到剪贴板，可直接下载后使用');
+      }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+      } catch (err) {
+        throw new Error(`复制失败：${err?.message || '浏览器未授权剪贴板写入'}`);
+      }
     }
 
     function escapeHtml(text) {

@@ -351,8 +351,8 @@
       <aside class="panel">
         <div class="drop-zone" id="dropZone">
           <input type="file" id="fileInput" accept="image/*" multiple />
-          <strong>点击选择或拖拽图片</strong>
-          <span>支持多张图片 · 每次重新载入当前选择的一组图片</span>
+          <strong>点击选择、拖拽或 Ctrl+V 粘贴图片</strong>
+          <span>支持多张图片 · 上传/拖拽会整组重载，Ctrl+V 粘贴会追加到当前画布</span>
         </div>
 
         <div class="section controls">
@@ -396,7 +396,11 @@
         </div>
 
         <div class="button-row">
+          <button class="primary" id="copyBtn" disabled>复制拼接图</button>
           <button class="primary" id="exportBtn" disabled>下载拼接图</button>
+        </div>
+
+        <div class="button-row">
           <button class="secondary" id="resetBtn" disabled>重置布局</button>
         </div>
 
@@ -455,6 +459,7 @@
     const gapValue = document.getElementById('gapValue');
     const formatSelect = document.getElementById('formatSelect');
     const exportBtn = document.getElementById('exportBtn');
+    const copyBtn = document.getElementById('copyBtn');
     const resetBtn = document.getElementById('resetBtn');
     const removeBtn = document.getElementById('removeBtn');
     const clearBtn = document.getElementById('clearBtn');
@@ -538,8 +543,19 @@
       handleFiles(fileInput.files);
     });
 
+    document.addEventListener('paste', event => {
+      const files = getClipboardImageFiles(event);
+      if (!files.length) return;
+      event.preventDefault();
+      appendPastedImages(files);
+    });
+
     exportBtn.addEventListener('click', async () => {
       await exportComposition();
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      await copyComposition();
     });
 
     resetBtn.addEventListener('click', () => {
@@ -578,6 +594,24 @@
     render();
     updateUiState();
 
+    let sourceSeq = 0;
+
+    function nextSourceId() {
+      sourceSeq += 1;
+      return `src-${Date.now()}-${sourceSeq}`;
+    }
+
+    async function createSourceItems(files) {
+      const images = await Promise.all(files.map(loadImageFile));
+      return images.map(entry => ({
+        sourceId: nextSourceId(),
+        name: entry.file.name,
+        image: entry.image,
+        naturalWidth: entry.image.naturalWidth || entry.image.width,
+        naturalHeight: entry.image.naturalHeight || entry.image.height
+      }));
+    }
+
     async function handleFiles(fileList) {
       hideError();
       const files = Array.from(fileList || []).filter(file => file.type.startsWith('image/'));
@@ -587,19 +621,43 @@
       }
 
       try {
-        const images = await Promise.all(files.map(loadImageFile));
-        state.sourceItems = images.map((entry, index) => ({
-          sourceId: `${Date.now()}-${index}`,
-          name: entry.file.name,
-          image: entry.image,
-          naturalWidth: entry.image.naturalWidth || entry.image.width,
-          naturalHeight: entry.image.naturalHeight || entry.image.height
-        }));
+        state.sourceItems = await createSourceItems(files);
         rebuildSceneItems();
         statusText.textContent = '拖拽图片可调整布局。编辑缩放只影响查看，不影响导出结果。';
       } catch (err) {
         showError(err.message);
       }
+    }
+
+    async function appendPastedImages(files) {
+      hideError();
+      try {
+        const additions = await createSourceItems(files);
+        state.sourceItems = state.sourceItems.concat(additions);
+        rebuildSceneItems();
+        statusText.textContent = `已从剪贴板粘贴 ${additions.length} 张图片，可继续粘贴或调整布局。`;
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    function getClipboardImageFiles(event) {
+      const items = event.clipboardData?.items;
+      if (!items) return [];
+      const files = [];
+      for (const item of items) {
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) files.push(normalizeClipboardImageName(file));
+        }
+      }
+      return files;
+    }
+
+    function normalizeClipboardImageName(file) {
+      if (file.name) return file;
+      const ext = (file.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      return new File([file], `clipboard.${ext}`, { type: file.type });
     }
 
     function rebuildSceneItems() {
@@ -1004,13 +1062,7 @@
       ];
     }
 
-    async function exportComposition() {
-      if (!state.items.length || !state.layoutScale) {
-        showError('请先上传图片');
-        return;
-      }
-
-      hideError();
+    async function buildCompositionBlob(format, quality) {
       const padding = Number(gapRange.value);
       const exportBounds = getExportBounds();
       const exportWidth = Math.ceil(exportBounds.maxX - exportBounds.minX + padding * 2);
@@ -1028,17 +1080,57 @@
         exportCtx.drawImage(item.image, exportRect.x, exportRect.y, exportRect.width, exportRect.height);
       }
 
-      const format = formatSelect.value;
-      const quality = format === 'image/png' ? 1 : 0.92;
       const blob = await new Promise(resolve => exportCanvas.toBlob(resolve, format, quality));
       if (!blob) {
-        showError('导出失败，浏览器未生成图片');
+        throw new Error('导出失败，浏览器未生成图片');
+      }
+      return { blob, width: exportWidth, height: exportHeight };
+    }
+
+    async function exportComposition() {
+      if (!state.items.length || !state.layoutScale) {
+        showError('请先上传图片');
         return;
       }
 
-      const ext = format.split('/')[1].replace('jpeg', 'jpg');
-      triggerBlobDownload(blob, `stitched_${Date.now()}.${ext}`);
-      statusText.textContent = `已下载：${exportWidth} × ${exportHeight} px。当前编辑缩放 ${Math.round(state.viewScale * 100)}% 不影响导出结果。`;
+      hideError();
+      try {
+        const format = formatSelect.value;
+        const quality = format === 'image/png' ? 1 : 0.92;
+        const { blob, width, height } = await buildCompositionBlob(format, quality);
+        const ext = format.split('/')[1].replace('jpeg', 'jpg');
+        triggerBlobDownload(blob, `stitched_${Date.now()}.${ext}`);
+        statusText.textContent = `已下载：${width} × ${height} px。当前编辑缩放 ${Math.round(state.viewScale * 100)}% 不影响导出结果。`;
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    async function copyComposition() {
+      if (!state.items.length || !state.layoutScale) {
+        showError('请先上传图片');
+        return;
+      }
+
+      hideError();
+      try {
+        const { blob, width, height } = await buildCompositionBlob('image/png', 1);
+        await writeImageToClipboard(blob);
+        statusText.textContent = `已复制到剪贴板：${width} × ${height} px，可直接粘贴使用。`;
+      } catch (err) {
+        showError(err.message);
+      }
+    }
+
+    async function writeImageToClipboard(pngBlob) {
+      if (!navigator.clipboard || typeof ClipboardItem === 'undefined') {
+        throw new Error('当前浏览器不支持复制图片到剪贴板，可直接下载后使用');
+      }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+      } catch (err) {
+        throw new Error(`复制失败：${err?.message || '浏览器未授权剪贴板写入'}`);
+      }
     }
 
     function getSceneBounds() {
@@ -1142,6 +1234,7 @@
 
     function updateUiState() {
       exportBtn.disabled = state.items.length === 0;
+      copyBtn.disabled = state.items.length === 0;
       resetBtn.disabled = state.items.length === 0;
       removeBtn.disabled = !state.activeId;
       clearBtn.disabled = state.items.length === 0;

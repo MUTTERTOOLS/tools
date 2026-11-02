@@ -332,7 +332,7 @@
       <aside class="panel">
         <div class="drop-zone" id="dropZone">
           <input type="file" id="fileInput" accept="image/*" />
-          <strong>点击选择或拖拽图片</strong>
+          <strong>点击选择、拖拽或 Ctrl+V 粘贴图片</strong>
           <span>仅支持单张图片 · 默认裁剪框覆盖整张图片</span>
         </div>
 
@@ -369,8 +369,12 @@
         </div>
 
         <div class="button-row">
-          <button class="secondary" id="resetBtn" disabled>重置裁剪框</button>
+          <button class="primary" id="copyBtn" disabled>复制到剪贴板</button>
           <a class="download-btn disabled" id="downloadLink" download>下载裁剪图</a>
+        </div>
+
+        <div class="button-row">
+          <button class="secondary" id="resetBtn" disabled>重置裁剪框</button>
         </div>
 
         <div class="error-msg" id="errorMsg"></div>
@@ -436,6 +440,7 @@
     const actualSizeBtn = document.getElementById('actualSizeBtn');
     const fitImageBtn = document.getElementById('fitImageBtn');
     const resetBtn = document.getElementById('resetBtn');
+    const copyBtn = document.getElementById('copyBtn');
     const downloadLink = document.getElementById('downloadLink');
     const errorMsg = document.getElementById('errorMsg');
     const cropMeta = document.getElementById('cropMeta');
@@ -525,6 +530,17 @@
       if (fileInput.files[0]) loadFromFile(fileInput.files[0]);
     });
 
+    document.addEventListener('paste', event => {
+      const file = getClipboardImageFile(event);
+      if (!file) return;
+      event.preventDefault();
+      loadFromFile(file).then(loaded => {
+        if (loaded) {
+          statusText.textContent = '已粘贴剪贴板图片。拖动裁剪框、边或角点即可调整裁剪区域。';
+        }
+      });
+    });
+
     resetBtn.addEventListener('click', () => {
       if (!state.imageRect) return;
       state.cropRect = createDefaultCropRect(state.imageRect, getEffectiveMinSize());
@@ -544,6 +560,22 @@
       try {
         hideError();
         await downloadCurrentCrop();
+      } catch (err) {
+        showError(err.message);
+      }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (!state.image || !state.cropRect || !state.imageRect) {
+        showError('请先上传图片');
+        return;
+      }
+
+      try {
+        hideError();
+        const { blob, width, height } = await buildCroppedBlob('image/png');
+        await writeImageToClipboard(blob);
+        statusText.textContent = `已复制到剪贴板：${width} × ${height} px，可直接粘贴。`;
       } catch (err) {
         showError(err.message);
       }
@@ -703,7 +735,7 @@
       hideError();
       if (!file.type.startsWith('image/')) {
         showError('请上传图片文件');
-        return;
+        return false;
       }
 
       try {
@@ -725,8 +757,10 @@
         updateMeta();
         updateStage();
         statusText.textContent = '拖动裁剪框、边或角点即可调整裁剪区域。';
+        return true;
       } catch (err) {
         showError(err.message);
+        return false;
       }
     }
 
@@ -886,7 +920,7 @@
       }, 0);
     }
 
-    async function buildCroppedBlob() {
+    async function buildCroppedBlob(format = formatSelect.value) {
       hideError();
       const source = toSourceRect(state.cropRect);
       const sourceX = source.x;
@@ -910,7 +944,6 @@
         sourceHeight
       );
 
-      const format = formatSelect.value;
       const quality = format === 'image/png' ? 1 : 0.92;
       const blob = await new Promise(resolve => exportCanvas.toBlob(resolve, format, quality));
       if (!blob) {
@@ -963,6 +996,24 @@
       });
     }
 
+    function getClipboardImageFile(event) {
+      const items = event.clipboardData?.items;
+      if (!items) return null;
+      for (const item of items) {
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) return normalizeClipboardImageName(file);
+        }
+      }
+      return null;
+    }
+
+    function normalizeClipboardImageName(file) {
+      if (file.name) return file;
+      const ext = (file.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      return new File([file], `clipboard.${ext}`, { type: file.type });
+    }
+
     window.addEventListener('beforeunload', () => {
       if (state.objectUrl) {
         URL.revokeObjectURL(state.objectUrl);
@@ -983,7 +1034,19 @@
       }
     });
 
+    async function writeImageToClipboard(pngBlob) {
+      if (!navigator.clipboard || typeof ClipboardItem === 'undefined') {
+        throw new Error('当前浏览器不支持复制图片到剪贴板，可直接下载后使用');
+      }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+      } catch (err) {
+        throw new Error(`复制失败：${err?.message || '浏览器未授权剪贴板写入'}`);
+      }
+    }
+
     function setDownloadEnabled(enabled) {
+      copyBtn.disabled = !enabled;
       if (enabled) {
         downloadLink.classList.remove('disabled');
         return;
