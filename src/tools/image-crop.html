@@ -917,7 +917,7 @@
       statusText.textContent = `下载完成：${width} × ${height} px`;
       setTimeout(() => {
         URL.revokeObjectURL(url);
-      }, 0);
+      }, 10000);
     }
 
     async function buildCroppedBlob(format = formatSelect.value) {

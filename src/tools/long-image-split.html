@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>长图切分</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .topbar {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 18px;
+    }
+
+    .back-link {
+      color: #8d8d8d;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover { color: #fff; }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 36px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 28px;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .drop-zone {
+      border: 2px dashed #333;
+      border-radius: 10px;
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-over {
+      border-color: #555;
+      background: #222;
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .drop-label {
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    .drop-label strong { color: #fff; }
+
+    .drop-hint {
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .file-info {
+      margin-top: 20px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: none;
+    }
+
+    .file-info-text {
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    .file-info-text strong {
+      display: block;
+      color: #fff;
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+      word-break: break-all;
+    }
+
+    .preview-toggle {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 0.8rem;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      padding: 4px;
+      transition: color 0.2s;
+      margin-top: 6px;
+    }
+
+    .preview-toggle:hover { color: #888; }
+
+    .preview-img-wrap {
+      margin-top: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+      max-height: 400px;
+      overflow-y: auto;
+      display: none;
+      border: 1px solid #2a2a2a;
+    }
+
+    .preview-img-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    .options {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .option-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .option-subgrid {
+      display: contents;
+    }
+
+    label {
+      font-size: 0.78rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select,
+    input[type="number"] {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      padding: 8px 10px;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    select:hover, select:focus,
+    input[type="number"]:hover, input[type="number"]:focus {
+      border-color: #444;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      flex: 1;
+      height: 4px;
+      accent-color: #fff;
+      border: none;
+      background: transparent;
+    }
+
+    .range-val {
+      font-size: 0.85rem;
+      color: #ccc;
+      min-width: 44px;
+      text-align: right;
+    }
+
+    .estimate {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #7d9c7d;
+      text-align: center;
+      line-height: 1.6;
+      min-height: 1.2em;
+    }
+
+    .estimate.warn { color: #ff6b6b; }
+
+    .btn {
+      margin-top: 16px;
+      width: 100%;
+      padding: 13px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: #e8e8e8; }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .progress-wrap {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .progress-bar-bg {
+      background: #222;
+      border-radius: 999px;
+      height: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 999px;
+      transition: width 0.2s ease;
+      width: 0%;
+    }
+
+    .progress-text {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .error-msg {
+      margin-top: 16px;
+      background: #1a0a0a;
+      border: 1px solid #3a1a1a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #ff6b6b;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .result {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .result-summary {
+      font-size: 0.85rem;
+      color: #aaa;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #242424;
+    }
+
+    .slice-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .slice-thumb {
+      width: 88px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #2a2a2a;
+      background: #000;
+      flex: none;
+    }
+
+    .slice-meta {
+      flex: 1;
+      min-width: 0;
+      font-size: 0.78rem;
+      color: #888;
+    }
+
+    .slice-meta strong {
+      display: block;
+      color: #fff;
+      font-size: 0.85rem;
+      margin-bottom: 2px;
+      word-break: break-all;
+    }
+
+    .download-btn {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #fff;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .download-btn:hover {
+      background: #252525;
+      border-color: #555;
+    }
+
+    @media (max-width: 560px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .slice-item {
+        flex-wrap: wrap;
+      }
+
+      .download-btn {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-link" href="./index.html">← 返回工具入口</a>
+  </div>
+
+  <h1>长图切分</h1>
+  <p class="subtitle">把长截图按段数或段高拆成多张，支持智能空白断点、相邻重叠与短尾段处理</p>
+
+  <div class="card">
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="image/*" />
+      <span class="drop-icon">🖼️</span>
+      <div class="drop-label"><strong>点击选择、拖拽或 Ctrl+V 粘贴图片</strong></div>
+      <div class="drop-hint">支持 PNG / JPEG / WebP / GIF（取首帧）· 纯本地处理，不上传任何文件</div>
+    </div>
+
+    <div class="file-info" id="fileInfo">
+      <div class="file-info-text">
+        <strong id="infoName">—</strong>
+        <span id="infoMeta">—</span>
+      </div>
+      <button class="preview-toggle" id="previewToggle">▼ 展开原图预览</button>
+      <div class="preview-img-wrap" id="previewWrap">
+        <img id="previewImg" src="" alt="原图预览" />
+      </div>
+    </div>
+
+    <div class="options">
+      <div class="option-group full">
+        <label>切分模式</label>
+        <select id="modeSelect">
+          <option value="height" selected>按段高切（等高分割）</option>
+          <option value="smart">智能断点（在段高附近找空白带下刀）</option>
+          <option value="count">按段数切（均分）</option>
+        </select>
+      </div>
+
+      <div class="option-subgrid" id="heightOptions">
+        <div class="option-group">
+          <label>每段高度（px）</label>
+          <input type="number" id="heightInput" min="200" max="30000" step="100" value="2000" />
+        </div>
+      </div>
+
+      <div class="option-subgrid" id="countOptions" style="display: none;">
+        <div class="option-group">
+          <label>切成几段</label>
+          <input type="number" id="countInput" min="2" max="99" step="1" value="5" />
+        </div>
+      </div>
+
+      <div class="option-subgrid" id="smartOptions" style="display: none;">
+        <div class="option-group">
+          <label>背景容忍度（0-48）</label>
+          <div class="range-row">
+            <input type="range" id="tolRange" min="0" max="48" step="2" value="12" />
+            <span class="range-val" id="tolVal">12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <label>相邻重叠（px）</label>
+        <div class="range-row">
+          <input type="range" id="overlapRange" min="0" max="200" step="10" value="0" />
+          <span class="range-val" id="overlapVal">0px</span>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <label>短尾段处理</label>
+        <select id="tailSelect">
+          <option value="keep" selected>保留短段</option>
+          <option value="merge">并入上一段</option>
+          <option value="pad">补白至等高</option>
+        </select>
+      </div>
+
+      <div class="option-group">
+        <label>补白 / 填充背景色</label>
+        <select id="bgSelect">
+          <option value="#ffffff" selected>白色</option>
+          <option value="#000000">黑色</option>
+          <option value="#f5f5f5">浅灰</option>
+          <option value="#1a1a1a">深灰</option>
+        </select>
+      </div>
+
+      <div class="option-group">
+        <label>输出格式</label>
+        <select id="formatSelect">
+          <option value="image/png" selected>PNG（无损）</option>
+          <option value="image/jpeg">JPEG（更小）</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+
+      <div class="option-group" id="qualityGroup" style="display: none;">
+        <label>输出质量</label>
+        <div class="range-row">
+          <input type="range" id="qualityRange" min="40" max="100" step="5" value="92" />
+          <span class="range-val" id="qualityVal">92%</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="estimate" id="estimateText">载入图片后显示切分预估。</p>
+
+    <button class="btn" id="splitBtn" disabled>选择图片后开始切分</button>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">准备中...</div>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="result" id="result">
+      <div class="result-summary" id="resultSummary"></div>
+      <div class="slice-list" id="sliceList"></div>
+    </div>
+  </div>
+
+  <script>
+    const MIN_SEG = 200;          // 段间最小间距，避免碎片切片
+    const MAX_DIM = 32767;        // 浏览器画布单边上限
+    const NOMINAL_SCREEN = 800;   // 折算屏数使用的参考屏高
+    const SMART_SEARCH_RATIO = 0.15; // 智能断点搜索范围 = 段高 × 15%
+    const MIN_BAND = 4;           // 空白带最小高度（px）
+    const TAIL_RATIO = 0.25;      // 末段低于段高该比例时视为短尾段
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const infoName = document.getElementById('infoName');
+    const infoMeta = document.getElementById('infoMeta');
+    const previewToggle = document.getElementById('previewToggle');
+    const previewWrap = document.getElementById('previewWrap');
+    const previewImg = document.getElementById('previewImg');
+    const modeSelect = document.getElementById('modeSelect');
+    const heightOptions = document.getElementById('heightOptions');
+    const countOptions = document.getElementById('countOptions');
+    const smartOptions = document.getElementById('smartOptions');
+    const heightInput = document.getElementById('heightInput');
+    const countInput = document.getElementById('countInput');
+    const tolRange = document.getElementById('tolRange');
+    const tolVal = document.getElementById('tolVal');
+    const overlapRange = document.getElementById('overlapRange');
+    const overlapVal = document.getElementById('overlapVal');
+    const tailSelect = document.getElementById('tailSelect');
+    const bgSelect = document.getElementById('bgSelect');
+    const formatSelect = document.getElementById('formatSelect');
+    const qualityGroup = document.getElementById('qualityGroup');
+    const qualityRange = document.getElementById('qualityRange');
+    const qualityVal = document.getElementById('qualityVal');
+    const estimateText = document.getElementById('estimateText');
+    const splitBtn = document.getElementById('splitBtn');
+    const progressWrap = document.getElementById('progressWrap');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const errorMsg = document.getElementById('errorMsg');
+    const resultEl = document.getElementById('result');
+    const resultSummary = document.getElementById('resultSummary');
+    const sliceList = document.getElementById('sliceList');
+
+    let currentFile = null;
+    let sourceImage = null;
+    let previewUrl = null;
+    let sliceUrls = [];
+
+    modeSelect.addEventListener('change', () => {
+      updateModeControls();
+      updateEstimate();
+    });
+
+    heightInput.addEventListener('input', updateEstimate);
+    countInput.addEventListener('input', updateEstimate);
+    tailSelect.addEventListener('change', updateEstimate);
+    overlapRange.addEventListener('input', updateEstimate);
+
+    tolRange.addEventListener('input', () => {
+      tolVal.textContent = tolRange.value;
+    });
+
+    overlapRange.addEventListener('input', () => {
+      overlapVal.textContent = `${overlapRange.value}px`;
+    });
+
+    formatSelect.addEventListener('change', updateQualityVisibility);
+
+    qualityRange.addEventListener('input', () => {
+      qualityVal.textContent = `${qualityRange.value}%`;
+    });
+
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) loadFromFile(file);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) loadFromFile(fileInput.files[0]);
+    });
+
+    document.addEventListener('paste', event => {
+      const file = getClipboardImageFile(event);
+      if (!file) return;
+      event.preventDefault();
+      loadFromFile(file);
+    });
+
+    splitBtn.addEventListener('click', runSplit);
+
+    previewToggle.addEventListener('click', () => {
+      const visible = previewWrap.style.display === 'block';
+      previewWrap.style.display = visible ? 'none' : 'block';
+      previewToggle.textContent = visible ? '▼ 展开原图预览' : '▲ 收起原图预览';
+    });
+
+    updateModeControls();
+    updateQualityVisibility();
+
+    function updateModeControls() {
+      const mode = modeSelect.value;
+      heightOptions.style.display = mode === 'count' ? 'none' : 'contents';
+      countOptions.style.display = mode === 'count' ? 'contents' : 'none';
+      smartOptions.style.display = mode === 'smart' ? 'contents' : 'none';
+    }
+
+    function updateQualityVisibility() {
+      qualityGroup.style.display = formatSelect.value === 'image/png' ? 'none' : '';
+    }
+
+    async function loadFromFile(file) {
+      if (!isImageFile(file)) {
+        showError('仅支持图片文件（PNG / JPEG / WebP / GIF）');
+        return false;
+      }
+
+      try {
+        const img = await decodeImage(file);
+        if (img.naturalWidth > MAX_DIM || img.naturalHeight > MAX_DIM) {
+          URL.revokeObjectURL(img.src);
+          throw new Error(`图片尺寸超出浏览器画布上限（${MAX_DIM} px），请先缩小后再切分`);
+        }
+
+        currentFile = file;
+        resetResults();
+
+        sourceImage = img;
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = img.src;
+        previewImg.src = previewUrl;
+        previewWrap.style.display = 'none';
+        previewToggle.textContent = '▼ 展开原图预览';
+
+        const screens = Math.max(1, Math.round(img.naturalHeight / NOMINAL_SCREEN));
+        infoName.textContent = file.name || '剪贴板图片';
+        infoMeta.textContent = `${img.naturalWidth} × ${img.naturalHeight} px · ${fmtSize(file.size)} · 约 ${screens} 屏（按 ${NOMINAL_SCREEN}px/屏估算）`;
+        fileInfo.style.display = 'block';
+
+        splitBtn.disabled = false;
+        splitBtn.textContent = '开始切分';
+        hideError();
+        updateEstimate();
+        return true;
+      } catch (err) {
+        showError('载入失败：' + (err && err.message ? err.message : '无法解码该图片'));
+        return false;
+      }
+    }
+
+    function decodeImage(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('无法解码该图片格式'));
+        };
+        img.src = url;
+      });
+    }
+
+    function gatherParams() {
+      const mode = modeSelect.value;
+      const params = { mode };
+
+      if (mode === 'count') {
+        const count = clampInt(countInput.value, 2, 99, 2);
+        if (!sourceImage || Math.floor(sourceImage.naturalHeight / count) < MIN_SEG) {
+          throw new Error(`段数过多：每段高度不足 ${MIN_SEG} px，请减少段数或增大段高`);
+        }
+        params.count = count;
+      } else {
+        params.height = clampInt(heightInput.value, MIN_SEG, 30000, 2000);
+      }
+
+      params.tolerance = clampInt(tolRange.value, 0, 48, 12);
+      params.overlap = clampInt(overlapRange.value, 0, 200, 0);
+      params.tail = tailSelect.value;
+      params.bg = bgSelect.value;
+      params.format = formatSelect.value;
+      params.quality = Number(qualityRange.value) / 100;
+      return params;
+    }
+
+    function updateEstimate() {
+      if (!sourceImage) {
+        estimateText.textContent = '载入图片后显示切分预估。';
+        estimateText.classList.remove('warn');
+        return;
+      }
+
+      try {
+        const params = gatherParams();
+        const segs = computeRawSegments(sourceImage.naturalHeight, params);
+        const n = segs.length;
+        let text;
+
+        if (params.mode === 'count') {
+          const base = Math.floor(sourceImage.naturalHeight / params.count);
+          text = `预计切成 ${n} 段 · 每段约 ${base}~${base + 1} px`;
+        } else {
+          text = `预计切成 ${n} 段 · 每段约 ${params.height} px · 末段约 ${segs[n - 1].height} px`;
+          if (params.mode === 'smart') text += ' · 智能断点可能微调切线位置';
+        }
+
+        const nominal = params.mode === 'count'
+          ? Math.floor(sourceImage.naturalHeight / params.count)
+          : params.height;
+        if (n >= 2 && segs[n - 1].height < nominal * TAIL_RATIO) {
+          if (params.tail === 'merge') text += ' · 末段将并入上一段';
+          else if (params.tail === 'pad') text += ' · 末段将补白至等高';
+        }
+
+        estimateText.textContent = text;
+        estimateText.classList.remove('warn');
+      } catch (err) {
+        estimateText.textContent = err.message;
+        estimateText.classList.add('warn');
+      }
+    }
+
+    async function runSplit() {
+      if (!sourceImage) return;
+
+      let params;
+      try {
+        params = gatherParams();
+      } catch (err) {
+        showError(err.message);
+        return;
+      }
+
+      splitBtn.disabled = true;
+      resultEl.style.display = 'none';
+      clearSliceUrls();
+      hideError();
+      showProgress(2, '准备切分…');
+
+      try {
+        const img = sourceImage;
+        const total = img.naturalHeight;
+        let segs = computeRawSegments(total, params);
+
+        if (params.mode === 'smart') {
+          showProgress(5, '正在扫描空白断点…');
+          const workCanvas = createWorkCanvas(img);
+          segs = segmentsFromCuts(refineSmartCuts(collectCuts(segs), workCanvas, params), total);
+        }
+
+        const tail = applyTailStrategy(segs, params);
+        segs = applyOverlap(tail.segs, params.overlap);
+
+        const ext = params.format.split('/')[1].replace('jpeg', 'jpg');
+        const baseName = sanitizeBaseName(currentFile.name || 'image') || 'clipboard';
+        let totalBytes = 0;
+        const items = [];
+
+        for (let i = 0; i < segs.length; i++) {
+          showProgress(20 + Math.round(((i + 1) / segs.length) * 75), `生成第 ${i + 1} / ${segs.length} 片…`);
+          const slice = await renderSlice(img, segs[i], params, baseName, i, ext);
+          sliceUrls.push(slice.url);
+          totalBytes += slice.blob.size;
+          items.push(buildSliceItem(slice.name, slice.url, img.naturalWidth, segs[i].paddedTo || segs[i].height, slice.blob.size));
+          if (i % 4 === 3) await nextFrame();
+        }
+
+        showProgress(100, '完成！');
+        sliceList.innerHTML = '';
+        for (const item of items) sliceList.appendChild(item);
+        resultSummary.textContent = `共 ${segs.length} 片 · 总大小 ${fmtSize(totalBytes)}`;
+        resultEl.style.display = 'block';
+      } catch (err) {
+        clearSliceUrls();
+        showError('切分失败：' + (err && err.message ? err.message : '未知错误'));
+        console.error(err);
+      } finally {
+        splitBtn.disabled = false;
+        splitBtn.textContent = '重新切分';
+        setTimeout(() => {
+          progressWrap.style.display = 'none';
+        }, 1200);
+      }
+    }
+
+    function createWorkCanvas(img) {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0);
+      return canvas;
+    }
+
+    function computeRawSegments(total, params) {
+      const cuts = [];
+      if (params.mode === 'count') {
+        const base = Math.floor(total / params.count);
+        let rem = total % params.count;
+        let pos = 0;
+        for (let i = 0; i < params.count - 1; i++) {
+          pos += base + (rem > 0 ? 1 : 0);
+          if (rem > 0) rem--;
+          cuts.push(pos);
+        }
+      } else {
+        for (let pos = params.height; pos < total; pos += params.height) cuts.push(pos);
+      }
+      return segmentsFromCuts(cuts, total);
+    }
+
+    function segmentsFromCuts(cuts, total) {
+      const segs = [];
+      let prev = 0;
+      for (const cut of cuts) {
+        segs.push({ start: prev, height: cut - prev });
+        prev = cut;
+      }
+      segs.push({ start: prev, height: total - prev });
+      return segs;
+    }
+
+    function collectCuts(segs) {
+      return segs.slice(0, -1).map(seg => seg.start + seg.height);
+    }
+
+    function refineSmartCuts(cuts, canvas, params) {
+      const total = canvas.height;
+      const search = Math.max(1, Math.round(params.height * SMART_SEARCH_RATIO));
+      const refined = [];
+      let prev = 0;
+
+      for (let i = 0; i < cuts.length; i++) {
+        const p = cuts[i];
+        const nextRaw = i + 1 < cuts.length ? cuts[i + 1] : total;
+        const lo = Math.max(p - search, prev + MIN_SEG);
+        const hi = Math.min(p + search, nextRaw - MIN_SEG);
+        let cut = p;
+
+        if (hi > lo) {
+          const band = findNearestBlankBand(canvas, lo, hi, params.tolerance, p);
+          if (band) cut = Math.min(Math.max(band.center, lo), hi);
+        } else if (nextRaw - MIN_SEG >= prev + MIN_SEG) {
+          cut = Math.min(Math.max(p, prev + MIN_SEG), nextRaw - MIN_SEG);
+        }
+
+        refined.push(cut);
+        prev = cut;
+      }
+
+      return refined;
+    }
+
+    function findNearestBlankBand(canvas, top, bottom, tolerance, anchor) {
+      const width = canvas.width;
+      const h = bottom - top;
+      if (h < MIN_BAND) return null;
+
+      const data = canvas.getContext('2d', { willReadFrequently: true }).getImageData(0, top, width, h).data;
+      const blank = new Uint8Array(h);
+      const step = Math.max(2, Math.floor(width / 256));
+
+      for (let y = 0; y < h; y++) {
+        const rowOff = y * width * 4;
+        let min = 255;
+        let max = 0;
+        let opaque = 0;
+        for (let x = 0; x < width; x += step) {
+          const o = rowOff + x * 4;
+          if (data[o + 3] < 16) continue;
+          opaque++;
+          const lum = (data[o] * 299 + data[o + 1] * 587 + data[o + 2] * 114) / 1000;
+          if (lum < min) min = lum;
+          if (lum > max) max = lum;
+        }
+        blank[y] = opaque === 0 || (max - min) <= tolerance ? 1 : 0;
+      }
+
+      let best = null;
+      let runStart = -1;
+      for (let y = 0; y <= h; y++) {
+        const isBlank = y < h && blank[y] === 1;
+        if (isBlank && runStart < 0) runStart = y;
+        if ((!isBlank || y === h) && runStart >= 0) {
+          if (y - runStart >= MIN_BAND) {
+            const center = top + (runStart + y) / 2;
+            if (!best || Math.abs(center - anchor) < Math.abs(best.center - anchor)) {
+              best = { center, start: top + runStart, end: top + y };
+            }
+          }
+          runStart = -1;
+        }
+      }
+      return best;
+    }
+
+    function applyTailStrategy(segs, params) {
+      if (segs.length < 2) return { segs, paddedTo: null };
+
+      const nominal = params.mode === 'count'
+        ? Math.floor(sourceImage.naturalHeight / params.count)
+        : params.height;
+      const last = segs[segs.length - 1];
+
+      if (last.height >= nominal * TAIL_RATIO) return { segs, paddedTo: null };
+
+      if (params.tail === 'merge') {
+        segs[segs.length - 2].height += last.height;
+        segs.pop();
+        return { segs, paddedTo: null };
+      }
+
+      if (params.tail === 'pad') {
+        last.paddedTo = nominal;
+        return { segs, paddedTo: nominal };
+      }
+
+      return { segs, paddedTo: null };
+    }
+
+    function applyOverlap(segs, overlap) {
+      if (!overlap) return segs;
+      return segs.map((seg, i) => {
+        if (i === 0) return seg;
+        const start = Math.max(0, seg.start - overlap);
+        return { start, height: seg.start + seg.height - start };
+      });
+    }
+
+    async function renderSlice(img, seg, params, baseName, index, ext) {
+      const outH = seg.paddedTo || seg.height;
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = outH;
+      const ctx = canvas.getContext('2d');
+
+      if (params.format !== 'image/png' || seg.paddedTo) {
+        ctx.fillStyle = params.bg;
+        ctx.fillRect(0, 0, canvas.width, outH);
+      }
+      ctx.drawImage(img, 0, seg.start, canvas.width, seg.height, 0, 0, canvas.width, seg.height);
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, params.format, params.quality));
+      if (!blob) throw new Error('浏览器未能生成切片文件');
+
+      const name = `${baseName}_part-${String(index + 1).padStart(2, '0')}.${ext}`;
+      return { blob, url: URL.createObjectURL(blob), name };
+    }
+
+    function buildSliceItem(name, url, width, height, bytes) {
+      const item = document.createElement('div');
+      item.className = 'slice-item';
+      item.innerHTML = `
+        <img class="slice-thumb" src="${url}" alt="${escapeHtml(name)}" loading="lazy" />
+        <div class="slice-meta">
+          <strong>${escapeHtml(name)}</strong>
+          <span>${width} × ${height} px · ${fmtSize(bytes)}</span>
+        </div>
+        <a class="download-btn" href="${url}" download="${escapeHtml(name)}">下载</a>`;
+      return item;
+    }
+
+    function resetResults() {
+      clearSliceUrls();
+      resultEl.style.display = 'none';
+      sliceList.innerHTML = '';
+    }
+
+    function clearSliceUrls() {
+      for (const url of sliceUrls) URL.revokeObjectURL(url);
+      sliceUrls = [];
+    }
+
+    function getClipboardImageFile(event) {
+      const items = event.clipboardData?.items;
+      if (!items) return null;
+      for (const item of items) {
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) return normalizeClipboardImageName(file);
+        }
+      }
+      return null;
+    }
+
+    function normalizeClipboardImageName(file) {
+      if (file.name) return file;
+      const ext = (file.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      return new File([file], `clipboard.${ext}`, { type: file.type });
+    }
+
+    function isImageFile(file) {
+      return file.type.startsWith('image/') || /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name);
+    }
+
+    function sanitizeBaseName(name) {
+      return name.replace(/\.[^.]+$/, '').replace(/[\\/:*?"<>|]/g, '_').trim();
+    }
+
+    function clampInt(raw, min, max, fallback) {
+      const n = Math.round(Number(raw));
+      if (!Number.isFinite(n)) return fallback;
+      return Math.min(max, Math.max(min, n));
+    }
+
+    function nextFrame() {
+      return new Promise(resolve => requestAnimationFrame(resolve));
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]));
+    }
+
+    function fmtSize(bytes) {
+      if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+      if (bytes >= 1024) return (bytes / 1024).toFixed(0) + ' KB';
+      return bytes + ' B';
+    }
+
+    function showProgress(pct, msg) {
+      progressWrap.style.display = 'block';
+      progressFill.style.width = pct + '%';
+      progressText.textContent = msg;
+    }
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+    }
+
+    function hideError() {
+      errorMsg.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

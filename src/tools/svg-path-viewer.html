@@ -408,10 +408,10 @@
     const MAX_ZOOM = 10;
     const GRID_TARGET_PX = 64;
     const DEFAULT_DIRECTION_STEP = 84;
-    const MAX_PATH_CHARS = 120000000;
-    const MAX_TOKENS = 40000000;
-    const MAX_COMMANDS = 40000000;
-    const MAX_TOTAL_SAMPLE_POINTS = 400000000;
+    const MAX_PATH_CHARS = 2000000;
+    const MAX_TOKENS = 600000;
+    const MAX_COMMANDS = 400000;
+    const MAX_TOTAL_SAMPLE_POINTS = 8000000;
     const MAX_ABS_NUMERIC_VALUE = 100000000;
     const MAX_DIRECTION_ARROWS = 600;
     const DEFAULT_PATH = `M 20 20 L 160 20 C 220 20 240 120 170 150 A 42 42 0 0 1 80 155 Q 20 140 20 80 Z\nM 220 48 L 320 48 L 320 118 L 220 118 Z`;
@@ -956,6 +956,7 @@
     function buildRenderableSegments(commands) {
       const segments = [];
       let samplePointCount = 0;
+      const curveSteps = getCurveSamplingSteps(commands.length);
       for (const command of commands) {
         if (command.type === 'M') continue;
         const remainingSampleBudget = MAX_TOTAL_SAMPLE_POINTS - samplePointCount;
@@ -970,7 +971,7 @@
             start: { ...command.start },
             end: { ...command.end },
             commandIndex: command.index
-          }, remainingSampleBudget);
+          }, remainingSampleBudget, curveSteps);
         } else if (command.type === 'Q' || command.type === 'T') {
           segment = finalizeSegment({
             kind: 'quadratic',
@@ -979,7 +980,7 @@
             c1: { ...command.c1 },
             end: { ...command.end },
             commandIndex: command.index
-          }, remainingSampleBudget);
+          }, remainingSampleBudget, curveSteps);
         } else if (command.type === 'C' || command.type === 'S') {
           segment = finalizeSegment({
             kind: 'cubic',
@@ -989,7 +990,7 @@
             c2: { ...command.c2 },
             end: { ...command.end },
             commandIndex: command.index
-          }, remainingSampleBudget);
+          }, remainingSampleBudget, curveSteps);
         } else if (command.type === 'A') {
           const arc = arcToCenterParams(command.start, command.rx, command.ry, command.rotation, command.largeArcFlag, command.sweepFlag, command.end);
           segment = finalizeSegment({
@@ -999,7 +1000,7 @@
             end: { ...command.end },
             arc,
             commandIndex: command.index
-          }, remainingSampleBudget);
+          }, remainingSampleBudget, curveSteps);
         } else {
           segment = finalizeSegment({
             kind: 'line',
@@ -1007,7 +1008,7 @@
             start: { ...command.start },
             end: { ...command.end },
             commandIndex: command.index
-          }, remainingSampleBudget);
+          }, remainingSampleBudget, curveSteps);
         }
         samplePointCount += segment.points.length;
         segments.push(segment);
@@ -1015,8 +1016,16 @@
       return segments;
     }
 
-    function finalizeSegment(segment, maxPoints) {
-      const points = sampleSegment(segment, maxPoints);
+    function getCurveSamplingSteps(commandCount) {
+      let divisor = 1;
+      if (commandCount > 60000) divisor = 8;
+      else if (commandCount > 20000) divisor = 4;
+      else if (commandCount > 8000) divisor = 2;
+      return Math.max(8, Math.round(72 / divisor));
+    }
+
+    function finalizeSegment(segment, maxPoints, curveSteps) {
+      const points = sampleSegment(segment, maxPoints, curveSteps);
       const length = getPolylineLength(points);
       return { ...segment, points, length };
     }
@@ -1127,13 +1136,19 @@
       const cssWidth = Math.max(DEFAULT_CANVAS_WIDTH, Math.round(rect.width || DEFAULT_CANVAS_WIDTH));
       const cssHeight = Math.max(DEFAULT_CANVAS_HEIGHT, Math.round(rect.height || DEFAULT_CANVAS_HEIGHT));
       const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const deviceWidth = Math.round(cssWidth * dpr);
+      const deviceHeight = Math.round(cssHeight * dpr);
+      if (state.cssWidth === cssWidth && state.cssHeight === cssHeight && state.dpr === dpr
+        && canvas.width === deviceWidth && canvas.height === deviceHeight) {
+        return;
+      }
       state.cssWidth = cssWidth;
       state.cssHeight = cssHeight;
       state.dpr = dpr;
       canvas.style.width = `${cssWidth}px`;
       canvas.style.height = `${cssHeight}px`;
-      canvas.width = Math.round(cssWidth * dpr);
-      canvas.height = Math.round(cssHeight * dpr);
+      canvas.width = deviceWidth;
+      canvas.height = deviceHeight;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
@@ -1191,18 +1206,6 @@
       const nextScale = state.viewScale * zoomFactor;
       zoomAroundCanvasPoint(nextScale, anchorX, anchorY, 'manual');
       statusText.textContent = `画布缩放已调整到 ${Math.round(state.viewScale * 100)}%。`;
-    }
-
-    function getScenePoint(event) {
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      const bounds = state.lastGoodRender?.sceneBounds;
-      if (!bounds) return { x, y };
-      return {
-        x: (x - state.viewOffsetX) / state.viewScale + bounds.minX,
-        y: (y - state.viewOffsetY) / state.viewScale + bounds.minY
-      };
     }
 
     function sceneToCanvasPoint(point) {
@@ -1485,23 +1488,21 @@
       };
     }
 
-    function sampleSegment(segment, maxPoints = MAX_TOTAL_SAMPLE_POINTS) {
+    function sampleSegment(segment, maxPoints = MAX_TOTAL_SAMPLE_POINTS, curveSteps = 72) {
       if (segment.kind === 'line') {
         return [segment.start, segment.end].map(point => ({ ...point }));
       }
 
       if (segment.kind === 'quadratic') {
-        const steps = 72;
-        return sampleCurvePoints(steps, maxPoints, t => getQuadraticPoint(segment.start, segment.c1, segment.end, t));
+        return sampleCurvePoints(curveSteps, maxPoints, t => getQuadraticPoint(segment.start, segment.c1, segment.end, t));
       }
 
       if (segment.kind === 'cubic') {
-        const steps = 88;
-        return sampleCurvePoints(steps, maxPoints, t => getCubicPoint(segment.start, segment.c1, segment.c2, segment.end, t));
+        return sampleCurvePoints(curveSteps + 16, maxPoints, t => getCubicPoint(segment.start, segment.c1, segment.c2, segment.end, t));
       }
 
       if (segment.kind === 'arc' && segment.arc) {
-        const steps = Math.max(36, Math.ceil(Math.abs(segment.arc.deltaTheta) / (Math.PI / 24)));
+        const steps = Math.max(12, Math.ceil(Math.abs(segment.arc.deltaTheta) / (Math.PI / 24)) * (curveSteps / 72));
         return sampleCurvePoints(steps, maxPoints, t => {
           const angle = segment.arc.theta1 + segment.arc.deltaTheta * t;
           return getArcPoint(segment.arc, angle);

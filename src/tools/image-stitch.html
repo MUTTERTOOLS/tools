@@ -443,6 +443,8 @@
     const MIN_ZOOM = 0.25;
     const MAX_ZOOM = 3;
     const MIN_FIT_HEIGHT = 260;
+    const MAX_CANVAS_DIM = 32767;
+    const MAX_CANVAS_AREA = 268435456;
     const HANDLE_COLOR = '#3b82f6';
     const SELECT_COLOR = '#2563eb';
 
@@ -602,28 +604,51 @@
     }
 
     async function createSourceItems(files) {
-      const images = await Promise.all(files.map(loadImageFile));
-      return images.map(entry => ({
-        sourceId: nextSourceId(),
-        name: entry.file.name,
-        image: entry.image,
-        naturalWidth: entry.image.naturalWidth || entry.image.width,
-        naturalHeight: entry.image.naturalHeight || entry.image.height
-      }));
+      const results = await Promise.allSettled(files.map(loadImageFile));
+      const loaded = [];
+      const failedNames = [];
+      for (const result of results) {
+        if (result.status === 'fulfilled') {
+          const entry = result.value;
+          loaded.push({
+            sourceId: nextSourceId(),
+            name: entry.file.name,
+            image: entry.image,
+            naturalWidth: entry.image.naturalWidth || entry.image.width,
+            naturalHeight: entry.image.naturalHeight || entry.image.height
+          });
+        } else {
+          const match = /无法读取图片：(.+)$/.exec(result.reason?.message || '');
+          failedNames.push(match ? match[1] : '未命名文件');
+        }
+      }
+      return { loaded, failedNames };
     }
 
     async function handleFiles(fileList) {
       hideError();
-      const files = Array.from(fileList || []).filter(file => file.type.startsWith('image/'));
+      const allFiles = Array.from(fileList || []);
+      const files = allFiles.filter(file => file.type.startsWith('image/'));
+      const skippedCount = allFiles.length - files.length;
       if (!files.length) {
         showError('请上传至少一张图片');
         return;
       }
 
       try {
-        state.sourceItems = await createSourceItems(files);
+        const { loaded, failedNames } = await createSourceItems(files);
+        if (!loaded.length) {
+          showError(failedNames.length ? `无法读取所选图片：${failedNames.join('、')}` : '无法读取所选图片');
+          return;
+        }
+        state.sourceItems = loaded;
         rebuildSceneItems();
         statusText.textContent = '拖拽图片可调整布局。编辑缩放只影响查看，不影响导出结果。';
+
+        const notes = [];
+        if (skippedCount) notes.push(`已跳过 ${skippedCount} 个非图片文件`);
+        if (failedNames.length) notes.push(`读取失败：${failedNames.join('、')}`);
+        if (notes.length) showError(notes.join('；'));
       } catch (err) {
         showError(err.message);
       }
@@ -632,10 +657,15 @@
     async function appendPastedImages(files) {
       hideError();
       try {
-        const additions = await createSourceItems(files);
-        state.sourceItems = state.sourceItems.concat(additions);
+        const { loaded, failedNames } = await createSourceItems(files);
+        if (!loaded.length) {
+          showError(failedNames.length ? `无法读取粘贴的图片：${failedNames.join('、')}` : '剪贴板中没有可用的图片');
+          return;
+        }
+        state.sourceItems = state.sourceItems.concat(loaded);
         rebuildSceneItems();
-        statusText.textContent = `已从剪贴板粘贴 ${additions.length} 张图片，可继续粘贴或调整布局。`;
+        statusText.textContent = `已从剪贴板粘贴 ${loaded.length} 张图片，可继续粘贴或调整布局。`;
+        if (failedNames.length) showError(`读取失败：${failedNames.join('、')}`);
       } catch (err) {
         showError(err.message);
       }
@@ -1067,6 +1097,9 @@
       const exportBounds = getExportBounds();
       const exportWidth = Math.ceil(exportBounds.maxX - exportBounds.minX + padding * 2);
       const exportHeight = Math.ceil(exportBounds.maxY - exportBounds.minY + padding * 2);
+      if (exportWidth > MAX_CANVAS_DIM || exportHeight > MAX_CANVAS_DIM || exportWidth * exportHeight > MAX_CANVAS_AREA) {
+        throw new Error(`拼接结果 ${exportWidth} × ${exportHeight} 超出浏览器画布上限，请减少图片数量或先缩小图片尺寸`);
+      }
       const exportCanvas = document.createElement('canvas');
       exportCanvas.width = exportWidth;
       exportCanvas.height = exportHeight;
@@ -1312,7 +1345,7 @@
       document.body.appendChild(link);
       link.click();
       link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 0);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
     }
 
     function showError(message) {

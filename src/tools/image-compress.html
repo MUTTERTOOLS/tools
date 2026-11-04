@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>图片压缩 · 批量压缩与格式转换</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .topbar {
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 18px;
+    }
+
+    .back-link {
+      color: #8d8d8d;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .back-link:hover { color: #fff; }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 36px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 28px;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .drop-zone {
+      border: 2px dashed #333;
+      border-radius: 10px;
+      padding: 44px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-over {
+      border-color: #555;
+      background: #222;
+    }
+
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .drop-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .drop-label {
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+
+    .drop-label strong { color: #fff; }
+
+    .drop-hint {
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .list-info {
+      margin-top: 18px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #aaa;
+    }
+
+    .list-info.visible { display: flex; }
+
+    .file-list {
+      margin-top: 10px;
+      display: none;
+    }
+
+    .file-list.visible { display: block; }
+
+    .file-item {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+    }
+
+    .file-thumb {
+      width: 72px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #2a2a2a;
+      background: #000;
+      flex: none;
+    }
+
+    .file-meta {
+      min-width: 0;
+      font-size: 0.78rem;
+      color: #888;
+    }
+
+    .file-meta strong {
+      display: block;
+      color: #fff;
+      font-size: 0.85rem;
+      margin-bottom: 2px;
+      word-break: break-all;
+    }
+
+    .remove-btn {
+      background: none;
+      border: 1px solid #333;
+      color: #888;
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .remove-btn:hover {
+      border-color: #6a3a3a;
+      color: #ff6b6b;
+    }
+
+    .result-row {
+      grid-column: 2 / -1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      border-top: 1px solid #1d1d1d;
+      padding-top: 8px;
+      margin-top: 2px;
+    }
+
+    .result-info { color: #7d9c7d; }
+    .result-row.worse .result-info,
+    .result-row.failed { color: #ff6b6b; }
+
+    .mini-btn {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #fff;
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+      font-family: inherit;
+      margin-left: auto;
+    }
+
+    .mini-btn:hover {
+      background: #252525;
+      border-color: #555;
+    }
+
+    .options {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .option-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.78rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select,
+    input[type="number"] {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      padding: 8px 10px;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    select:hover, select:focus,
+    input[type="number"]:hover, input[type="number"]:focus {
+      border-color: #444;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      padding: 0;
+      flex: 1;
+      height: 4px;
+      accent-color: #fff;
+      border: none;
+      background: transparent;
+    }
+
+    .range-val {
+      font-size: 0.85rem;
+      color: #ccc;
+      min-width: 44px;
+      text-align: right;
+    }
+
+    .btn {
+      margin-top: 24px;
+      width: 100%;
+      padding: 13px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      font-family: inherit;
+    }
+
+    .btn:hover { background: #e8e8e8; }
+    .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .progress-wrap {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .progress-bar-bg {
+      background: #222;
+      border-radius: 999px;
+      height: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 999px;
+      transition: width 0.2s ease;
+      width: 0%;
+    }
+
+    .progress-text {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #8a8a8a;
+      text-align: center;
+      min-height: 1.2em;
+      line-height: 1.5;
+    }
+
+    .error-msg {
+      margin-top: 16px;
+      background: #1a0a0a;
+      border: 1px solid #3a1a1a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #ff6b6b;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .result-summary {
+      margin-top: 20px;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #7d9c7d;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .result-summary.worse { color: #ff6b6b; }
+
+    @media (max-width: 560px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .result-row {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back-link" href="./index.html">← 返回工具入口</a>
+  </div>
+
+  <h1>图片压缩</h1>
+  <p class="subtitle">批量压缩与 PNG / JPEG / WebP 格式转换，支持限制宽度等比缩放，逐张对比压缩率</p>
+
+  <div class="card">
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="image/*" multiple />
+      <span class="drop-icon">🗜️</span>
+      <div class="drop-label"><strong>点击选择、拖拽或 Ctrl+V 粘贴图片</strong></div>
+      <div class="drop-hint">支持 PNG / JPEG / WebP / GIF（取首帧）/ BMP，可多张 · 新增图片会追加到列表 · 纯本地处理，不上传任何文件</div>
+    </div>
+
+    <div class="list-info" id="listInfo">
+      <span id="listInfoText"></span>
+      <button class="mini-btn" id="clearBtn" type="button">全部清空</button>
+    </div>
+
+    <div class="file-list" id="fileList"></div>
+
+    <div class="options">
+      <div class="option-group">
+        <label>输出格式</label>
+        <select id="formatSelect">
+          <option value="keep" selected>保持原格式</option>
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+
+      <div class="option-group">
+        <label>输出质量（对 JPEG / WebP 生效）</label>
+        <div class="range-row">
+          <input type="range" id="qualityRange" min="40" max="100" step="5" value="80" />
+          <span class="range-val" id="qualityVal">80%</span>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <label>最大宽度（px，留空不缩放）</label>
+        <input type="number" id="maxWidthInput" min="50" step="50" placeholder="不缩放" />
+      </div>
+
+      <div class="option-group">
+        <label>透明区填充背景色（JPEG）</label>
+        <select id="bgSelect">
+          <option value="#ffffff" selected>白色</option>
+          <option value="#000000">黑色</option>
+          <option value="#f5f5f5">浅灰</option>
+          <option value="#1a1a1a">深灰</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" id="compressBtn" disabled>添加图片后开始压缩</button>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">准备中...</div>
+    </div>
+
+    <p class="status" id="statusText"></p>
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="result-summary" id="resultSummary"></div>
+  </div>
+
+  <script>
+    const MAX_DIM = 32767;   // 浏览器画布单边上限
+    const SOFT_LIMIT = 30;   // 列表数量软提示阈值
+
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const listInfo = document.getElementById('listInfo');
+    const listInfoText = document.getElementById('listInfoText');
+    const clearBtn = document.getElementById('clearBtn');
+    const fileList = document.getElementById('fileList');
+    const formatSelect = document.getElementById('formatSelect');
+    const qualityRange = document.getElementById('qualityRange');
+    const qualityVal = document.getElementById('qualityVal');
+    const maxWidthInput = document.getElementById('maxWidthInput');
+    const bgSelect = document.getElementById('bgSelect');
+    const compressBtn = document.getElementById('compressBtn');
+    const progressWrap = document.getElementById('progressWrap');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const statusText = document.getElementById('statusText');
+    const errorMsg = document.getElementById('errorMsg');
+    const resultSummary = document.getElementById('resultSummary');
+
+    let items = [];
+    let running = false;
+    let itemSeq = 0;
+
+    qualityRange.addEventListener('input', () => {
+      qualityVal.textContent = `${qualityRange.value}%`;
+    });
+
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (running) return;
+      addFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (!fileInput.files.length || running) return;
+      addFiles(fileInput.files);
+      fileInput.value = '';
+    });
+
+    document.addEventListener('paste', event => {
+      const dt = event.clipboardData;
+      if (!dt) return;
+      const hasFile = [...dt.items].some(item => item.kind === 'file');
+      const files = getClipboardImageFiles(event);
+      if (!files.length) {
+        if (hasFile) {
+          event.preventDefault();
+          showError('剪贴板中没有图片文件');
+        }
+        return;
+      }
+      event.preventDefault();
+      if (running) return;
+      addFiles(files);
+    });
+
+    fileList.addEventListener('click', e => {
+      const btn = e.target.closest('.remove-btn');
+      if (!btn || running) return;
+      removeItem(btn.closest('.file-item')?.dataset.id);
+    });
+
+    fileList.addEventListener('click', e => {
+      const btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+      copyResult(btn.closest('.file-item')?.dataset.id);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      if (running) return;
+      clearAll();
+    });
+
+    compressBtn.addEventListener('click', runCompress);
+
+    async function addFiles(fileListLike) {
+      const files = [...fileListLike];
+      const skipped = [];
+      const failed = [];
+      let added = 0;
+
+      for (const file of files) {
+        if (!isImageFile(file)) {
+          skipped.push(file.name || '未命名文件');
+          continue;
+        }
+        try {
+          const img = await decodeImage(file);
+          if (img.naturalWidth > MAX_DIM || img.naturalHeight > MAX_DIM) {
+            URL.revokeObjectURL(img.src);
+            throw new Error(`超出画布上限 ${MAX_DIM}px`);
+          }
+          items.push({
+            id: `item-${Date.now()}-${++itemSeq}`,
+            file,
+            img,
+            url: img.src,
+            result: null
+          });
+          added++;
+        } catch (err) {
+          failed.push(`${file.name || '未命名文件'}（${err && err.message ? err.message : '无法解码'}）`);
+        }
+      }
+
+      if (skipped.length) {
+        showError(`已跳过非图片文件：${skipped.slice(0, 3).join('、')}${skipped.length > 3 ? ' 等' : ''}`);
+      } else if (failed.length) {
+        showError(`部分图片载入失败：${failed.slice(0, 3).join('、')}${failed.length > 3 ? ' 等' : ''}`);
+      } else {
+        hideError();
+      }
+
+      if (added) resultSummary.style.display = 'none';
+      renderList();
+    }
+
+    function removeItem(id) {
+      const index = items.findIndex(item => item.id === id);
+      if (index < 0) return;
+      revokeItem(items[index]);
+      items.splice(index, 1);
+      renderList();
+    }
+
+    function clearAll() {
+      for (const item of items) revokeItem(item);
+      items = [];
+      resultSummary.style.display = 'none';
+      setStatus('');
+      hideError();
+      renderList();
+    }
+
+    function revokeItem(item) {
+      URL.revokeObjectURL(item.url);
+      if (item.result && item.result.url) URL.revokeObjectURL(item.result.url);
+    }
+
+    function revokeResults() {
+      for (const item of items) {
+        if (item.result && item.result.url) URL.revokeObjectURL(item.result.url);
+        item.result = null;
+      }
+    }
+
+    function renderList() {
+      fileList.innerHTML = '';
+      const total = items.reduce((sum, item) => sum + item.file.size, 0);
+
+      if (!items.length) {
+        listInfo.classList.remove('visible');
+        fileList.classList.remove('visible');
+        compressBtn.disabled = true;
+        compressBtn.textContent = '添加图片后开始压缩';
+        delete compressBtn.dataset.ranOnce;
+        return;
+      }
+
+      listInfo.classList.add('visible');
+      fileList.classList.add('visible');
+      listInfoText.textContent = `共 ${items.length} 张 · 原始总大小 ${fmtSize(total)}` +
+        (items.length > SOFT_LIMIT ? ` · 数量较多，处理大图可能占用较多内存` : '');
+
+      for (const item of items) fileList.appendChild(buildItemNode(item));
+
+      if (!running) {
+        compressBtn.disabled = false;
+        compressBtn.textContent = compressBtn.dataset.ranOnce ? '重新压缩' : '开始压缩';
+      }
+    }
+
+    function buildItemNode(item) {
+      const node = document.createElement('div');
+      node.className = 'file-item';
+      node.dataset.id = item.id;
+
+      const thumb = document.createElement('img');
+      thumb.className = 'file-thumb';
+      thumb.src = item.url;
+      thumb.alt = '';
+
+      const meta = document.createElement('div');
+      meta.className = 'file-meta';
+      const name = document.createElement('strong');
+      name.textContent = item.file.name || '剪贴板图片';
+      const orig = document.createElement('span');
+      orig.textContent = `${item.img.naturalWidth} × ${item.img.naturalHeight} px · ${fmtSize(item.file.size)}`;
+      meta.append(name, orig);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'remove-btn';
+      removeBtn.type = 'button';
+      removeBtn.textContent = '✕';
+      removeBtn.title = '移除';
+      removeBtn.disabled = running;
+
+      node.append(thumb, meta, removeBtn);
+
+      if (item.result) {
+        const row = document.createElement('div');
+        if (item.result.error) {
+          row.className = 'result-row failed';
+          row.textContent = `失败：${item.result.error}`;
+        } else {
+          const bigger = item.result.blob.size >= item.file.size;
+          const ratio = Math.round((item.result.blob.size - item.file.size) / item.file.size * 100);
+          row.className = 'result-row' + (bigger ? ' worse' : '');
+
+          const info = document.createElement('span');
+          info.className = 'result-info';
+          info.textContent = `→ ${item.result.width} × ${item.result.height} px · ${fmtSize(item.result.blob.size)} · ${ratio > 0 ? '+' : ''}${ratio}%` +
+            (bigger ? ' · 转码后更大，建议保留原图' : '');
+
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'mini-btn copy-btn';
+          copyBtn.type = 'button';
+          copyBtn.textContent = '复制';
+
+          const dl = document.createElement('a');
+          dl.className = 'mini-btn';
+          dl.href = item.result.url;
+          dl.download = item.result.name;
+          dl.textContent = '下载';
+
+          row.append(info, copyBtn, dl);
+        }
+        node.appendChild(row);
+      }
+
+      return node;
+    }
+
+    function gatherParams() {
+      let maxWidth = Math.round(Number(maxWidthInput.value));
+      if (!Number.isFinite(maxWidth) || maxWidth <= 0) maxWidth = 0;
+      else maxWidth = Math.max(50, maxWidth);
+      return {
+        formatMode: formatSelect.value,
+        quality: Number(qualityRange.value) / 100,
+        maxWidth,
+        bg: bgSelect.value
+      };
+    }
+
+    function targetFormatFor(file, mode) {
+      if (mode !== 'keep') return mode;
+      return ['image/png', 'image/jpeg', 'image/webp'].includes(file.type) ? file.type : 'image/png';
+    }
+
+    function extFor(mime) {
+      return mime.split('/')[1].replace('jpeg', 'jpg');
+    }
+
+    async function runCompress() {
+      if (!items.length || running) return;
+      const params = gatherParams();
+
+      running = true;
+      renderList();
+      compressBtn.disabled = true;
+      compressBtn.textContent = '压缩中…';
+      compressBtn.dataset.ranOnce = '1';
+      revokeResults();
+      resultSummary.style.display = 'none';
+      setStatus('');
+      hideError();
+      showProgress(0, `共 ${items.length} 张，开始压缩…`);
+
+      const used = new Set();
+      let okOrig = 0;
+      let okNew = 0;
+      let okCount = 0;
+      let failCount = 0;
+
+      try {
+        for (let i = 0; i < items.length; i++) {
+          showProgress(Math.round((i / items.length) * 95), `压缩第 ${i + 1} / ${items.length} 张…`);
+          const item = items[i];
+          try {
+            item.result = await compressItem(item, params, used);
+            okCount++;
+            okOrig += item.file.size;
+            okNew += item.result.blob.size;
+          } catch (err) {
+            item.result = { error: err && err.message ? err.message : '处理失败' };
+            failCount++;
+          }
+          if (i % 4 === 3) await nextFrame();
+        }
+
+        showProgress(100, '完成！');
+
+        let text = `共 ${okCount} 张成功`;
+        if (failCount) text += ` · ${failCount} 张失败`;
+        if (okCount) {
+          const saved = Math.round((okOrig - okNew) / okOrig * 100);
+          text += ` · 原始 ${fmtSize(okOrig)} → 压缩后 ${fmtSize(okNew)} · ${saved >= 0 ? '节省' : '增大'} ${Math.abs(saved)}%`;
+        }
+        resultSummary.textContent = text;
+        resultSummary.classList.toggle('worse', okCount > 0 && okNew >= okOrig);
+        resultSummary.style.display = 'block';
+      } finally {
+        running = false;
+        renderList();
+        setTimeout(() => {
+          progressWrap.style.display = 'none';
+        }, 1200);
+      }
+    }
+
+    async function compressItem(item, params, used) {
+      const img = item.img;
+      const format = targetFormatFor(item.file, params.formatMode);
+      const scale = params.maxWidth > 0 && img.naturalWidth > params.maxWidth
+        ? params.maxWidth / img.naturalWidth
+        : 1;
+      const width = Math.max(1, Math.round(img.naturalWidth * scale));
+      const height = Math.max(1, Math.round(img.naturalHeight * scale));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (format !== 'image/png') {
+        ctx.fillStyle = params.bg;
+        ctx.fillRect(0, 0, width, height);
+      }
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, format, params.quality));
+      if (!blob) throw new Error('浏览器未能生成压缩文件');
+
+      const baseName = sanitizeBaseName(item.file.name || 'clipboard') || 'clipboard';
+      const name = uniqueName(baseName, extFor(format), used);
+      return {
+        blob,
+        url: URL.createObjectURL(blob),
+        name,
+        width,
+        height
+      };
+    }
+
+    function uniqueName(base, ext, used) {
+      let name = `${base}_压缩.${ext}`;
+      let n = 2;
+      while (used.has(name)) name = `${base}_压缩-${n++}.${ext}`;
+      used.add(name);
+      return name;
+    }
+
+    async function copyResult(id) {
+      const item = items.find(entry => entry.id === id);
+      if (!item || !item.result || item.result.error) return;
+      try {
+        const pngBlob = await ensurePngBlob(item.result);
+        await writeImageToClipboard(pngBlob);
+        setStatus(`已复制到剪贴板：${item.result.name}`);
+      } catch (err) {
+        setStatus(`复制失败：${err && err.message ? err.message : '未知错误'}`);
+      }
+    }
+
+    async function ensurePngBlob(item) {
+      if (item.blob.type === 'image/png') return item.blob;
+      const url = URL.createObjectURL(item.blob);
+      try {
+        const img = await new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => reject(new Error('无法读取压缩结果'));
+          image.src = url;
+        });
+        const canvas = document.createElement('canvas');
+        canvas.width = item.width;
+        canvas.height = item.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        if (!blob) throw new Error('浏览器未能生成 PNG');
+        return blob;
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    async function writeImageToClipboard(pngBlob) {
+      if (!navigator.clipboard || typeof ClipboardItem === 'undefined') {
+        throw new Error('当前浏览器不支持复制图片到剪贴板，可直接下载后使用');
+      }
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+      } catch (err) {
+        throw new Error(`${err?.message || '浏览器未授权剪贴板写入'}`);
+      }
+    }
+
+    function decodeImage(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('无法解码该图片格式'));
+        };
+        img.src = url;
+      });
+    }
+
+    function getClipboardImageFiles(event) {
+      const items = event.clipboardData?.items;
+      if (!items) return [];
+      const files = [];
+      for (const item of items) {
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) files.push(normalizeClipboardImageName(file));
+        }
+      }
+      return files;
+    }
+
+    function normalizeClipboardImageName(file) {
+      if (file.name) return file;
+      const ext = (file.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      return new File([file], `clipboard.${ext}`, { type: file.type });
+    }
+
+    function isImageFile(file) {
+      return file.type.startsWith('image/') || /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name);
+    }
+
+    function sanitizeBaseName(name) {
+      return name.replace(/\.[^.]+$/, '').replace(/[\\/:*?"<>|]/g, '_').trim();
+    }
+
+    function nextFrame() {
+      return new Promise(resolve => requestAnimationFrame(resolve));
+    }
+
+    function fmtSize(bytes) {
+      if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+      if (bytes >= 1024) return (bytes / 1024).toFixed(0) + ' KB';
+      return bytes + ' B';
+    }
+
+    function setStatus(msg) {
+      statusText.textContent = msg;
+    }
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.style.display = 'block';
+    }
+
+    function hideError() {
+      errorMsg.style.display = 'none';
+    }
+
+    function showProgress(pct, msg) {
+      progressWrap.style.display = 'block';
+      progressFill.style.width = pct + '%';
+      progressText.textContent = msg;
+    }
+  </script>
+</body>
+</html>
